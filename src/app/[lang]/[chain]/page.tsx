@@ -74,6 +74,8 @@ import GearSetupIcon from "@/components/gearSetupIcon";
 
 import AppBarComponent from "@/components/Appbar/AppBar";
 import { getDictionary } from "../../dictionaries";
+import { parse } from "path";
+import { N } from "ethers";
 
 
 
@@ -762,9 +764,29 @@ export default function Index({ params }: any) {
 
         <div className="mt-0 w-full flex flex-col xl:flex-row items-center xl:items-stretch justify-center gap-5 mb-10">
               
-              <div className="flex flex-col bg-yellow-500 p-5 rounded-lg text-center
+              <div
+                className="flex flex-col bg-yellow-500 p-5 rounded-lg text-center
                 w-full xl:w-1/2
-              ">
+                hover:shadow-lg
+                cursor-pointer
+                transition duration-300 ease-in-out
+                transform hover:-translate-y-1
+
+                "
+
+
+                onClick={() => {
+
+
+                  // redirect to settings page
+                  router.push(
+                    "/" + params.lang + "/" + params.chain + "/settings" + "?wallet=" + wallet
+                  );
+
+                }}
+
+
+              >
 
 
                 <div className=" flex flex-row justify-between items-center">
@@ -773,13 +795,19 @@ export default function Index({ params }: any) {
                     {/* Tether USDT logo */}
                     
                     <Image
-                      src="/logo-tether.png"
-                      alt="USDT"
+                      src="/icon-bank.png"
+                      alt="Bank"
                       width={35}
                       height={35}
-                      className="rounded-lg w-10 h-10 xl:w-14 xl:h-14"
+                      className="rounded-lg w-6 h-6 xl:w-10 xl:h-10"
 
                     />
+
+                    <p className="text-lg font-semibold text-gray-800">
+                      {My_Balance}
+                    </p>
+
+
                     {/* button for polygon explorer */}
                     {/*
                     {address && !loadingAnimation
@@ -817,29 +845,6 @@ export default function Index({ params }: any) {
                       
                   </div>
 
-                  {/* Settings Button */}
-                  <button
-
-                    onClick={() => {
-
-                      if (!address) {
-                        toast.error(Please_connect_your_wallet_first);
-                        return;
-                      }
-                      // setup USDT
-                      //console.log("settings");
-
-                      // redirect to settings page
-                      router.push(
-                        "/" + params.lang + "/" + params.chain + "/settings" + "?wallet=" + wallet
-                      );
-
-                    }}
-                    className="text-blue-500 hover:underline"
-                  >
-                    <GearSetupIcon />
-
-                  </button>
 
                 </div>
 
@@ -874,15 +879,131 @@ export default function Index({ params }: any) {
 
 
 
-                <div className="mt-4 flex flex-row gap-2 justify-center items-center">
+                <div className="mt-4 flex flex-row gap-2 justify-between items-center">
+                  <Image
+                    src="/logo-tether.png"
+                    alt="USDT"
+                    width={35}
+                    height={35}
+                    className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
+                  />
+
+
+                    {/* floating point number to fixed 5 and text size small */}
                   <div className="text-4xl font-semibold text-zinc-100">
-                    {Number(balance).toFixed(2)}
+                    {  Number(balance).toFixed(0)  }
+                  </div>
+                  <div className="text-sm text-gray-800">
+                    {
+                      (parseFloat(Number(balance).toFixed(0)) !== Number(balance)) ?
+                      Number(balance).toFixed(5).split(".")[1] === "00000" ? Number(balance).toFixed(0) : Number(balance).toFixed(5)
+                      :
+                      ""
+                    }
                   </div>
                   <p className="text-sm text-gray-800">USDT</p>
                 </div>
-                <p className="text-sm text-gray-800">
-                  {My_Balance}
-                </p>
+
+                <div className="mt-4 flex flex-row gap-2 justify-between items-center">
+                  <Image
+                    src="/logo-tether.png"
+                    alt="USDT"
+                    width={35}
+                    height={35}
+                    className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
+                  />
+
+
+                    {/* floating point number to fixed 5 and text size small */}
+                  <div className="text-4xl font-semibold text-zinc-100">
+                    {  Number(balance).toFixed(0)  }
+                  </div>
+                  <div className="text-sm text-gray-800">
+                    {
+                      (parseFloat(Number(balance).toFixed(0)) !== Number(balance)) ?
+                      Number(balance).toFixed(5).split(".")[1] === "00000" ? Number(balance).toFixed(0) : Number(balance).toFixed(5)
+                      :
+                      ""
+                    }
+                  </div>
+                  <p className="text-sm text-gray-800">USDT</p>
+                </div>
+
+                <div className="mt-4 flex flex-row gap-2 justify-between items-center">
+                  <Image
+                    src="/logo-tether.png"
+                    alt="USDT"
+                    width={35}
+                    height={35}
+                    className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
+                  />
+
+
+                    {/* floating point number to fixed 5 and text size small */}
+                  <div className="text-4xl font-semibold text-zinc-100">
+                    {  Number(balance).toFixed(0)  }
+                  </div>
+                  <div className="text-sm text-gray-800">
+                    {
+                      (parseFloat(Number(balance).toFixed(0)) !== Number(balance)) ?
+                      Number(balance).toFixed(5).split(".")[1] === "00000" ? Number(balance).toFixed(0) : Number(balance).toFixed(5)
+                      :
+                      ""
+                    }
+                  </div>
+                  <p className="text-sm text-gray-800">USDT</p>
+                </div>
+
+                <div className="mt-4 flex flex-row gap-2 justify-between items-center">
+                  <Image
+                    src="/logo-tether.png"
+                    alt="USDT"
+                    width={35}
+                    height={35}
+                    className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
+                  />
+
+
+                    {/* floating point number to fixed 5 and text size small */}
+                  <div className="text-4xl font-semibold text-zinc-100">
+                    {  Number(balance).toFixed(0)  }
+                  </div>
+                  <div className="text-sm text-gray-800">
+                    {
+                      (parseFloat(Number(balance).toFixed(0)) !== Number(balance)) ?
+                      Number(balance).toFixed(5).split(".")[1] === "00000" ? Number(balance).toFixed(0) : Number(balance).toFixed(5)
+                      :
+                      ""
+                    }
+                  </div>
+                  <p className="text-sm text-gray-800">USDT</p>
+                </div>
+
+                <div className="mt-4 flex flex-row gap-2 justify-between items-center">
+                  <Image
+                    src="/logo-tether.png"
+                    alt="USDT"
+                    width={35}
+                    height={35}
+                    className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
+                  />
+
+
+                    {/* floating point number to fixed 5 and text size small */}
+                  <div className="text-4xl font-semibold text-zinc-100">
+                    {  Number(balance).toFixed(0)  }
+                  </div>
+                  <div className="text-sm text-gray-800">
+                    {
+                      (parseFloat(Number(balance).toFixed(0)) !== Number(balance)) ?
+                      Number(balance).toFixed(5).split(".")[1] === "00000" ? Number(balance).toFixed(0) : Number(balance).toFixed(5)
+                      :
+                      ""
+                    }
+                  </div>
+                  <p className="text-sm text-gray-800">USDT</p>
+                </div>
+
 
 
                 {/* my address and copy button */}
@@ -913,7 +1034,9 @@ export default function Index({ params }: any) {
 
 
                 {/* send button */}
+                
                 <div className="flex flex-row gap-2 justify-center items-center mt-10">
+                  {/*
                   <button
                     disabled={!address}
                     onClick={() => {
@@ -935,6 +1058,7 @@ export default function Index({ params }: any) {
                   >
                     {Send_USDT}
                   </button>
+                  */}
 
                     {/*
                   <button
