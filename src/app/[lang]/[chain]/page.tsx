@@ -764,6 +764,9 @@ export default function Index({ params }: any) {
 
         <div className="mt-0 w-full flex flex-col xl:flex-row items-center xl:items-stretch justify-center gap-5 mb-10">
               
+
+
+              
               <div
                 className="flex flex-col bg-yellow-500 p-5 rounded-lg text-center
                 w-full xl:w-1/2
@@ -901,12 +904,12 @@ export default function Index({ params }: any) {
                       ""
                     }
                   </div>
-                  <p className="text-sm text-gray-800">USDT</p>
+                  <p className="w-12 text-sm text-gray-800">USDT</p>
                 </div>
 
                 <div className="mt-4 flex flex-row gap-2 justify-between items-center">
                   <Image
-                    src="/logo-tether.png"
+                    src="/token-camt-icon.png"
                     alt="USDT"
                     width={35}
                     height={35}
@@ -926,12 +929,12 @@ export default function Index({ params }: any) {
                       ""
                     }
                   </div>
-                  <p className="text-sm text-gray-800">USDT</p>
+                  <p className="w-12 text-sm text-gray-800">CAMT</p>
                 </div>
 
                 <div className="mt-4 flex flex-row gap-2 justify-between items-center">
                   <Image
-                    src="/logo-tether.png"
+                    src="/token-ccc-icon.png"
                     alt="USDT"
                     width={35}
                     height={35}
@@ -951,12 +954,12 @@ export default function Index({ params }: any) {
                       ""
                     }
                   </div>
-                  <p className="text-sm text-gray-800">USDT</p>
+                  <p className="w-12 text-sm text-gray-800">CCC</p>
                 </div>
 
                 <div className="mt-4 flex flex-row gap-2 justify-between items-center">
                   <Image
-                    src="/logo-tether.png"
+                    src="/token-lenez-icon.jpeg"
                     alt="USDT"
                     width={35}
                     height={35}
@@ -976,12 +979,12 @@ export default function Index({ params }: any) {
                       ""
                     }
                   </div>
-                  <p className="text-sm text-gray-800">USDT</p>
+                  <p className="w-12 text-sm text-gray-800">LENEZ</p>
                 </div>
 
                 <div className="mt-4 flex flex-row gap-2 justify-between items-center">
                   <Image
-                    src="/logo-tether.png"
+                    src="/token-sundog-icon.png"
                     alt="USDT"
                     width={35}
                     height={35}
@@ -993,7 +996,7 @@ export default function Index({ params }: any) {
                   <div className="text-4xl font-semibold text-zinc-100">
                     {  Number(balance).toFixed(0)  }
                   </div>
-                  <div className="text-sm text-gray-800">
+                  <div className=" text-sm text-gray-800">
                     {
                       (parseFloat(Number(balance).toFixed(0)) !== Number(balance)) ?
                       Number(balance).toFixed(5).split(".")[1] === "00000" ? Number(balance).toFixed(0) : Number(balance).toFixed(5)
@@ -1001,7 +1004,7 @@ export default function Index({ params }: any) {
                       ""
                     }
                   </div>
-                  <p className="text-sm text-gray-800">USDT</p>
+                  <p className=" w-12 text-sm text-gray-800">SUNDOG</p>
                 </div>
 
 
@@ -1115,6 +1118,9 @@ export default function Index({ params }: any) {
 
 
               </div>
+
+
+
 
               {/* My Nickname */}
               <div className="w-full flex flex-col p-5 rounded-lg text-center
