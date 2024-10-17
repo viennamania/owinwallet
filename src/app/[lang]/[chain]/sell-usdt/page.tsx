@@ -1777,9 +1777,13 @@ export default function Index({ params }: any) {
                     </div>
                   ) : (
                     <>
+
+                    
                       {user && (
+                        
                         <div className="text-xl font-semibold text-white">
                           {/* Get Escrow Wallet Address */}
+                          {/*
                           <button
                             onClick={() => {
                               makeEscrowWallet();
@@ -1800,8 +1804,13 @@ export default function Index({ params }: any) {
                               )}
                             </div>
                           </button>
+                          */}
+                          
                         </div>
+                        
                       )}
+                    
+
                     </>
                   )}
 

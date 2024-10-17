@@ -2101,6 +2101,7 @@ export default function Index({ params }: any) {
                       {user && (
                         <div className="text-xl font-semibold text-white">
                           {/* Get Escrow Wallet Address */}
+                          {/*
                           <button
                             onClick={() => {
                               makeEscrowWallet();
@@ -2121,6 +2122,7 @@ export default function Index({ params }: any) {
                               )}
                             </div>
                           </button>
+                          */}
                         </div>
                       )}
                     </>
@@ -2191,7 +2193,7 @@ export default function Index({ params }: any) {
 
                     <div className="flex flex-col gap-2 items-center">
                       <div className="text-sm">{Total}</div>
-                      <div className="text-xl font-semibold text-white">
+                      <div className="text-xl font-semibold text-gray-800">
                         {buyOrders.length} 
                       </div>
                     </div>
@@ -2211,7 +2213,7 @@ export default function Index({ params }: any) {
 
                     <div className="flex flex-col gap-2 items-center">
                       <div className="text-sm">{Trades}</div>
-                      <div className="text-xl font-semibold text-white">
+                      <div className="text-xl font-semibold text-gray-800">
 
                         {
                           buyOrders.filter((item) => item.status === 'accepted' || item.status === 'paymentRequested').length
@@ -2224,7 +2226,7 @@ export default function Index({ params }: any) {
                     {/* buy order status */}
                     <div className="flex flex-col gap-2 items-center">
                       <div className="text-sm">{Buy_Order_Opened}</div>
-                      <div className="text-4xl font-semibold text-white">
+                      <div className="text-4xl font-semibold text-gray-800">
                         {buyOrders.filter((item) => item.status === 'ordered').length}
                       </div>
                     </div>
@@ -2901,7 +2903,8 @@ export default function Index({ params }: any) {
 
                                 ${item.status === 'accepted' || item.status === 'paymentRequested' ? 'border-red-600' : 'border-gray-200'}
 
-                                p-4 rounded-md border bg-black bg-opacity-50
+                                p-4 rounded-md border
+                                 bg-yellow-500 bg-opacity-10
                             `}
                           >
 
@@ -3185,7 +3188,7 @@ export default function Index({ params }: any) {
 
 
 
-                                <p className="text-2xl text-zinc-400">
+                                <p className="text-2xl text-gray-800 font-semibold">
                                   {Price}: {
                                     // currency
                                   
@@ -3199,10 +3202,10 @@ export default function Index({ params }: any) {
 
                                 <div className="mt-2 flex flex-row items-start gap-2">
 
-                                  <p className="text-xl font-semibold text-white">
+                                  <p className="text-xl font-semibold text-green-500">
                                     {item.usdtAmount}{' '}USDT
                                   </p>
-                                  <p className="text-lg font-semibold text-white">{Rate}: {
+                                  <p className="text-lg font-semibold text-gray-800">{Rate}: {
 
                                     Number(item.krwAmount / item.usdtAmount).toFixed(2)
 
