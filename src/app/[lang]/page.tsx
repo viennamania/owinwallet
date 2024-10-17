@@ -753,7 +753,7 @@ export default function Index({ params }: any) {
 
                       // redirect to send USDT page
                       router.push(
-                        "/" + params.lang + "/send-usdt-favorite"
+                        "/" + params.lang + "/send-token"
                       );
 
                     }}
@@ -775,7 +775,7 @@ export default function Index({ params }: any) {
 
 
                       // redirect to send USDT page
-                      //router.push("/send-usdt-favorite");
+                      //router.push("/send-token");
 
                       // comming soon
 

@@ -924,7 +924,7 @@ export default function Index({ params }: any) {
                   <button
                     onClick={() => {
                       router.push(
-                        "/" + params.lang + "/" + params.chain + "/send-usdt-favorite/?wallet=" + wallet
+                        "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=USDT"
                       );
 
                     }}
@@ -965,7 +965,7 @@ export default function Index({ params }: any) {
                   <button
                     onClick={() => {
                       router.push(
-                        "/" + params.lang + "/" + params.chain + "/send-usdt-favorite/?wallet=" + wallet
+                        "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=CAMT"
                       );
 
                     }}
@@ -1006,7 +1006,7 @@ export default function Index({ params }: any) {
                   <button
                     onClick={() => {
                       router.push(
-                        "/" + params.lang + "/" + params.chain + "/send-usdt-favorite/?wallet=" + wallet
+                        "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=CCC"
                       );
 
                     }}
@@ -1047,7 +1047,7 @@ export default function Index({ params }: any) {
                   <button
                     onClick={() => {
                       router.push(
-                        "/" + params.lang + "/" + params.chain + "/send-usdt-favorite/?wallet=" + wallet
+                        "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=LENEZ"
                       );
 
                     }}
@@ -1088,7 +1088,7 @@ export default function Index({ params }: any) {
                   <button
                     onClick={() => {
                       router.push(
-                        "/" + params.lang + "/" + params.chain + "/send-usdt-favorite/?wallet=" + wallet
+                        "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=SUNDOG"
                       );
 
                     }}
@@ -1225,7 +1225,7 @@ export default function Index({ params }: any) {
 
                       // redirect to send USDT page
                       router.push(
-                        "/" + params.lang + "/" + params.chain + "/send-usdt-favorite/?wallet=" + wallet
+                        "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet
                       );
 
                     }}
@@ -1251,7 +1251,7 @@ export default function Index({ params }: any) {
 
 
                       // redirect to send USDT page
-                      //router.push("/send-usdt-favorite");
+                      //router.push("/send-token");
 
                       // comming soon
 

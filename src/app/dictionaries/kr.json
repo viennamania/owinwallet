@@ -73,10 +73,10 @@
     "Go_Sell_USDT": "USDT 판매하기",
 
 
-    "Enter_Wallet_Address": "수취인 지갑주소 입력",
-    "Enter_the_amount_and_recipient_address": "보낼 금액과 수취인 지갑주소 입력",
-    "Select_a_user": "수취인 선택",
-    "User_wallet_address": "수취인 지갑주소",
+    "Enter_Wallet_Address": "받을 지갑주소 입력",
+    "Enter_the_amount_and_recipient_address": "보낼 금액과 받을 지갑주소 입력",
+    "Select_a_user": "받을회원 선택",
+    "User_wallet_address": "받을 지갑주소",
 
     "This_address_is_not_white_listed": "이 주소는 화이트리스트에 없습니다.",
 

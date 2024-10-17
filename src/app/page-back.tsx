@@ -669,7 +669,7 @@ export default function Home() {
                       }
 
                       // redirect to send USDT page
-                      router.push("/send-usdt-favorite");
+                      router.push("/send-token");
 
                     }}
                     className="mt-4 w-40 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
@@ -690,7 +690,7 @@ export default function Home() {
 
 
                       // redirect to send USDT page
-                      //router.push("/send-usdt-favorite");
+                      //router.push("/send-token");
 
                       // comming soon
 
