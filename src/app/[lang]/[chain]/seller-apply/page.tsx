@@ -692,7 +692,8 @@ export default function SettingsPage({ params }: any) {
                             :
                             '/' + params.lang + '/' + params.chain
                         ) }
-                        className="text-zinc-100 font-semibold underline"
+                        className="text-gray-500 font-semibold underline"
+                         
                     >
                         {Go_Home}
                     </button>
