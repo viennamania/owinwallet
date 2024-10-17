@@ -959,21 +959,63 @@ export default function Index({ params }: any) {
 
                 <div className=" flex flex-row justify-between items-center">
 
-                  <div className="flex flex-row gap-2 justify-center items-center">
+                  <div className="w-full flex flex-row gap-2 justify-between items-center">
                     {/* Tether USDT logo */}
                     
-                    <Image
-                      src="/icon-bank.png"
-                      alt="Bank"
-                      width={35}
-                      height={35}
-                      className="rounded-lg w-10 h-10 xl:w-14 xl:h-14"
+                    <div className="flex flex-row gap-2 items-center">
+                      <Image
+                        src="/icon-bank.png"
+                        alt="Bank"
+                        width={35}
+                        height={35}
+                        className="rounded-lg w-10 h-10 xl:w-14 xl:h-14"
 
-                    />
+                      />
 
-                    <p className="text-lg md:text-xl font-semibold text-gray-600">
-                      {My_Balance}
-                    </p>
+                      <p className="text-lg md:text-xl font-semibold text-gray-600">
+                        {My_Balance}
+                      </p>
+                    </div>
+
+                    {/* select network */}
+                    <div className="flex flex-row gap-2 items-center">
+                      <select 
+                        className="p-2 bg-zinc-800 text-white rounded"
+                        onChange={(e) => {
+                          const chain = e.target.value;
+                          router.push(
+                            "/" + params.lang + "/" + chain
+                          );
+                        }}
+                      >
+                        <option
+                          value="tron"
+                          selected={params.chain === "tron"}
+                        >
+                          Tron
+                        </option>
+                        <option
+                          value="ethereum"
+                          selected={params.chain === "ethereum"}
+                        >
+                          Ethereum
+                        </option>
+                        <option
+                          value="polygon"
+                          selected={params.chain === "polygon"}
+                        >
+                          Polygon
+                        </option>
+                        <option
+                          value="arbitrum"
+                          selected={params.chain === "arbitrum"}
+                        >
+                          Arbitrum
+                        </option>
+
+
+                      </select>
+                    </div>
 
 
                     {/* button for polygon explorer */}
@@ -1043,7 +1085,9 @@ export default function Index({ params }: any) {
                 )}
                 */}
 
-                <div className="mt-4 flex flex-row gap-2 justify-between items-center">
+                <div className="mt-4 flex flex-row gap-2 justify-between items-center
+                  border border-gray-800 rounded-lg text-center p-2 mb-5
+                ">
                   <Image
                     src={`/logo-${params.chain}.png`}
                     alt="Network"
@@ -1090,7 +1134,7 @@ export default function Index({ params }: any) {
 
 
 
-                <div className="mt-4 flex flex-row gap-2 justify-between items-center">
+                <div className="mt-4 flex flex-row gap-2 justify-between items-center p-2">
                   <Image
                     src="/logo-tether.png"
                     alt="USDT"
@@ -1132,7 +1176,7 @@ export default function Index({ params }: any) {
                   </button>
                 </div>
 
-                <div className="mt-4 flex flex-row gap-2 justify-between items-center">
+                <div className="mt-4 flex flex-row gap-2 justify-between items-center p-2">
                   <Image
                     src="/token-camt-icon.png"
                     alt="USDT"
@@ -1173,7 +1217,7 @@ export default function Index({ params }: any) {
                   </button>
                 </div>
 
-                <div className="mt-4 flex flex-row gap-2 justify-between items-center">
+                <div className="mt-4 flex flex-row gap-2 justify-between items-center p-2">
                   <Image
                     src="/token-ccc-icon.png"
                     alt="USDT"
@@ -1214,7 +1258,7 @@ export default function Index({ params }: any) {
                   </button>
                 </div>
 
-                <div className="mt-4 flex flex-row gap-2 justify-between items-center">
+                <div className="mt-4 flex flex-row gap-2 justify-between items-center p-2">
                   <Image
                     src="/token-lenez-icon.jpeg"
                     alt="USDT"
@@ -1255,7 +1299,7 @@ export default function Index({ params }: any) {
                   </button>
                 </div>
 
-                <div className="mt-4 flex flex-row gap-2 justify-between items-center">
+                <div className="mt-4 flex flex-row gap-2 justify-between items-center p-2">
                   <Image
                     src="/token-sundog-icon.png"
                     alt="USDT"
