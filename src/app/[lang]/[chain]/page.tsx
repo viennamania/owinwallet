@@ -722,7 +722,14 @@ export default function Index({ params }: any) {
           <div className=" flex flex-row gap-2 justify-start items-center">
             <Image
               src="/logo-tron.png"
-              alt="Polygon"
+              alt="Tron"
+              width={50}
+              height={50}
+              className="rounded-lg w-10 h-10 md:w-14 md:h-14"
+            />
+            <Image
+              src="/logo-ethereum.png"
+              alt="Ethereum"
               width={50}
               height={50}
               className="rounded-lg w-10 h-10 md:w-14 md:h-14"
@@ -1036,6 +1043,49 @@ export default function Index({ params }: any) {
                 )}
                 */}
 
+                <div className="mt-4 flex flex-row gap-2 justify-between items-center">
+                  <Image
+                    src={`/logo-${params.chain}.png`}
+                    alt="Network"
+                    width={35}
+                    height={35}
+                    className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
+                  />
+
+
+                    {/* floating point number to fixed 5 and text size small */}
+                  <div className="text-4xl font-semibold text-zinc-100">
+                    {  Number(balance).toFixed(0)  }
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    {
+                      (parseFloat(Number(balance).toFixed(0)) !== Number(balance)) ?
+                      Number(balance).toFixed(5).split(".")[1] === "00000" ? Number(balance).toFixed(0) : Number(balance).toFixed(5)
+                      :
+                      ""
+                    }
+                  </div>
+                  <p className="w-12 text-sm text-gray-600">
+                    {params.chain === "polygon" ? "POL" : params.chain === "arbitrum" ? "ARB" : params.chain === "tron" ? "TRX" : params.chain === "ethereum" ? "ETH" : ""}
+                  </p>
+
+                  <button
+                    onClick={() => {
+                      router.push(
+                        "/" + params.lang + "/" + params.chain + "/send-coin/?wallet=" + wallet
+                      );
+
+                    }}
+                    className="text-sm text-blue-500 hover:underline"
+                  >
+                    <Image
+                      src="/goto-icon.webp"
+                      alt="Send"
+                      width={20}
+                      height={20}
+                    />
+                  </button>
+                </div>
 
 
 
