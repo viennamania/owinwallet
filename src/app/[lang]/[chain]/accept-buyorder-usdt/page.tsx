@@ -1792,7 +1792,7 @@ export default function Index({ params }: any) {
 
 
     // check table view or card view
-    const [tableView, setTableView] = useState(true);
+    const [tableView, setTableView] = useState(false);
 
 
 
@@ -2164,6 +2164,7 @@ export default function Index({ params }: any) {
                     */}
 
                     {/* select table view or card view */}
+                    {/*
                     <div className="flex flex-row items-center space-x-4">
                         <div className="text-sm">{Table_View}</div>
                         <input
@@ -2173,6 +2174,7 @@ export default function Index({ params }: any) {
                           className="w-5 h-5 rounded-full"
                         />
                     </div>
+                    */}
 
                   </div>
 

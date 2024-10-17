@@ -1096,11 +1096,63 @@ export default function Index({ params }: any) {
                       );
 
                     }}
-                    className="w-full bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+                    className="w-full bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900"
                   >
                     Apply for Listing New Token
                   </button>
                 </div>
+
+                <div className=" flex flex-row gap-2 justify-center items-center mt-10">
+                  
+                  {/* Go Buy USDT */}
+                  <button
+                    onClick={() => {
+  
+
+                      // redirect to buy USDT page
+                      router.push(
+                        //"/" + params.lang + "/" + params.chain + "/buy-usdt"
+
+                        wallet === "smart" ?
+                        "/" + params.lang + "/" + params.chain + "/buy-usdt?wallet=smart"
+                        :
+                        "/" + params.lang + "/" + params.chain + "/buy-usdt"
+
+                      );
+
+                    }}
+                    className=" w-40 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+                  >
+                    구매하기
+                  </button>
+
+
+                  {/* Go Buy Order USDT */}
+
+                  <button
+                    onClick={() => {
+  
+
+                      // redirect to buy USDT page
+                      router.push(
+                        //"/" + params.lang + "/" + params.chain + "/buyorder-usdt"
+
+                        wallet === "smart" ?
+                        "/" + params.lang + "/" + params.chain + "/buyorder-usdt?wallet=smart"
+                        :
+                        "/" + params.lang + "/" + params.chain + "/buyorder-usdt"
+
+                      );
+
+                    }}
+                    className=" w-40 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                  >
+                    구매신청하기
+                  </button>
+
+
+                </div>
+
 
 
 
@@ -1225,7 +1277,7 @@ export default function Index({ params }: any) {
                 transform hover:-translate-y-1
               ">
 
-                <div className="flex flex-row justify-between items-center">
+                <div className="flex flex-row justify-start items-center gap-2">
                   <Image
                     src={avatar || "/profile-default.png"}
                     alt="Profile Image"
@@ -1235,33 +1287,13 @@ export default function Index({ params }: any) {
                     className="rounded-full"
                     style={{
                         objectFit: 'cover',
-                        width: '35px',
-                        height: '35px',
+                        width: '45px',
+                        height: '45px',
                     }}
                   />
 
-                  {/* Settings Button */}
-                  <button
+                  <p className="text-sm md:text-xl text-gray-600">{My_Nickname}</p>
 
-                    onClick={() => {
-
-                      if (!address) {
-                        toast.error(Please_connect_your_wallet_first);
-                        return;
-                      }
-
-                      // redirect to settings page
-                      router.push(
-                        "/" + params.lang + "/" + params.chain + "/profiles?wallet=" + wallet
-                      );
-
-
-                    }}
-                    className="text-blue-500 hover:underline"
-                  >
-                    <GearSetupIcon />
-
-                  </button>
 
 
                 </div>
@@ -1307,8 +1339,6 @@ export default function Index({ params }: any) {
                 )}
 
 
-                <p className="text-sm text-gray-600">{My_Nickname}</p>
-
 
 
 
@@ -1316,28 +1346,7 @@ export default function Index({ params }: any) {
                 <div className="flex flex-row gap-2 justify-center items-center mt-10">
 
 
-                  {/* Go Buy USDT */}
 
-                  <button
-                    onClick={() => {
-  
-
-                      // redirect to buy USDT page
-                      router.push(
-                        //"/" + params.lang + "/" + params.chain + "/buy-usdt"
-
-                        wallet === "smart" ?
-                        "/" + params.lang + "/" + params.chain + "/buy-usdt?wallet=smart"
-                        :
-                        "/" + params.lang + "/" + params.chain + "/buy-usdt"
-
-                      );
-
-                    }}
-                    className=" w-40 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-                  >
-                    {Buy_USDT}
-                  </button>
              
 
 
@@ -1371,45 +1380,10 @@ export default function Index({ params }: any) {
                     }}
                     className="w-40 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
                   >
-                    {Sell_USDT}
+                    판매하기
                   </button>
 
-                </div>
-                
 
-
-
-
-              
-                <div className="flex flex-row gap-2 justify-center items-center mt-10">
-
-
-                  {/* Go Buy Order USDT */}
-
-                  <button
-                    onClick={() => {
-  
-
-                      // redirect to buy USDT page
-                      router.push(
-                        //"/" + params.lang + "/" + params.chain + "/buyorder-usdt"
-
-                        wallet === "smart" ?
-                        "/" + params.lang + "/" + params.chain + "/buyorder-usdt?wallet=smart"
-                        :
-                        "/" + params.lang + "/" + params.chain + "/buyorder-usdt"
-
-                      );
-
-                    }}
-                    className=" w-40 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-                  >
-                    USDT 구매신청
-                  </button>
-             
-
-
- 
                   <button
                     disabled={!address}
                     onClick={() => {
@@ -1437,17 +1411,38 @@ export default function Index({ params }: any) {
                       );
 
                     }}
-                    className="w-40 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                    className="w-40 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
                   >
-                    USDT 구매접수
+                    구매접수하기
                   </button>
 
                 </div>
                 
 
 
+                {/* apply button of listing for sellers */}
 
+                <div className=" flex flex-row gap-2 justify-center items-center mt-10">
+                  <button
+                    onClick={() => {
+                      // apply for listing new token
+                      //console.log("apply for listing new token");
 
+                      if (!address) {
+                        toast.error(Please_connect_your_wallet_first);
+                        return;
+                      }
+
+                      router.push(
+                        "/" + params.lang + "/" + params.chain + "/seller-apply"
+                      );
+
+                    }}
+                    className="w-full bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900"
+                  >
+                    Apply for Listing New Seller
+                  </button>
+                </div>
 
 
 
@@ -1718,22 +1713,22 @@ function MarketResources() {
     <div className="grid gap-4 lg:grid-cols-3 justify-center">
 
       <ArticleCard
-        title="Buy USDT"
-        href="/buy-usdt"
-        description="Buy USDT with your favorite real-world currency"
+        title="P2E Game"
+        href="/"
+        description="Play to Earn games with USDT rewards"
       />
 
   
       <ArticleCard
-        title="Sell USDT"
-        href="/sell-usdt"
-        description="Sell USDT for your favorite real-world currency"
+        title="NFT Marketplace"
+        href="/"
+        description="Trade NFTs with USDT"
       />
 
       <ArticleCard
-        title="How to use USDT"
+        title="DeFi Apps"
         href="/"
-        description="Learn how to use USDT in your favorite DeFi apps"
+        description="DeFi applications with USDT"
       />
 
     </div>
