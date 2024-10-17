@@ -1834,10 +1834,12 @@ export default function Index({ params }: any) {
           <AppBarComponent />
 
           {/* store code number */}
+          {/*
           <div className="w-full flex flex-row gap-2 items-center justify-start text-zinc-300 text-lg font-se"
           >
             SC: {storeCodeNumber}
           </div>
+          */}
 
   
           <div className="mt-4 flex justify-start space-x-4 mb-10">
@@ -1845,7 +1847,7 @@ export default function Index({ params }: any) {
                 onClick={() => router.push(
                   '/' + params.lang + '/' + params.chain + '?wallet=' + wallet
                 )}
-                className="text-zinc-100 font-semibold underline"
+                className="text-gray-500 font-semibold underline"
               >
                 {Go_Home}
               </button>
