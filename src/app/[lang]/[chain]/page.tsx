@@ -699,6 +699,31 @@ export default function Index({ params }: any) {
         
         
         <Header />
+
+        {/* blockchain network selection */}
+        <div className="w-full flex flex-row gap-2 justify-start items-center">
+          <Image
+            src="/logo-tron.png"
+            alt="Polygon"
+            width={50}
+            height={50}
+            className="rounded-lg w-10 h-10 md:w-14 md:h-14"
+          />
+          <Image
+            src="/logo-polygon.png"
+            alt="Polygon"
+            width={50}
+            height={50}
+            className="rounded-lg w-10 h-10 md:w-14 md:h-14"
+          />
+          <Image
+            src="/logo-arbitrum.png"
+            alt="Arbitrum"
+            width={50}
+            height={50}
+            className="rounded-lg w-10 h-10 md:w-14 md:h-14"
+          />
+        </div>
         
 
         <div className="w-full flex flex-col justify-between items-center gap-2 mb-5">
@@ -1582,7 +1607,7 @@ export default function Index({ params }: any) {
 
 function Header() {
   return (
-    <header className="flex flex-col items-center mb-20 md:mb-20">
+    <header className="flex flex-col items-center mb-5 md:mb-10">
 
       {/* header menu */}
       <div className="w-full flex flex-row justify-between items-center gap-2
