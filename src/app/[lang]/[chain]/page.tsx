@@ -856,6 +856,7 @@ export default function Index({ params }: any) {
 
         {!address && (
 
+          <div className="w-full flex flex-row justify-center items-center gap-2">
           <button
             onClick={handleConnect}
             className="w-full bg-zinc-800 text-white px-4 py-2 rounded-lg hover:bg-zinc-900"
@@ -872,6 +873,44 @@ export default function Index({ params }: any) {
             </div>
           </button>
 
+
+          <ConnectButton
+              client={client}
+              wallets={wallets}
+
+              /*
+              accountAbstraction={{   
+                chain: params.chain === "arbitrum" ? arbitrum : polygon,
+                //
+                //chain: polygon,
+
+                //chain: arbitrum,
+                factoryAddress: "0x9bb60d360932171292ad2b80839080fb6f5abd97", // polygon, arbitrum
+                gasless: true,
+              }}
+              */
+            
+              
+              theme={"light"}
+              connectModal={{
+                size: "wide",                            
+                //title: "Connect",
+
+              }}
+
+              appMetadata={
+                {
+                  logoUrl: "https://gold.goodtether.com/logo.png",
+                  name: "Next App",
+                  url: "https://gold.goodtether.com",
+                  description: "This is a Next App.",
+
+                }
+              }
+            />
+
+          </div>
+
         )}
 
         {address && (
@@ -883,6 +922,12 @@ export default function Index({ params }: any) {
               height={100}
               className="rounded"
             />
+
+
+
+                 
+
+
           </div>
         )}
             
