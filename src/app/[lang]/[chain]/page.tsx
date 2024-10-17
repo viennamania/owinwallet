@@ -1479,7 +1479,7 @@ export default function Index({ params }: any) {
 
  
                   <button
-                    disabled={!address}
+                    //disabled={!address}
                     onClick={() => {
                       // my sell trades
                       //console.log("my sell trades");
@@ -1516,7 +1516,7 @@ export default function Index({ params }: any) {
 
 
                   <button
-                    disabled={!address}
+                    //disabled={!address}
                     onClick={() => {
                       // my sell trades
                       //console.log("my sell trades");
