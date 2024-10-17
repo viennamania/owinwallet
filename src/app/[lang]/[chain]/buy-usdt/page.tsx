@@ -1028,7 +1028,7 @@ export default function Index({ params }: any) {
 
                     <div className="flex flex-col gap-2 items-center">
                       <div className="text-sm">{Total}</div>
-                      <div className="text-xl font-semibold text-white">
+                      <div className="text-xl font-semibold text-gray-800">
                         {sellOrders.length} 
                       </div>
                       
@@ -1036,14 +1036,14 @@ export default function Index({ params }: any) {
 
                     <div className="flex flex-col gap-2 items-center">
                       <div className="text-sm">{Sell}</div>
-                      <div className="text-xl font-semibold text-white">
+                      <div className="text-xl font-semibold text-gray-800">
                         {sellOrders.filter((item) => item.status === 'ordered').length}
                       </div>
                     </div>
 
                     <div className="flex flex-col gap-2 items-center">
                       <div className="text-sm">{Trades}</div>
-                      <div className="text-xl font-semibold text-white">
+                      <div className="text-xl font-semibold text-gray-800">
 
                         {
                           //sellOrders.filter((item) => item.status === 'accepted').length
@@ -1416,6 +1416,7 @@ export default function Index({ params }: any) {
                           {item.status === 'ordered' && (new Date().getTime() - new Date(item.createdAt).getTime() > 1000 * 60 * 60 * 24) && (
                             <div className="absolute inset-0 flex justify-center items-center z-10
                               bg-black bg-opacity-50
+                              
                             ">
                               <Image
                                 src="/icon-expired.png"
@@ -1445,11 +1446,12 @@ export default function Index({ params }: any) {
                           <article
                               //key={index}
                               className={` w-96 xl:w-full h-full relative
-                                ${item.walletAddress === address ? 'border-green-500' : 'border-gray-200'}
+                                ${item.walletAddress === address ? 'border-green-500' : 'border-red-600'}
 
                                 ${item.status === 'accepted' || item.status === 'paymentRequested' ? 'border-red-600' : 'border-gray-200'}
 
-                                p-4 rounded-md border bg-black bg-opacity-50
+                                p-4 rounded-md border
+                                 bg-yellow-500 bg-opacity-10
                             `}
                           >
 
@@ -1731,7 +1733,7 @@ export default function Index({ params }: any) {
 
 
 
-                                <p className="text-2xl text-zinc-400">
+                                <p className="text-2xl text-gray-800 font-semibold">
                                   {Price}: {
                                     // currency
                                   
@@ -1745,10 +1747,10 @@ export default function Index({ params }: any) {
 
                                 <div className="mt-2 flex flex-row items-start gap-2">
 
-                                  <p className="text-xl font-semibold text-white">
+                                  <p className="text-xl font-semibold text-green-500">
                                     {item.usdtAmount}{' '}USDT
                                   </p>
-                                  <p className="text-lg font-semibold text-white">{Rate}: {
+                                  <p className="text-lg font-semibold text-gray-800">{Rate}: {
 
                                     Number(item.krwAmount / item.usdtAmount).toFixed(2)
 
