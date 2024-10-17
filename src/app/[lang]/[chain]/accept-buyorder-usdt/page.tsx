@@ -1920,7 +1920,7 @@ export default function Index({ params }: any) {
                     <div className="flex flex-col gap-2 items-start">
                       <div className="text-sm">{My_Balance}</div>
                       <div className="flex flex-row items-end justify-center  gap-2">
-                        <span className="text-4xl font-semibold text-white">
+                        <span className="text-4xl font-semibold text-gray-800">
                           {Number(balance).toFixed(2)}
                         </span>
                         <span className="text-lg">USDT</span>
