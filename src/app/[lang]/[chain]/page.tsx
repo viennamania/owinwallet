@@ -791,8 +791,32 @@ export default function Index({ params }: any) {
           <p className="text-zinc-300">{description}</p>
         </div>
 
-        <div className="mt-0 w-full flex flex-col xl:flex-row items-center xl:items-stretch justify-center gap-5 mb-10">
+
+
+        {!address && (
+
+          <button
+            onClick={handleConnect}
+            className="w-full bg-zinc-800 text-white px-4 py-2 rounded-lg hover:bg-zinc-900"
+          >
+            <div className="flex flex-row justify-center items-center gap-2">
+              <Image
+                src={thirdwebIcon}
+                alt="Thirdweb"
+                width={20}
+                height={20}
+                className="rounded-lg w-10 h-10"
+              />
+              <span>Sign in with OWIN Magic Wallet</span>
+            </div>
+          </button>
+
+        )}
+
+
+        <div className="mt-5 w-full flex flex-col xl:flex-row items-center xl:items-stretch justify-center gap-5 mb-10">
               
+
 
 
 
@@ -1526,18 +1550,9 @@ export default function Index({ params }: any) {
               */}
               
 
-              {/*
-              {!address && (
+              
 
-                <button
-                onClick={handleConnect}
-                className="w-40 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-                >
-                  Connect
-                </button>
-
-              )}
-              */}
+              
 
 
 
