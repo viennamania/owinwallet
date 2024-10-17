@@ -748,14 +748,26 @@ export default function Index({ params }: any) {
         </div>
 
 
-  
+        {/* announcement */}
+        <div className="w-full flex flex-col bg-zinc-800 p-5 rounded-lg text-start gap-2 mb-5">
+          <div className="flex flex-row justify-start items-center gap-2">
+            {/* dot */}
+            <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+            <h2 className="text-3xl font-semibold text-zinc-100 ">
+              {title}
+            </h2>
+          </div>
+          <p className="text-zinc-300">{description}</p>
+        </div>
 
-        <div className="mt-4 w-full flex flex-col xl:flex-row items-center xl:items-stretch justify-center gap-5 mb-10">
+        <div className="mt-0 w-full flex flex-col xl:flex-row items-center xl:items-stretch justify-center gap-5 mb-10">
               
-              <div className="flex flex-col bg-zinc-800 p-5 rounded-lg text-center">
+              <div className="flex flex-col bg-yellow-500 p-5 rounded-lg text-center
+                w-full xl:w-1/2
+              ">
 
 
-                <div className="flex flex-row justify-between items-center">
+                <div className=" flex flex-row justify-between items-center">
 
                   <div className="flex flex-row gap-2 justify-center items-center">
                     {/* Tether USDT logo */}
@@ -765,7 +777,7 @@ export default function Index({ params }: any) {
                       alt="USDT"
                       width={35}
                       height={35}
-                      className="rounded-lg w-5 h-5 xl:w-14 xl:h-14"
+                      className="rounded-lg w-10 h-10 xl:w-14 xl:h-14"
 
                     />
                     {/* button for polygon explorer */}
@@ -866,9 +878,9 @@ export default function Index({ params }: any) {
                   <div className="text-4xl font-semibold text-zinc-100">
                     {Number(balance).toFixed(2)}
                   </div>
-                  <p className="text-sm text-zinc-300">USDT</p>
+                  <p className="text-sm text-gray-800">USDT</p>
                 </div>
-                <p className="text-sm text-zinc-300">
+                <p className="text-sm text-gray-800">
                   {My_Balance}
                 </p>
 
@@ -981,7 +993,9 @@ export default function Index({ params }: any) {
               </div>
 
               {/* My Nickname */}
-              <div className="w-full flex flex-col bg-zinc-800 p-5 rounded-lg text-center">
+              <div className="w-full flex flex-col p-5 rounded-lg text-center
+                bg-green-500
+              ">
 
                 <div className="flex flex-row justify-between items-center">
                   <Image
@@ -1065,7 +1079,7 @@ export default function Index({ params }: any) {
                 )}
 
 
-                <p className="text-sm text-zinc-300">{My_Nickname}</p>
+                <p className="text-sm text-gray-800">{My_Nickname}</p>
 
 
 
