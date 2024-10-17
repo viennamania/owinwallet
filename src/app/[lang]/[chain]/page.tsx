@@ -319,11 +319,27 @@ export default function Index({ params }: any) {
 
 
 
-  const activeAccount = useActiveAccount();
+  //const activeAccount = useActiveAccount();
+  //const address = activeAccount?.address;
 
+  /*
+  const setActiveAccount = useSetActiveWallet();
+
+  const connectWallets = useConnectedWallets();
+
+  const smartConnectWallet = connectWallets?.[0];
+  const inAppConnectWallet = connectWallets?.[1];
+  */
+
+  const activeAccount = useActiveAccount();
   const address = activeAccount?.address;
 
-  //console.log('address', address);
+
+ 
+
+
+
+  console.log('address', address);
 
 
 
@@ -700,29 +716,60 @@ export default function Index({ params }: any) {
         
         <Header />
 
-        {/* blockchain network selection */}
-        <div className="w-full flex flex-row gap-2 justify-start items-center">
-          <Image
-            src="/logo-tron.png"
-            alt="Polygon"
-            width={50}
-            height={50}
-            className="rounded-lg w-10 h-10 md:w-14 md:h-14"
-          />
-          <Image
-            src="/logo-polygon.png"
-            alt="Polygon"
-            width={50}
-            height={50}
-            className="rounded-lg w-10 h-10 md:w-14 md:h-14"
-          />
-          <Image
-            src="/logo-arbitrum.png"
-            alt="Arbitrum"
-            width={50}
-            height={50}
-            className="rounded-lg w-10 h-10 md:w-14 md:h-14"
-          />
+        <div className="w-full flex flex-row gap-2 justify-between items-center">
+          {/* blockchain network selection */}
+          <div className=" flex flex-row gap-2 justify-start items-center">
+            <Image
+              src="/logo-tron.png"
+              alt="Polygon"
+              width={50}
+              height={50}
+              className="rounded-lg w-10 h-10 md:w-14 md:h-14"
+            />
+            <Image
+              src="/logo-polygon.png"
+              alt="Polygon"
+              width={50}
+              height={50}
+              className="rounded-lg w-10 h-10 md:w-14 md:h-14"
+            />
+            <Image
+              src="/logo-arbitrum.png"
+              alt="Arbitrum"
+              width={50}
+              height={50}
+              className="rounded-lg w-10 h-10 md:w-14 md:h-14"
+            />
+          </div>
+
+          {/* language selection */}
+          {/*
+          <div className=" flex flex-row gap-2 justify-end items-center">
+            <Image
+              src="/icon-kr.png"
+              alt="Korean"
+              width={50}
+              height={50}
+              className="rounded-lg w-10 h-10 md:w-14 md:h-14"
+            />
+            <Image
+              src="/icon-us.png"
+              alt="English"
+              width={50}
+              height={50}
+              className="rounded-lg w-10 h-10 md:w-14 md:h-14"
+            />
+
+            <Image
+              src="/icon-cn.png"
+              alt="Chinese"
+              width={50}
+              height={50}
+              className="rounded-lg w-10 h-10 md:w-14 md:h-14"
+            />
+          </div>
+          */}
+
         </div>
         
 
@@ -1422,15 +1469,19 @@ export default function Index({ params }: any) {
                     onClick={() => {
                       // my sell trades
                       //console.log("my sell trades");
+
+                      /*
                       if (!address) {
                         toast.error('Please connect your wallet first');
                         return;
                       }
 
+
                       if (!seller && !userCode) {
                         toast.error(Please_verify_your_account_first_for_selling);
                         return;
                       }
+                      */
 
                       // redirect to sell trades page
                       router.push(
@@ -1455,6 +1506,8 @@ export default function Index({ params }: any) {
                     onClick={() => {
                       // my sell trades
                       //console.log("my sell trades");
+
+                      /*
                       if (!address) {
                         toast.error(Please_connect_your_wallet_first);
                         return;
@@ -1464,6 +1517,7 @@ export default function Index({ params }: any) {
                         toast.error(Please_verify_your_account_first_for_selling);
                         return;
                       }
+                      */
 
                       // redirect to sell trades page
                       router.push(
