@@ -1336,7 +1336,7 @@ export default function Index({ params }: any) {
 
 
     // check table view or card view
-    const [tableView, setTableView] = useState(true);
+    const [tableView, setTableView] = useState(false);
 
 
 
