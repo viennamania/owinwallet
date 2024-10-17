@@ -856,7 +856,7 @@ export default function Index({ params }: any) {
                 onClick={() => router.push(
                   '/' + params.lang + '/' + params.chain + '?wallet=' + wallet
                 )}
-                className="text-zinc-100 font-semibold underline"
+                className="text-gray-500 font-semibold underline"
               >
                 {Go_Home}
               </button>
