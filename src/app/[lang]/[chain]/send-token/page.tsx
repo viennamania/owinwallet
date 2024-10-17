@@ -717,6 +717,7 @@ export default function SendUsdt({ params }: any) {
         <AppBarComponent />
 
 
+        <Header />
 
 
         <div className="mt-4 flex justify-start space-x-4 mb-10">
@@ -1312,4 +1313,82 @@ export default function SendUsdt({ params }: any) {
 
   );
 
+}
+
+
+
+
+
+function Header() {
+
+  const router = useRouter();
+
+
+  return (
+    <header className="flex flex-col items-center mb-5 md:mb-10">
+
+      {/* header menu */}
+      <div className="w-full flex flex-row justify-between items-center gap-2
+        bg-green-500 p-4 rounded-lg mb-5
+      ">
+        {/* logo */}
+        <div className="flex flex-row gap-2 items-center">
+          <Image
+            src="/circle-logo.webp"
+            alt="Circle Logo"
+            width={35}
+            height={35}
+            className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
+          />
+          <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
+            OWIN
+          </span>
+        </div>
+        {/* menu */}
+        {/* COIN, NFT, DEFI */}
+        <div className="flex flex-row gap-2 items-center">
+          <button
+              onClick={() => {
+
+                /*
+                router.push(
+                  "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=CAMT"
+                );
+                */
+
+              }}
+            className="text-gray-600 hover:underline text-xs xl:text-lg"
+          >
+            WALLET
+          </button>
+          <button
+            onClick={() => {
+              //console.log("chat");
+            }}
+            className="text-gray-600 hover:underline text-xs xl:text-lg"
+          >
+            TRADE
+          </button>
+          <button
+            onClick={() => {
+              //console.log("history");
+            }}
+            className="text-gray-600 hover:underline text-xs xl:text-lg"
+          >
+            HISTORY
+          </button>
+          <button
+            onClick={() => {
+              //console.log("settings");
+            }}
+            className="text-gray-600 hover:underline text-xs xl:text-lg"
+          >
+            SETTINGS
+          </button>
+        </div>
+      </div>
+      
+      
+    </header>
+  );
 }
