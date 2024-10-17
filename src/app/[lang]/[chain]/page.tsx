@@ -125,6 +125,7 @@ export default function Index({ params }: any) {
 
 
   const { connect, isConnecting } = useConnectModal();
+
   const handleConnect = async () => {
     await connect({
       chain: params.chain === "arbitrum" ? arbitrum : polygon,
@@ -332,7 +333,7 @@ export default function Index({ params }: any) {
   */
 
   const activeAccount = useActiveAccount();
-  const address = activeAccount?.address;
+  const address = activeAccount?.address || "";
 
 
  
