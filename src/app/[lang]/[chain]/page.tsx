@@ -1753,6 +1753,7 @@ function MarketResources() {
     <div className="grid gap-4 lg:grid-cols-3 justify-center">
 
       <ArticleCard
+        avatar="/icon-game.png"
         title="P2E Game"
         href="/"
         description="Play to Earn games with USDT rewards"
@@ -1760,12 +1761,14 @@ function MarketResources() {
 
   
       <ArticleCard
+        avatar="/icon-nft.png"
         title="NFT Marketplace"
         href="/"
         description="Trade NFTs with USDT"
       />
 
       <ArticleCard
+        avatar="/icon-defi.png"
         title="DeFi Apps"
         href="/"
         description="DeFi applications with USDT"
