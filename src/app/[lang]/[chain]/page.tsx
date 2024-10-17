@@ -918,8 +918,8 @@ export default function Index({ params }: any) {
             <Image
               src="/icon-wallet-live.gif"
               alt="Wallet"
-              width={100}
-              height={100}
+              width={25}
+              height={25}
               className="rounded"
             />
 
