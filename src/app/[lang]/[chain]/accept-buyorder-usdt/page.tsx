@@ -1868,7 +1868,9 @@ export default function Index({ params }: any) {
                   />
 
                   <Image
-                    src={params.chain === 'arbitrum' ? '/logo-arbitrum.png' : '/logo-polygon.png'}
+                    src={
+                      `/logo-${params.chain}.png`
+                    }
                     alt="Chain"
                     width={32}
                     height={32}
