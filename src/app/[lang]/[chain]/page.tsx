@@ -751,11 +751,15 @@ export default function Index({ params }: any) {
 
 
         {/* announcement */}
-        <div className="w-full flex flex-col bg-zinc-800 p-5 rounded-lg text-start gap-2 mb-5">
+        <div className="w-full flex flex-col bg-zinc-800 p-5 rounded-lg text-start gap-2 mb-5
+                        hover:shadow-lg
+                transition duration-300 ease-in-out
+                transform hover:-translate-y-1
+        ">
           <div className="flex flex-row justify-start items-center gap-2">
             {/* dot */}
             <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-            <h2 className="text-3xl font-semibold text-zinc-100 ">
+            <h2 className="text-xl md:text-3xl font-semibold text-zinc-100 ">
               {title}
             </h2>
           </div>
@@ -766,29 +770,15 @@ export default function Index({ params }: any) {
               
 
 
-              
+
               <div
                 className="flex flex-col bg-yellow-500 p-5 rounded-lg text-center
                 w-full xl:w-1/2
                 hover:shadow-lg
-                cursor-pointer
                 transition duration-300 ease-in-out
                 transform hover:-translate-y-1
 
                 "
-
-
-                onClick={() => {
-
-
-                  // redirect to settings page
-                  router.push(
-                    "/" + params.lang + "/" + params.chain + "/settings" + "?wallet=" + wallet
-                  );
-
-                }}
-
-
               >
 
 
@@ -802,11 +792,11 @@ export default function Index({ params }: any) {
                       alt="Bank"
                       width={35}
                       height={35}
-                      className="rounded-lg w-6 h-6 xl:w-10 xl:h-10"
+                      className="rounded-lg w-10 h-10 xl:w-14 xl:h-14"
 
                     />
 
-                    <p className="text-lg font-semibold text-gray-800">
+                    <p className="text-lg md:text-xl font-semibold text-gray-600">
                       {My_Balance}
                     </p>
 
@@ -896,7 +886,7 @@ export default function Index({ params }: any) {
                   <div className="text-4xl font-semibold text-zinc-100">
                     {  Number(balance).toFixed(0)  }
                   </div>
-                  <div className="text-sm text-gray-800">
+                  <div className="text-sm text-gray-600">
                     {
                       (parseFloat(Number(balance).toFixed(0)) !== Number(balance)) ?
                       Number(balance).toFixed(5).split(".")[1] === "00000" ? Number(balance).toFixed(0) : Number(balance).toFixed(5)
@@ -904,7 +894,24 @@ export default function Index({ params }: any) {
                       ""
                     }
                   </div>
-                  <p className="w-12 text-sm text-gray-800">USDT</p>
+                  <p className="w-12 text-sm text-gray-600">USDT</p>
+
+                  <button
+                    onClick={() => {
+                      router.push(
+                        "/" + params.lang + "/" + params.chain + "/send-usdt-favorite/?wallet=" + wallet
+                      );
+
+                    }}
+                    className="text-sm text-blue-500 hover:underline"
+                  >
+                    <Image
+                      src="/goto-icon.webp"
+                      alt="Send"
+                      width={20}
+                      height={20}
+                    />
+                  </button>
                 </div>
 
                 <div className="mt-4 flex flex-row gap-2 justify-between items-center">
@@ -921,7 +928,7 @@ export default function Index({ params }: any) {
                   <div className="text-4xl font-semibold text-zinc-100">
                     {  Number(balance).toFixed(0)  }
                   </div>
-                  <div className="text-sm text-gray-800">
+                  <div className="text-sm text-gray-600">
                     {
                       (parseFloat(Number(balance).toFixed(0)) !== Number(balance)) ?
                       Number(balance).toFixed(5).split(".")[1] === "00000" ? Number(balance).toFixed(0) : Number(balance).toFixed(5)
@@ -929,7 +936,23 @@ export default function Index({ params }: any) {
                       ""
                     }
                   </div>
-                  <p className="w-12 text-sm text-gray-800">CAMT</p>
+                  <p className="w-12 text-sm text-gray-600">CAMT</p>
+                  <button
+                    onClick={() => {
+                      router.push(
+                        "/" + params.lang + "/" + params.chain + "/send-usdt-favorite/?wallet=" + wallet
+                      );
+
+                    }}
+                    className="text-sm text-blue-500 hover:underline"
+                  >
+                    <Image
+                      src="/goto-icon.webp"
+                      alt="Send"
+                      width={20}
+                      height={20}
+                    />
+                  </button>
                 </div>
 
                 <div className="mt-4 flex flex-row gap-2 justify-between items-center">
@@ -946,7 +969,7 @@ export default function Index({ params }: any) {
                   <div className="text-4xl font-semibold text-zinc-100">
                     {  Number(balance).toFixed(0)  }
                   </div>
-                  <div className="text-sm text-gray-800">
+                  <div className="text-sm text-gray-600">
                     {
                       (parseFloat(Number(balance).toFixed(0)) !== Number(balance)) ?
                       Number(balance).toFixed(5).split(".")[1] === "00000" ? Number(balance).toFixed(0) : Number(balance).toFixed(5)
@@ -954,7 +977,23 @@ export default function Index({ params }: any) {
                       ""
                     }
                   </div>
-                  <p className="w-12 text-sm text-gray-800">CCC</p>
+                  <p className="w-12 text-sm text-gray-600">CCC</p>
+                  <button
+                    onClick={() => {
+                      router.push(
+                        "/" + params.lang + "/" + params.chain + "/send-usdt-favorite/?wallet=" + wallet
+                      );
+
+                    }}
+                    className="text-sm text-blue-500 hover:underline"
+                  >
+                    <Image
+                      src="/goto-icon.webp"
+                      alt="Send"
+                      width={20}
+                      height={20}
+                    />
+                  </button>
                 </div>
 
                 <div className="mt-4 flex flex-row gap-2 justify-between items-center">
@@ -971,7 +1010,7 @@ export default function Index({ params }: any) {
                   <div className="text-4xl font-semibold text-zinc-100">
                     {  Number(balance).toFixed(0)  }
                   </div>
-                  <div className="text-sm text-gray-800">
+                  <div className="text-sm text-gray-600">
                     {
                       (parseFloat(Number(balance).toFixed(0)) !== Number(balance)) ?
                       Number(balance).toFixed(5).split(".")[1] === "00000" ? Number(balance).toFixed(0) : Number(balance).toFixed(5)
@@ -979,7 +1018,23 @@ export default function Index({ params }: any) {
                       ""
                     }
                   </div>
-                  <p className="w-12 text-sm text-gray-800">LENEZ</p>
+                  <p className="w-12 text-sm text-gray-600">LENEZ</p>
+                  <button
+                    onClick={() => {
+                      router.push(
+                        "/" + params.lang + "/" + params.chain + "/send-usdt-favorite/?wallet=" + wallet
+                      );
+
+                    }}
+                    className="text-sm text-blue-500 hover:underline"
+                  >
+                    <Image
+                      src="/goto-icon.webp"
+                      alt="Send"
+                      width={20}
+                      height={20}
+                    />
+                  </button>
                 </div>
 
                 <div className="mt-4 flex flex-row gap-2 justify-between items-center">
@@ -996,7 +1051,7 @@ export default function Index({ params }: any) {
                   <div className="text-4xl font-semibold text-zinc-100">
                     {  Number(balance).toFixed(0)  }
                   </div>
-                  <div className=" text-sm text-gray-800">
+                  <div className=" text-sm text-gray-600">
                     {
                       (parseFloat(Number(balance).toFixed(0)) !== Number(balance)) ?
                       Number(balance).toFixed(5).split(".")[1] === "00000" ? Number(balance).toFixed(0) : Number(balance).toFixed(5)
@@ -1004,7 +1059,47 @@ export default function Index({ params }: any) {
                       ""
                     }
                   </div>
-                  <p className=" w-12 text-sm text-gray-800">SUNDOG</p>
+                  <p className=" w-12 text-sm text-gray-600">SUNDOG</p>
+                  <button
+                    onClick={() => {
+                      router.push(
+                        "/" + params.lang + "/" + params.chain + "/send-usdt-favorite/?wallet=" + wallet
+                      );
+
+                    }}
+                    className="text-sm text-blue-500 hover:underline"
+                  >
+                    <Image
+                      src="/goto-icon.webp"
+                      alt="Send"
+                      width={20}
+                      height={20}
+                    />
+                  </button>
+                </div>
+
+                {/* apply button of listing for new token */}
+
+                <div className=" flex flex-row gap-2 justify-center items-center mt-10">
+                  <button
+                    onClick={() => {
+                      // apply for listing new token
+                      //console.log("apply for listing new token");
+
+                      if (!address) {
+                        toast.error(Please_connect_your_wallet_first);
+                        return;
+                      }
+
+                      router.push(
+                        "/" + params.lang + "/" + params.chain + "/apply-listing-token"
+                      );
+
+                    }}
+                    className="w-full bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+                  >
+                    Apply for Listing New Token
+                  </button>
                 </div>
 
 
@@ -1125,6 +1220,9 @@ export default function Index({ params }: any) {
               {/* My Nickname */}
               <div className="w-full flex flex-col p-5 rounded-lg text-center
                 bg-green-500
+                hover:shadow-lg
+                transition duration-300 ease-in-out
+                transform hover:-translate-y-1
               ">
 
                 <div className="flex flex-row justify-between items-center">
@@ -1209,7 +1307,7 @@ export default function Index({ params }: any) {
                 )}
 
 
-                <p className="text-sm text-gray-800">{My_Nickname}</p>
+                <p className="text-sm text-gray-600">{My_Nickname}</p>
 
 
 
@@ -1504,7 +1602,7 @@ function Header() {
             height={35}
             className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
           />
-          <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
+          <span className="text-lg xl:text-3xl text-gray-600 font-semibold">
             OWIN
           </span>
         </div>
@@ -1515,7 +1613,7 @@ function Header() {
             onClick={() => {
               //console.log("trade");
             }}
-            className="text-gray-800 hover:underline text-xs xl:text-lg"
+            className="text-gray-600 hover:underline text-xs xl:text-lg"
           >
             WALLET
           </button>
@@ -1523,7 +1621,7 @@ function Header() {
             onClick={() => {
               //console.log("chat");
             }}
-            className="text-gray-800 hover:underline text-xs xl:text-lg"
+            className="text-gray-600 hover:underline text-xs xl:text-lg"
           >
             TRADE
           </button>
@@ -1531,7 +1629,7 @@ function Header() {
             onClick={() => {
               //console.log("history");
             }}
-            className="text-gray-800 hover:underline text-xs xl:text-lg"
+            className="text-gray-600 hover:underline text-xs xl:text-lg"
           >
             HISTORY
           </button>
@@ -1539,7 +1637,7 @@ function Header() {
             onClick={() => {
               //console.log("settings");
             }}
-            className="text-gray-800 hover:underline text-xs xl:text-lg"
+            className="text-gray-600 hover:underline text-xs xl:text-lg"
           >
             SETTINGS
           </button>
@@ -1572,7 +1670,7 @@ function Header() {
         <span className="inline-block -skew-x-6 text-green-500 font-bold"> USDT </span>
       </h1>
 
-      <p className="text-gray-800
+      <p className="text-gray-600
         text-base">
         Magic wallet for{" "}
         <code className="bg-zinc-800 text-zinc-300 px-2 rounded py-1 text-sm mx-1">

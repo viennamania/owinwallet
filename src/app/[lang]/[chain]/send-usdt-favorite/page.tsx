@@ -725,7 +725,7 @@ export default function SendUsdt({ params }: any) {
 
               )}
 
-              className="text-zinc-100 font-semibold underline">
+              className="text-gray-600 font-semibold underline">
               {Go_Home}
             </button>
         </div>
@@ -743,6 +743,7 @@ export default function SendUsdt({ params }: any) {
                   width={35}
                   height={35}
                 />
+                
                 <Image
                   src={`/logo-${params.chain}.png`}
                   alt="chain"
@@ -750,6 +751,7 @@ export default function SendUsdt({ params }: any) {
                   height={32}
                   className="rounded-lg"
                 />
+                
               </div>
 
               <div className="text-2xl font-semibold">
