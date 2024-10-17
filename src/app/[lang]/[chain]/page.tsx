@@ -813,8 +813,21 @@ export default function Index({ params }: any) {
 
         )}
 
+        {address && (
+          <div className="mt-0 w-full flex items-start justify-start gap-5">
+            <Image
+              src="/icon-wallet-live.gif"
+              alt="Wallet"
+              width={100}
+              height={100}
+              className="rounded"
+            />
+          </div>
+        )}
+            
 
-        <div className="mt-5 w-full flex flex-col xl:flex-row items-center xl:items-stretch justify-center gap-5 mb-10">
+
+        <div className="mt-2 w-full flex flex-col xl:flex-row items-center xl:items-stretch justify-center gap-5 mb-10">
               
 
 
@@ -1347,17 +1360,21 @@ export default function Index({ params }: any) {
 
                 </div>
     
+                
                 {address && loadingUser ? (
 
+                  
                   <div className="mt-4 flex flex-row justify-center items-center">
+
                     <Image
                       src="/loading.png"
                       alt="Loading"
                       width={35}
                       height={35}
-                      className="animate-spin"
+                      className="animate-spin hidden"
                     />
                   </div>
+                  
 
                 ) : (
 
