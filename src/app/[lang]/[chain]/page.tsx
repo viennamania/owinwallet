@@ -744,32 +744,45 @@ export default function Index({ params }: any) {
           </div>
 
           {/* language selection */}
-          {/*
+          
           <div className=" flex flex-row gap-2 justify-end items-center">
-            <Image
-              src="/icon-kr.png"
-              alt="Korean"
-              width={50}
-              height={50}
-              className="rounded-lg w-10 h-10 md:w-14 md:h-14"
-            />
-            <Image
-              src="/icon-us.png"
-              alt="English"
-              width={50}
-              height={50}
-              className="rounded-lg w-10 h-10 md:w-14 md:h-14"
-            />
+            <select
+              className="p-2 bg-zinc-800 text-white rounded"
+              onChange={(e) => {
+                const lang = e.target.value;
+                router.push(
+                  "/" + lang + "/" + params.chain
+                );
+              }}
+            >
+              <option
+                value="en"
+                selected={params.lang === "en"}
+              >
+                English(US)
+              </option>
+              <option
+                value="kr"
+                selected={params.lang === "kr"}
+              >
+                한국어(KR)
+              </option>
+              <option
+                value="zh"
+                selected={params.lang === "zh"}
+              >
+                中文(ZH)
+              </option>
+              <option
+                value="ja"
+                selected={params.lang === "ja"}
+              >
+                日本語(JP)
+              </option>
+            </select>
 
-            <Image
-              src="/icon-cn.png"
-              alt="Chinese"
-              width={50}
-              height={50}
-              className="rounded-lg w-10 h-10 md:w-14 md:h-14"
-            />
           </div>
-          */}
+          
 
         </div>
         
@@ -1693,6 +1706,10 @@ export default function Index({ params }: any) {
 
 
 function Header() {
+
+  const router = useRouter();
+
+
   return (
     <header className="flex flex-col items-center mb-5 md:mb-10">
 
@@ -1717,9 +1734,15 @@ function Header() {
         {/* COIN, NFT, DEFI */}
         <div className="flex flex-row gap-2 items-center">
           <button
-            onClick={() => {
-              //console.log("trade");
-            }}
+              onClick={() => {
+
+                /*
+                router.push(
+                  "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=CAMT"
+                );
+                */
+
+              }}
             className="text-gray-600 hover:underline text-xs xl:text-lg"
           >
             WALLET
