@@ -73,19 +73,13 @@ const AppBarComponent = () => {
     handleClose();
   }
 
+  /*
   return (
     <AppBar className=" px-4 sm:px-16 md:px-24" position="static" sx={{ height: "50px" }}>
       <Toolbar disableGutters sx={{ "&.MuiToolbar-root": { minHeight: "50px", height: "50px" } }}>
         
         <div className=" flex flex-row justify-between w-full items-center">
           
-          {/*
-          <Link href="/">
-            <div className="flex flex-row">
-              <Typography sx={{ color: "#fff" }}>LOGO</Typography>
-            </div>
-          </Link>
-          */}
 
           <div className="w-[140px] sm:w-[250px] flex flex-row justify-between items-center">
             <div>
@@ -132,6 +126,14 @@ const AppBarComponent = () => {
       </Toolbar>
     </AppBar>
   );
+  */
+
+
+
+  return (
+    <></>
+  );
+
 };
 
 AppBarComponent.displayName = "AppBarComponent";

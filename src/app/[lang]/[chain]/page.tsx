@@ -688,14 +688,16 @@ export default function Index({ params }: any) {
   return (
 
 
-    <main className="p-4 pb-10 min-h-[100vh] flex items-start justify-center container max-w-screen-lg mx-auto">
+    <main className="p-4 pb-10 min-h-[100vh] flex-col items-start justify-center container max-w-screen-lg mx-auto
+      
+    ">
 
 
       <div className="py-0 w-full">
         
-        {/*
+        
         <Header />
-        */}
+        
 
         <div className="w-full flex flex-col justify-between items-center gap-2 mb-5">
           <AppBarComponent />
@@ -736,10 +738,12 @@ export default function Index({ params }: any) {
           */}
 
           {/* store code number */}
+          {/*
           <div className="w-full flex flex-row gap-2 items-center justify-start text-zinc-300 text-lg font-se"
           >
             SC: {storeCodeNumber}
           </div>
+          */}
 
         </div>
 
@@ -755,14 +759,17 @@ export default function Index({ params }: any) {
 
                   <div className="flex flex-row gap-2 justify-center items-center">
                     {/* Tether USDT logo */}
+                    
                     <Image
                       src="/logo-tether.png"
                       alt="USDT"
                       width={35}
                       height={35}
-                      className="rounded-lg"
+                      className="rounded-lg w-5 h-5 xl:w-14 xl:h-14"
+
                     />
                     {/* button for polygon explorer */}
+                    {/*
                     {address && !loadingAnimation
                       ? (
                         <button
@@ -794,6 +801,7 @@ export default function Index({ params }: any) {
                       />
                   
                     )}
+                    */}
                       
                   </div>
 
@@ -1256,7 +1264,7 @@ export default function Index({ params }: any) {
               */}
               
 
-
+              {/*
               {!address && (
 
                 <button
@@ -1267,6 +1275,7 @@ export default function Index({ params }: any) {
                 </button>
 
               )}
+              */}
 
 
 
@@ -1326,7 +1335,7 @@ export default function Index({ params }: any) {
 
       </div>
 
-      
+      <MarketResources />
 
     </main>
   );
@@ -1337,6 +1346,62 @@ export default function Index({ params }: any) {
 function Header() {
   return (
     <header className="flex flex-col items-center mb-20 md:mb-20">
+
+      {/* header menu */}
+      <div className="w-full flex flex-row justify-between items-center gap-2
+        bg-green-500 p-4 rounded-lg mb-5
+      ">
+        {/* logo */}
+        <div className="flex flex-row gap-2 items-center">
+          <Image
+            src="/circle-logo.webp"
+            alt="Circle Logo"
+            width={35}
+            height={35}
+            className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
+          />
+          <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
+            OWIN
+          </span>
+        </div>
+        {/* menu */}
+        {/* COIN, NFT, DEFI */}
+        <div className="flex flex-row gap-2 items-center">
+          <button
+            onClick={() => {
+              //console.log("trade");
+            }}
+            className="text-gray-800 hover:underline text-xs xl:text-lg"
+          >
+            WALLET
+          </button>
+          <button
+            onClick={() => {
+              //console.log("chat");
+            }}
+            className="text-gray-800 hover:underline text-xs xl:text-lg"
+          >
+            TRADE
+          </button>
+          <button
+            onClick={() => {
+              //console.log("history");
+            }}
+            className="text-gray-800 hover:underline text-xs xl:text-lg"
+          >
+            HISTORY
+          </button>
+          <button
+            onClick={() => {
+              //console.log("settings");
+            }}
+            className="text-gray-800 hover:underline text-xs xl:text-lg"
+          >
+            SETTINGS
+          </button>
+        </div>
+      </div>
+      
       {/*
       <Image
         src={thirdwebIcon}
@@ -1346,22 +1411,37 @@ function Header() {
           filter: "drop-shadow(0px 0px 24px #a726a9a8)",
         }}
       />
+      */}
+      <Image
+        src="/wallet-logo.webp"
+        alt="Wallet Logo"
+        width={150}
+        height={150}
+        className="w-10 h-10 md:w-20 md:h-20"
+      />
+
 
       
-      <h1 className="text-2xl md:text-6xl font-semibold md:font-bold tracking-tighter mb-6 text-zinc-100">
-        thirdweb SDK
+      <h1 className="text-2xl md:text-6xl font-semibold md:font-bold tracking-tighter mb-6 text-yellow-500">
+        OWIN Wallet
         <span className="text-zinc-300 inline-block mx-1"> + </span>
-        <span className="inline-block -skew-x-6 text-blue-500"> Next.js </span>
+        <span className="inline-block -skew-x-6 text-green-500 font-bold"> USDT </span>
       </h1>
 
-      <p className="text-zinc-300 text-base">
-        Read the{" "}
+      <p className="text-gray-800
+        text-base">
+        Magic wallet for{" "}
         <code className="bg-zinc-800 text-zinc-300 px-2 rounded py-1 text-sm mx-1">
-          README.md
+          P2E Game
         </code>{" "}
-        file to get started.
+        <code className="bg-zinc-800 text-zinc-300 px-2 rounded py-1 text-sm mx-1">
+          NFT Marketplace
+        </code>{" "}
+        <code className="bg-zinc-800 text-zinc-300 px-2 rounded py-1 text-sm mx-1">
+          DeFi
+        </code>{" "}
       </p>
-      */}
+      
     </header>
   );
 }
