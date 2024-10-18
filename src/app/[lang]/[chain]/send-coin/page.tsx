@@ -821,24 +821,26 @@ export default function SendUsdt({ params }: any) {
 
 
               {/* tron wallet address */}
-              {params.chain === "tron" && (
+              {tronWalletAddress && params.chain === "tron" && (
                 <div className="flex flex-row items-center gap-2">
                   <div className="text-sm">TRON Wallet Address</div>
                   <div className="text-lg font-semibold text-gray-800">
-                    {tronWalletAddress}
+                    <button
+                      className="text-sm text-zinc-400 underline"
+                      onClick={() => {
+                        navigator.clipboard.writeText(tronWalletAddress);
+                        toast.success('Copied wallet address');
+                      } }
+                    >
+                      {tronWalletAddress.substring(0, 6)}...{tronWalletAddress.substring(tronWalletAddress.length - 4)}
+                    </button>
+
+
                   </div>
                 </div>
               )}
 
-              {/* evm wallet address */}
-              {params.chain !== "tron" && (
-                <div className="flex flex-row items-center gap-2">
-                  <div className="text-sm">Wallet Address</div>
-                  <div className="text-lg font-semibold text-gray-800">
-                    {address}
-                  </div>
-                </div>
-              )}
+
 
 
 
@@ -893,9 +895,11 @@ export default function SendUsdt({ params }: any) {
                   )}
                   */}
 
-                  {address && (
+                  {address &&
+                  params.chain !== "tron" &&
+                  (
 
-                    <div className="flex flex-col gap-2 items-center
+                    <div className="flex flex-col gap-2 items-center 
                       border border-zinc-400 rounded-md p-2">
                       {/* wallet address */}
                       <div className="flex flex-row items-center gap-2">
