@@ -703,6 +703,48 @@ export default function SendUsdt({ params }: any) {
   
 
 
+  // if chain is tron, then get tron wallet address
+
+  //console.log("params.chain", params.chain);
+
+  const [tronWalletAddress, setTronWalletAddress] = useState('');
+  useEffect(() => {
+      
+      if (address && params.chain === "tron") {
+  
+        // get tron wallet address
+        const getTronWalletAddress = async () => {
+  
+          const response = await fetch('/api/tron/getTronWalletAddress', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              lang: params.lang,
+              chain: params.chain,
+              walletAddress: address,
+            }),
+          });
+  
+          const data = await response.json();
+  
+          setTronWalletAddress(data.result.tronWalletAddress);
+  
+        };
+  
+        getTronWalletAddress();
+  
+      }
+  
+    } , [address, params.chain, params.lang]);
+
+
+  console.log("tronWalletAddress", tronWalletAddress);
+
+
+  console.log("address", address);
+
 
 
   return (
@@ -778,7 +820,21 @@ export default function SendUsdt({ params }: any) {
             <div className="w-full flex flex-col gap-2 items-start">
 
 
+              {/* tron wallet address */}
+              {params.chain === "tron" && (
+                <div className="flex flex-row items-center gap-2">
+                  <div className="text-sm">TRON Wallet Address</div>
+                  <div className="text-lg font-semibold text-gray-800">
+                    {tronWalletAddress}
+                  </div>
+                </div>
+              )}
+
+
+
               <div className="w-full flex flex-col xl:flex-row items-start justify-between gap-3">
+
+
 
                 {/* my usdt balance */}
                 <div className="flex flex-row items-start gap-3">

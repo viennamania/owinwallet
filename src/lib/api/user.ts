@@ -38,6 +38,9 @@ export interface UserProps {
 
   escrowWalletAddress: string,
   escrowWalletPrivateKey: string,
+
+  tronWalletAddress: string,
+  tronWalletPrivateKey: string,
 }
 
 export interface ResultProps {
@@ -940,3 +943,28 @@ export async function setEscrowWalletAddressByWalletAddress(
   
 }
 
+
+
+// setTronWalletAddressByWalletAddress
+export async function setTronWalletAddressByWalletAddress(
+  walletAddress: string,
+  tronWalletAddress: string,
+  tronWalletPrivateKey: string,
+) {
+
+
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('users');
+
+  return await collection.updateOne(
+    { walletAddress },
+    {
+      $set: {
+        tronWalletAddress,
+        tronWalletPrivateKey,
+      }
+    }
+  );
+  
+}
