@@ -32,6 +32,9 @@ export async function POST(request: NextRequest) {
 
     const contract = await tronWeb.contract().at(contractAddress);
 
+    console.log("contract", contract);
+    
+
     const balance = await contract.balanceOf(tronWalletAddress).call();
 
 
