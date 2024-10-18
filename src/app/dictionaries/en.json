@@ -390,7 +390,11 @@
 
     "Escrow_balance_is_less_than_payment_amount": "Escrow balance is less than payment amount",
 
-    "Copied_Wallet_Address": "Copied Wallet Address"
+    "Copied_Wallet_Address": "Copied Wallet Address",
+
+
+    "Apply_for_Listing_New_Token": "Apply for Listing New Token",
+    "Apply_for_Listing_New_Seller": "Apply for Listing New Seller"
 
 
 }

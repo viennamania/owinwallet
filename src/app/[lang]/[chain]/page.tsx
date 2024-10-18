@@ -226,6 +226,9 @@ export default function Index({ params }: any) {
 
     Please_verify_your_account_first_for_selling: "",
 
+    Apply_for_Listing_New_Token: "",
+    Apply_for_Listing_New_Seller: "",
+
 
   } );
 
@@ -260,6 +263,9 @@ export default function Index({ params }: any) {
     Please_connect_your_wallet_first,
 
     Please_verify_your_account_first_for_selling,
+
+    Apply_for_Listing_New_Token,
+    Apply_for_Listing_New_Seller,
   } = data;
 
 
@@ -1360,7 +1366,7 @@ export default function Index({ params }: any) {
                     }}
                     className="w-full bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900"
                   >
-                    Apply for Listing New Token
+                    {Apply_for_Listing_New_Token}
                   </button>
                 </div>
 
@@ -1713,7 +1719,7 @@ export default function Index({ params }: any) {
                     }}
                     className="w-full bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900"
                   >
-                    Apply for Listing New Seller
+                    {Apply_for_Listing_New_Seller}
                   </button>
                 </div>
 
