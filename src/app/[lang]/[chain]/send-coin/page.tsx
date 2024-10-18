@@ -745,6 +745,36 @@ export default function SendUsdt({ params }: any) {
 
   console.log("address", address);
 
+  // getTronBalance
+  const [tronBalance, setTronBalance] = useState(0);
+  useEffect(() => {
+    if (tronWalletAddress && params.chain === "tron") {
+      const getTronBalance = async () => {
+        const response = await fetch('/api/tron/getTronBalance', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            lang: params.lang,
+            chain: params.chain,
+            tronWalletAddress: tronWalletAddress,
+          }),
+        });
+
+        const data = await response.json();
+
+        setTronBalance(data.result.tronBalance);
+
+      };
+
+      getTronBalance();
+
+    }
+
+  } , [tronWalletAddress, params.chain, params.lang]);
+
+  console.log("tronBalance", tronBalance);
 
 
   return (
@@ -784,6 +814,54 @@ export default function SendUsdt({ params }: any) {
 
 
         <div className="flex flex-col items-start justify-center space-y-4">
+
+
+
+          {!address && (
+
+
+
+            <ConnectButton
+              client={client}
+              wallets={wallets}
+
+              /*
+              accountAbstraction={{   
+                chain: params.chain === "arbitrum" ? arbitrum : polygon,
+                //
+                //chain: polygon,
+
+                //chain: arbitrum,
+                factoryAddress: "0x9bb60d360932171292ad2b80839080fb6f5abd97", // polygon, arbitrum
+                gasless: true,
+              }}
+              */
+            
+              
+              theme={"light"}
+              connectModal={{
+                size: "wide",                            
+                //title: "Connect",
+
+              }}
+
+              appMetadata={
+                {
+                  logoUrl: "https://gold.goodtether.com/logo.png",
+                  name: "Next App",
+                  url: "https://gold.goodtether.com",
+                  description: "This is a Next App.",
+
+                }
+              }
+            />
+
+
+          )}
+
+
+
+
 
             <div className='flex flex-row items-center space-x-4'>
 
@@ -861,7 +939,12 @@ export default function SendUsdt({ params }: any) {
 
                     <div className="flex flex-row items-end justify-center  gap-2">
                       <span className="text-4xl font-semibold text-gray-800">
-                        {Number(balance).toFixed(2)}
+                        
+                        {
+                          params.chain === "tron" ? Number(tronBalance).toFixed(2) :
+                          Number(balance).toFixed(2)
+                        }
+
                       </span>
                       <span className="text-lg">
                         {params.chain === "polygon" ? "POL" : params.chain === "arbitrum" ? "ARB" : params.chain === "tron" ? "TRX" : params.chain === "ethereum" ? "ETH" : ""}
