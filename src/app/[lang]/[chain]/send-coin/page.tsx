@@ -800,7 +800,7 @@ export default function SendUsdt({ params }: any) {
 
         const data = await response.json();
 
-        setUsdtBalance(data.result.usdtBalance);
+        setUsdtBalance(data.result?.usdtBalance);
 
       };
 
@@ -811,6 +811,8 @@ export default function SendUsdt({ params }: any) {
   } , [tronWalletAddress, params.chain, params.lang]);
 
   console.log("usdtBalance", usdtBalance);
+
+  
 
 
   return (
