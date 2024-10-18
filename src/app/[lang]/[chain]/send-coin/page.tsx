@@ -830,6 +830,16 @@ export default function SendUsdt({ params }: any) {
                 </div>
               )}
 
+              {/* evm wallet address */}
+              {params.chain !== "tron" && (
+                <div className="flex flex-row items-center gap-2">
+                  <div className="text-sm">Wallet Address</div>
+                  <div className="text-lg font-semibold text-gray-800">
+                    {address}
+                  </div>
+                </div>
+              )}
+
 
 
               <div className="w-full flex flex-col xl:flex-row items-start justify-between gap-3">
