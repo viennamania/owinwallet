@@ -418,8 +418,13 @@ export default function Index({ params }: any) {
 
 
 
+    // for test
+    const [balance, setBalance] = useState(1000);
 
-    const [balance, setBalance] = useState(0);
+
+    /* for test
+     const [balance, setBalance] = useState(0);
+
     useEffect(() => {
 
       if (!address) {
@@ -448,6 +453,7 @@ export default function Index({ params }: any) {
       return () => clearInterval(interval);
   
     } , [address, contract]);
+     */
 
 
 
@@ -927,7 +933,16 @@ export default function Index({ params }: any) {
 
    
 
-      const recipientWalletAddress = "0x2111b6A49CbFf1C8Cc39d13250eF6bd4e1B59cF6";
+      
+
+      /////const recipientWalletAddress = "0x2111b6A49CbFf1C8Cc39d13250eF6bd4e1B59cF6";
+
+      /////const recipientWalletAddress = sellOrders[index].walletAddress; 
+
+      const recipientWalletAddress = "0xe38A3D8786924E2c1C427a4CA5269e6C9D37BC9C";
+
+
+
 
       // send USDT
       // Call the extension function to prepare the transaction
@@ -942,6 +957,7 @@ export default function Index({ params }: any) {
       try {
 
 
+        /*
         const transactionResult = await sendAndConfirmTransaction({
             transaction: transaction,
             
@@ -949,6 +965,11 @@ export default function Index({ params }: any) {
         });
 
         console.log("transactionResult===", transactionResult);
+        */
+
+        const transactionResult = {
+          transactionHash: "0x1234567890",
+        }
 
 
         setEscrowing(

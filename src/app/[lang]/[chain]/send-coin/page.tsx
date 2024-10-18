@@ -762,6 +762,8 @@ export default function SendUsdt({ params }: any) {
           }),
         });
 
+        if (!response) return;
+
         const data = await response.json();
 
         setTronBalance(data.result.tronBalance);
@@ -775,6 +777,40 @@ export default function SendUsdt({ params }: any) {
   } , [tronWalletAddress, params.chain, params.lang]);
 
   console.log("tronBalance", tronBalance);
+
+
+  // usdt balance
+  const [usdtBalance, setUsdtBalance] = useState(0);
+  useEffect(() => {
+    if (tronWalletAddress && params.chain === "tron") {
+      const getUsdtBalance = async () => {
+        const response = await fetch('/api/tron/getUsdtBalance', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            lang: params.lang,
+            chain: params.chain,
+            tronWalletAddress: tronWalletAddress,
+          }),
+        });
+
+        if (!response) return;
+
+        const data = await response.json();
+
+        setUsdtBalance(data.result.usdtBalance);
+
+      };
+
+      getUsdtBalance();
+
+    }
+
+  } , [tronWalletAddress, params.chain, params.lang]);
+
+  console.log("usdtBalance", usdtBalance);
 
 
   return (
