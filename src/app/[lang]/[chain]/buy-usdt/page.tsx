@@ -852,7 +852,7 @@ export default function Index({ params }: any) {
 
             <Header />
 
-
+          {/*
           <div className="mt-4 flex justify-start space-x-4 mb-10">
               <button
                 onClick={() => router.push(
@@ -863,6 +863,7 @@ export default function Index({ params }: any) {
                 {Go_Home}
               </button>
           </div>
+          */}
 
 
           <div className="flex flex-col items-start justify-center space-y-4">
@@ -944,11 +945,10 @@ export default function Index({ params }: any) {
                       />
                     )}
 
-                    {address && (
+                    {/*address && (
 
                       <div className="flex flex-col gap-2 items-center
                         border border-zinc-400 rounded-md p-2">
-                        {/* wallet address */}
                         <div className="flex flex-row items-center gap-2">
                           <button
                             className="text-sm text-zinc-400 underline"
@@ -982,8 +982,6 @@ export default function Index({ params }: any) {
                               }
                             </div>
 
-
-                            {/* go to profile */}
                             {address && !user && (
                               <button
                                 onClick={() => {
@@ -997,21 +995,11 @@ export default function Index({ params }: any) {
 
                           </div>
 
-
-
-
-                        </div>
-
-                        {/*
-                        <div className="flex flex-row items-center gap-2 text-xs ">
-                          {nativeBalance && Number(nativeBalance).toFixed(4)}{' '}POL
-                        </div>
-                        */}
-                      
+                        </div>                      
 
                       </div>
 
-                    )}
+                    )*/}
 
                   </div>
 
@@ -1093,10 +1081,10 @@ export default function Index({ params }: any) {
                   </div>
 
 
-                  <div className="ml-10 flex flex-col items-center gap-2">
+                  <div className=" ml-10 flex flex-col items-end gap-2">
                     {/* reload button */}
                     <button
-                      className="text-sm bg-zinc-800 px-2 py-1 rounded-md"
+                      className="text-sm bg-zinc-800 px-2 py-1 rounded-md text-white hover:bg-zinc-700"
                       onClick={() => {
                         fetch('/api/order/getAllSellOrdersForBuyer', {
                           method: 'POST',
@@ -2427,19 +2415,27 @@ const TradeDetail = (
         <div className="w-full flex flex-row justify-between items-center gap-2
           bg-green-500 p-4 rounded-lg mb-5
         ">
+
           {/* logo */}
-          <div className="flex flex-row gap-2 items-center">
-            <Image
-              src="/circle-logo.webp"
-              alt="Circle Logo"
-              width={35}
-              height={35}
-              className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
-            />
-            <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
-              OWIN
-            </span>
-          </div>
+          <button
+            onClick={() => {
+              router.push("/");
+            }}
+          >
+            <div className="flex flex-row gap-2 items-center">
+              <Image
+                src="/circle-logo.webp"
+                alt="Circle Logo"
+                width={35}
+                height={35}
+                className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
+              />
+              <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
+                OWIN
+              </span>
+            </div>
+          </button>
+
           {/* menu */}
           {/* COIN, NFT, DEFI */}
           <div className="flex flex-row gap-2 items-center">
