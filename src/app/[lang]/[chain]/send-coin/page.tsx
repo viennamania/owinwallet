@@ -182,6 +182,8 @@ export default function SendUsdt({ params }: any) {
 
     Anonymous: "",
 
+    My_Wallet_Address: "",
+
   } );
 
   useEffect(() => {
@@ -227,6 +229,8 @@ export default function SendUsdt({ params }: any) {
     Sending,
 
     Anonymous,
+
+    My_Wallet_Address,
 
   } = data;
 
@@ -939,7 +943,9 @@ export default function SendUsdt({ params }: any) {
               {/* tron wallet address */}
               {tronWalletAddress && params.chain === "tron" && (
                 <div className="flex flex-row items-center gap-2">
-                  <div className="text-sm">TRON Wallet Address</div>
+                  <div className="text-sm">
+                    {My_Wallet_Address}
+                  </div>
                   <div className="text-lg font-semibold text-gray-800">
                     <button
                       className="text-sm text-zinc-400 underline"

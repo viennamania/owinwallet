@@ -182,6 +182,8 @@ export default function SendUsdt({ params }: any) {
 
     Anonymous: "",
 
+    My_Wallet_Address: "",
+
   } );
 
   useEffect(() => {
@@ -227,6 +229,8 @@ export default function SendUsdt({ params }: any) {
     Sending,
 
     Anonymous,
+
+    My_Wallet_Address,
 
   } = data;
 
@@ -705,6 +709,80 @@ export default function SendUsdt({ params }: any) {
 
 
 
+  const [tronWalletAddress, setTronWalletAddress] = useState('');
+  useEffect(() => {
+      
+    if (address && params.chain === "tron") {
+
+      // get tron wallet address
+      const getTronWalletAddress = async () => {
+
+        const response = await fetch('/api/tron/getTronWalletAddress', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            lang: params.lang,
+            chain: params.chain,
+            walletAddress: address,
+          }),
+        });
+
+        const data = await response.json();
+
+        setTronWalletAddress(data.result.tronWalletAddress);
+
+      };
+
+      getTronWalletAddress();
+
+    }
+
+  } , [address, params.chain, params.lang]);
+
+
+  console.log("tronWalletAddress", tronWalletAddress);
+
+
+  // getTronBalance
+  /*
+  const [tronBalance, setTronBalance] = useState(0);
+  useEffect(() => {
+    if (tronWalletAddress && params.chain === "tron") {
+      const getTronBalance = async () => {
+        const response = await fetch('/api/tron/getTronBalance', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            lang: params.lang,
+            chain: params.chain,
+            tronWalletAddress: tronWalletAddress,
+          }),
+        });
+
+        if (!response) return;
+
+        const data = await response.json();
+
+        setTronBalance(data.result.tronBalance);
+
+      };
+
+      getTronBalance();
+
+    }
+
+  } , [tronWalletAddress, params.chain, params.lang]);
+
+  console.log("tronBalance", tronBalance);
+  */
+
+
+
+
   return (
 
     <main className="p-4 pb-10 min-h-[100vh] flex items-start justify-center container max-w-screen-lg mx-auto">
@@ -808,7 +886,10 @@ export default function SendUsdt({ params }: any) {
 
                     <div className="flex flex-row items-end justify-center  gap-2">
                       <span className="text-4xl font-semibold text-gray-800">
+                        
                         {Number(balance).toFixed(2)}
+
+
                       </span>
                       <span className="text-lg">{token}</span>
                     </div>
@@ -840,11 +921,11 @@ export default function SendUsdt({ params }: any) {
                   )}
                   */}
 
-                  {address && (
+                  {/*address && (
 
                     <div className="flex flex-col gap-2 items-center
                       border border-zinc-400 rounded-md p-2">
-                      {/* wallet address */}
+                  
                       <div className="flex flex-row items-center gap-2">
                         <button
                           className="text-sm text-zinc-400 underline"
@@ -878,7 +959,7 @@ export default function SendUsdt({ params }: any) {
                             }
                           </div>
 
-                          {/* go to profile */}
+                   
                           {address && !user && (
                             <button
                               onClick={() => {
@@ -896,17 +977,38 @@ export default function SendUsdt({ params }: any) {
 
 
                       </div>
-
-                      {/*}
-                      <div className="flex flex-row items-center gap-2 text-xs ">
-                        {nativeBalance && Number(nativeBalance).toFixed(4)}{' '}POL
-                      </div>
-                      */}
                     
 
                     </div>
 
+                  )*/}
+
+
+                  {/* tron wallet address */}
+                  {tronWalletAddress && params.chain === "tron" && (
+                    <div className="flex flex-row items-center gap-2">
+                      <div className="text-sm">
+                        {My_Wallet_Address}
+                      </div>
+                      <div className="text-lg font-semibold text-gray-800">
+                        <button
+                          className="text-sm text-zinc-400 underline"
+                          onClick={() => {
+                            navigator.clipboard.writeText(tronWalletAddress);
+                            toast.success('Copied wallet address');
+                          } }
+                        >
+                          {tronWalletAddress.substring(0, 6)}...{tronWalletAddress.substring(tronWalletAddress.length - 4)}
+                        </button>
+
+
+                      </div>
+                    </div>
                   )}
+
+
+
+
 
                 </div>
 
