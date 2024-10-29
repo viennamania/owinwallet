@@ -586,22 +586,57 @@ export default function SendUsdt({ params }: any) {
 
           },
 
-          privateKey: user.tronWalletPrivateKey,
+          ///privateKey: user.tronWalletPrivateKey,
             
         });
+
+        tronWeb.setPrivateKey(user.tronWalletPrivateKey);
 
 
         // send TRC20 USDT
         const contract = await tronWeb.contract().at(contractAddressTron);
 
+        // fee_limit
+        // out of energy error occurs when the fee_limit is too low
         // send TRC20 USDT
-        const result = await contract.transfer(recipient.tronWalletAddress, amount * 10 ** 6).send();
+        // tronWeb.transactionBuilder
+
+
+
+        const result = await contract.transfer(
+          recipient.tronWalletAddress,
+          //amount * 10 ** 6
+          TronWeb.toSun(amount)
+        ).send();
+
+        /*
+        ).send({
+
+          feeLimit: 100000000,
+          callValue: 0,
+          shouldPollResponse: true,
+
+        });
+        */
+
+        ///const result = await contract.transfer(recipient.tronWalletAddress, amount * 10 ** 6).send();
+
+
+
 
         console.log("result", result);
 
 
         if (result) {
           toast.success(USDT_sent_successfully);
+
+          setAmount(0); // reset amount
+
+          // refresh usdt balance
+
+
+
+
         } else {
           toast.error(Failed_to_send_USDT);
         }
