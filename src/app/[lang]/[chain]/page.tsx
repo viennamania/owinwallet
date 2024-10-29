@@ -1446,17 +1446,28 @@ export default function Index({ params }: any) {
                       }
 
                       router.push(
-                        "/" + params.lang + "/" + params.chain + "/apply-listing-token"
+                        "/" + params.lang + "/" + params.chain + "/"
                       );
 
                     }}
                     className="w-full bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900"
                   >
-                    {Apply_for_Listing_New_Token}
+                    <div className="flex flex-row justify-between items-center gap-2">
+                      <p className="text-lg font-semibold text-white">
+                        {Apply_for_Listing_New_Token}
+                      </p>
+                      <Image
+                        src="/goto-icon.webp"
+                        alt="Go"
+                        width={20}
+                        height={20}
+                      />
+                    </div>
                   </button>
                 </div>
 
-                <div className=" flex flex-row gap-2 justify-center items-center mt-10">
+
+                <div className=" flex flex-col gap-2 justify-center items-center mt-10">
                   
                   {/* Go Buy USDT */}
                   <button
@@ -1475,9 +1486,20 @@ export default function Index({ params }: any) {
                       );
 
                     }}
-                    className=" w-40 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+                    className=" w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
                   >
-                    구매하기
+                    <div className="flex flex-row justify-between items-center gap-2">
+                      <p className="text-lg font-semibold text-white">
+                        구매하기
+                      </p>
+                      <Image
+                        src="/goto-icon.webp"
+                        alt="Go"
+                        width={20}
+                        height={20}
+                      />
+                    </div>
+                    
                   </button>
 
 
@@ -1499,9 +1521,19 @@ export default function Index({ params }: any) {
                       );
 
                     }}
-                    className=" w-40 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                    className=" w-full bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
                   >
-                    구매신청하기
+                    <div className="flex flex-row justify-between items-center gap-2">
+                      <p className="text-lg font-semibold text-white">
+                        구매신청하기
+                      </p>
+                      <Image
+                        src="/goto-icon.webp"
+                        alt="Go"
+                        width={20}
+                        height={20}
+                      />
+                    </div>
                   </button>
 
 
@@ -1699,14 +1731,43 @@ export default function Index({ params }: any) {
 
 
 
+                {/* apply button of listing for sellers */}
+
+                <div className=" flex flex-row gap-2 justify-center items-center mt-10">
+                  <button
+                    onClick={() => {
+                      // apply for listing new token
+                      //console.log("apply for listing new token");
+
+                      if (!address) {
+                        toast.error(Please_connect_your_wallet_first);
+                        return;
+                      }
+
+                      router.push(
+                        "/" + params.lang + "/" + params.chain + "/seller-apply"
+                      );
+
+                    }}
+                    className="w-full bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900"
+                  >
+                    <div className="flex flex-row justify-between items-center gap-2">
+                      <p className="text-lg font-semibold text-white">
+                        {Apply_for_Listing_New_Seller}
+                      </p>
+                      <Image
+                        src="/goto-icon.webp"
+                        alt="Go"
+                        width={20}
+                        height={20}
+                      />
+                    </div>
+                  </button>
+                </div>
+
 
               
-                <div className="flex flex-row gap-2 justify-center items-center mt-10">
-
-
-
-             
-
+                <div className="grid grid-cols-2 gap-2 mt-4">
 
  
                   <button
@@ -1740,9 +1801,19 @@ export default function Index({ params }: any) {
                       );
 
                     }}
-                    className="w-40 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                    className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
                   >
-                    판매하기
+                    <div className="flex flex-row justify-between items-center gap-2">
+                      <p className="text-lg font-semibold text-white">
+                        판매하기
+                      </p>
+                      <Image
+                        src="/goto-icon.webp"
+                        alt="Go"
+                        width={20}
+                        height={20}
+                      />
+                    </div>
                   </button>
 
 
@@ -1776,38 +1847,24 @@ export default function Index({ params }: any) {
                       );
 
                     }}
-                    className="w-40 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+                    className="w-full bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
                   >
-                    구매접수하기
+                    <div className="flex flex-row justify-between items-center gap-2">
+                      <p className="text-lg font-semibold text-white">
+                        구매신청수락하기
+                      </p>
+                      <Image
+                        src="/goto-icon.webp"
+                        alt="Go"
+                        width={20}
+                        height={20}
+                      />
+                    </div>
                   </button>
 
                 </div>
                 
 
-
-                {/* apply button of listing for sellers */}
-
-                <div className=" flex flex-row gap-2 justify-center items-center mt-10">
-                  <button
-                    onClick={() => {
-                      // apply for listing new token
-                      //console.log("apply for listing new token");
-
-                      if (!address) {
-                        toast.error(Please_connect_your_wallet_first);
-                        return;
-                      }
-
-                      router.push(
-                        "/" + params.lang + "/" + params.chain + "/seller-apply"
-                      );
-
-                    }}
-                    className="w-full bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900"
-                  >
-                    {Apply_for_Listing_New_Seller}
-                  </button>
-                </div>
 
 
 
