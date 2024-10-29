@@ -336,6 +336,7 @@ export async function getOneByWalletAddress(
 
 
 
+  ///console.log('getOneByWalletAddress walletAddress: ' + walletAddress);
 
   // id is number
 

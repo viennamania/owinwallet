@@ -252,6 +252,7 @@ export default function SettingsPage({ params }: any) {
   
   
       
+    console.log("address", address);
  
 
     const [phoneNumber, setPhoneNumber] = useState("");

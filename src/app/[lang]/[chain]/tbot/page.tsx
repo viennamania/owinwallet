@@ -38,12 +38,10 @@ import { getUserPhoneNumber } from "thirdweb/wallets/in-app";
 
 import Image from 'next/image';
 
-import GearSetupIcon from "@/components/gearSetupIcon";
+//import GearSetupIcon from "@/components/gearSetupIcon";
 
-
-import Uploader from '@/components/uploader';
-import { add } from 'thirdweb/extensions/farcaster/keyGateway';
-
+//import Uploader from '@/components/uploader';
+//import { add } from 'thirdweb/extensions/farcaster/keyGateway';
 
 
 
@@ -399,12 +397,21 @@ export default function AIPage({ params }: any) {
     const [userCode, setUserCode] = useState("");
 
 
+
+
     const [erc721ContractAddress, setErc721ContractAddress] = useState("");
 
 
 
+    console.log("address", address);
+
     useEffect(() => {
         const fetchData = async () => {
+
+            if (!address) {
+                return;
+            }
+
             const response = await fetch("/api/user/getUser", {
                 method: "POST",
                 headers: {
@@ -417,13 +424,19 @@ export default function AIPage({ params }: any) {
 
             const data = await response.json();
 
-            ///console.log("data", data);
+            console.log("data", data);
+
 
             if (data.result) {
                 setNickname(data.result.nickname);
                 setUserCode(data.result.id);
 
-                setErc721ContractAddress(data.result.erc721ContractAddress);
+                
+                
+                
+                /////////////////setErc721ContractAddress(data.result.erc721ContractAddress);
+
+
             }
         };
 
@@ -786,7 +799,10 @@ export default function AIPage({ params }: any) {
             const contract = getContract({
                 client,
                 chain: params.chain === "arbitrum" ? arbitrum : polygon,
+                
                 address: erc721ContractAddress,
+
+
             });
 
 
@@ -818,6 +834,9 @@ export default function AIPage({ params }: any) {
                 transaction: transactionMintTo,
                 account: smartAccount,
             });
+
+            console.log("sendData", sendData);
+
 
             if (sendData) {
                 // update image with erc721 contract address and token id
@@ -1330,7 +1349,7 @@ export default function AIPage({ params }: any) {
                         {/* check erc721 contract address */}
                         {/* if not set, deploy */}
 
-                        {/*
+                        
                         {userCode && !erc721ContractAddress && (
                             <div className='mt-10 flex flex-col gap-5 items-center justify-center'>
 
@@ -1366,10 +1385,10 @@ export default function AIPage({ params }: any) {
 
                             </div>
                         )}
-                        */}
+                        
 
                         {/* if erc721 contract address is set, link to opensea */}
-                        {/*
+                        
                         {erc721ContractAddress && (
                             <div className='mt-10 flex flex-col gap-5 items-center justify-center text-sm'>
                                 <div>
@@ -1396,7 +1415,7 @@ export default function AIPage({ params }: any) {
                                 </button>
                             </div>
                         )}
-                        */}
+                        
 
 
 
