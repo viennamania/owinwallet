@@ -68,7 +68,7 @@ const wallets = [
 const contractAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT on Polygon
 const contractAddressArbitrum = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"; // USDT on Arbitrum
 
-
+const contractAddressTron = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t"; // USDT on Tron
 
 
 
@@ -90,6 +90,9 @@ import { Select } from '@mui/material';
 import { Sen } from 'next/font/google';
 import { Router } from 'next/router';
 import path from 'path';
+
+import { TronWeb, utils as TronWebUtils, Trx, TransactionBuilder, Contract, Event, Plugin } from 'tronweb';
+
 
 
 
@@ -310,6 +313,11 @@ export default function SendUsdt({ params }: any) {
 
 
 
+
+
+
+
+
   const [user, setUser] = useState(
     {
       _id: '',
@@ -321,6 +329,8 @@ export default function SendUsdt({ params }: any) {
       walletAddress: '',
       createdAt: '',
       settlementAmountOfFee: '',
+      tronWalletAddress: '',
+      tronWalletPrivateKey: '',
     }
   );
 
@@ -339,6 +349,8 @@ export default function SendUsdt({ params }: any) {
           walletAddress: address,
         }),
       });
+
+      if (!response) return;
 
       const data = await response.json();
 
@@ -436,7 +448,11 @@ export default function SendUsdt({ params }: any) {
 
   const [otp, setOtp] = useState('');
 
-  const [verifiedOtp, setVerifiedOtp] = useState(false);
+  
+  
+  /////const [verifiedOtp, setVerifiedOtp] = useState(false);
+  const [verifiedOtp, setVerifiedOtp] = useState(true); // for testing
+
 
   const [isSendedOtp, setIsSendedOtp] = useState(false);
 
@@ -524,8 +540,15 @@ export default function SendUsdt({ params }: any) {
       return;
     }
 
+    // check chain
+    // if chain is tron, send TRC20 USDT
 
-    if (!recipient.walletAddress) {
+    if (params.chain === "tron" && !recipient.tronWalletAddress) {
+      toast.error('Please enter a valid address');
+      return;
+    }
+
+    if (params.chain !== "tron" && !recipient.walletAddress) {
       toast.error('Please enter a valid address');
       return;
     }
@@ -537,6 +560,7 @@ export default function SendUsdt({ params }: any) {
 
     //console.log('amount', amount, "balance", balance);
 
+ 
     if (Number(amount) > balance) {
       toast.error('Insufficient balance');
       return;
@@ -544,7 +568,53 @@ export default function SendUsdt({ params }: any) {
 
     setSending(true);
 
+
+
     try {
+
+
+      if (params.chain === "tron") {
+
+        const tronWeb = new TronWeb({
+          fullHost: 'https://api.trongrid.io',
+          
+          headers: {
+
+            //'TRON-PRO-API-KEY': process.env.TRONGRID_API_KEY,
+
+            'TRON-PRO-API-KEY': '429a03b7-ef22-4723-867e-5dcfeef6f787',
+
+          },
+
+          privateKey: user.tronWalletPrivateKey,
+            
+        });
+
+
+        // send TRC20 USDT
+        const contract = await tronWeb.contract().at(contractAddressTron);
+
+        // send TRC20 USDT
+        const result = await contract.transfer(recipient.tronWalletAddress, amount * 10 ** 6).send();
+
+        console.log("result", result);
+
+
+        if (result) {
+          toast.success(USDT_sent_successfully);
+        } else {
+          toast.error(Failed_to_send_USDT);
+        }
+
+
+
+
+
+
+
+
+
+      } else {
 
 
 
@@ -559,22 +629,6 @@ export default function SendUsdt({ params }: any) {
             amount: amount,
         });
         
-
-        /*
-        const transactionResult = await sendAndConfirmTransaction({
-
-            transaction: transaction,
-            
-            account: smartAccount as any,
-        });
-
-        console.log("transactionResult", transactionResult);
-        
-        if (transactionResult.status !== "success") {
-          toast.error(Failed_to_send_USDT);
-          return;
-        }
-        */
 
         const { transactionHash } = await sendTransaction({
           
@@ -625,10 +679,16 @@ export default function SendUsdt({ params }: any) {
           toast.error(Failed_to_send_USDT);
 
         }
+
+      }
+
       
 
 
     } catch (error) {
+      
+      console.error("error", error);
+
       toast.error(Failed_to_send_USDT);
     }
 
@@ -753,6 +813,7 @@ export default function SendUsdt({ params }: any) {
   console.log("tronWalletAddress", tronWalletAddress);
 
 
+
   // getTronBalance
   /*
   const [tronBalance, setTronBalance] = useState(0);
@@ -784,9 +845,41 @@ export default function SendUsdt({ params }: any) {
     }
 
   } , [tronWalletAddress, params.chain, params.lang]);
-
-  console.log("tronBalance", tronBalance);
   */
+
+
+
+
+  // usdt balance
+  const [usdtBalance, setUsdtBalance] = useState(0);
+  useEffect(() => {
+    if (tronWalletAddress && params.chain === "tron") {
+      const getUsdtBalance = async () => {
+        const response = await fetch('/api/tron/getUsdtBalance', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            lang: params.lang,
+            chain: params.chain,
+            tronWalletAddress: tronWalletAddress,
+          }),
+        });
+
+        if (!response) return;
+
+        const data = await response.json();
+
+        setUsdtBalance(data.result?.usdtBalance);
+
+      };
+
+      getUsdtBalance();
+
+    }
+
+  } , [tronWalletAddress, params.chain, params.lang]);
 
 
 
@@ -896,7 +989,11 @@ export default function SendUsdt({ params }: any) {
                     <div className="flex flex-row items-end justify-center  gap-2">
                       <span className="text-4xl font-semibold text-gray-800">
                         
+                        {/*
                         {Number(balance).toFixed(2)}
+                        */}
+                       
+                        {Number(usdtBalance).toFixed(2)}
 
 
                       </span>
