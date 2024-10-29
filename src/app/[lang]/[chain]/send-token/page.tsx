@@ -805,7 +805,7 @@ export default function SendUsdt({ params }: any) {
 
         <Header />
 
-
+        {/*
         <div className="mt-4 flex justify-start space-x-4 mb-10">
             <button
               
@@ -824,6 +824,7 @@ export default function SendUsdt({ params }: any) {
               {Go_Home}
             </button>
         </div>
+        */}
         
 
 
@@ -1442,18 +1443,24 @@ function Header() {
         bg-green-500 p-4 rounded-lg mb-5
       ">
         {/* logo */}
-        <div className="flex flex-row gap-2 items-center">
-          <Image
-            src="/circle-logo.webp"
-            alt="Circle Logo"
-            width={35}
-            height={35}
-            className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
-          />
-          <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
-            OWIN
-          </span>
-        </div>
+        <button
+          onClick={() => {
+            router.push("/");
+          }}
+        >
+          <div className="flex flex-row gap-2 items-center">
+            <Image
+              src="/circle-logo.webp"
+              alt="Circle Logo"
+              width={35}
+              height={35}
+              className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
+            />
+            <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
+              OWIN
+            </span>
+          </div>
+        </button>
         {/* menu */}
         {/* COIN, NFT, DEFI */}
         <div className="flex flex-row gap-2 items-center">

@@ -1495,17 +1495,23 @@ export default function Index({ params }: any) {
           </div>
           */}
 
-  
-          <div className="mt-4 flex justify-start space-x-4 mb-10">
+          {/*
+          <div className="mt-0 flex justify-start space-x-4 mb-10">
               <button
                 onClick={() => router.push(
                   '/' + params.lang + '/' + params.chain + '?wallet=' + wallet
                 )}
-                className="text-gray-500 font-semibold underline"
+              
               >
-                {Go_Home}
-                </button>
+                <Image
+                  src="/icon-home.webp"
+                  alt="Home"
+                  width={50}
+                  height={50}
+                />
+              </button>
           </div>
+          */}
 
 
           <div className="flex flex-col items-start justify-center space-y-4">
@@ -3680,18 +3686,24 @@ const TradeDetail = (
           bg-green-500 p-4 rounded-lg mb-5
         ">
           {/* logo */}
-          <div className="flex flex-row gap-2 items-center">
-            <Image
-              src="/circle-logo.webp"
-              alt="Circle Logo"
-              width={35}
-              height={35}
-              className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
-            />
-            <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
-              OWIN
-            </span>
-          </div>
+          <button
+            onClick={() => {
+              router.push("/");
+            }}
+          >
+            <div className="flex flex-row gap-2 items-center">
+              <Image
+                src="/circle-logo.webp"
+                alt="Circle Logo"
+                width={35}
+                height={35}
+                className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
+              />
+              <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
+                OWIN
+              </span>
+            </div>
+          </button>
           {/* menu */}
           {/* COIN, NFT, DEFI */}
           <div className="flex flex-row gap-2 items-center">
