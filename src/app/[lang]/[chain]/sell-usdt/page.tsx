@@ -1586,11 +1586,10 @@ export default function Index({ params }: any) {
                       />
                     )}
 
-                    {address && (
+                    {/*address && (
 
                       <div className="flex flex-col gap-2 items-center
                         border border-zinc-400 rounded-md p-2">
-                        {/* wallet address */}
                         <div className="flex flex-row items-center gap-2">
                           <button
                             className="text-sm text-zinc-400 underline"
@@ -1624,8 +1623,6 @@ export default function Index({ params }: any) {
                               }
                             </div>
 
-
-                            {/* go to profile */}
                             {address && !user && (
                               <button
                                 onClick={() => {
@@ -1640,20 +1637,12 @@ export default function Index({ params }: any) {
                           </div>
 
 
-
-
                         </div>
-
-                        {/*}
-                        <div className="flex flex-row items-center gap-2 text-xs ">
-                          {nativeBalance && Number(nativeBalance).toFixed(4)}{' '}POL
-                        </div>
-                        */}
                       
 
                       </div>
 
-                    )}
+                    )*/}
 
                   </div>
 
@@ -1815,6 +1804,28 @@ export default function Index({ params }: any) {
                   )}
 
                 </div>
+
+                {/*
+                알림1. 판매수수료는 3%입니다.
+                알림2. 판매수수료는 판매수량외 별도로 지갑에서 차감합니다.
+                */}
+                <div className="flex flex-col gap-2 items-start">
+                  <div className="flex flex-row items-center gap-2">
+                    {/* dot */}
+                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <p className="text-sm text-zinc-400">
+                      알림1. 판매수수료는 3%입니다.
+                    </p>
+                  </div>
+                  <div className="flex flex-row items-center gap-2">
+                    {/* dot */}
+                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <p className="text-sm text-zinc-400">
+                      알림2. 판매수수료는 판매수량외 별도로 지갑에서 차감합니다.
+                    </p>
+                  </div>
+                </div>
+
 
 
                   {/* check box for sell order */}

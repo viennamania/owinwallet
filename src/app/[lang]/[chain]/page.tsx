@@ -1065,7 +1065,7 @@ export default function Index({ params }: any) {
             <Image
               src="/icon-wallet-live.gif"
               alt="Wallet"
-              width={25}
+              width={65}
               height={25}
               className="rounded"
             />
