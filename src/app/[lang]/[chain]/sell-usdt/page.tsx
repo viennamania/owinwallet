@@ -2263,7 +2263,9 @@ export default function Index({ params }: any) {
                                     width={40}
                                     height={40}
                                   />
-                                  <h2 className="text-lg font-semibold text-white">{Order}</h2>
+                                  <h2 className="text-lg font-semibold text-white">
+                                    {Order}
+                                  </h2>
                                 </div>
   
                                 {/* check box for private sale */}
@@ -2493,7 +2495,7 @@ export default function Index({ params }: any) {
 
                       <div className="flex flex-col gap-2 items-center">
                         <div className="text-sm">{Orders}</div>
-                        <div className="text-xl font-semibold text-white">
+                        <div className="text-xl font-semibold text-gray-800">
                           {sellOrders.filter((item) => item.status === 'ordered').length}
                         </div>
                       </div>
@@ -2501,7 +2503,7 @@ export default function Index({ params }: any) {
                       {/* completed trades */}
                       <div className="flex flex-col gap-2 items-center">
                         <div className="text-sm">{Completed}</div>
-                        <div className="text-xl font-semibold text-white">
+                        <div className="text-xl font-semibold text-gray-800">
                           {sellOrders.filter((item) => item.status === 'paymentConfirmed').length}
                         </div>
                       </div>
@@ -2509,13 +2511,13 @@ export default function Index({ params }: any) {
                       {/* cancelled trades */}
                       <div className="flex flex-col gap-2 items-center">
                         <div className="text-sm">{Cancelled}</div>
-                        <div className="text-xl font-semibold text-white">
+                        <div className="text-xl font-semibold text-gray-800">
                           {sellOrders.filter((item) => item.status === 'cancelled').length}
                         </div>
                       </div>
                       <div className="flex flex-col gap-2 items-center">
                         <div className="text-sm">{Trades}</div>
-                        <div className="text-4xl font-semibold text-white">
+                        <div className="text-4xl font-semibold text-gray-800">
                           {
                             //sellOrders.filter((item) => item.status === 'accepted').length
                             sellOrders.filter((item) => item.status === 'accepted' || item.status === 'paymentRequested').length
