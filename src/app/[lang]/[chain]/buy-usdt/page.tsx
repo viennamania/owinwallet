@@ -848,9 +848,9 @@ export default function Index({ params }: any) {
 
         <div className="py-0 w-full">
 
-            <AppBarComponent />
+          <AppBarComponent />
 
-            <Header />
+          <Header />
 
           {/*
           <div className="mt-4 flex justify-start space-x-4 mb-10">
