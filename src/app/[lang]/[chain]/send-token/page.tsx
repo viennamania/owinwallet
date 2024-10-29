@@ -381,12 +381,14 @@ export default function SendUsdt({ params }: any) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({}),
+        body: JSON.stringify({
+
+        }),
       });
 
       const data = await response.json();
 
-      //console.log("getUsers", data);
+      console.log("getUsers", data);
 
 
       ///setUsers(data.result.users);
@@ -418,6 +420,7 @@ export default function SendUsdt({ params }: any) {
     avatar: '',
     mobile: '',
     walletAddress: '',
+    tronWalletAddress: '',
     createdAt: '',
     settlementAmountOfFee: '',
   });
@@ -693,6 +696,7 @@ export default function SendUsdt({ params }: any) {
             avatar: '',
             mobile: '',
             walletAddress: recipient?.walletAddress,
+            tronWalletAddress: recipient?.tronWalletAddress,
             createdAt: '',
             settlementAmountOfFee: '',
 
@@ -703,10 +707,12 @@ export default function SendUsdt({ params }: any) {
 
     });
 
-  } , [recipient?.walletAddress]);
+  } , [recipient?.walletAddress, recipient?.tronWalletAddress]);
+
   
 
 
+  console.log("address", address); // user wallet address
 
 
   const [tronWalletAddress, setTronWalletAddress] = useState('');
@@ -728,6 +734,8 @@ export default function SendUsdt({ params }: any) {
             walletAddress: address,
           }),
         });
+
+        if (!response) return;
 
         const data = await response.json();
 
@@ -895,7 +903,7 @@ export default function SendUsdt({ params }: any) {
                     </div>
                   </div>
 
-                  {/*}
+                  
                   {!address && (
                     <ConnectButton
                       client={client}
@@ -919,7 +927,7 @@ export default function SendUsdt({ params }: any) {
                       }
                     />
                   )}
-                  */}
+                
 
                   {/*address && (
 
@@ -1144,7 +1152,7 @@ export default function SendUsdt({ params }: any) {
                       type="text"
                       placeholder={User_wallet_address}
                       className=" w-80  xl:w-full p-2 border border-gray-300 rounded text-white text-xs xl:text-lg font-semibold"
-                      value={recipient?.walletAddress}
+                      value={recipient?.tronWalletAddress}
                       onChange={(e) => {
       
                         
@@ -1163,7 +1171,7 @@ export default function SendUsdt({ params }: any) {
                               
                               setRecipient({
                                 ...recipient,
-                                walletAddress: e.target.value,
+                                tronWalletAddress: e.target.value,
                               });
                               
                             }
@@ -1190,7 +1198,7 @@ export default function SendUsdt({ params }: any) {
                       value={recipient.walletAddress}
                       onChange={(e) => setRecipient({
                         ...recipient,
-                        walletAddress: e.target.value,
+                        tronWalletAddress: e.target.value,
                       })}
                     />
 
@@ -1222,7 +1230,7 @@ export default function SendUsdt({ params }: any) {
                     ) : (
                       <>
 
-                      {recipient?.walletAddress && (
+                      {recipient?.tronWalletAddress && (
                         <div className='flex flex-row gap-2 items-center justify-center'>
                           {/* dot icon */}
                           <div className="w-4 h-4 bg-green-500 rounded-full mr-2"></div>
@@ -1264,7 +1272,7 @@ export default function SendUsdt({ params }: any) {
                 <div className="w-full flex flex-row gap-2 items-start">
 
                   <button
-                    disabled={!address || !recipient?.walletAddress || !amount || isSendingOtp}
+                    disabled={!address || !recipient?.tronWalletAddress || !amount || isSendingOtp}
                     onClick={sendOtp}
                     className={`
                       
@@ -1273,7 +1281,7 @@ export default function SendUsdt({ params }: any) {
                       w-32 p-2 rounded-lg text-sm font-semibold
 
                         ${
-                        !address || !recipient?.walletAddress || !amount || isSendingOtp
+                        !address || !recipient?.tronWalletAddress || !amount || isSendingOtp
                         ?'bg-gray-300 text-gray-400'
                         : 'bg-green-500 text-white'
                         }
@@ -1318,7 +1326,7 @@ export default function SendUsdt({ params }: any) {
 
 
               <button
-                disabled={!address || !recipient?.walletAddress || !amount || sending || !verifiedOtp}
+                disabled={!address || !recipient?.tronWalletAddress || !amount || sending || !verifiedOtp}
                 onClick={sendUsdt}
                 className={`mt-10 w-full p-2 rounded-lg text-xl font-semibold
 

@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
 
   const body = await request.json();
 
-  //const { walletAddress } = body;
+  const { chain } = body;
 
 
   //console.log("walletAddress", walletAddress);

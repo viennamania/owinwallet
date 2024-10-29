@@ -31,6 +31,12 @@ export async function POST(request: NextRequest) {
 
   const user = await getOneByWalletAddress(walletAddress);
 
+  if (!user) {
+    return NextResponse.json({
+      result: null,
+    });
+  }
+
   if (user && user.tronWalletAddress) {
     return NextResponse.json({
       result: {

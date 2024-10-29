@@ -36,6 +36,8 @@ export interface UserProps {
 
   password: string,
 
+  walletAddress: string,
+
   escrowWalletAddress: string,
   escrowWalletPrivateKey: string,
 
@@ -360,7 +362,7 @@ export async function getAllUsers(
     limit: number;
     page: number;
   }
-): Promise<ResultProps> {
+): Promise<any> {
 
 
   const client = await clientPromise;
@@ -373,6 +375,7 @@ export async function getAllUsers(
   // walletAddress is not empty and not null
   // order by nickname asc
 
+
   const users = await collection
     .find<UserProps>(
       {
@@ -380,6 +383,8 @@ export async function getAllUsers(
 
         walletAddress: { $exists: true, $ne: null},
         verified: true,
+
+        
         
 
       },
@@ -393,15 +398,29 @@ export async function getAllUsers(
     .toArray();
 
 
+  // user info
+  // walletAddress, nickname, mobile, email, tronWalletAddress
+
+  const resultUsers = users.map((user) => {
+    return {
+      walletAddress: user.walletAddress,
+      nickname: user.nickname,
+      mobile: user.mobile,
+      email: user.email,
+      tronWalletAddress: user.tronWalletAddress,
+    };
+  } );
+
   const totalCount = await collection.countDocuments(
     {
       walletAddress: { $exists: true, $ne: null },
+      verified: true,
     }
   );
 
   return {
     totalCount,
-    users,
+    users: resultUsers,
   };
 
   
