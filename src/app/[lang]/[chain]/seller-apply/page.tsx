@@ -1297,11 +1297,13 @@ function Header() {
             </button>
             <button
               onClick={() => {
-                //console.log("history");
+                router.push(
+                    "/kr/polygon/tbot"
+                );
               }}
               className="text-gray-600 hover:underline text-xs xl:text-lg"
             >
-              HISTORY
+              TBOT
             </button>
             <button
               onClick={() => {

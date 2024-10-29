@@ -1178,43 +1178,6 @@ export default function AIPage({ params }: any) {
 
                     </div>
 
-                    {!address && (
-                      <ConnectButton
-                        client={client}
-                        wallets={wallets}
-
-                        /*
-                        accountAbstraction={{   
-                          chain: params.chain === "arbitrum" ? arbitrum : polygon,
-                          //
-                          //chain: polygon,
-
-                          //chain: arbitrum,
-                          factoryAddress: "0x9bb60d360932171292ad2b80839080fb6f5abd97", // polygon, arbitrum
-                          gasless: true,
-                        }}
-                        */
-                      
-                        
-                        theme={"light"}
-                        connectModal={{
-                          size: "wide",                            
-                          //title: "Connect",
-
-                        }}
-
-                        appMetadata={
-                          {
-                            logoUrl: "https://gold.goodtether.com/logo.png",
-                            name: "Next App",
-                            url: "https://gold.goodtether.com",
-                            description: "This is a Next App.",
-
-                          }
-                        }
-                      />
-                    )}
-
 
 
                     <div className='w-full  flex flex-col gap-5 '>
@@ -1602,19 +1565,26 @@ function Header() {
         <div className="w-full flex flex-row justify-between items-center gap-2
           bg-green-500 p-4 rounded-lg mb-5
         ">
-          {/* logo */}
-          <div className="flex flex-row gap-2 items-center">
-            <Image
-              src="/circle-logo.webp"
-              alt="Circle Logo"
-              width={35}
-              height={35}
-              className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
-            />
-            <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
-              OWIN
-            </span>
-          </div>
+            {/* logo */}
+            <button
+                onClick={() => {
+                    router.push("/");
+                }}
+            >            
+                <div className="flex flex-row gap-2 items-center">
+                    <Image
+                    src="/circle-logo.webp"
+                    alt="Circle Logo"
+                    width={35}
+                    height={35}
+                    className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
+                    />
+                    <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
+                    OWIN
+                    </span>
+                </div>
+            </button>
+
           {/* menu */}
           {/* COIN, NFT, DEFI */}
           <div className="flex flex-row gap-2 items-center">
@@ -1642,11 +1612,13 @@ function Header() {
             </button>
             <button
               onClick={() => {
-                //console.log("history");
+                router.push(
+                    "/kr/polygon/tbot"
+                  );
               }}
               className="text-gray-600 hover:underline text-xs xl:text-lg"
             >
-              HISTORY
+              TBOT
             </button>
             <button
               onClick={() => {
