@@ -653,7 +653,12 @@ export default function AIPage({ params }: any) {
     ///console.log("results", results);
 
 
-    const [myImages, setMyImages] = useState([]);
+    interface MyImage {
+        image: string;
+        // Add other properties if needed
+    }
+    
+    const [myImages, setMyImages] = useState<MyImage[]>([]);
     // loading my images
     const [loadingMyImages, setLoadingMyImages] = useState(false);
 
@@ -672,7 +677,11 @@ export default function AIPage({ params }: any) {
 
             const data = await response.json();
 
-            ///console.log("getImages data", data);
+            console.log("getImages data.images", data.images);
+
+
+
+
 
             setMyImages(data.images || []);
 
@@ -1363,15 +1372,39 @@ export default function AIPage({ params }: any) {
                                 </button>
 
 
+                                {/* if myImages.length > 0, then disable */}
                                 <button
-                                    disabled={!address || !prompt || loading}
+                                    
+                                    disabled={
+                                        !address || !prompt || loading
+                                        || myImages.length > 0
+                                    }
+
                                     onClick={getImages}
-                                    className={` ${!address || !prompt || loading ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded
+                                    className={` ${
+                                        !address || !prompt || loading
+                                        || myImages.length > 0
+
+                                         ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded
                                         text-lg font-semibold w-full
                                         `}
                                 >
                                     {loading ? "Loading..." : "Generate TBOT"}
                                 </button>
+
+                                {/* if myImages.length > 0, then image */}
+
+
+                                
+                                {myImages.length > 0 && (
+                                    <Image
+                                        src={myImages[0]?.image || "/logo-chatgpt.png"}
+                                        alt="TBOT"
+                                        width={200}
+                                        height={200}
+                                    />
+                                )}
+                                
 
 
 
@@ -1832,7 +1865,7 @@ export default function AIPage({ params }: any) {
                                                         height={100}
                                                     />
                                                     <span>
-                                                        이미지 다운로드중...
+                                                        TBOT NFT 생성중...
                                                     </span>
                                                 </div>
                                             ) : (
@@ -1843,7 +1876,7 @@ export default function AIPage({ params }: any) {
                                                         text-lg font-semibold m-2
                                                         `}
                                                 >
-                                                    이미지 다운로드
+                                                    TBOT NFT 생성
                                                 </button>
                                             )}
 
@@ -1933,6 +1966,20 @@ export default function AIPage({ params }: any) {
 
                         {/* my images */}
 
+                        {/* 나의 TBOT */}
+                        <div className='flex flex-col gap-5 '>
+                            <div className='flex flex-row items-center gap-2'>
+                                {/* dot */}
+                                <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
+                                <span className='text-lg font-semibold'>
+                                    나의 TBOT
+                                </span>
+                            </div>
+                            <span className='text-sm text-gray-500'>
+                                나의 TBOT NFT 입니다.
+                            </span>
+                        </div>
+
                         <div className="mt-10 w-full grid gap-4 lg:grid-cols-2 xl:grid-cols-3 justify-center ">
 
 
@@ -2021,6 +2068,8 @@ export default function AIPage({ params }: any) {
                                                     </div>
                                                 ) : (
                                                     <div className='flex flex-row items-center gap-2'>
+                                                        
+                                                        {/*}
                                                         <button
                                                             disabled={loadingMintNFTs[index]}
                                                             onClick={() => mintNFT(
@@ -2035,7 +2084,7 @@ export default function AIPage({ params }: any) {
                                                             {loadingMintNFTs[index] ? "NFT 발행중..." : "NFT 발행"}
                                                         
                                                         </button>
-                                                        {/* delete image */}
+                                                        
                                                         <button
                                                             onClick={() => {
                                                                 removeImage(result.image);
@@ -2048,6 +2097,8 @@ export default function AIPage({ params }: any) {
                                                                 </span>
                                                             </div>
                                                         </button>
+                                                        */}
+
 
                                                     </div>
                                                 )}
