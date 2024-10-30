@@ -1252,10 +1252,9 @@ export default function AIPage({ params }: any) {
                     10,000 TBOT for BYBIT
                     */}
 
-                    <div className='flex flex-col gap-5 '> 
+                    <div className='w-full flex flex-col gap-5 '> 
 
-                        <div className='flex flex-col gap-5 '>
-
+                  
                             <div className='flex flex-col xl:flex-row gap-5 items-center xl:items-start justify-between border border-gray-300 p-4 rounded-lg'>
                                 <div className='flex flex-row items-center gap-2'>
                                     {/* dot */}
@@ -1313,7 +1312,7 @@ export default function AIPage({ params }: any) {
                                 */}
                                 <div className='flex flex-col gap-2'>
 
-                                    <span className='text-sm text-gray-500'>
+                                    <span className='text-lg font-semibold text-blue-500'>
                                         AI 트레이딩 100 TBOT
                                     </span>
                                     <span className='text-sm text-gray-500'>
@@ -1323,7 +1322,7 @@ export default function AIPage({ params }: any) {
                                         • HTX 거래소 전용
                                     </span>
 
-                                    <span className='text-sm text-gray-500'>
+                                    <span className='text-lg font-semibold text-blue-500 mt-2'>
                                         계정 운영 방식
                                     </span>
                                     <span className='text-sm text-gray-500'>
@@ -1339,7 +1338,7 @@ export default function AIPage({ params }: any) {
                                         • 계좌 잔고 50% 이상 출금 시 서비스 일시 중지
                                     </span>
 
-                                    <span className='text-sm text-gray-500'>
+                                    <span className='text-lg font-semibold text-blue-500 mt-2'>
                                         리스크 고지
                                     </span>
                                     <span className='text-sm text-gray-500'>
@@ -1352,7 +1351,7 @@ export default function AIPage({ params }: any) {
                                         - 높은 레버리지 거래는 큰 손실을 초래할 수 있습니다
                                     </span>
 
-                                    <span className='text-sm text-gray-500'>
+                                    <span className='text-lg font-semibold text-blue-500 mt-2'>
                                         Master BOT 혜택
                                     </span>
                                     <span className='text-sm text-gray-500'>
@@ -1377,7 +1376,6 @@ export default function AIPage({ params }: any) {
                             </div>
 
 
-                        </div>
                     </div>
 
 
