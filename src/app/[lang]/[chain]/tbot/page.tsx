@@ -1865,7 +1865,7 @@ export default function AIPage({ params }: any) {
                                                         height={100}
                                                     />
                                                     <span>
-                                                        TBOT NFT 생성중...
+                                                        TBOT NFT 구매중...
                                                     </span>
                                                 </div>
                                             ) : (
@@ -1876,7 +1876,7 @@ export default function AIPage({ params }: any) {
                                                         text-lg font-semibold m-2
                                                         `}
                                                 >
-                                                    TBOT NFT 생성
+                                                    TBOT NFT 구매
                                                 </button>
                                             )}
 
@@ -1976,7 +1976,7 @@ export default function AIPage({ params }: any) {
                                 </span>
                             </div>
                             <span className='text-sm text-gray-500'>
-                                나의 TBOT NFT 입니다.
+                                구매한 TBOT NFT 입니다.
                             </span>
                         </div>
 
