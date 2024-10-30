@@ -1188,9 +1188,13 @@ export default function AIPage({ params }: any) {
                         <div className='flex flex-col gap-5 '>
 
                             <div className='flex flex-col gap-5 '>
-                                <span className='text-lg font-semibold'>
-                                    TBOT 특징
-                                </span>
+                                <div className='flex flex-row items-center gap-2'>
+                                    {/* dot */}
+                                    <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
+                                    <span className='text-lg font-semibold'>
+                                        TBOT 특징
+                                    </span>
+                                </div>
                                 <span className='text-sm text-gray-500'>
                                     1. 자금관리. 본인의 거래소 계정에서 직접 관리, 입출금 자류롭게 가능, 계좌 잔고 50% 이상 출금 시 서비스 중지
                                 </span>
@@ -1203,9 +1207,13 @@ export default function AIPage({ params }: any) {
                             </div>
 
                             <div className='flex flex-col gap-5 '>
-                                <span className='text-lg font-semibold'>
-                                    리스크 고지
-                                </span>
+                                <div className='flex flex-row items-center gap-2'>
+                                    {/* dot */}
+                                    <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
+                                    <span className='text-lg font-semibold'>
+                                        리스크 고지
+                                    </span>
+                                </div>
                                 <span className='text-sm text-gray-500'>
                                     1. 투자원금 손실 가능성 있음
                                 </span>
@@ -1218,9 +1226,13 @@ export default function AIPage({ params }: any) {
                             </div>
 
                             <div className='flex flex-col gap-5 '>
-                                <span className='text-lg font-semibold'>
-                                    FAQ
-                                </span>
+                                <div className='flex flex-row items-center gap-2'>
+                                    {/* dot */}
+                                    <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
+                                    <span className='text-lg font-semibold'>
+                                        FAQ
+                                    </span>
+                                </div>
                                 <span className='text-sm text-gray-500'>
                                     1. 수익 반영 주기 . TBOT의 수익반영은 매일매일입니다. MASTER BOT의 수익반영은 주 단위 입니다.
                                 </span>
@@ -1233,8 +1245,144 @@ export default function AIPage({ params }: any) {
 
                     </div>
 
+                    {/* TBOT Image */}
+                    {/*
+                    100 TBOT for HTX
+                    1,000 TBOT for OKEX
+                    10,000 TBOT for BYBIT
+                    */}
 
-                    <div className='w-full  flex flex-col gap-5 '>
+                    <div className='flex flex-col gap-5 '> 
+
+                        <div className='flex flex-col gap-5 '>
+
+                            <div className='flex flex-col xl:flex-row gap-5 items-center xl:items-start justify-between border border-gray-300 p-4 rounded-lg'>
+                                <div className='flex flex-row items-center gap-2'>
+                                    {/* dot */}
+                                    <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
+                                    <span className='text-lg font-semibold'>
+                                        100 TBOT for HTX
+                                    </span>
+                                </div>
+                                <div className='flex flex-col items-center gap-2
+                                    border border-gray-300 p-4 rounded-lg
+                                '>
+                                    <div className='flex flex-row items-center gap-2'>
+                                        <Image
+                                            src="/logo-tbot.webp"
+                                            alt="TBOT"
+                                            width={200}
+                                            height={200}
+                                        />
+                                        <Image
+                                            src="/logo-exchange-htx.png"
+                                            alt="HTX"
+                                            width={50}
+                                            height={50}
+                                        />
+                                    </div>
+                                    {/* button for buy */}
+                                    {/* 121 USDT BUY */}
+                                    <button
+                                        className='bg-blue-500 text-zinc-100 p-2 rounded text-lg font-semibold'
+                                    >
+                                        121 USDT BUY
+                                    </button>
+                                </div>
+                                {/*
+                                AI 트레이딩 100 TBOT
+                                    • AI 자동매매 트레이딩 서비스 이용권 NFT 입니다.
+                                    • HTX 거래소 전용
+
+                                계정 운영 방식
+                                    • 본인 거래소 계정에서 직접 자금 관리
+                                    • 최소 운영자금: 100 USDT
+                                    • 자유로운 입출금 가능
+                                    • 계좌 잔고 50% 이상 출금 시 서비스 일시 중지
+
+                                리스크 고지
+                                    - 디지털자산 투자에는 원금 손실 위험이 있습니다
+                                    - 과거 수익률이 미래 수익을 보장하지 않 습니다
+                                    - 높은 레버리지 거래는 큰 손실을 초래할 수 있습니다
+
+                                Master BOT 혜택
+                                    • 거래소 리베이트 프로그램 참여 자격 부여
+                                    • 거래 실적에 따른 변동 리워드 제공
+                                    • 주 단위 리워드 정산
+                                    • 추가 지원AI 트레이딩 시스템 운영 교육
+                                */}
+                                <div className='flex flex-col gap-2'>
+
+                                    <span className='text-sm text-gray-500'>
+                                        AI 트레이딩 100 TBOT
+                                    </span>
+                                    <span className='text-sm text-gray-500'>
+                                        • AI 자동매매 트레이딩 서비스 이용권 NFT 입니다.
+                                    </span>
+                                    <span className='text-sm text-gray-500'>
+                                        • HTX 거래소 전용
+                                    </span>
+
+                                    <span className='text-sm text-gray-500'>
+                                        계정 운영 방식
+                                    </span>
+                                    <span className='text-sm text-gray-500'>
+                                        • 본인 거래소 계정에서 직접 자금 관리
+                                    </span>
+                                    <span className='text-sm text-gray-500'>
+                                        • 최소 운영자금: 100 USDT
+                                    </span>
+                                    <span className='text-sm text-gray-500'>
+                                        • 자유로운 입출금 가능
+                                    </span>
+                                    <span className='text-sm text-gray-500'>
+                                        • 계좌 잔고 50% 이상 출금 시 서비스 일시 중지
+                                    </span>
+
+                                    <span className='text-sm text-gray-500'>
+                                        리스크 고지
+                                    </span>
+                                    <span className='text-sm text-gray-500'>
+                                        - 디지털자산 투자에는 원금 손실 위험이 있습니다
+                                    </span>
+                                    <span className='text-sm text-gray-500'>
+                                        - 과거 수익률이 미래 수익을 보장하지 않 습니다
+                                    </span>
+                                    <span className='text-sm text-gray-500'>
+                                        - 높은 레버리지 거래는 큰 손실을 초래할 수 있습니다
+                                    </span>
+
+                                    <span className='text-sm text-gray-500'>
+                                        Master BOT 혜택
+                                    </span>
+                                    <span className='text-sm text-gray-500'>
+                                        • 거래소 리베이트 프로그램 참여 자격 부여
+                                    </span>
+                                    <span className='text-sm text-gray-500'>
+                                        • 거래 실적에 따른 변동 리워드 제공
+                                    </span>
+                                    <span className='text-sm text-gray-500'>
+                                        • 주 단위 리워드 정산
+                                    </span>
+                                    <span className='text-sm text-gray-500'>
+                                        • 추가 지원AI 트레이딩 시스템 운영 교육
+                                    </span>
+
+
+
+                                </div>
+                                    
+
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+
+                    <div className=' w-full  flex flex-col gap-5 '>
 
 
                         {/* input prompt */}
