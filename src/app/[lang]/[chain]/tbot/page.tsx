@@ -1362,6 +1362,20 @@ export default function AIPage({ params }: any) {
 
                                 </button>
 
+
+                                <button
+                                    disabled={!address || !prompt || loading}
+                                    onClick={getImages}
+                                    className={` ${!address || !prompt || loading ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded
+                                        text-lg font-semibold w-full
+                                        `}
+                                >
+                                    {loading ? "Loading..." : "Generate TBOT"}
+                                </button>
+
+
+
+
                             </div>
                             {/*
                             AI 트레이딩 100 TBOT
@@ -1739,7 +1753,7 @@ export default function AIPage({ params }: any) {
                                     {Real_prompt}
                                 </div>
 
-
+                                {/*
                                 <button
                                     disabled={!address || !prompt || loading}
                                     onClick={getImages}
@@ -1749,6 +1763,8 @@ export default function AIPage({ params }: any) {
                                 >
                                     이미지 생성
                                 </button>
+                                */}
+       
 
                                 {/* Reset Button */}
                                 <button
