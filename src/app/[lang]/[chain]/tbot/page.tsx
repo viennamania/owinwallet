@@ -1340,8 +1340,28 @@ export default function AIPage({ params }: any) {
                                 <button
                                     className='bg-blue-500 text-zinc-100 p-2 rounded text-lg font-semibold'
                                 >
-                                    121 USDT BUY
+
+                                    <div className='flex flex-row items-center gap-2'>
+                                        <Image
+                                            src="/logo-usdt.png"
+                                            alt="USDT"
+                                            width={20}
+                                            height={20}
+                                        />
+                                        <span className='text-lg font-semibold'>
+                                            121 USDT BUY
+                                        </span>
+
+                                        {/* 이벤트기간동안 Free */}
+                                        <span className='text-sm font-semibold  bg-yellow-200 text-gray-800 p-1 rounded-lg'>
+                                            이벤트기간동안 Free
+                                        </span>
+
+                                    </div>
+
+
                                 </button>
+
                             </div>
                             {/*
                             AI 트레이딩 100 TBOT
