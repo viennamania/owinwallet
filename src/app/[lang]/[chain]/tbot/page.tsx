@@ -1269,23 +1269,27 @@ export default function AIPage({ params }: any) {
                                         EVENT 1. 100 TBOT 100명 무료!  100-100-100 이벤트
                                     </span>
                                 </div>
-                                <span className='text-sm text-gray-800 font-semibold
+                                <span className='text-sm text-gray-800
+                                    font-semibold
                                     bg-yellow-200 p-2 rounded-lg
                                 '>
                                     * 100 TBOT을 무료로 제공합니다.
                                 </span>
 
-                                <span className='text-sm text-gray-500
+                                <span className='text-sm text-green-800
+                                    font-semibold
                                     bg-yellow-200 p-2 rounded-lg
                                 '>
                                     1. 100 TBOT을 무료 구매하고, 
                                 </span>
-                                <span className='text-sm text-gray-500
+                                <span className='text-sm text-green-800
+                                    font-semibold
                                     bg-yellow-200 p-2 rounded-lg
                                 '>
                                     2. HTX를 가입하면  HTX 본인계죄로 100 USDT를 무상으로 지급 !
                                 </span>
-                                <span className='text-sm text-gray-500
+                                <span className='text-sm text-green-800
+                                    font-semibold
                                     bg-yellow-200 p-2 rounded-lg
                                 '>
                                     3. 100 MASTER BOT 무료 민팅 !
