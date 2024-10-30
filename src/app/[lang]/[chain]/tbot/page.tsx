@@ -1343,7 +1343,7 @@ export default function AIPage({ params }: any) {
 
                                     <div className='flex flex-row items-center gap-2'>
                                         <Image
-                                            src="/logo-usdt.png"
+                                            src="/token-usdt-icon.png"
                                             alt="USDT"
                                             width={20}
                                             height={20}
