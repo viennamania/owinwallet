@@ -738,7 +738,7 @@ export default function Index({ params }: any) {
   
           const data = await response.json();
   
-          setTronWalletAddress(data.result.tronWalletAddress);
+          setTronWalletAddress(data?.result?.tronWalletAddress);
   
         };
   
@@ -1026,17 +1026,17 @@ export default function Index({ params }: any) {
               client={client}
               wallets={wallets}
 
-              /*
+              
               accountAbstraction={{   
                 chain: params.chain === "arbitrum" ? arbitrum : polygon,
                 //
                 //chain: polygon,
 
                 //chain: arbitrum,
-                factoryAddress: "0x9bb60d360932171292ad2b80839080fb6f5abd97", // polygon, arbitrum
+                factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
                 gasless: true,
               }}
-              */
+              
             
               
               theme={"light"}

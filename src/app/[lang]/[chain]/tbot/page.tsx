@@ -936,86 +936,96 @@ export default function AIPage({ params }: any) {
 
         if (confirm("Are you sure you want to make an OpenSea collection?")) {
 
+            try {
 
-            setLoadingDeployERC721Contract(true);
+                setLoadingDeployERC721Contract(true);
 
-            const erc721ContractAddress = await deployERC721Contract({
-                chain: params.chain === "arbitrum" ? arbitrum : polygon,
-                client: client,
-                account: smartAccount,
-                type: "TokenERC721",
-                params: {
-                    name: "My NFT",
-                    description: "My NFT",
-                    symbol: "MYNFT",
-                },
-            });
-
-            console.log("erc721ContractAddress", erc721ContractAddress);
-
-            if (erc721ContractAddress) {
-
-
-                const contract = getContract({
-                    client,
+                const erc721ContractAddress = await deployERC721Contract({
                     chain: params.chain === "arbitrum" ? arbitrum : polygon,
-                    address: erc721ContractAddress,
-                });
-
-
-                // generate image
-                const image = "https://next.unove.space/logo-chatgpt.png";
-
-                const transactionMintTo = mintTo({
-                    contract,
-                    to: address,
-                    nft: {
-                    name: "NFT",
-                    description: "NFT",
-                    image: image,
-                    animation_url: image,
-
-                    attributes: [
-                        {
-                        trait_type: "CreatorName",
-                        value: nickname,
-                        },
-                    ],
-
-                    },
-                });
-
-
-
-                const sendData = await sendAndConfirmTransaction({
-                    transaction: transactionMintTo,
+                    client: client,
                     account: smartAccount,
-                });
-
-
-
-
-
-                // update the user with the erc721 contract address
-
-                const response = await fetch("/api/user/updateErc721ContractAddress", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
+                    type: "TokenERC721",
+                    params: {
+                        name: "My NFT",
+                        description: "My NFT",
+                        symbol: "MYNFT",
                     },
-                    body: JSON.stringify({
-                        walletAddress: address,
-                        erc721ContractAddress: erc721ContractAddress,
-                    }),
                 });
 
-                setErc721ContractAddress(erc721ContractAddress);
+                console.log("erc721ContractAddress", erc721ContractAddress);
+
+                if (erc721ContractAddress) {
 
 
-                toast.success(Alert_OpenSea_Collection_made);
+                    const contract = getContract({
+                        client,
+                        chain: params.chain === "arbitrum" ? arbitrum : polygon,
+                        address: erc721ContractAddress,
+                    });
+
+
+                    // generate image
+                    const image = "https://next.unove.space/logo-chatgpt.png";
+
+                    const transactionMintTo = mintTo({
+                        contract,
+                        to: address,
+                        nft: {
+                        name: "NFT",
+                        description: "NFT",
+                        image: image,
+                        animation_url: image,
+
+                        attributes: [
+                            {
+                            trait_type: "CreatorName",
+                            value: nickname,
+                            },
+                        ],
+
+                        },
+                    });
+
+
+
+                    const sendData = await sendAndConfirmTransaction({
+                        transaction: transactionMintTo,
+                        account: smartAccount,
+                    });
+
+
+
+
+
+                    // update the user with the erc721 contract address
+
+                    const response = await fetch("/api/user/updateErc721ContractAddress", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            walletAddress: address,
+                            erc721ContractAddress: erc721ContractAddress,
+                        }),
+                    });
+
+                    setErc721ContractAddress(erc721ContractAddress);
+
+
+                    toast.success(Alert_OpenSea_Collection_made);
+                } else {
+                    toast.error('Error deploying ERC721 contract');
+                }
+
+                setLoadingDeployERC721Contract(false);
+
+            } catch (error) {
+
+                console.error("Error deploying ERC721 contract", error);
+                setLoadingDeployERC721Contract(false);
+
             }
-
-            setLoadingDeployERC721Contract(false);
 
         }
 
@@ -1102,98 +1112,47 @@ export default function AIPage({ params }: any) {
                             </div>
                         )}
 
+
+
                         {!address && (
 
-                            <>
-                                {params.chain === "polygon" && (
+                        <ConnectButton
+                        client={client}
+                        wallets={wallets}
 
-                                    <ConnectButton
+                        
+                        accountAbstraction={{   
+                            chain: params.chain === "arbitrum" ? arbitrum : polygon,
+                            //
+                            //chain: polygon,
 
-                                        client={client}
+                            //chain: arbitrum,
+                            factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+                            gasless: true,
+                        }}
+                        
 
-                                        wallets={wallets}
-                                        
-                                        accountAbstraction={{        
-                                        
-                                        chain: polygon,
+                        
+                        theme={"light"}
+                        connectModal={{
+                            size: "wide",                            
+                            //title: "Connect",
 
-                                        //chain: arbitrum,
-                                        factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                                        gasless: true,
-                                        }}
-                                        
-                                        theme={"light"}
-                                        connectModal={{
-                                        size: "wide",
+                        }}
 
+                        appMetadata={
+                            {
+                            logoUrl: "https://gold.goodtether.com/logo.png",
+                            name: "Next App",
+                            url: "https://gold.goodtether.com",
+                            description: "This is a Next App.",
 
-                                        }}
-
-
-                                        
-                                        appMetadata={
-                                        {
-                                            logoUrl: "https://next.unove.space/logo.png",
-                                            name: "Next App",
-                                            url: "https://next.unove.space",
-                                            description: "This is a Next App.",
-
-                                        }
-
-                                        }
-
-                                    />
+                            }
+                        }
+                        />
 
 
-                                )}
-
-
-
-
-                                {params.chain === "arbitrum" && (
-
-                                    <ConnectButton
-
-                                        client={client}
-
-                                        wallets={wallets}
-                                        
-                                        accountAbstraction={{        
-                                        
-                                        chain: arbitrum,
-
-                                        //chain: arbitrum,
-                                        factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                                        gasless: true,
-                                        }}
-                                        
-                                        theme={"light"}
-                                        connectModal={{
-                                        size: "wide",
-                                            
-                                            }}
-
-                                        appMetadata={
-                                        {
-                                            logoUrl: "https://next.unove.space/logo.png",
-                                            name: "Next App",
-                                            url: "https://next.unove.space",
-                                            description: "This is a Next App.",
-
-                                        }
-
-                                        }
-
-                                    />
-
-
-                                )}
-
-
-
-                                </>
-
-                            )}
+                        )}
 
                     </div>
 

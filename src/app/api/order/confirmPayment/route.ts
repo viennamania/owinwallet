@@ -217,7 +217,7 @@ export async function POST(request: NextRequest) {
 
         chain: chain === 'polygon' ? polygon : arbitrum,
 
-        factoryAddress: "0x9bb60d360932171292ad2b80839080fb6f5abd97", // your own deployed account factory address
+        factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // your own deployed account factory address
         sponsorGas: true,
       });
 

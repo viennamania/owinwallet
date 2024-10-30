@@ -687,26 +687,12 @@ export default function SettingsPage({ params }: any) {
 
                 <Header />
         
-                <div className="mt-4 flex justify-start space-x-4 mb-10">
-                    <button
-                        onClick={() => router.push(
-                            wallet === "smart" ?
-                            '/' + params.lang + '/' + params.chain + '?wallet=smart'
-                            :
-                            '/' + params.lang + '/' + params.chain
-                        ) }
-                        className="text-gray-500 font-semibold underline"
-                         
-                    >
-                        {Go_Home}
-                    </button>
-                </div>
 
 
                 <div className="flex flex-col items-start justify-center space-y-4">
 
                     <div className='flex flex-row items-center space-x-4'>
-                        <GearSetupIcon />
+                        <GearSetupIcon/>
                         <div className="text-2xl font-semibold">
                             {Profile_Settings}
                         </div>
@@ -717,17 +703,17 @@ export default function SettingsPage({ params }: any) {
                             client={client}
                             wallets={wallets}
 
-                            /*
+                            
                             accountAbstraction={{   
                                 chain: params.chain === "arbitrum" ? arbitrum : polygon,
                                 //
                                 //chain: polygon,
 
                                 //chain: arbitrum,
-                                factoryAddress: "0x9bb60d360932171292ad2b80839080fb6f5abd97", // polygon, arbitrum
+                                factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
                                 gasless: true,
                             }}
-                            */
+                            
                             
                             theme={"light"}
                             connectModal={{
@@ -1258,19 +1244,25 @@ function Header() {
         <div className="w-full flex flex-row justify-between items-center gap-2
           bg-green-500 p-4 rounded-lg mb-5
         ">
-          {/* logo */}
-          <div className="flex flex-row gap-2 items-center">
-            <Image
-              src="/circle-logo.webp"
-              alt="Circle Logo"
-              width={35}
-              height={35}
-              className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
-            />
-            <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
-              OWIN
-            </span>
-          </div>
+            {/* logo */}
+            <button
+                onClick={() => {
+                router.push("/");
+                }}
+            >
+                <div className="flex flex-row gap-2 items-center">
+                    <Image
+                    src="/circle-logo.webp"
+                    alt="Circle Logo"
+                    width={35}
+                    height={35}
+                    className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
+                    />
+                    <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
+                    OWIN
+                    </span>
+                </div>
+            </button>
           {/* menu */}
           {/* COIN, NFT, DEFI */}
           <div className="flex flex-row gap-2 items-center">

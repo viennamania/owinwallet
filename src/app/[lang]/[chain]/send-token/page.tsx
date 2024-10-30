@@ -1063,11 +1063,25 @@ export default function SendUsdt({ params }: any) {
                     </div>
                   </div>
 
-                  
+
                   {!address && (
+
                     <ConnectButton
                       client={client}
                       wallets={wallets}
+
+                      
+                      accountAbstraction={{   
+                        chain: params.chain === "arbitrum" ? arbitrum : polygon,
+                        //
+                        //chain: polygon,
+
+                        //chain: arbitrum,
+                        factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+                        gasless: true,
+                      }}
+                      
+
                       
                       theme={"light"}
                       connectModal={{
@@ -1086,8 +1100,10 @@ export default function SendUsdt({ params }: any) {
                         }
                       }
                     />
+
+
                   )}
-                
+
 
                   {/*address && (
 
