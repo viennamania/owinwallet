@@ -1827,7 +1827,7 @@ export default function AIPage({ params }: any) {
                         {/* check erc721 contract address */}
                         {/* if not set, deploy */}
 
-                        
+                        {/*
                         {userCode && !erc721ContractAddress && (
                             <div className='mt-10 flex flex-col gap-5 items-center justify-center'>
 
@@ -1863,10 +1863,7 @@ export default function AIPage({ params }: any) {
 
                             </div>
                         )}
-                        
-
-                        {/* if erc721 contract address is set, link to opensea */}
-                        
+   
                         {erc721ContractAddress && (
                             <div className='mt-10 flex flex-col gap-5 items-center justify-center text-sm'>
                                 <div>
@@ -1893,6 +1890,7 @@ export default function AIPage({ params }: any) {
                                 </button>
                             </div>
                         )}
+                        */}
                         
 
 
