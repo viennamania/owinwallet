@@ -1245,6 +1245,57 @@ export default function AIPage({ params }: any) {
 
                     </div>
 
+
+
+                    {/* event */}
+                    {/*
+                    EVENT 1. 100 TBOT 100명 무료!  100-100-100 이벤트 
+
+                    > 100 TBOT을 무료로 제공합니다. 
+                    1. 100 TBOT을 무료 구매하고, 
+                    2. HTX를 가입하면  HTX 본인계죄로 100 USDT를 무상으로 지급 !
+                    3. 100 MASTER BOT 무료 민팅 !
+                    */}
+                    {/* impact text */}
+                    <div className='w-full flex flex-col gap-5 '>
+                            
+                            <div className='flex flex-col gap-5
+                                border border-gray-300 p-4 rounded-lg
+                            '>
+                                <div className='flex flex-row items-center gap-2'>
+                                    {/* dot */}
+                                    <div className='w-4 h-4 bg-red-500 rounded-full'></div>
+                                    <span className='text-lg font-semibold text-red-500'>
+                                        EVENT 1. 100 TBOT 100명 무료!  100-100-100 이벤트
+                                    </span>
+                                </div>
+                                <span className='text-sm text-gray-800 font-semibold
+                                    bg-yellow-200 p-2 rounded-lg
+                                '>
+                                    * 100 TBOT을 무료로 제공합니다.
+                                </span>
+
+                                <span className='text-sm text-gray-500
+                                    bg-yellow-200 p-2 rounded-lg
+                                '>
+                                    1. 100 TBOT을 무료 구매하고, 
+                                </span>
+                                <span className='text-sm text-gray-500
+                                    bg-yellow-200 p-2 rounded-lg
+                                '>
+                                    2. HTX를 가입하면  HTX 본인계죄로 100 USDT를 무상으로 지급 !
+                                </span>
+                                <span className='text-sm text-gray-500
+                                    bg-yellow-200 p-2 rounded-lg
+                                '>
+                                    3. 100 MASTER BOT 무료 민팅 !
+                                </span>
+                            </div>
+
+                    </div>
+
+
+
                     {/* TBOT Image */}
                     {/*
                     100 TBOT for HTX
