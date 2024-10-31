@@ -556,11 +556,18 @@ export default function AIPage({ params }: any) {
 
 
 
-
+    /*
     const [prompt, setPrompt] = useState(
         "Create a character of the future si-fi bot. Draw a face completely like a robot. Draw coolly in a dramatic style. The text 'TBOT' is displayed in a retro, distressed style, with each letter in a different color, exuding a sense of nostalgia."
     );
+    */
 
+    // Draw a cute and metallic robot character called TBOT in Japanese anime style. Put the text “TBOT” in large bolt letters on the screen.
+    const [prompt, setPrompt] = useState(
+        "Draw a cute and metallic robot character called TBOT in Japanese anime style. Put the text 'TBOT' in large bolt letters on the screen."
+    );
+
+    
 
     const [number, setNumber] = useState(1);
     const [results, setResults] = useState([]);
