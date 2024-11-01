@@ -229,6 +229,7 @@ export default function Index({ params }: any) {
     Apply_for_Listing_New_Token: "",
     Apply_for_Listing_New_Seller: "",
 
+    Profile_Settings: "",
 
   } );
 
@@ -266,6 +267,9 @@ export default function Index({ params }: any) {
 
     Apply_for_Listing_New_Token,
     Apply_for_Listing_New_Seller,
+
+    Profile_Settings,
+    
   } = data;
 
 
@@ -1704,6 +1708,7 @@ export default function Index({ params }: any) {
                 ) : (
 
                   <div className="mt-4 flex flex-row gap-2 justify-center items-center">
+
                     <h2 className="text-3xl font-semibold text-zinc-100">
                       {nickname}
                     </h2>
@@ -1725,6 +1730,28 @@ export default function Index({ params }: any) {
                         className="rounded-lg"
                       />
                     )}
+
+                    {/* 프로필 설정 */}
+                    <button
+                      onClick={() => {
+                        //console.log("회원정보 설정");
+
+                        if (!address) {
+                          toast.error(Please_connect_your_wallet_first);
+                          return;
+                        }
+
+                        router.push(
+                          "/" + params.lang + "/" + params.chain + "/profile-settings"
+                        );
+
+                      }}
+                      className="text-sm border border-gray-800 rounded-lg p-2
+                      hover:bg-gray-800 hover:text-white"
+                    >
+                      {Profile_Settings}
+                    </button>
+
                   </div>
 
                 )}
@@ -1734,7 +1761,7 @@ export default function Index({ params }: any) {
 
                 {/* apply button of listing for sellers */}
 
-                <div className=" flex flex-row gap-2 justify-center items-center mt-10">
+                <div className=" flex-row gap-2 justify-center items-center mt-10 hidden">
                   <button
                     onClick={() => {
                       // apply for listing new token
@@ -1754,7 +1781,9 @@ export default function Index({ params }: any) {
                   >
                     <div className="flex flex-row justify-between items-center gap-2">
                       <p className="text-lg font-semibold text-white">
+                        
                         {Apply_for_Listing_New_Seller}
+
                       </p>
                       <Image
                         src="/goto-icon.webp"
