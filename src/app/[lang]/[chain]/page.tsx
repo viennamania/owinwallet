@@ -132,6 +132,11 @@ export default function Index({ params }: any) {
       client,
       wallets,
 
+      accountAbstraction: {
+        chain: params.chain === "arbitrum" ? arbitrum : polygon,
+        factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+        gasless: true,
+      },
 
 
       showThirdwebBranding: false,
@@ -296,7 +301,7 @@ export default function Index({ params }: any) {
 
 
   // get the active wallet
-  //const activeWallet = useActiveWallet();
+  const activeWallet = useActiveWallet();
 
 
 
@@ -1009,23 +1014,23 @@ export default function Index({ params }: any) {
         {!address && (
 
           <div className="w-full flex flex-row justify-center items-center gap-2">
-          <button
-            onClick={handleConnect}
-            className="w-full bg-zinc-800 text-white px-4 py-2 rounded-lg hover:bg-zinc-900"
-          >
-            <div className="flex flex-row justify-center items-center gap-2">
-              <Image
-                src={thirdwebIcon}
-                alt="Thirdweb"
-                width={20}
-                height={20}
-                className="rounded-lg w-10 h-10"
-              />
-              <span>Sign in with OWIN Magic Wallet</span>
-            </div>
-          </button>
+            <button
+              onClick={handleConnect}
+              className="w-full bg-zinc-800 text-white px-4 py-2 rounded-lg hover:bg-zinc-900"
+            >
+              <div className="flex flex-row justify-center items-center gap-2">
+                <Image
+                  src={thirdwebIcon}
+                  alt="Thirdweb"
+                  width={20}
+                  height={20}
+                  className="rounded-lg w-10 h-10"
+                />
+                <span>Sign in with OWIN Magic Wallet</span>
+              </div>
+            </button>
 
-
+          {/*
           <ConnectButton
               client={client}
               wallets={wallets}
@@ -1060,6 +1065,7 @@ export default function Index({ params }: any) {
                 }
               }
             />
+          */}
 
           </div>
 
@@ -1074,11 +1080,17 @@ export default function Index({ params }: any) {
               height={25}
               className="rounded"
             />
-
-
-
-                 
-
+            <div className="flex flex-col gap-2">
+              {/* disconnect button */}
+              <button
+                onClick={() => {
+                  activeWallet?.disconnect();
+                }}
+                className="bg-zinc-800 text-white p-2 rounded-lg"
+              >
+                Disconnect
+              </button>
+            </div>
 
           </div>
         )}

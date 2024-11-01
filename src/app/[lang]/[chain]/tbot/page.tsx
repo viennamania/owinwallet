@@ -29,6 +29,7 @@ import {
     ConnectButton,
     useActiveAccount,
     useActiveWallet,
+    useConnectModal,
 } from "thirdweb/react";
 import { inAppWallet } from "thirdweb/wallets";
 
@@ -75,6 +76,8 @@ import {
   } from "thirdweb/extensions/erc721";
 import { Alert } from '@mui/material';
 
+
+import thirdwebIcon from "@public/thirdweb.svg";
 
 
 const wallets = [
@@ -383,7 +386,55 @@ export default function AIPage({ params }: any) {
     } , [smartAccount]);
 
 
+    const { connect, isConnecting } = useConnectModal();
 
+    const handleConnect = async () => {
+      await connect({
+        chain: params.chain === "arbitrum" ? arbitrum : polygon,
+        client,
+        wallets,
+  
+        accountAbstraction: {
+            chain: params.chain === "arbitrum" ? arbitrum : polygon,
+            factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+            gasless: true,
+        },
+
+  
+  
+        showThirdwebBranding: false,
+        theme: 'light',
+        
+        /*
+        appMetadata: {
+          name: "GoodTether",
+          description: "GoodTether",
+          url: "https://gold.goodtether.com",
+          //icons: ["https://gold.goodtether.com/logo.png"],
+        },
+        */
+  
+        size: 'compact',
+  
+        /*
+        size: 'wide',
+  
+        welcomeScreen: {
+          title: "Custom Title",
+          subtitle: "Custom Subtitle",
+          img: {
+            src: "https://example.com/image.png",
+            width: 100,
+            height: 100,
+          },
+        },
+        */
+      
+       locale: 'en_US',
+        
+      });
+    };
+  
 
     
     const [nickname, setNickname] = useState("");
@@ -1092,6 +1143,7 @@ export default function AIPage({ params }: any) {
 
 
 
+    console.log("address", address);
 
 
 
@@ -1110,26 +1162,59 @@ export default function AIPage({ params }: any) {
 
                 <div className="flex flex-col items-start justify-center space-y-4">
 
-                    <div className='flex flex-row items-center space-x-4'>
+                    <div className='flex flex-row items-center gap-4'>
+                        
                         <Image
-                            src="/logo-chatgpt.png"
+                            src="/tbot.png"
+                            alt="TBOT"
+                            width={100}
+                            height={40}
+                        />
+                        <span className="text-sm font-semibold text-gray-500">
+                            OWIN AI 로봇 트레이딩&아카데미 센터
+                        </span>
+                    </div>
+                    <div className='flex flex-row items-center gap-4'>
+                        {/* red dot */}
+                        <div className='w-4 h-4 bg-red-500 rounded-full'></div>
+                        <span className="text-lg font-semibold text-blue-500">
+                            AI 트레이딩 TOBOT 서비스센터 입니다.
+                        </span>
+                    </div>
+                    <div className='flex flex-row items-center gap-2'>
+
+                        <div className='flex flex-col gap-2'>
+
+
+
+                            {/* AI 트레이딩 TOBOT 서비스센터 입니다. */}
+                            <span className="text-xs font-semibold text-gray-800">
+                                
+                                TBOT 센터는 본인 계좌로 운영자금이 디파짓하여 AI트레이딩을 제공합니다. <br />
+                                TBOT을 민팅을 하면 Master bot이 지원을 합니다. <br />
+                                코인선물투자 개념과 트레이딩에 대한 교육을 제공합니다.
+                            </span>
+                        </div>
+
+                        <Image
+                            src="/icon-tbot.png"
                             alt="ChatGPT"
-                            width={40}
+                            width={100}
                             height={40}
                             className='bg-zinc-100 p-2 rounded'
                         />
-                        <div className="text-2xl font-semibold">
-                            TBOT
-                        </div>
+
                         {/* balance */}
+                        {/*
                         {address && (
-                            <div className="text-5xl font-semibold text-white">
+                            <div className="text-5xl font-semibold text-blue-500">
                                 {Number(balance).toFixed(2)} <span className="text-lg">USDT</span>
                             </div>
                         )}
+                        */}
 
 
-
+                        {/*
                         {!address && (
 
                         <ConnectButton
@@ -1169,6 +1254,7 @@ export default function AIPage({ params }: any) {
 
 
                         )}
+                        */}
 
                     </div>
 
@@ -1276,7 +1362,7 @@ export default function AIPage({ params }: any) {
                     <div className='w-full flex flex-col gap-5 '>
                             
                             <div className='flex flex-col gap-5
-                                border border-gray-300 p-4 rounded-lg
+                                border border-gray-300 p-4 rounded-lg bg-gray-100
                             '>
                                 <div className='flex flex-row items-center gap-2'>
                                     {/* dot */}
@@ -1314,6 +1400,69 @@ export default function AIPage({ params }: any) {
 
                     </div>
 
+                    <div className='w-full flex flex-col gap-5 mt-5'>
+                        {/* live icon */}
+                        {address ? (
+                            <div className='flex flex-row items-center gap-2'>
+                                <Image
+                                    src="/icon-wallet-live.gif"
+                                    alt="Live"
+                                    width={50}
+                                    height={50}
+                                />
+                                <span className='text-lg font-semibold text-blue-500'>
+                                    {My_Nickname}: {nickname}
+                                </span>
+                            </div>
+                        ) : (
+                            <div className='flex flex-col items-center gap-2'>
+                                {/*
+                                <ConnectButton
+                                    client={client}
+                                    wallets={wallets}
+                                    theme={"light"}
+                                    connectModal={{
+                                        size: "wide",
+                                    }}
+                                    appMetadata={
+                                        {
+                                        logoUrl: "https://gold.goodtether.com/logo.png",
+                                        name: "Next App",
+                                        url: "https://gold.goodtether.com",
+                                        description: "This is a Next App.",
+                                        }
+                                    }
+                                />
+                                */}
+
+
+                                <button
+                                    onClick={handleConnect}
+                                    className="w-full bg-zinc-800 text-white px-4 py-2 rounded-lg hover:bg-zinc-900"
+                                >
+                                <div className="flex flex-row justify-center items-center gap-2">
+                                    <Image
+                                        src={thirdwebIcon}
+                                        alt="Thirdweb"
+                                        width={20}
+                                        height={20}
+                                        className="rounded-lg w-10 h-10"
+                                    />
+                                    <span>Sign in with OWIN Magic Wallet</span>
+                                </div>
+                                </button>
+
+
+                                <span className='text-xs font-semibold text-red-500'>
+                                    {Please_connect_your_wallet_first}
+                                </span>
+                            </div>
+                        )}
+                    </div>
+
+     
+
+                 
 
 
                     {/* TBOT Image */}
