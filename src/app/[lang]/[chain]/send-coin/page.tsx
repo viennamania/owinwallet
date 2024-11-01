@@ -1572,7 +1572,7 @@ function Header() {
           </button>
           <button
             onClick={() => {
-              //console.log("settings");
+              router.push('/kr/polygon/profile-settings');
             }}
             className="text-gray-600 hover:underline text-xs xl:text-lg"
           >

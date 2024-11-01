@@ -269,7 +269,7 @@ export default function Index({ params }: any) {
     Apply_for_Listing_New_Seller,
 
     Profile_Settings,
-    
+
   } = data;
 
 
@@ -2085,7 +2085,7 @@ function Header() {
           </button>
           <button
             onClick={() => {
-              //console.log("settings");
+              router.push('/kr/polygon/profile-settings');
             }}
             className="text-gray-600 hover:underline text-xs xl:text-lg"
           >

@@ -700,6 +700,10 @@ export default function Index({ params }: any) {
                     walletAddress: address,
                 }),
             });
+
+            if (!response.ok) {
+                return;
+            }
   
             const data = await response.json();
   
@@ -3741,7 +3745,7 @@ const TradeDetail = (
             </button>
             <button
               onClick={() => {
-                //console.log("settings");
+                router.push('/kr/polygon/profile-settings');
               }}
               className="text-gray-600 hover:underline text-xs xl:text-lg"
             >
