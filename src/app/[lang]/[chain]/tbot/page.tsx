@@ -536,8 +536,20 @@ export default function AIPage({ params }: any) {
 
                 setMyNfts( nfts );
 
+                // if id is 0n, then it is 100 TBOT
+                // if id is 1n, then it is 1000 TBOT
+                // if id is 2n, then it is 10000 TBOT
 
 
+                nfts.forEach((nft) => {
+                    if (Number(nft.id) === 0) {
+                        setAmountNft100( Number(nft.quantityOwned) );
+                    } else if (Number(nft.id) === 1) {
+                        setAmountNft1000( Number(nft.quantityOwned) );
+                    } else if (Number(nft.id) === 2) {
+                        setAmountNft10000( Number(nft.quantityOwned) );
+                    }
+                } );
 
 
             } catch (error) {
@@ -555,6 +567,8 @@ export default function AIPage({ params }: any) {
 
 
     console.log("myNfts", myNfts);
+
+    console.log("amountNft100", amountNft100);
 
 
     // claim NFT (ERC1155) for the user
@@ -602,6 +616,16 @@ export default function AIPage({ params }: any) {
                 });
 
                 setMyNfts( nfts );
+
+                nfts.forEach((nft) => {
+                    if (Number(nft.id) === 0) {
+                        setAmountNft100( Number(nft.quantityOwned) );
+                    } else if (Number(nft.id) === 1) {
+                        setAmountNft1000( Number(nft.quantityOwned) );
+                    } else if (Number(nft.id) === 2) {
+                        setAmountNft10000( Number(nft.quantityOwned) );
+                    }
+                } );
 
 
 
@@ -925,11 +949,17 @@ export default function AIPage({ params }: any) {
                             </div>
                         ) : (
                             <div className='flex flex-col items-center gap-2'>
-                                {/*
+                                
                                 <ConnectButton
                                     client={client}
                                     wallets={wallets}
                                     theme={"light"}
+                                    accountAbstraction={{   
+                                        chain: params.chain === "arbitrum" ? arbitrum : polygon,
+                                        factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+                                        gasless: true,
+                                    }}
+
                                     connectModal={{
                                         size: "wide",
                                     }}
@@ -942,7 +972,7 @@ export default function AIPage({ params }: any) {
                                         }
                                     }
                                 />
-                                */}
+                                
 
 
                                 <button
@@ -1048,6 +1078,16 @@ export default function AIPage({ params }: any) {
                                         {Minting_NFT}
                                     </span>
                                 )}
+
+                                {/* myNfts */}
+                                <div className='flex flex-row items-center gap-2'>
+                                    <span className='text-4xl font-semibold'>
+                                        {amountNft100}
+                                    </span>
+                                    <span className='text-lg font-semibold'>
+                                        TBOT
+                                    </span>
+                                </div>
 
 
                                 {/* if myImages.length > 0, then disable */}
