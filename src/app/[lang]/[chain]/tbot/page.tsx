@@ -70,6 +70,7 @@ import {
   
     //nextTokenIdToClaim,
 
+    getOwnedNFTs,
   
 } from "thirdweb/extensions/erc1155";
 
@@ -299,19 +300,19 @@ export default function AIPage({ params }: any) {
         
         
         chain: params.chain === "arbitrum" ? arbitrum : polygon,
-      
-      
-      
+        
+        
+        
         // the contract's address
         ///address: contractAddress,
-    
+
         address: params.chain === "arbitrum" ? contractAddressArbitrum : contractAddress,
-    
-    
+
+
         // OPTIONAL: the contract's abi
         //abi: [...],
-      });
-    
+    });
+
 
 
 
@@ -449,10 +450,6 @@ export default function AIPage({ params }: any) {
 
 
 
-    ///const [erc721ContractAddress, setErc721ContractAddress] = useState("");
-
-    const erc1155ContractAddress = "0xfDf9fFC5e782e11660D908E428966AF212ffE842"; // Polygon
-
 
     console.log("address", address);
 
@@ -499,6 +496,67 @@ export default function AIPage({ params }: any) {
   
 
 
+
+
+    const erc1155ContractAddress = "0xfDf9fFC5e782e11660D908E428966AF212ffE842"; // Polygon
+
+
+    const contractErc1155 = getContract({
+        client,
+        chain: params.chain === "arbitrum" ? arbitrum : polygon,
+        
+        address: erc1155ContractAddress,
+    });
+
+
+
+
+    /* my NFTs */
+    const [myNfts, setMyNfts] = useState([] as any[]);
+
+    const [amountNft100, setAmountNft100] = useState(0);
+    const [amountNft1000, setAmountNft1000] = useState(0);
+    const [amountNft10000, setAmountNft10000] = useState(0);
+
+
+    useEffect(() => {
+
+
+        const getMyNFTs = async () => {
+
+            try {
+
+
+                const nfts = await getOwnedNFTs({
+                    contract: contractErc1155,
+                    start: 0,
+                    count: 10,
+                    address: address,
+                });
+
+                setMyNfts( nfts );
+
+
+
+
+
+            } catch (error) {
+                console.error("Error getting NFTs", error);
+            }
+
+        };
+
+        if (address) {
+            getMyNFTs();
+        }
+
+    }
+    , [address, contractErc1155]);
+
+
+    console.log("myNfts", myNfts);
+
+
     // claim NFT (ERC1155) for the user
     const [claimingNFT, setClaimingNFT] = useState(false);
     const claimNFT = async () => {
@@ -517,16 +575,8 @@ export default function AIPage({ params }: any) {
 
             setClaimingNFT(true);
 
-            const contract = getContract({
-                client,
-                chain: params.chain === "arbitrum" ? arbitrum : polygon,
-                
-                address: erc1155ContractAddress,
-            });
-
-
             const transaction = claimTo({
-                contract,
+                contract: contractErc1155,
                 to: address,
                 tokenId: 0n,
                 quantity: 1n,
@@ -542,17 +592,31 @@ export default function AIPage({ params }: any) {
 
                 toast.success(Alert_NFT_minted);
 
+
+                // get NFTs again
+                const nfts = await getOwnedNFTs({
+                    contract,
+                    start: 0,
+                    count: 10,
+                    address: address,
+                });
+
+                setMyNfts( nfts );
+
+
+
+
             } catch (error) {
                 console.error("Error claiming NFT", error);
             }
 
             setClaimingNFT(false);
-
             
 
         }
 
     }
+
 
 
 
