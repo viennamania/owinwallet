@@ -1081,7 +1081,9 @@ export default function AIPage({ params }: any) {
 
                                 {/* myNfts */}
                                 <div className='flex flex-row items-center gap-2'>
-                                    <span className='text-4xl font-semibold'>
+                                    <span className='text-5xl font-semibold
+                                        text-blue-500
+                                    '>
                                         {amountNft100}
                                     </span>
                                     <span className='text-lg font-semibold'>
