@@ -394,7 +394,13 @@
 
 
     "Apply_for_Listing_New_Token": "Apply for Listing New Token",
-    "Apply_for_Listing_New_Seller": "Apply for Listing New Seller"
+    "Apply_for_Listing_New_Seller": "Apply for Listing New Seller",
+
+
+
+    "Mint_NFT": "Mint NFT",
+    "Alert_NFT_minted": "NFT minted successfully",
+    "Minting_NFT": "Minting NFT"
 
 
 }

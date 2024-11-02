@@ -69,11 +69,10 @@ import {
     nextTokenIdToMint,
   
     //nextTokenIdToClaim,
+
   
-    getTotalClaimedSupply,
-  
-  
-  } from "thirdweb/extensions/erc721";
+} from "thirdweb/extensions/erc1155";
+
 import { Alert } from '@mui/material';
 
 
@@ -450,8 +449,9 @@ export default function AIPage({ params }: any) {
 
 
 
-    const [erc721ContractAddress, setErc721ContractAddress] = useState("");
+    ///const [erc721ContractAddress, setErc721ContractAddress] = useState("");
 
+    const erc1155ContractAddress = "0xfDf9fFC5e782e11660D908E428966AF212ffE842"; // Polygon
 
 
     console.log("address", address);
@@ -482,12 +482,6 @@ export default function AIPage({ params }: any) {
                 setNickname(data.result.nickname);
                 setUserCode(data.result.id);
 
-                
-                
-                
-                /////////////////setErc721ContractAddress(data.result.erc721ContractAddress);
-
-
             }
         };
 
@@ -495,471 +489,71 @@ export default function AIPage({ params }: any) {
     }, [address]);
 
 
-    console.log("erc721ContractAddress", erc721ContractAddress);
 
-
-
-
-
-    const setUserData = async () => {
-
-
-        // check nickname length and alphanumeric
-        //if (nickname.length < 5 || nickname.length > 10) {
-
-        if (editedNickname.length < 5 || editedNickname.length > 10) {
-
-            toast.error('Nickname should be at least 5 characters and at most 10 characters');
-            return;
-        }
-        
-        ///if (!/^[a-z0-9]*$/.test(nickname)) {
-        if (!/^[a-z0-9]*$/.test(editedNickname)) {
-            toast.error('Nickname should be alphanumeric and lowercase');
-            return;
-        }
-
-        if (nicknameEdit) {
-
-
-            const response = await fetch("/api/user/updateUser", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    walletAddress: address,
-                    
-                    //nickname: nickname,
-                    nickname: editedNickname,
-
-                }),
-            });
-
-            const data = await response.json();
-
-            console.log("updateUser data", data);
-
-            if (data.result) {
-
-                setUserCode(data.result.id);
-                setNickname(data.result.nickname);
-
-                setNicknameEdit(false);
-                setEditedNickname('');
-
-                toast.success('Nickname saved');
-
-            } else {
-                toast.error('Error saving nickname');
-            }
-
-
-        } else {
-
-            const response = await fetch("/api/user/setUserVerified", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    walletAddress: address,
-                    
-                    //nickname: nickname,
-                    nickname: editedNickname,
-
-                    mobile: phoneNumber,
-                }),
-            });
-
-            const data = await response.json();
-
-            ///console.log("data", data);
-
-            if (data.result) {
-
-                setUserCode(data.result.id);
-                setNickname(data.result.nickname);
-
-                setNicknameEdit(false);
-                setEditedNickname('');
-
-                toast.success('Nickname saved');
-
-            } else {
-                toast.error('Error saving nickname');
-            }
-        }
-
-
-        
-
-        
-    }
 
 
     console.log("nickname", nickname);
     console.log("userCode", userCode);
 
 
-    const [agreementCopy, setAgreementCopy] = useState(false);
-
-
-
-
-    /*
-    const [prompt, setPrompt] = useState(
-        "Create a character of the future si-fi bot. Draw a face completely like a robot. Draw coolly in a dramatic style. The text 'TBOT' is displayed in a retro, distressed style, with each letter in a different color, exuding a sense of nostalgia."
-    );
-    */
-
-    // Draw a cute and metallic robot character called TBOT in Japanese anime style. Put the text “TBOT” in large bolt letters on the screen.
-    const [prompt, setPrompt] = useState(
-        "Draw a cute and metallic robot character called TBOT in Japanese anime style. Put the text 'TBOT' in large bolt letters on the screen."
-    );
-
-    
-
-    const [number, setNumber] = useState(1);
-    const [results, setResults] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(false);
-  
-  
-    // check if prompt is real picture
-    const [checkIsRealPicture, setCheckIsRealPicture] = useState(true);
-  
-  
-  
-    function getImages() {
-  
-  
-      //console.log("prompt=", prompt);
-  
-      //if (token != "" && prompt != "") {
-  
-      if (prompt != "") {
-  
-  
-  
-        setError(false);
-        setLoading(true);
-
-        /*
-        axios
-          
-          ////.post(`/api/images?t=${token}&p=${prompt}&n=${number}`)
-  
-          .post(`/api/ai/images?p=${prompt}&n=${number}&userid=${address}&real=${checkIsRealPicture}`)
-  
-  
-          .then((res) => {
-  
-            //console.log("res=", res);
-  
-            setResults(res.data.result);
-            setLoading(false);
-          })
-          .catch((err) => {
-  
-            setLoading(false);
-            setError(true);
-  
-            
-            console.log("err=", err);
-  
-   
-  
-          });
-        */
-
-        async function fetchData() {
-
-            const response = await fetch("/api/ai/images?p=" + prompt + "&n=" + number + "&userid=" + address + "&real=" + checkIsRealPicture, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            });
-
-            const data = await response.json();
-
-            console.log("data", data);
-
-            setResults(data.result);
-
-            setLoading(false);
-
-        }
-
-        fetchData();
-
-  
-  
-      } else {
-        
-        setError(true);
-  
-      }
-    }
-  
-    //const [type, setType] = useState("webp");
-    const [type, setType] = useState("png");
   
 
 
-    ///console.log("results", results);
+    // claim NFT (ERC1155) for the user
+    const [claimingNFT, setClaimingNFT] = useState(false);
+    const claimNFT = async () => {
 
-
-    interface MyImage {
-        image: string;
-        // Add other properties if needed
-    }
-    
-    const [myImages, setMyImages] = useState<MyImage[]>([]);
-    // loading my images
-    const [loadingMyImages, setLoadingMyImages] = useState(false);
-
-
-    useEffect(() => {
-        async function fetchData() {
-            
-            setLoadingMyImages(true);
-
-            const response = await fetch("/api/ai/getImages?userid=" + address, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-
-            const data = await response.json();
-
-            console.log("getImages data.images", data.images);
-
-
-
-
-
-            setMyImages(data.images || []);
-
-            setLoadingMyImages(false);
-        }
-
-        fetchData();
-    }, [address]);
-
-
-
-    const [loadingDownload, setLoadingDownload] = useState(false);
-
-    //function download(url: string) {
-
-    // aync function download(url: string) {
-
-    const download = async (url: string) => {
-  
-      setLoadingDownload(true);
-
-
-      // /api/download`
-
-        const response = await fetch("/api/ai/download", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                prompt: prompt,
-                url: url,
-                type: type,
-                userid: address,
-            }),
-        });
-
-        /*
-        if (!response.ok) {
-            console.log("error", response);
-
-            toast.success('Already downloaded');
-
-            setLoadingDownload(false);
-            return;
-        }
-        */
-
-        const data = await response.json();
-
-        if (data.error) {
-            console.log("error", data.error);
-
-            toast.error(data.error);
-
-            setLoadingDownload(false);
+        if (claimingNFT) {
             return;
         }
 
-
-
-
-        //console.log("data", data);
-        /*
-        const link = document.createElement("a");
-
-        link.href = data.result;
-
-        link.download = `${prompt}.${type.toLowerCase()}`;
-
-        link.click();
-        */
-        
-
-        toast.success(Alert_download_image_success);
-
-        // get my images from api
-        const response2 = await fetch("/api/ai/getImages?userid=" + address, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-
-        const data2 = await response2.json();
-
-        //console.log("data2", data2);
-
-        setMyImages(data2.images || []);
-
-        setLoadingDownload(false);
-  
-    }
-
-
-    // mint nft array of images
-    const [loadingMintNFTs, setLoadingMintNFTs] = useState([] as boolean[]);
-    useEffect(() => {
-        setLoadingMintNFTs(
-            new Array(myImages.length).fill(false)
-        );
-    } , [myImages]);
-    
-
-
-    const mintNFT = async (url: string, prompt:string, index: number) => {
-
-
-        if (!smartAccount) {
+        if (address === "") {
+            toast.error(Please_connect_your_wallet_first);
             return;
         }
 
+        if (confirm("TBOT NFT를 구매하시겠습니까?")) {
 
-        if (confirm("Are you sure you want to mint this NFT?")) {
 
-
-            setLoadingMintNFTs(
-                loadingMintNFTs.map((value, i) => {
-                    return i === index ? true : value;
-                }
-            ));
-            
+            setClaimingNFT(true);
 
             const contract = getContract({
                 client,
                 chain: params.chain === "arbitrum" ? arbitrum : polygon,
                 
-                address: erc721ContractAddress,
-
-
+                address: erc1155ContractAddress,
             });
 
 
-            // generate image
-            const image = url;
-
-            const transactionMintTo = mintTo({
+            const transaction = claimTo({
                 contract,
                 to: address,
-                nft: {
-                name: "NFT",
-                description: prompt,
-                image: image,
-                animation_url: image,
-
-                attributes: [
-                    {
-                    trait_type: "CreatorName",
-                    value: nickname,
-                    },
-                ],
-
-                },
+                tokenId: 0n,
+                quantity: 1n,
             });
 
-
-
-            const sendData = await sendAndConfirmTransaction({
-                transaction: transactionMintTo,
-                account: smartAccount,
-            });
-
-            console.log("sendData", sendData);
-
-
-            if (sendData) {
-                // update image with erc721 contract address and token id
-
-                // get the token id
-                const nextTokenId = await nextTokenIdToMint({
-                    contract: contract,
+            try {
+                const result = await sendAndConfirmTransaction({
+                    account: smartAccount as any,
+                    transaction: transaction,
                 });
 
-                const tokenid = parseInt(nextTokenId.toString(), 10) - 1;
+                console.log("result", result);
 
+                toast.success(Alert_NFT_minted);
 
+            } catch (error) {
+                console.error("Error claiming NFT", error);
+            }
 
-                const response = await fetch("/api/ai/updateImageNFT", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        image: url,
-                        erc721ContractAddress: erc721ContractAddress,
-                        tokenid: tokenid,
-                    }),
-                });
+            setClaimingNFT(false);
 
-                // update my images
-                const response2 = await fetch("/api/ai/getImages?userid=" + address, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                });
-
-                const data2 = await response2.json();
-
-                //console.log("data2", data2);
-
-                setMyImages(data2.images || []);
-
-            }   
-
-
-
-            toast.success(Alert_NFT_minted);
-
-            setLoadingMintNFTs(
-                loadingMintNFTs.map((value, i) => {
-                    return i === index ? false : value;
-                }
-            ));
-
+            
 
         }
-        
 
     }
+
 
 
 
@@ -990,155 +584,6 @@ export default function AIPage({ params }: any) {
 
       });
       */
-
-
-    const [loadingDeployERC721Contract, setLoadingDeployERC721Contract] = useState(false);
-
-    const deployERC721 = async () => {
-
-        if (!smartAccount) {
-            return;
-        }
-
-
-        if (confirm("Are you sure you want to make an OpenSea collection?")) {
-
-            try {
-
-                setLoadingDeployERC721Contract(true);
-
-                const erc721ContractAddress = await deployERC721Contract({
-                    chain: params.chain === "arbitrum" ? arbitrum : polygon,
-                    client: client,
-                    account: smartAccount,
-                    type: "TokenERC721",
-                    params: {
-                        name: "My NFT",
-                        description: "My NFT",
-                        symbol: "MYNFT",
-                    },
-                });
-
-                console.log("erc721ContractAddress", erc721ContractAddress);
-
-                if (erc721ContractAddress) {
-
-
-                    const contract = getContract({
-                        client,
-                        chain: params.chain === "arbitrum" ? arbitrum : polygon,
-                        address: erc721ContractAddress,
-                    });
-
-
-                    // generate image
-                    const image = "https://next.unove.space/logo-chatgpt.png";
-
-                    const transactionMintTo = mintTo({
-                        contract,
-                        to: address,
-                        nft: {
-                        name: "NFT",
-                        description: "NFT",
-                        image: image,
-                        animation_url: image,
-
-                        attributes: [
-                            {
-                            trait_type: "CreatorName",
-                            value: nickname,
-                            },
-                        ],
-
-                        },
-                    });
-
-
-
-                    const sendData = await sendAndConfirmTransaction({
-                        transaction: transactionMintTo,
-                        account: smartAccount,
-                    });
-
-
-
-
-
-                    // update the user with the erc721 contract address
-
-                    const response = await fetch("/api/user/updateErc721ContractAddress", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            walletAddress: address,
-                            erc721ContractAddress: erc721ContractAddress,
-                        }),
-                    });
-
-                    setErc721ContractAddress(erc721ContractAddress);
-
-
-                    toast.success(Alert_OpenSea_Collection_made);
-                } else {
-                    toast.error('Error deploying ERC721 contract');
-                }
-
-                setLoadingDeployERC721Contract(false);
-
-            } catch (error) {
-
-                console.error("Error deploying ERC721 contract", error);
-                setLoadingDeployERC721Contract(false);
-
-            }
-
-        }
-
-
-
-    }
-
-
-
-    // remove image
-
-    const removeImage = async (url: string) => {
-
-        if (confirm("Are you sure you want to delete this image?")) {
-
-            const response = await fetch("/api/ai/removeOneImage", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    image: url,
-                }),
-            });
-
-            const data = await response.json();
-
-            console.log("data", data);
-
-            // get my images from api
-            const response2 = await fetch("/api/ai/getImages?userid=" + address, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-
-            const data2 = await response2.json();
-
-            //console.log("data2", data2);
-
-            setMyImages(data2.images || []);
-
-        }
-
-    }
 
 
 
@@ -1476,6 +921,7 @@ export default function AIPage({ params }: any) {
 
                   
                         <div className='flex flex-col xl:flex-row gap-5 items-center xl:items-start justify-between border border-gray-300 p-4 rounded-lg'>
+                            
                             <div className='flex flex-row items-center gap-2'>
                                 {/* dot */}
                                 <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
@@ -1483,12 +929,20 @@ export default function AIPage({ params }: any) {
                                     100 TBOT for HTX
                                 </span>
                             </div>
+
                             <div className='flex flex-col items-center gap-2
                                 border border-gray-300 p-4 rounded-lg
                             '>
+                                {/* 이벤트기간동안 Free */}
+                                <span className='
+                                    text-sm font-semibold text-green-500
+                                    bg-yellow-200 p-2 rounded-lg
+                                '>
+                                    이벤트기간동안 Free
+                                </span>
                                 <div className='flex flex-row items-center gap-2'>
                                     <Image
-                                        src="/logo-tbot.webp"
+                                        src="/tbot100.png"
                                         alt="TBOT"
                                         width={200}
                                         height={200}
@@ -1503,7 +957,10 @@ export default function AIPage({ params }: any) {
                                 {/* button for buy */}
                                 {/* 121 USDT BUY */}
                                 <button
-                                    className='bg-blue-500 text-zinc-100 p-2 rounded text-lg font-semibold'
+                                    className={`${claimingNFT ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold`}
+                                    disabled={claimingNFT}
+                                    // mintNFT
+                                    onClick={() => claimNFT()}
                                 >
 
                                     <div className='flex flex-row items-center gap-2'>
@@ -1516,19 +973,21 @@ export default function AIPage({ params }: any) {
                                         <span className='text-lg font-semibold'>
                                             121 USDT BUY
                                         </span>
-
-                                        {/* 이벤트기간동안 Free */}
-                                        <span className='text-sm font-semibold  bg-yellow-200 text-gray-800 p-1 rounded-lg'>
-                                            이벤트기간동안 Free
-                                        </span>
-
                                     </div>
 
 
                                 </button>
 
+                                {/* claimingNFT */}
+                                {claimingNFT && (
+                                    <span className='text-sm font-semibold text-blue-500'>
+                                        {Minting_NFT}
+                                    </span>
+                                )}
+
 
                                 {/* if myImages.length > 0, then disable */}
+                                {/*
                                 <button
                                     
                                     disabled={
@@ -1548,10 +1007,6 @@ export default function AIPage({ params }: any) {
                                     {loading ? "Loading..." : "Generate TBOT"}
                                 </button>
 
-                                {/* if myImages.length > 0, then image */}
-
-
-                                
                                 {myImages.length > 0 && (
                                     <Image
                                         src={myImages[0]?.image || "/logo-chatgpt.png"}
@@ -1561,7 +1016,7 @@ export default function AIPage({ params }: any) {
                                     />
                                 )}
                                 
-
+                                */}
 
 
 
@@ -1690,7 +1145,7 @@ export default function AIPage({ params }: any) {
                             '>
                                 <div className='flex flex-row items-center gap-2'>
                                     <Image
-                                        src="/logo-tbot.webp"
+                                        src="/tbot.png"
                                         alt="TBOT"
                                         width={200}
                                         height={200}
@@ -1811,7 +1266,7 @@ export default function AIPage({ params }: any) {
                             '>
                                 <div className='flex flex-row items-center gap-2'>
                                     <Image
-                                        src="/logo-tbot.webp"
+                                        src="/tbot.png"
                                         alt="TBOT"
                                         width={200}
                                         height={200}
@@ -1892,385 +1347,6 @@ export default function AIPage({ params }: any) {
                             </div>
 
                         </div>
-
-
-      
-
-                    </div>
-
-
-
-                    <div className=' w-full  flex flex-col gap-5 '>
-
-
-                        {/* input prompt */}
-                        <div className='flex flex-col xl:flex-row gap-5 items-center justify-between border border-gray-300 p-4 rounded-lg'>
-
-                            <div className='flex flex-row items-center gap-2'>
-                                {/*
-                                <input
-                                    disabled={!address || loading}
-                                    type="text"
-                                    value={prompt}
-                                    onChange={(e) => setPrompt(e.target.value)}
-                                    placeholder="prompt"
-                                    className={` ${!address || loading ? 'bg-gray-300 text-gray-500' : 'bg-zinc-100 text-zinc-800'} p-2 rounded
-                                        text-lg w-full
-                                        `}
-                                />
-                                */}
-                                {/* text area for prompt */}
-                                <textarea
-                                    disabled={!address || loading}
-                                    value={prompt}
-                                    onChange={(e) => setPrompt(e.target.value)}
-                                    placeholder={Prompt_input_placeholder}
-                                    className={` ${!address || loading ? 'bg-gray-300 text-gray-500' : 'bg-zinc-100 text-zinc-800'} p-2 rounded
-                                        text-lg w-full hidden
-                                        `}
-                                />
-
-
-                                {/* cehck box for real picture */}
-                                <input
-                                    type="checkbox"
-                                    checked={checkIsRealPicture}
-                                    onChange={(e) => setCheckIsRealPicture(e.target.checked)}
-                                    className='p-2 hidden'
-                                />
-                                <div className='hidden'>
-                                    {Real_prompt}
-                                </div>
-
-                                {/*
-                                <button
-                                    disabled={!address || !prompt || loading}
-                                    onClick={getImages}
-                                    className={` ${!address || !prompt || loading ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded
-                                        text-lg font-semibold w-32 h-12
-                                        `}
-                                >
-                                    이미지 생성
-                                </button>
-                                */}
-       
-
-                                {/* Reset Button */}
-                                <button
-                                    disabled={!address || loading}
-                                    onClick={() => {
-                                        setPrompt("");
-                                        setResults([]);
-                                        setCheckIsRealPicture(false);
-                                    }}
-                                    className={` ${!address || loading ? 'bg-gray-300 text-gray-500' : 'bg-red-500 text-zinc-100'} p-2 rounded
-                                        text-lg font-semibold w-32 h-12 hidden
-                                        `}
-                                >
-                                    초기화
-                                </button>
-
-
-                            </div>
-
-                            
-
-                            <div className='mt-10 xl:mt-0 flex flex-row items-center gap-2'>
-                            
-                                { loading && (
-                                    <div className='flex flex-col items-center gap-2'>
-                                        <Image
-                                            src="/chatbot-loading.gif"
-                                            alt="loading"
-                                            width={400}
-                                            height={400}
-
-                                        />
-                                        <span>
-                                            이미지 생성중...
-                                        </span>
-                                    </div>
-                                )}
-
-                                {!loading && results.length > 0 && results?.map((result : any, index : number) => (
-
-                                    <div key={index} className='flex flex-col gap-2 items-center justify-between '>
-                                        
-                                        <div className='flex flex-col items-center gap-2 border border-gray-300 rounded-lg p-4'>
-                                            
-                                            <div className='flex flex-col items-center gap-2'>
-                                            
-                                                <Image
-                                                    src={result.url}
-                                                    alt={result.url}
-                                                    width={500}
-                                                    height={500}
-                                                />
-
-                                                <span className='hidden'>
-                                                    {prompt}
-                                                </span>
-                                            </div>
-
-                                            {loadingDownload ? (
-                                                <div className='flex flex-col items-center gap-2'>
-                                                    <Image
-                                                        src="/chatbot-loading.gif"
-                                                        alt="loading"
-                                                        width={100}
-                                                        height={100}
-                                                    />
-                                                    <span>
-                                                        TBOT NFT 구매중...
-                                                    </span>
-                                                </div>
-                                            ) : (
-                                                <button
-                                                    disabled={loadingDownload}
-                                                    onClick={() => download(result.url)}
-                                                    className={` ${loadingDownload ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded
-                                                        text-lg font-semibold m-2
-                                                        `}
-                                                >
-                                                    TBOT NFT 구매
-                                                </button>
-                                            )}
-
-                                        </div>
-
-
-                                    </div>
-                                ))}
-
-                            </div>
-
-                       
-
-                        </div>
-
-
-                        {/* check erc721 contract address */}
-                        {/* if not set, deploy */}
-
-                        {/*
-                        {userCode && !erc721ContractAddress && (
-                            <div className='mt-10 flex flex-col gap-5 items-center justify-center'>
-
-                                {loadingDeployERC721Contract ? (
-                                    <div className='flex flex-row items-center gap-2'>
-                                        <Image
-                                            src="/chatbot-loading.gif"
-                                            alt="loading"
-                                            width={100}
-                                            height={100}
-                                        />
-                                        <span>
-                                            컬렉션 생성중...
-                                        </span>
-                                    </div>
-                                ) : (
-                                    <div className='flex flex-col gap-2 items-center justify-between '>
-                                        <span className='text-sm text-gray-500'>
-                                            컬렉션을 만들어서 오픈씨에 등록하세요.
-                                        </span>
-                                        <button
-                                            disabled={loadingDeployERC721Contract}
-                                            onClick={deployERC721}
-                                            className={` ${loadingDeployERC721Contract ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded
-                                                text-lg font-semibold m-2
-                                                `}
-                                        >
-                                            {loadingDeployERC721Contract ? "컬렉션 생성중..." : "컬렉션 생성"}
-                                        </button>
-                                    </div>
-
-                                )}
-
-                            </div>
-                        )}
-   
-                        {erc721ContractAddress && (
-                            <div className='mt-10 flex flex-col gap-5 items-center justify-center text-sm'>
-                                <div>
-                                    컬렉션 주소: {erc721ContractAddress}
-                                </div>
-                                <button
-                                    onClick={() => window.open("https://opensea.io/assets/matic/" + erc721ContractAddress)}
-
-                                    className='hover:underline'
-                                >
-                                    <div className='flex flex-row items-center gap-2'>
-                                    
-                                        <Image
-                                            src="/logo-opensea.png"
-                                            alt="opensea"
-                                            width={100}
-                                            height={100}
-                                        />
-                                        <span className='ml-2'>
-                                            오픈씨 컬렉션
-                                        </span>
-                                    </div>
-                                    
-                                </button>
-                            </div>
-                        )}
-                        */}
-                        
-
-
-
-                        {/* my images */}
-
-                        {/* 나의 TBOT */}
-                        <div className='flex flex-col gap-5 '>
-                            <div className='flex flex-row items-center gap-2'>
-                                {/* dot */}
-                                <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
-                                <span className='text-lg font-semibold'>
-                                    나의 TBOT
-                                </span>
-                            </div>
-                            <span className='text-sm text-gray-500'>
-                                구매한 TBOT NFT 입니다.
-                            </span>
-                        </div>
-
-                        <div className="mt-10 w-full grid gap-4 lg:grid-cols-2 xl:grid-cols-3 justify-center ">
-
-
-
-                            {loadingMyImages && (
-
-                                <div className='flex flex-col items-center justify-center'>
-                                    <Image
-                                        src="/chatbot-loading.gif"
-                                        alt="loading"
-                                        width={100}
-                                        height={100}
-                                    />
-                                    <span>
-                                        이미지 로딩중...
-                                    </span>
-                                </div>
-
-                            )}
-
-                            {!loadingMyImages && myImages.length > 0 && myImages?.map((result : any, index : number) => (
-
-                                <div key={index} className='flex flex-col gap-2 items-center justify-between '>
-    
-                                    <div className='flex flex-col items-center gap-2 border border-gray-300 rounded-lg p-4'>
-                                        
-                                        <div className='flex flex-col items-center gap-2'>
-                                            <Image
-                                                src={result.image}
-                                                alt={result.image}
-                                                width={400}
-                                                height={400}
-                                                className='rounded-lg'
-                                            />
-                                            <span>
-                                                {/*result.prompt*/}
-                                            </span>
-                                        </div>
-
-                                        {/* mint nft button */}
-                                        {result.erc721ContractAddress ? (
-
-                                            <button
-                                                // open opensea
-                                                onClick={() => window.open("https://opensea.io/assets/matic/" + result.erc721ContractAddress + "/" + result.tokenid)}
-                                                className='hover:underline'
-                                            >
-                                                <div className='flex flex-row items-center gap-2'>
-                                                    {/* verify image */}
-                                                    <Image
-                                                        src="/verified.png"
-                                                        alt="verified"
-                                                        width={20}
-                                                        height={20}
-                                                    />
-                                                    {/* updatedAt */}
-                                                    <span>
-                                                        {new Date(result.updatedAt).toLocaleString()}
-                                                    </span>
-                                                    <Image
-                                                        src="/logo-opensea.png"
-                                                        alt="opensea"
-                                                        width={50}
-                                                        height={50}
-                                                    />
-                                                    <span>
-                                                        OpenSea
-                                                    </span>
-                                                </div>
-                                            </button>
-                                        
-                                        ) : (
-                                            <>
-                                                {loadingMintNFTs[index] ? (
-                                                    <div className='flex flex-row items-center gap-2'>
-                                                        <Image
-                                                            src="/chatbot-loading.gif"
-                                                            alt="loading"
-                                                            width={100}
-                                                            height={100}
-                                                        />
-                                                        <span>
-                                                            {/*Minting_NFT*/}
-                                                            NFT 발행중...
-                                                        </span>
-                                                    </div>
-                                                ) : (
-                                                    <div className='flex flex-row items-center gap-2'>
-                                                        
-                                                        {/*}
-                                                        <button
-                                                            disabled={loadingMintNFTs[index]}
-                                                            onClick={() => mintNFT(
-                                                                result.image,
-                                                                result.prompt,
-                                                                index
-                                                            )}
-                                                            className={` ${loadingMintNFTs[index] ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded
-                                                                text-lg font-semibold m-2
-                                                                `}
-                                                        >
-                                                            {loadingMintNFTs[index] ? "NFT 발행중..." : "NFT 발행"}
-                                                        
-                                                        </button>
-                                                        
-                                                        <button
-                                                            onClick={() => {
-                                                                removeImage(result.image);
-                                                            } }
-                                                            className='hover:underline'
-                                                        >
-                                                            <div className='flex flex-row items-center gap-2'>
-                                                                <span>
-                                                                    Delete
-                                                                </span>
-                                                            </div>
-                                                        </button>
-                                                        */}
-
-
-                                                    </div>
-                                                )}
-                                            </>
-                                        )}
-                                            
-
-
-                                    </div>
-                                </div>
-
-                            ))}
-
-                        </div>
-
-
 
 
                     </div>

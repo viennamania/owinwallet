@@ -341,6 +341,10 @@
     "Copied_Wallet_Address": "지갑 주소가 복사되었습니다.",
 
     "Apply_for_Listing_New_Token": "신규 토큰 상장 신청하기",
-    "Apply_for_Listing_New_Seller": "신규 판매자 등록 신청하기"
+    "Apply_for_Listing_New_Seller": "신규 판매자 등록 신청하기",
+
+    "Mint_NFT": "NFT 발행하기",
+    "Alert_NFT_minted": "NFT가 발행되었습니다.",
+    "Minting_NFT": "NFT 발행 중입니다."
 
 }
