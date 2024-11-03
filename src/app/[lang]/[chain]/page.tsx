@@ -1014,24 +1014,27 @@ export default function Index({ params }: any) {
         {!address && (
 
           <div className="w-full flex flex-col justify-center items-center gap-2">
-            <button
-              onClick={handleConnect}
-              className="w-full bg-zinc-800 text-white px-4 py-2 rounded-lg hover:bg-zinc-900"
-            >
-              <div className="flex flex-row justify-center items-center gap-2">
-                <Image
-                  src={thirdwebIcon}
-                  alt="Thirdweb"
-                  width={20}
-                  height={20}
-                  className="rounded-lg w-10 h-10"
-                />
-                <span>Sign in with OWIN Magic Wallet</span>
-              </div>
-            </button>
+
+            {/*
+              <button
+                onClick={handleConnect}
+                className="w-full bg-zinc-800 text-white px-4 py-2 rounded-lg hover:bg-zinc-900"
+              >
+                <div className="flex flex-row justify-center items-center gap-2">
+                  <Image
+                    src={thirdwebIcon}
+                    alt="Thirdweb"
+                    width={20}
+                    height={20}
+                    className="rounded-lg w-10 h-10"
+                  />
+                  <span>Sign in with OWIN Magic Wallet</span>
+                </div>
+              </button>
+            */}
 
             
-            <ConnectButton
+              <ConnectButton
                 client={client}
                 wallets={wallets}
 
@@ -1044,9 +1047,16 @@ export default function Index({ params }: any) {
                 
                 
                 theme={"light"}
+
+                
+
+                connectButton={{
+                  label: "Sign in with OWIN Magic Wallet",
+                }}
+
                 connectModal={{
                   size: "wide",                            
-                  //title: "Connect",
+                  showThirdwebBranding: false,
 
                 }}
 
@@ -1059,6 +1069,9 @@ export default function Index({ params }: any) {
 
                   }
                 }
+
+                //locale={"ko_KR"}
+                locale={"en_US"}
               />
             
           
@@ -1068,7 +1081,7 @@ export default function Index({ params }: any) {
         )}
 
         {address && (
-          <div className="mt-0 w-full flex items-start justify-start gap-5">
+          <div className="mt-0 w-full flex items-center justify-start gap-5">
             <Image
               src="/icon-wallet-live.gif"
               alt="Wallet"
@@ -1093,12 +1106,8 @@ export default function Index({ params }: any) {
             
 
 
-        <div className="mt-2 w-full flex flex-col xl:flex-row items-center xl:items-stretch justify-center gap-5 mb-10">
+        <div className="mt-5 w-full flex flex-col xl:flex-row items-center xl:items-stretch justify-center gap-5 mb-10">
               
-
-
-
-
               <div
                 className="flex flex-col bg-yellow-500 p-5 rounded-lg text-center
                 w-full xl:w-1/2
