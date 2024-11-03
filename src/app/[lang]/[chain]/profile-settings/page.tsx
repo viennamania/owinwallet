@@ -911,7 +911,10 @@ export default function SettingsPage({ params }: any) {
                             </span>
                             <button
                                 onClick={() => {
-                                    navigator.clipboard.writeText(referralCode);
+                                    navigator.clipboard.writeText(
+                                        'https://owinwallet.com/kr/tron/?agent=' +
+                                        referralCode
+                                    );
                                     toast.success('에이전트 코드가 복사되었습니다');
                                 }}
                                 className="p-2 bg-blue-500 text-zinc-100 rounded"

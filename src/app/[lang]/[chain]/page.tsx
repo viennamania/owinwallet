@@ -1750,7 +1750,7 @@ export default function Index({ params }: any) {
                         }
 
                         router.push(
-                          "/" + params.lang + "/" + params.chain + "/profile-settings"
+                          "/" + params.lang + "/polygon/profile-settings" + "?agent=" + agent
                         );
 
                       }}
