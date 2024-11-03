@@ -605,8 +605,12 @@ export default function SendUsdt({ params }: any) {
 
     //console.log('amount', amount, "balance", balance);
 
- 
-    if (Number(amount) > balance) {
+    if (params.chain === "tron" && Number(amount) > usdtBalance) {
+      toast.error('Insufficient balance');
+      return;
+    }
+
+    if (params.chain !== "tron" && Number(amount) > balance) {
       toast.error('Insufficient balance');
       return;
     }
@@ -816,6 +820,33 @@ export default function SendUsdt({ params }: any) {
     return data.result;
 
   };
+
+
+  // get user by wallet address
+  const getUserByTronWalletAddress = async (tronWalletAddress: string) => {
+
+    const response = await fetch('/api/user/getUserByTronWalletAddress', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        tronWalletAddress: tronWalletAddress,
+      }),
+    });
+
+    const data = await response.json();
+
+    //console.log("getUserByWalletAddress", data);
+
+    return data.result;
+
+  };
+
+
+
+
+
   
   const [wantToReceiveWalletAddress, setWantToReceiveWalletAddress] = useState(false);
 
@@ -855,6 +886,54 @@ export default function SendUsdt({ params }: any) {
             avatar: '',
             mobile: '',
             walletAddress: recipient?.walletAddress,
+            tronWalletAddress: tronWalletAddress,
+            createdAt: '',
+            settlementAmountOfFee: '',
+
+          });
+
+
+        }
+
+    });
+
+  } , [recipient?.walletAddress, tronWalletAddress]);
+
+
+
+  useEffect(() => {
+
+    if (!recipient?.tronWalletAddress) {
+      return;
+    }
+
+    // check recipient.walletAddress is in the user list
+    getUserByTronWalletAddress(recipient?.tronWalletAddress)
+
+    .then((data) => {
+        
+        //console.log("data============", data);
+  
+        const checkUser = data
+
+        if (checkUser) {
+          setIsWhateListedUser(true);
+
+          setRecipient(checkUser as any);
+
+        } else {
+          setIsWhateListedUser(false);
+
+          setRecipient({
+
+
+            _id: '',
+            id: 0,
+            email: '',
+            nickname: '',
+            avatar: '',
+            mobile: '',
+            walletAddress: '',
             tronWalletAddress: recipient?.tronWalletAddress,
             createdAt: '',
             settlementAmountOfFee: '',
@@ -866,8 +945,7 @@ export default function SendUsdt({ params }: any) {
 
     });
 
-  } , [recipient?.walletAddress, recipient?.tronWalletAddress]);
-
+  } , [recipient?.tronWalletAddress]);
   
 
 
@@ -1204,7 +1282,7 @@ export default function SendUsdt({ params }: any) {
 
 
             <div className='w-full  flex flex-col gap-5 border
-              bg-yellow-500 border-yellow-500 text-white
+              bg-zinc-800 text-white
               p-4 rounded-lg
 
               '>
@@ -1215,7 +1293,7 @@ export default function SendUsdt({ params }: any) {
                 <div className="w-4 h-4 bg-red-500 rounded-full mr-2"></div>
                 <div className="text-lg
                   font-semibold
-                  text-gray-800
+                  text-white
 
                 ">
                   {Enter_the_amount_and_recipient_address}
@@ -1251,6 +1329,17 @@ export default function SendUsdt({ params }: any) {
                   )}
                 />
            
+
+                {/* check box for want to receive wallet address */}
+                <div className="flex flex-row items-center gap-2">
+                  <input
+                    type="checkbox"
+                    className="w-6 h-6"
+                    checked={wantToReceiveWalletAddress}
+                    onChange={(e) => setWantToReceiveWalletAddress(e.target.checked)}
+                  />
+                  <div className="text-white">{Enter_Wallet_Address}</div>
+                </div>
 
             
             
@@ -1371,7 +1460,9 @@ export default function SendUsdt({ params }: any) {
                       type="text"
                       placeholder={User_wallet_address}
                       className=" w-80 xl:w-96 p-2 border border-gray-300 rounded text-white bg-black text-sm xl:text-sm font-semibold"
-                      value={recipient.walletAddress}
+
+                      value={recipient.tronWalletAddress}
+
                       onChange={(e) => setRecipient({
                         ...recipient,
                         tronWalletAddress: e.target.value,
