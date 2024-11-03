@@ -874,40 +874,34 @@ export default function SettingsPage({ params }: any) {
                                 p-2 rounded-lg text-sm font-semibold
                             `}
                         >
-                            {loadingDeployErc721Contract ? '에이전트 코드 생성중...' : '에이전트 코드 생성하기'}
+                            <div className='flex flex-row gap-2 items-center justify-center'>
+                                {/* rotating icon */}
+                                {address && loadingDeployErc721Contract && (
+                                    <Image
+                                        src="/loading.png"
+                                        alt="loding"
+                                        width={30}
+                                        height={30}
+                                        className='animate-spin'
+                                    />
+                                )}
+                                {address && loadingDeployErc721Contract ? '에이전트 코드 생성중...' : '에이전트 코드 생성하기'}
+                            </div>
 
                         </button>
-                        
+
                     )}
 
                     {/* My Referral Code */}
                     {/* address */}
                     {address && referralCode && (
 
-                    <div className='w-full flex flex-col gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>   
-                        
-
-
-
-
-                        <div className='flex flex-row gap-2 items-start justify-start'>
-                            {/* dot icon */}
-                            <div className='bg-green-500 w-4 h-4 rounded-full'></div>
-                            <span className='text-sm font-semibold'>
-                                에이전트
-                            </span>
-                        </div>
-
-
-
-
-
-
-
                         <div className='w-full flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
-                            <span className='text-sm font-semibold'>
-                                My Referral Code
-                            </span>
+
+                            <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
+                                에이전트 코드
+                            </div>
+
                             <span className='text-lg font-semibold'>
                                 {referralCode.substring(0, 6) + '...' + referralCode.substring(referralCode.length - 4)}
                             </span>
@@ -920,8 +914,16 @@ export default function SettingsPage({ params }: any) {
                             >
                                 Copy
                             </button>
+                            {/* verified icon */}
+                            <Image
+                                src="/verified.png"
+                                alt="Verified"
+                                width={20}
+                                height={20}
+                                className="rounded-lg"
+                            />
                         </div>
-                    </div>
+
                     )}
 
 
