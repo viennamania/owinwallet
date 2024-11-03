@@ -1382,7 +1382,7 @@ export default function SettingsPage({ params }: any) {
                                     />
                                 )}
                                 {address && loadingDeployErc721Contract && '에이전트 코드 생성중...'}
-                                {address && !referralCode && '에이전트 코드 생성하기'}
+                                {address && !referralCode && !loadingDeployErc721Contract && '에이전트 코드 생성하기'}
  
                             </div>
 
