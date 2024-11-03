@@ -847,6 +847,52 @@ export default function AIPage({ params }: any) {
 
     const applyMintAgentBot = async () => {
 
+        if (address === "") {
+            toast.error("먼저 지갑을 연결해 주세요.");
+            return;
+        }
+
+        if (agentBot === "") {
+            toast.error("Agent Bot을 선택해 주세요.");
+            return;
+        }
+
+        if (userName === "") {
+            toast.error("이름을 입력해 주세요.");
+            return;
+        }
+
+        if (userPhoneNumber === "") {
+            toast.error("핸드폰번호를 입력해 주세요.");
+            return;
+        }
+
+        if (userEmail === "") {
+            toast.error("이메일주소를 입력해 주세요.");
+            return;
+        }
+
+        if (htxUid === "") {
+            toast.error("HTX UID를 입력해 주세요.");
+            return;
+        }
+
+        if (htxUsdtWalletAddress === "") {
+            toast.error("HTX USDT(TRON) 지갑주소를 입력해 주세요.");
+            return;
+        }
+
+        if (apiAccessKey === "") {
+            toast.error("API Access Key를 입력해 주세요.");
+            return;
+        }
+
+        if (apiSecretKey === "") {
+            toast.error("API Secret Key를 입력해 주세요.");
+            return;
+        }
+
+
         // api call
 
         const response = await fetch("/api/agent/applyMintNFT", {
@@ -1323,16 +1369,18 @@ export default function AIPage({ params }: any) {
                                     )}
 
                                     {/* myNfts */}
-                                    <div className='flex flex-row items-center gap-2'>
-                                        <span className='text-5xl font-semibold
-                                            text-blue-500
-                                        '>
-                                            1
-                                        </span>
-                                        <span className='text-lg font-semibold'>
-                                            TBOT
-                                        </span>
-                                    </div>
+                                    {address && amountNft100 > 0 && (
+                                        <div className='flex flex-row items-center gap-2'>
+                                            <span className='text-5xl font-semibold
+                                                text-blue-500
+                                            '>
+                                                1
+                                            </span>
+                                            <span className='text-lg font-semibold'>
+                                                TBOT
+                                            </span>
+                                        </div>
+                                    )}
 
 
                                     {/* if myImages.length > 0, then disable */}
@@ -1476,7 +1524,7 @@ export default function AIPage({ params }: any) {
                                         {agents.length > 0 && (
                                             <div className='flex flex-col gap-2'>
                                                 <span className='text-lg font-semibold text-blue-500'>
-                                                    에이전트를 선택하세요
+                                                    AI 에이전트를 선택하세요
                                                 </span>
                                                 <div className='flex flex-col gap-2'>
                                                     {agents.map((agent) => (
