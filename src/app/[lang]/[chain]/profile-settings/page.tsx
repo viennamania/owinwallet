@@ -694,7 +694,12 @@ export default function SettingsPage({ params }: any) {
     const deployErc721Contract = async () => {
   
         if (!address) {
-            toast.error('Please connect your wallet first');
+            toast.error('지갑을 먼저 연결해주세요');
+            return;
+        }
+
+        if (!userCode) {
+            toast.error('닉네임을 먼저 설정해주세요');
             return;
         }
 
@@ -867,71 +872,7 @@ export default function SettingsPage({ params }: any) {
                     </div>
 
 
-                    {address && !referralCode && (
 
- 
-                        <button
-                            disabled={loadingDeployErc721Contract}
-                            onClick={deployErc721Contract}
-                            className={`
-                                ${loadingDeployErc721Contract ? 'bg-gray-300 text-gray-400' : 'bg-green-500 text-zinc-100'}
-                                p-2 rounded-lg text-sm font-semibold
-                            `}
-                        >
-                            <div className='flex flex-row gap-2 items-center justify-center'>
-                                {/* rotating icon */}
-                                {address && loadingDeployErc721Contract && (
-                                    <Image
-                                        src="/loading.png"
-                                        alt="loding"
-                                        width={30}
-                                        height={30}
-                                        className='animate-spin'
-                                    />
-                                )}
-                                {address && loadingDeployErc721Contract ? '에이전트 코드 생성중...' : '에이전트 코드 생성하기'}
-                            </div>
-
-                        </button>
-
-                    )}
-
-                    {/* My Referral Code */}
-                    {/* address */}
-                    {address && referralCode && (
-
-                        <div className='w-full flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
-
-                            <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
-                                에이전트 코드
-                            </div>
-
-                            <span className='text-lg font-semibold'>
-                                {referralCode.substring(0, 6) + '...' + referralCode.substring(referralCode.length - 4)}
-                            </span>
-                            <button
-                                onClick={() => {
-                                    navigator.clipboard.writeText(
-                                        'https://owinwallet.com/kr/tron/?agent=' +
-                                        referralCode
-                                    );
-                                    toast.success('에이전트 코드가 복사되었습니다');
-                                }}
-                                className="p-2 bg-blue-500 text-zinc-100 rounded"
-                            >
-                                Copy
-                            </button>
-                            {/* verified icon */}
-                            <Image
-                                src="/verified.png"
-                                alt="Verified"
-                                width={20}
-                                height={20}
-                                className="rounded-lg"
-                            />
-                        </div>
-
-                    )}
 
 
                     <div className='w-full  flex flex-col gap-5 '>
@@ -1414,6 +1355,86 @@ export default function SettingsPage({ params }: any) {
                     
 
                     </div>
+
+
+
+
+                    {address && !referralCode && (
+
+ 
+                        <button
+                            disabled={loadingDeployErc721Contract}
+                            onClick={deployErc721Contract}
+                            className={`
+                                ${loadingDeployErc721Contract ? 'bg-gray-300 text-gray-400' : 'bg-green-500 text-zinc-100'}
+                                p-2 rounded-lg text-sm font-semibold
+                            `}
+                        >
+                            <div className='flex flex-row gap-2 items-center justify-center'>
+                                {/* rotating icon */}
+                                {address && loadingDeployErc721Contract && (
+                                    <Image
+                                        src="/loading.png"
+                                        alt="loding"
+                                        width={30}
+                                        height={30}
+                                        className='animate-spin'
+                                    />
+                                )}
+                                {address && loadingDeployErc721Contract && '에이전트 코드 생성중...'}
+                                {address && !referralCode && '에이전트 코드 생성하기'}
+ 
+                            </div>
+
+                        </button>
+
+                        )}
+
+                        {/* My Referral Code */}
+                        {/* address */}
+                        {address && referralCode && (
+
+                        <div className='w-full flex flex-col gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
+
+                            <div className='w-full flex flex-row gap-2 items-center justify-between'>
+                                <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
+                                    에이전트 코드
+                                </div>
+
+                                <span className='text-lg font-semibold'>
+                                    {referralCode.substring(0, 6) + '...' + referralCode.substring(referralCode.length - 4)}
+                                </span>
+
+                                {/* verified icon */}
+                                <Image
+                                    src="/verified.png"
+                                    alt="Verified"
+                                    width={20}
+                                    height={20}
+                                    className="rounded-lg"
+                                />
+                            </div>
+
+                            <button
+                                onClick={() => {
+                                    navigator.clipboard.writeText(
+                                        'https://owinwallet.com/kr/tron/?agent=' +
+                                        referralCode
+                                    );
+                                    toast.success('레퍼럴 URL 복사 완료');
+                                }}
+                                className="p-2 bg-blue-500 text-zinc-100 rounded"
+                            >
+                                레퍼럴 URL 복사
+                            </button>
+
+                        </div>
+
+                        )}
+
+
+
+
 
 
                 </div>

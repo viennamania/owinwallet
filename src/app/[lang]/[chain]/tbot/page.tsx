@@ -77,6 +77,14 @@ import {
   
 } from "thirdweb/extensions/erc1155";
 
+
+
+import {
+    getNFT as getNFT721,
+} from "thirdweb/extensions/erc721";
+
+
+
 import { Alert, useForkRef } from '@mui/material';
 
 
@@ -716,6 +724,98 @@ export default function AIPage({ params }: any) {
 
 
     console.log("address", address);
+    console.log("agent", agent);
+    
+
+
+
+    // get all agents
+    const [agents, setAgents] = useState([] as any[]);
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await fetch("/api/user/getAllAgents", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                }),
+            });
+            const data = await response.json();
+            console.log("data", data);
+            setAgents(data.result.users);
+        };
+        fetchData();
+    }, []);
+
+
+    console.log("agents", agents);
+
+
+    useEffect(() => {
+
+        if (agents.length > 0) {
+            
+        }
+
+    } , [agents]);
+
+
+
+    // agentBot
+    const [agentBot, setAgentBot] = useState(agent || "");
+
+
+
+    // getNFt721 for agentBot (ERC721 contract address)
+
+    const [agentBotErc721, setAgentBotErc721] = useState({} as any);
+
+    const [agentBotImage, setAgentBotImage] = useState("");
+
+ 
+    useEffect(() => {
+
+        const fetchData = async () => {
+
+            if (agentBot === "") {
+                return;
+            }
+
+
+            const contract = getContract({
+                client,
+                chain: polygon,
+                address: agentBot,
+            });
+
+            const nft721 = await getNFT721({
+                contract: contract,
+                tokenId: 0n,
+            });
+                
+
+            //setAgentBotErc721(nft721);
+            
+            if (agentBot === "0x153828cfaF9df81f39Fa1C5Fc64cc88F2d05c596") {
+                setAgentBotImage("/logo-masterbot1.png");
+            } else {
+                setAgentBotImage("/logo-masterbot2.png");
+            }
+            
+
+            
+
+
+
+        };
+
+        fetchData();
+
+    } , [agentBot]);
+
+
+    console.log("agentBotErc721", agentBotErc721);
 
 
 
@@ -1165,6 +1265,53 @@ export default function AIPage({ params }: any) {
                                 
                                 */}
 
+                                {/* select agent */}
+                                {/* agent list and radio button */}
+                                {/* if agent.erc721ContractAddress is param agent, then select */}
+
+
+                        
+                                {
+                                    agents.length > 0 && (
+                                    <div className='flex flex-col gap-2'>
+                                        <span className='text-lg font-semibold text-blue-500'>
+                                            에이전트를 선택하세요
+                                        </span>
+                                        <div className='flex flex-col gap-2'>
+                                            {agents.map((agent) => (
+                                                <div key={agent.erc721ContractAddress} className='flex flex-row items-center gap-2'>
+                                                    <input
+                                                        type="radio"
+                                                        value={agent.erc721ContractAddress}
+                                                        name="agent"
+                                                        checked={agent.erc721ContractAddress === agentBot}
+                                                        onChange={(e) => {
+                                                            console.log(e.target.value);
+                                                            setAgentBot(e.target.value);
+                                                        }}
+                                                    />
+                                                    <span className='text-sm font-semibold text-gray-500'>
+                                                        {
+                                                            agent.nickname
+                                                            + " (" + agent.erc721ContractAddress.substring(0, 10) + "..." + ")"
+                                                        }
+                                                    </span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
+                                <Image
+                                    src={agentBotImage}
+                                    alt="TBOT"
+                                    width={200}
+                                    height={200}
+                                />
+
+
+
+
 
 
                             </div>
@@ -1500,6 +1647,11 @@ export default function AIPage({ params }: any) {
 
 
                 </div>
+
+
+                {/* select agent */}
+
+
 
             </div>
 

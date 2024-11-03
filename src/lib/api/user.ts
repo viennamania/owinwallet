@@ -43,6 +43,8 @@ export interface UserProps {
 
   tronWalletAddress: string,
   tronWalletPrivateKey: string,
+
+  erc721ContractAddress: string,
 }
 
 export interface ResultProps {
@@ -1037,5 +1039,90 @@ export async function setErc721ContractAddressByWalletAddress(
       }
     }
   );
+  
+}
+
+
+
+
+
+
+
+
+
+
+export async function getAllAgents(
+  {
+    limit,
+    page,
+  }: {
+    limit: number;
+    page: number;
+  }
+): Promise<any> {
+
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('users');
+
+
+  console.log('limit: ' + limit);
+  console.log('page: ' + page);
+
+  // walletAddress is not empty and not null
+  // order by nickname asc
+
+  // where erc721ContractAddress is not empty and not null
+
+  const users = await collection
+    .find<UserProps>(
+      {
+
+
+        walletAddress: { $exists: true, $ne: null},
+        verified: true,
+
+        
+        erc721ContractAddress: { $exists: true, $ne: null },
+        
+
+      },
+      {
+        limit: limit,
+        skip: (page - 1) * limit,
+      },
+      
+    )
+    .sort({ nickname: 1 })
+    .toArray();
+
+
+  // user info
+  // walletAddress, nickname, mobile, email, tronWalletAddress
+
+  const resultUsers = users.map((user) => {
+    return {
+      walletAddress: user.walletAddress,
+      nickname: user.nickname,
+      mobile: user.mobile,
+      email: user.email,
+      tronWalletAddress: user.tronWalletAddress,
+      erc721ContractAddress: user.erc721ContractAddress,
+    };
+  } );
+
+  const totalCount = await collection.countDocuments(
+    {
+      walletAddress: { $exists: true, $ne: null },
+      verified: true,
+      erc721ContractAddress: { $exists: true, $ne: null },
+    }
+  );
+
+  return {
+    totalCount,
+    users: resultUsers,
+  };
+
   
 }
