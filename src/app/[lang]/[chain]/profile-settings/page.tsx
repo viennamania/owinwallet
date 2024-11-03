@@ -17,6 +17,12 @@ import {
 
 import { deployERC721Contract } from 'thirdweb/deploys';
 
+
+import { mintTo } from "thirdweb/extensions/erc721";
+import { sendTransaction } from "thirdweb";
+
+
+
 import {
     polygon,
     arbitrum,
@@ -689,6 +695,8 @@ export default function SettingsPage({ params }: any) {
     }
   
 
+    const [erc721ContractAddress, setErc721ContractAddress] = useState("");
+
 
     const [loadingDeployErc721Contract, setLoadingDeployErc721Contract] = useState(false);
     const deployErc721Contract = async () => {
@@ -771,7 +779,9 @@ export default function SettingsPage({ params }: any) {
                 ///console.log("data", data);
 
 
-                setReferralCode(erc721ContractAddress);
+                //setReferralCode(erc721ContractAddress);
+
+                setErc721ContractAddress(erc721ContractAddress);
                 
 
 
@@ -793,6 +803,60 @@ export default function SettingsPage({ params }: any) {
     };
 
 
+
+    /*
+    const transaction = mintTo({
+        contract,
+        to: "0x...",
+        nft: {
+            name: "My NFT",
+            description: "This is my NFT",
+            image: "https://example.com/image.png",
+        },
+    });
+        
+    await sendTransaction({ transaction, account });
+    */
+
+    const [mintingAgentNft, setMintingAgentNft] = useState(false);
+    const mintAgentNft = async () => {
+
+        if (mintingAgentNft) {
+            return;
+        }
+
+        setMintingAgentNft(true);
+
+        try {
+
+            const contract = getContract({
+                client,
+                chain: params.chain === "arbitrum" ? arbitrum : polygon,
+                address: erc721ContractAddress,
+
+              });
+
+
+            const transaction = mintTo({
+                contract: contract,
+                to: address as string,
+                nft: {
+                    name: "AI Agent",
+                    description: "This is AI Agent",
+                    image: "https://owinwallet.com/logo-aiagent.png",
+                },
+            });
+
+            await sendTransaction({ transaction, account: activeAccount as any });
+
+            toast.success('에이전트 NFT 발행 완료');
+
+        } catch (error) {
+            console.error("mintAgentNft error", error);
+        }
+
+        setMintingAgentNft(false);
+    }
 
 
 
