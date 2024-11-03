@@ -807,7 +807,7 @@ export default function SettingsPage({ params }: any) {
                 <AppBarComponent />
 
                 <Header
-                    agent={agent}
+                    agent={agent || ""}
                 />
         
 
