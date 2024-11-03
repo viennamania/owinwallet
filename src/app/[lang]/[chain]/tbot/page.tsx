@@ -830,6 +830,88 @@ export default function AIPage({ params }: any) {
 
 
 
+
+
+    // apply to mint NFT
+    // 이름, 핸드폰번호, 이메일주소, HTX UID, HTX USDT(TRON) 지갑주소, API Access Key, API Secret Key
+
+    const [userName, setUserName] = useState("");
+    const [userPhoneNumber, setUserPhoneNumber] = useState("");
+    const [userEmail, setUserEmail] = useState("");
+    const [htxUid, setHtxUid] = useState("");
+    const [htxUsdtWalletAddress, setHtxUsdtWalletAddress] = useState("");
+    const [apiAccessKey, setApiAccessKey] = useState("");
+    const [apiSecretKey, setApiSecretKey] = useState("");
+
+    
+
+    const applyMintAgentBot = async () => {
+
+        // api call
+
+        const response = await fetch("/api/agent/applyMintNFT", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                walletAddress: address,
+                agentBot: agentBot,
+                userName: userName,
+                userPhoneNumber: userPhoneNumber,
+                userEmail: userEmail,
+                htxUid: htxUid,
+                htxUsdtWalletAddress: htxUsdtWalletAddress,
+                apiAccessKey: apiAccessKey,
+                apiSecretKey: apiSecretKey,
+            }),
+        });
+
+        if (!response.ok) {
+            console.error("Error applying mint NFT");
+            return;
+        }
+
+        const data = await response.json();
+
+        console.log("data", data);
+
+        if (data.result) {
+            toast.success("NFT Mint 신청이 완료되었습니다.");
+        }
+
+    }
+
+    const [myAgent, setMyAgent] = useState({} as any);
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await fetch("/api/agent/getMyAgent", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    walletAddress: address,
+                }),
+            });
+
+            if (!response.ok) {
+                console.error("Error fetching my agent");
+                return;
+            }
+
+            const data = await response.json();
+
+            console.log("data", data);
+
+            setMyAgent(data.result);
+
+        };
+        fetchData();
+    } , [address]);
+
+
+
     return (
 
         <main className="p-4 pb-10 min-h-[100vh] flex items-start justify-center container max-w-screen-lg mx-auto">
@@ -1208,8 +1290,12 @@ export default function AIPage({ params }: any) {
                                     {/* button for buy */}
                                     {/* 121 USDT BUY */}
                                     <button
-                                        className={`${claimingNFT ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold`}
-                                        disabled={claimingNFT}
+                                        className={`${!address || amountNft100 > 0 || claimingNFT ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold`}
+                                        disabled={
+                                            !address
+                                            || amountNft100 > 0
+                                            || claimingNFT
+                                        }
                                         // mintNFT
                                         onClick={() => claimNFT()}
                                     >
@@ -1241,7 +1327,7 @@ export default function AIPage({ params }: any) {
                                         <span className='text-5xl font-semibold
                                             text-blue-500
                                         '>
-                                            {amountNft100}
+                                            1
                                         </span>
                                         <span className='text-lg font-semibold'>
                                             TBOT
@@ -1283,134 +1369,217 @@ export default function AIPage({ params }: any) {
 
                                 </div>
 
+                                {address && myAgent?.id && (
+                                    <div className='w-full flex flex-col gap-2
+                                        items-center justify-center
+                                        border border-gray-300 p-4 rounded-lg
+                                    '>
+                                        <div className='flex flex-row items-center gap-2'>
+                                            <Image
+                                                src="/loading.png"
+                                                alt="loading"
+                                                width={50}
+                                                height={50}
+                                                className='animate-spin'
+                                            />
+                                            <span className='text-lg font-semibold text-blue-500'>
+                                                AI 에이전트 NFT 발행중...
+                                            </span>
+                                        </div>
 
-                                <div className='w-full flex flex-col items-center gap-2
-                                    border border-gray-300 p-4 rounded-lg
-                                '>
-                                    {/* HTX 가입 */}
-                                    {/* new window
-                                        https://www.htx.com.pk/invite/en-us/1h?invite_code=z73y9223
-                                    */}
+                                        {/* agentBot */}
+                                        <div className='flex flex-col gap-2'>
+                                            <div className='flex flex-row items-center gap-2'>
+                                                {/* dot */}
+                                                <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
+                                                <span className='text-lg font-semibold'>
+                                                    Agent Code
+                                                </span>
+                                            </div>
+                                            <span className='text-sm font-semibold text-gray-500'>
+                                                {myAgent?.agentBot.substring(0, 15) + "..."}
+                                            </span>
+                                        </div>
 
-                                    {/* HTX 거래소에 가입하고 아래 정보를 입력하세요. */}
-                                    <div className='flex flex-row items-center gap-2'>
+                                        {/* masterbot image */}
                                         <Image
-                                            src="/logo-exchange-htx.png"
-                                            alt="HTX"
-                                            width={50}
-                                            height={50}
+                                            src="/logo-masterbot100.png"
+                                            alt="masterbot"
+                                            width={400}
+                                            height={400}
                                         />
-                                        <span className='text-lg font-semibold text-gray-500'>
-                                            HTX 거래소에 가입하고 아래 정보를 입력하세요.
+
+
+                                        <span className='text-lg font-semibold text-blue-500'>
+                                            AI 에이전트 등록 정보
                                         </span>
+                                        <div className='flex flex-col gap-2'>
+                                            <span className='text-sm font-semibold text-gray-500'>
+                                                이름: {myAgent.userName}
+                                            </span>
+                                            <span className='text-sm font-semibold text-gray-500'>
+                                                핸드폰번호: {myAgent.userPhoneNumber}
+                                            </span>
+                                            <span className='text-sm font-semibold text-gray-500'>
+                                                이메일주소: {myAgent.userEmail}
+                                            </span>
+                                            <span className='text-sm font-semibold text-gray-500'>
+                                                HTX UID: {myAgent.htxUid}
+                                            </span>
+                                            <span className='text-sm font-semibold text-gray-500'>
+                                                HTX USDT(TRON) 지갑주소: {myAgent.htxUsdtWalletAddress}
+                                            </span>
+                                            <span className='text-sm font-semibold text-gray-500'>
+                                                API Access Key: {myAgent.apiAccessKey}
+                                            </span>
+                                            <span className='text-sm font-semibold text-gray-500'>
+                                                API Secret Key: {myAgent.apiSecretKey}
+                                            </span>
+                                        </div>
+                                    </div>
+                                )}
+
+
+                                {!myAgent && (
+
+                                    <div className='w-full flex flex-col items-center gap-2
+                                        border border-gray-300 p-4 rounded-lg
+                                    '>
+                                        {/* HTX 가입 */}
+                                        {/* new window
+                                            https://www.htx.com.pk/invite/en-us/1h?invite_code=z73y9223
+                                        */}
+
+                                        {/* HTX 거래소에 가입하고 아래 정보를 입력하세요. */}
+                                        <div className='flex flex-row items-center gap-2'>
+                                            <Image
+                                                src="/logo-exchange-htx.png"
+                                                alt="HTX"
+                                                width={50}
+                                                height={50}
+                                            />
+                                            <span className='text-lg font-semibold text-gray-500'>
+                                                HTX 거래소에 가입하고 아래 정보를 입력하세요.
+                                            </span>
+                                        </div>
+
+                                        <button
+                                            className='w-full bg-blue-500 text-zinc-100 p-2 rounded-lg text-lg font-semibold'
+                                            onClick={() => {
+                                                window.open("https://www.htx.com.pk/invite/en-us/1h?invite_code=z73y9223", "_blank");
+                                            }}
+                                        >
+                                            HTX 가입
+                                        </button>
+
+
+                                        {agents.length > 0 && (
+                                            <div className='flex flex-col gap-2'>
+                                                <span className='text-lg font-semibold text-blue-500'>
+                                                    에이전트를 선택하세요
+                                                </span>
+                                                <div className='flex flex-col gap-2'>
+                                                    {agents.map((agent) => (
+                                                        <div key={agent.erc721ContractAddress} className='flex flex-row items-center gap-2'>
+                                            
+                                                            {/*
+                                                            <Image
+                                                                src={agent.avatar || "/icon-anonymous.png"}
+                                                                alt="TBOT"
+                                                                width={50}
+                                                                height={50}
+                                                            />
+                                                            */}
+
+                                                            <input
+                                                                type="radio"
+                                                                value={agent.erc721ContractAddress}
+                                                                name="agent"
+                                                                checked={agent.erc721ContractAddress === agentBot}
+                                                                onChange={(e) => {
+                                                                    console.log(e.target.value);
+                                                                    setAgentBot(e.target.value);
+                                                                }}
+                                                            />
+                                                            <span className='text-sm font-semibold text-gray-500'>
+                                                                {
+                                                                    agent.erc721ContractAddress.substring(0, 15) + "..."
+                                                                }
+                                                            </span>
+                                                        </div>
+
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+
+
+                                        <Image
+                                            src="/logo-masterbot100.png"
+                                            alt="TBOT"
+                                            width={200}
+                                            height={200}
+                                        />
+
+                                        {/* input for apply */}
+                                        {/* 이름, 핸드폰번호, 이메일주소, HTX UID, HTX USDT(TRON) 지갑주소 */}
+                                        {/* API Access Key, API Secret Key */}
+                                        <input
+                                            onChange={(e) => setUserName(e.target.value)}
+                                            type="text"
+                                            placeholder="이름"
+                                            className="w-full p-2 rounded-lg border border-gray-300"
+                                        />
+                                        <input
+                                            onChange={(e) => setUserPhoneNumber(e.target.value)}
+                                            type="text"
+                                            placeholder="핸드폰번호"
+                                            className="w-full p-2 rounded-lg border border-gray-300"
+                                        />
+                                        <input
+                                            onChange={(e) => setUserEmail(e.target.value)}
+                                            type="text"
+                                            placeholder="이메일주소"
+                                            className="w-full p-2 rounded-lg border border-gray-300"
+                                        />
+                                        <input
+                                            onChange={(e) => setHtxUid(e.target.value)}
+                                            type="text"
+                                            placeholder="HTX UID"
+                                            className="w-full p-2 rounded-lg border border-gray-300"
+                                        />
+                                        <input
+                                            onChange={(e) => setHtxUsdtWalletAddress(e.target.value)}
+                                            type="text"
+                                            placeholder="HTX USDT(TRON) 지갑주소"
+                                            className="w-full p-2 rounded-lg border border-gray-300"
+                                        />
+                                        <input
+                                            onChange={(e) => setApiAccessKey(e.target.value)}
+                                            type="text"
+                                            placeholder="API Access Key"
+                                            className="w-full p-2 rounded-lg border border-gray-300"
+                                        />
+                                        <input
+                                            onChange={(e) => setApiSecretKey(e.target.value)}
+                                            type="text"
+                                            placeholder="API Secret Key"
+                                            className="w-full p-2 rounded-lg border border-gray-300"
+                                        />
+
+
+                                        <button
+                                            onClick={applyMintAgentBot}
+                                            className="mt-5 w-full bg-blue-500 text-zinc-100 p-2 rounded-lg text-lg font-semibold"
+
+                                        >
+                                            민팅 신청
+                                        </button>
+                                        
+
                                     </div>
 
-                                    <button
-                                        className='w-full bg-blue-500 text-zinc-100 p-2 rounded-lg text-lg font-semibold'
-                                        onClick={() => {
-                                            window.open("https://www.htx.com.pk/invite/en-us/1h?invite_code=z73y9223", "_blank");
-                                        }}
-                                    >
-                                        HTX 가입
-                                    </button>
-
-
-                                    {agents.length > 0 && (
-                                        <div className='flex flex-col gap-2'>
-                                            <span className='text-lg font-semibold text-blue-500'>
-                                                에이전트를 선택하세요
-                                            </span>
-                                            <div className='flex flex-col gap-2'>
-                                                {agents.map((agent) => (
-                                                    <div key={agent.erc721ContractAddress} className='flex flex-row items-center gap-2'>
-                                        
-                                                        {/*
-                                                        <Image
-                                                            src={agent.avatar || "/icon-anonymous.png"}
-                                                            alt="TBOT"
-                                                            width={50}
-                                                            height={50}
-                                                        />
-                                                        */}
-
-                                                        <input
-                                                            type="radio"
-                                                            value={agent.erc721ContractAddress}
-                                                            name="agent"
-                                                            checked={agent.erc721ContractAddress === agentBot}
-                                                            onChange={(e) => {
-                                                                console.log(e.target.value);
-                                                                setAgentBot(e.target.value);
-                                                            }}
-                                                        />
-                                                        <span className='text-sm font-semibold text-gray-500'>
-                                                            {
-                                                                agent.erc721ContractAddress.substring(0, 15) + "..."
-                                                            }
-                                                        </span>
-                                                    </div>
-
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )}
-
-
-                                    <Image
-                                        src="/logo-masterbot100.png"
-                                        alt="TBOT"
-                                        width={200}
-                                        height={200}
-                                    />
-
-                                    {/* input for apply */}
-                                    {/* 이름, 핸드폰번호, 이메일주소, HTX UID, HTX USDT(TRON) 지갑주소 */}
-                                    {/* API Access Key, API Secret Key */}
-                                    <input
-                                        type="text"
-                                        placeholder="이름"
-                                        className="w-full p-2 rounded-lg border border-gray-300"
-                                    />
-                                    <input
-                                        type="text"
-                                        placeholder="핸드폰번호"
-                                        className="w-full p-2 rounded-lg border border-gray-300"
-                                    />
-                                    <input
-                                        type="text"
-                                        placeholder="이메일주소"
-                                        className="w-full p-2 rounded-lg border border-gray-300"
-                                    />
-                                    <input
-                                        type="text"
-                                        placeholder="HTX UID"
-                                        className="w-full p-2 rounded-lg border border-gray-300"
-                                    />
-                                    <input
-                                        type="text"
-                                        placeholder="HTX USDT(TRON) 지갑주소"
-                                        className="w-full p-2 rounded-lg border border-gray-300"
-                                    />
-                                    <input
-                                        type="text"
-                                        placeholder="API Access Key"
-                                        className="w-full p-2 rounded-lg border border-gray-300"
-                                    />
-                                    <input
-                                        type="text"
-                                        placeholder="API Secret Key"
-                                        className="w-full p-2 rounded-lg border border-gray-300"
-                                    />
-
-
-                                    <button
-                                        className="mt-5 w-full bg-blue-500 text-zinc-100 p-2 rounded-lg text-lg font-semibold"
-                                    >
-                                        민팅 신청
-                                    </button>
-                                    
-
-                                </div>
+                                )}
 
 
                             </div>
@@ -1554,6 +1723,9 @@ export default function AIPage({ params }: any) {
                                 {/* button for buy */}
                                 {/* 121 USDT BUY */}
                                 <button
+                                    onClick={() => {
+                                        toast.error("잔고가 부족합니다. 1000 TBOT을 구매하려면 1,210 USDT가 필요합니다.");
+                                    } }
                                     className='bg-blue-500 text-zinc-100 p-2 rounded text-lg font-semibold'
                                 >
                                     1,210 USDT BUY
@@ -1675,6 +1847,9 @@ export default function AIPage({ params }: any) {
                                 {/* button for buy */}
                                 {/* 121 USDT BUY */}
                                 <button
+                                    onClick={() => {
+                                        toast.error("잔고가 부족합니다. 10000 TBOT을 구매하려면 12,100 USDT가 필요합니다.");
+                                    } }
                                     className='bg-blue-500 text-zinc-100 p-2 rounded text-lg font-semibold'
                                 >
                                     12,100 USDT BUY
