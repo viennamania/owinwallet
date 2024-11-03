@@ -771,7 +771,7 @@ export default function AIPage({ params }: any) {
 
     const [agentBotErc721, setAgentBotErc721] = useState({} as any);
 
-    const [agentBotImage, setAgentBotImage] = useState("");
+    const [agentBotImage, setAgentBotImage] = useState("/logo-masterbot.png");
 
  
     useEffect(() => {
@@ -797,7 +797,7 @@ export default function AIPage({ params }: any) {
 
             //setAgentBotErc721(nft721);
             
-            if (agentBot === "0x153828cfaF9df81f39Fa1C5Fc64cc88F2d05c596") {
+            if (agentBot === "0x54DE6C9a312EB4e2240036f503e92b7Bab27B068") {
                 setAgentBotImage("/logo-masterbot1.png");
             } else {
                 setAgentBotImage("/logo-masterbot2.png");
