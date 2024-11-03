@@ -10,6 +10,7 @@ import { client } from "../../../client";
 
 import {
     getContract,
+    sendTransaction,
     sendAndConfirmTransaction,
 
     
@@ -18,8 +19,11 @@ import {
 import { deployERC721Contract } from 'thirdweb/deploys';
 
 
-import { mintTo } from "thirdweb/extensions/erc721";
-import { sendTransaction } from "thirdweb";
+import {
+    getOwnedNFTs,
+    mintTo
+} from "thirdweb/extensions/erc721";
+
 
 
 
@@ -360,6 +364,8 @@ export default function SettingsPage({ params }: any) {
 
     const [referralCode, setReferralCode] = useState("");
 
+    const [erc721ContractAddress, setErc721ContractAddress] = useState("");
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -389,7 +395,8 @@ export default function SettingsPage({ params }: any) {
 
                 setIsAgent(data.result.agent);
 
-                setReferralCode(data.result.erc721ContractAddress);
+                ///setReferralCode(data.result.erc721ContractAddress);
+                setErc721ContractAddress(data.result.erc721ContractAddress);
 
             } else {
                 setNickname('');
@@ -695,7 +702,6 @@ export default function SettingsPage({ params }: any) {
     }
   
 
-    const [erc721ContractAddress, setErc721ContractAddress] = useState("");
 
 
     const [loadingDeployErc721Contract, setLoadingDeployErc721Contract] = useState(false);
@@ -735,7 +741,7 @@ export default function SettingsPage({ params }: any) {
                     | "OpenEditionERC721";
                     */
             
-                    //type: "DropERC721",
+                    //////type: "DropERC721",
             
                     type: "TokenERC721",
                     
@@ -804,19 +810,68 @@ export default function SettingsPage({ params }: any) {
 
 
 
-    /*
-    const transaction = mintTo({
-        contract,
-        to: "0x...",
-        nft: {
-            name: "My NFT",
-            description: "This is my NFT",
-            image: "https://example.com/image.png",
-        },
-    });
-        
-    await sendTransaction({ transaction, account });
-    */
+   /* my NFTs */
+   const [myNfts, setMyNfts] = useState([] as any[]);
+
+
+   
+   useEffect(() => {
+
+
+       const getMyNFTs = async () => {
+
+           try {
+
+                const contract = getContract({
+                     client,
+                     chain: params.chain === "arbitrum" ? arbitrum : polygon,
+                     address: erc721ContractAddress,
+                });
+
+
+                /*
+                const nfts = await getOwnedNFTs({
+                    contract: contract,
+                    owner: address as string,
+                });
+
+                console.log("nfts=======", nfts);
+
+                setMyNfts( nfts );
+                */
+
+                setMyNfts([
+                    {
+                         name: "AI Agent",
+                         description: "This is AI Agent",
+                         image: "https://owinwallet.com/logo-aiagent.png",
+                    },
+                ]);
+
+                   
+   
+
+
+           } catch (error) {
+               console.error("Error getting NFTs", error);
+           }
+
+       };
+
+       if (address && erc721ContractAddress) {
+           getMyNFTs();
+       }
+
+   }
+   , [ address, erc721ContractAddress ]);
+   
+
+
+
+
+   console.log("myNfts", myNfts);
+
+
 
     const [mintingAgentNft, setMintingAgentNft] = useState(false);
     const mintAgentNft = async () => {
@@ -847,12 +902,27 @@ export default function SettingsPage({ params }: any) {
                 },
             });
 
-            await sendTransaction({ transaction, account: activeAccount as any });
+            //await sendTransaction({ transaction, account: activeAccount as any });
 
-            toast.success('에이전트 NFT 발행 완료');
+            const transactionResult = await sendAndConfirmTransaction({
+                transaction: transaction,
+                account: activeAccount as any,
+            });
+
+            console.log("transactionResult", transactionResult);
+
+
+            if (transactionResult) {
+                toast.success('AI 에이전트 NFT 발행 완료');
+            } else {
+                toast.error('AI 에이전트 NFT 발행 실패');
+            }
+
 
         } catch (error) {
             console.error("mintAgentNft error", error);
+
+            toast.error('AI 에이전트 NFT 발행 실패');
         }
 
         setMintingAgentNft(false);
@@ -1423,7 +1493,7 @@ export default function SettingsPage({ params }: any) {
 
 
 
-                    {address && !referralCode && (
+                    {address && !erc721ContractAddress && (
 
  
                         <button
@@ -1445,8 +1515,8 @@ export default function SettingsPage({ params }: any) {
                                         className='animate-spin'
                                     />
                                 )}
-                                {address && loadingDeployErc721Contract && '에이전트 코드 생성중...'}
-                                {address && !referralCode && !loadingDeployErc721Contract && '에이전트 코드 생성하기'}
+                                {address && loadingDeployErc721Contract && 'AI 에이전트 코드 생성중...'}
+                                {address && !erc721ContractAddress && !loadingDeployErc721Contract && 'AI 에이전트 코드 생성하기'}
  
                             </div>
 
@@ -1456,43 +1526,94 @@ export default function SettingsPage({ params }: any) {
 
                         {/* My Referral Code */}
                         {/* address */}
-                        {address && referralCode && (
+                        {address && erc721ContractAddress && (
 
-                        <div className='w-full flex flex-col gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
+                            <div className='w-full flex flex-col gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
 
-                            <div className='w-full flex flex-row gap-2 items-center justify-between'>
-                                <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
-                                    에이전트 코드
+                                <div className='w-full flex flex-row gap-2 items-center justify-between'>
+                                    <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
+                                        AI 에이전트 코드
+                                    </div>
+
+                                    <span className='text-xs xl:text-lg font-semibold'>
+                                        {erc721ContractAddress.substring(0, 6) + '...' + erc721ContractAddress.substring(erc721ContractAddress.length - 4)}
+                                    </span>
+
+                                    {/* verified icon */}
+                                    <Image
+                                        src="/verified.png"
+                                        alt="Verified"
+                                        width={20}
+                                        height={20}
+                                        className="rounded-lg"
+                                    />
                                 </div>
 
-                                <span className='text-lg font-semibold'>
-                                    {referralCode.substring(0, 6) + '...' + referralCode.substring(referralCode.length - 4)}
-                                </span>
+                                {
+                                <button
+                                    onClick={() => {
+                                        navigator.clipboard.writeText(
+                                            'https://owinwallet.com/kr/tron/?agent=' +
+                                            erc721ContractAddress
+                                        );
+                                        toast.success('레퍼럴 URL 복사 완료');
+                                    }}
+                                    className="p-2 bg-blue-500 text-zinc-100 rounded"
+                                >
+                                    레퍼럴 URL 복사
+                                </button>
+                                }
 
-                                {/* verified icon */}
-                                <Image
-                                    src="/verified.png"
-                                    alt="Verified"
-                                    width={20}
-                                    height={20}
-                                    className="rounded-lg"
-                                />
+                                {/* mint AI Agent NFT */}
+                                {myNfts.length === 0 && (
+                                    <button
+                                        disabled={mintingAgentNft}
+                                        onClick={mintAgentNft}
+                                        className={`
+                                            ${mintingAgentNft ? 'bg-gray-300 text-gray-400' : 'bg-green-500 text-zinc-100'}
+                                            p-2 rounded-lg text-sm font-semibold
+                                        `}
+                                    >
+                                        <div className='flex flex-row gap-2 items-center justify-center'>
+                                            {/* rotating icon */}
+                                            {mintingAgentNft && (
+                                                <Image
+                                                    src="/loading.png"
+                                                    alt="loding"
+                                                    width={30}
+                                                    height={30}
+                                                    className='animate-spin'
+                                                />
+                                            )}
+                                            {mintingAgentNft && 'AI 에이전트 NFT 발행중...'}
+                                            {!mintingAgentNft && 'AI 에이전트 NFT 발행하기'}
+                                        </div>
+                                    </button>
+                                )}
+
+
+                                {/* my NFTs */}
+                                <div className='w-full grid grid-cols-1 xl:grid-cols-1 gap-2'>
+                                    {myNfts.map((nft, index) => (
+                                        <div key={index} className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
+                                            <div className='flex flex-row gap-2 items-center justify-between'>
+                                                <Image
+                                                    src={nft.image}
+                                                    alt="NFT"
+                                                    width={200}
+                                                    height={200}
+                                                    className="rounded-lg"
+                                                />
+                                                <div className='text-lg font-semibold'>
+                                                    {nft.name}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+
+
                             </div>
-
-                            <button
-                                onClick={() => {
-                                    navigator.clipboard.writeText(
-                                        'https://owinwallet.com/kr/tron/?agent=' +
-                                        referralCode
-                                    );
-                                    toast.success('레퍼럴 URL 복사 완료');
-                                }}
-                                className="p-2 bg-blue-500 text-zinc-100 rounded"
-                            >
-                                레퍼럴 URL 복사
-                            </button>
-
-                        </div>
 
                         )}
 

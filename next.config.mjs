@@ -18,6 +18,7 @@ const nextConfig = {
       "vzrcy5vcsuuocnf3.public.blob.vercel-storage.com",
       "replicate.delivery",
       "fal.media",
+      "owinwallet.com",
     ],
   },
 
