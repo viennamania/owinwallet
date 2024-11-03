@@ -1104,6 +1104,7 @@ export async function getAllAgents(
     return {
       walletAddress: user.walletAddress,
       nickname: user.nickname,
+      avatar: user.avatar,
       mobile: user.mobile,
       email: user.email,
       tronWalletAddress: user.tronWalletAddress,

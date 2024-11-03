@@ -84,6 +84,8 @@ import {
 } from "thirdweb/extensions/erc721";
 
 
+import { getContractMetadata } from "thirdweb/extensions/common";
+
 
 import { Alert, useForkRef } from '@mui/material';
 
@@ -741,8 +743,15 @@ export default function AIPage({ params }: any) {
                 body: JSON.stringify({
                 }),
             });
+
+            if (!response.ok) {
+                console.error("Error fetching agents");
+                return;
+            }
+
             const data = await response.json();
-            console.log("data", data);
+
+
             setAgents(data.result.users);
         };
         fetchData();
@@ -771,7 +780,7 @@ export default function AIPage({ params }: any) {
 
     const [agentBotErc721, setAgentBotErc721] = useState({} as any);
 
-    const [agentBotImage, setAgentBotImage] = useState("/logo-masterbot.png");
+    const [agentBotImage, setAgentBotImage] = useState("/logo-masterbot100.png");
 
  
     useEffect(() => {
@@ -793,20 +802,22 @@ export default function AIPage({ params }: any) {
                 contract: contract,
                 tokenId: 0n,
             });
+
+            /////console.log("nft721======", nft721);
+
+
+            const metadata = await getContractMetadata({ contract });
+
+            console.log("metadata======", metadata);
                 
 
             //setAgentBotErc721(nft721);
             
             if (agentBot === "0x54DE6C9a312EB4e2240036f503e92b7Bab27B068") {
-                setAgentBotImage("/logo-masterbot1.png");
+                setAgentBotImage("/logo-masterbot100.png");
             } else {
-                setAgentBotImage("/logo-masterbot2.png");
+                setAgentBotImage("/logo-masterbot100.png");
             }
-            
-
-            
-
-
 
         };
 
@@ -1165,156 +1176,245 @@ export default function AIPage({ params }: any) {
                                 </span>
                             </div>
 
-                            <div className='flex flex-col items-center gap-2
-                                border border-gray-300 p-4 rounded-lg
-                            '>
-                                {/* 이벤트기간동안 Free */}
-                                <span className='
-                                    text-sm font-semibold text-green-500
-                                    bg-yellow-200 p-2 rounded-lg
-                                '>
-                                    이벤트기간동안 Free
-                                </span>
-                                <div className='flex flex-row items-center gap-2'>
-                                    <Image
-                                        src="/logo-tbot-100.png"
-                                        alt="TBOT"
-                                        width={200}
-                                        height={200}
-                                    />
-                                    <Image
-                                        src="/logo-exchange-htx.png"
-                                        alt="HTX"
-                                        width={50}
-                                        height={50}
-                                    />
-                                </div>
-                                {/* button for buy */}
-                                {/* 121 USDT BUY */}
-                                <button
-                                    className={`${claimingNFT ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold`}
-                                    disabled={claimingNFT}
-                                    // mintNFT
-                                    onClick={() => claimNFT()}
-                                >
 
+
+                            <div className='flex flex-col items-center justify-center gap-2'>
+
+
+                                <div className='w-full flex flex-col items-center gap-2
+                                    border border-gray-300 p-4 rounded-lg
+                                '>
+                                    {/* 이벤트기간동안 Free */}
+                                    <span className='
+                                        text-sm font-semibold text-green-500
+                                        bg-yellow-200 p-2 rounded-lg
+                                    '>
+                                        이벤트기간동안 Free
+                                    </span>
                                     <div className='flex flex-row items-center gap-2'>
                                         <Image
-                                            src="/token-usdt-icon.png"
-                                            alt="USDT"
-                                            width={20}
-                                            height={20}
+                                            src="/logo-tbot-100.png"
+                                            alt="TBOT"
+                                            width={200}
+                                            height={200}
                                         />
+                                        <Image
+                                            src="/logo-exchange-htx.png"
+                                            alt="HTX"
+                                            width={50}
+                                            height={50}
+                                        />
+                                    </div>
+                                    {/* button for buy */}
+                                    {/* 121 USDT BUY */}
+                                    <button
+                                        className={`${claimingNFT ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold`}
+                                        disabled={claimingNFT}
+                                        // mintNFT
+                                        onClick={() => claimNFT()}
+                                    >
+
+                                        <div className='flex flex-row items-center gap-2'>
+                                            <Image
+                                                src="/token-usdt-icon.png"
+                                                alt="USDT"
+                                                width={20}
+                                                height={20}
+                                            />
+                                            <span className='text-lg font-semibold'>
+                                                121 USDT BUY
+                                            </span>
+                                        </div>
+
+
+                                    </button>
+
+                                    {/* claimingNFT */}
+                                    {claimingNFT && (
+                                        <span className='text-sm font-semibold text-blue-500'>
+                                            TBOT NFT 구매중...
+                                        </span>
+                                    )}
+
+                                    {/* myNfts */}
+                                    <div className='flex flex-row items-center gap-2'>
+                                        <span className='text-5xl font-semibold
+                                            text-blue-500
+                                        '>
+                                            {amountNft100}
+                                        </span>
                                         <span className='text-lg font-semibold'>
-                                            121 USDT BUY
+                                            TBOT
                                         </span>
                                     </div>
 
 
-                                </button>
+                                    {/* if myImages.length > 0, then disable */}
+                                    {/*
+                                    <button
+                                        
+                                        disabled={
+                                            !address || !prompt || loading
+                                            || myImages.length > 0
+                                        }
 
-                                {/* claimingNFT */}
-                                {claimingNFT && (
-                                    <span className='text-sm font-semibold text-blue-500'>
-                                        TBOT NFT 구매중...
-                                    </span>
-                                )}
+                                        onClick={getImages}
+                                        className={` ${
+                                            !address || !prompt || loading
+                                            || myImages.length > 0
 
-                                {/* myNfts */}
-                                <div className='flex flex-row items-center gap-2'>
-                                    <span className='text-5xl font-semibold
-                                        text-blue-500
-                                    '>
-                                        {amountNft100}
-                                    </span>
-                                    <span className='text-lg font-semibold'>
-                                        TBOT
-                                    </span>
+                                            ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded
+                                            text-lg font-semibold w-full
+                                            `}
+                                    >
+                                        {loading ? "Loading..." : "Generate TBOT"}
+                                    </button>
+
+                                    {myImages.length > 0 && (
+                                        <Image
+                                            src={myImages[0]?.image || "/logo-chatgpt.png"}
+                                            alt="TBOT"
+                                            width={200}
+                                            height={200}
+                                        />
+                                    )}
+                                    
+                                    */}
+
                                 </div>
 
 
-                                {/* if myImages.length > 0, then disable */}
-                                {/*
-                                <button
-                                    
-                                    disabled={
-                                        !address || !prompt || loading
-                                        || myImages.length > 0
-                                    }
+                                <div className='w-full flex flex-col items-center gap-2
+                                    border border-gray-300 p-4 rounded-lg
+                                '>
+                                    {/* HTX 가입 */}
+                                    {/* new window
+                                        https://www.htx.com.pk/invite/en-us/1h?invite_code=z73y9223
+                                    */}
 
-                                    onClick={getImages}
-                                    className={` ${
-                                        !address || !prompt || loading
-                                        || myImages.length > 0
+                                    {/* HTX 거래소에 가입하고 아래 정보를 입력하세요. */}
+                                    <div className='flex flex-row items-center gap-2'>
+                                        <Image
+                                            src="/logo-exchange-htx.png"
+                                            alt="HTX"
+                                            width={50}
+                                            height={50}
+                                        />
+                                        <span className='text-lg font-semibold text-gray-500'>
+                                            HTX 거래소에 가입하고 아래 정보를 입력하세요.
+                                        </span>
+                                    </div>
 
-                                         ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded
-                                        text-lg font-semibold w-full
-                                        `}
-                                >
-                                    {loading ? "Loading..." : "Generate TBOT"}
-                                </button>
+                                    <button
+                                        className='w-full bg-blue-500 text-zinc-100 p-2 rounded-lg text-lg font-semibold'
+                                        onClick={() => {
+                                            window.open("https://www.htx.com.pk/invite/en-us/1h?invite_code=z73y9223", "_blank");
+                                        }}
+                                    >
+                                        HTX 가입
+                                    </button>
 
-                                {myImages.length > 0 && (
+
+                                    {agents.length > 0 && (
+                                        <div className='flex flex-col gap-2'>
+                                            <span className='text-lg font-semibold text-blue-500'>
+                                                에이전트를 선택하세요
+                                            </span>
+                                            <div className='flex flex-col gap-2'>
+                                                {agents.map((agent) => (
+                                                    <div key={agent.erc721ContractAddress} className='flex flex-row items-center gap-2'>
+                                        
+                                                        {/*
+                                                        <Image
+                                                            src={agent.avatar || "/icon-anonymous.png"}
+                                                            alt="TBOT"
+                                                            width={50}
+                                                            height={50}
+                                                        />
+                                                        */}
+
+                                                        <input
+                                                            type="radio"
+                                                            value={agent.erc721ContractAddress}
+                                                            name="agent"
+                                                            checked={agent.erc721ContractAddress === agentBot}
+                                                            onChange={(e) => {
+                                                                console.log(e.target.value);
+                                                                setAgentBot(e.target.value);
+                                                            }}
+                                                        />
+                                                        <span className='text-sm font-semibold text-gray-500'>
+                                                            {
+                                                                agent.erc721ContractAddress.substring(0, 15) + "..."
+                                                            }
+                                                        </span>
+                                                    </div>
+
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+
                                     <Image
-                                        src={myImages[0]?.image || "/logo-chatgpt.png"}
+                                        src="/logo-masterbot100.png"
                                         alt="TBOT"
                                         width={200}
                                         height={200}
                                     />
-                                )}
-                                
-                                */}
 
-                                {/* select agent */}
-                                {/* agent list and radio button */}
-                                {/* if agent.erc721ContractAddress is param agent, then select */}
-
-
-                        
-                                {
-                                    agents.length > 0 && (
-                                    <div className='flex flex-col gap-2'>
-                                        <span className='text-lg font-semibold text-blue-500'>
-                                            에이전트를 선택하세요
-                                        </span>
-                                        <div className='flex flex-col gap-2'>
-                                            {agents.map((agent) => (
-                                                <div key={agent.erc721ContractAddress} className='flex flex-row items-center gap-2'>
-                                                    <input
-                                                        type="radio"
-                                                        value={agent.erc721ContractAddress}
-                                                        name="agent"
-                                                        checked={agent.erc721ContractAddress === agentBot}
-                                                        onChange={(e) => {
-                                                            console.log(e.target.value);
-                                                            setAgentBot(e.target.value);
-                                                        }}
-                                                    />
-                                                    <span className='text-sm font-semibold text-gray-500'>
-                                                        {
-                                                            agent.nickname
-                                                            + " (" + agent.erc721ContractAddress.substring(0, 10) + "..." + ")"
-                                                        }
-                                                    </span>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                )}
-
-                                <Image
-                                    src={agentBotImage}
-                                    alt="TBOT"
-                                    width={200}
-                                    height={200}
-                                />
+                                    {/* input for apply */}
+                                    {/* 이름, 핸드폰번호, 이메일주소, HTX UID, HTX USDT(TRON) 지갑주소 */}
+                                    {/* API Access Key, API Secret Key */}
+                                    <input
+                                        type="text"
+                                        placeholder="이름"
+                                        className="w-full p-2 rounded-lg border border-gray-300"
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="핸드폰번호"
+                                        className="w-full p-2 rounded-lg border border-gray-300"
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="이메일주소"
+                                        className="w-full p-2 rounded-lg border border-gray-300"
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="HTX UID"
+                                        className="w-full p-2 rounded-lg border border-gray-300"
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="HTX USDT(TRON) 지갑주소"
+                                        className="w-full p-2 rounded-lg border border-gray-300"
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="API Access Key"
+                                        className="w-full p-2 rounded-lg border border-gray-300"
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="API Secret Key"
+                                        className="w-full p-2 rounded-lg border border-gray-300"
+                                    />
 
 
+                                    <button
+                                        className="mt-5 w-full bg-blue-500 text-zinc-100 p-2 rounded-lg text-lg font-semibold"
+                                    >
+                                        민팅 신청
+                                    </button>
+                                    
 
-
+                                </div>
 
 
                             </div>
+
                             {/*
                             AI 트레이딩 100 TBOT
                                 • AI 자동매매 트레이딩 서비스 이용권 NFT 입니다.
