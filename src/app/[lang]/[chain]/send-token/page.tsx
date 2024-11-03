@@ -52,6 +52,9 @@ import Image from 'next/image';
 import AppBarComponent from "@/components/Appbar/AppBar";
 import { getDictionary } from "../../../dictionaries";
 
+import { useQRCode } from 'next-qrcode';
+
+
 
 
 const wallets = [
@@ -135,6 +138,8 @@ export default function SendUsdt({ params }: any) {
   });
 
 
+
+  const { Canvas } = useQRCode();
 
 
 
@@ -1023,6 +1028,13 @@ export default function SendUsdt({ params }: any) {
 
 
 
+  console.log("recipient", recipient);
+  console.log("address", address);
+  console.log("amount", amount);
+  console.log("verifiedOtp", verifiedOtp);
+  console.log("sending", sending);
+
+
 
   return (
 
@@ -1231,7 +1243,7 @@ export default function SendUsdt({ params }: any) {
                   {/* tron wallet address */}
                   {tronWalletAddress && params.chain === "tron" && (
                     <div className="flex flex-row items-center gap-2">
-                      <div className="text-sm">
+                      <div className="text-sm text-gray-800">
                         {My_Wallet_Address}
                       </div>
                       <div className="text-lg font-semibold text-gray-800">
@@ -1404,7 +1416,7 @@ export default function SendUsdt({ params }: any) {
       
                         
                         
-                          getUserByWalletAddress(e.target.value)
+                          getUserByTronWalletAddress(e.target.value)
 
                           .then((data) => {
 
@@ -1575,12 +1587,15 @@ export default function SendUsdt({ params }: any) {
 
 
               <button
+                
                 disabled={!address || !recipient?.tronWalletAddress || !amount || sending || !verifiedOtp}
+
                 onClick={sendUsdt}
+
                 className={`mt-10 w-full p-2 rounded-lg text-xl font-semibold
 
                     ${
-                    !address || !recipient?.walletAddress || !amount || sending || !verifiedOtp
+                    !address || !recipient?.tronWalletAddress || !amount || sending || !verifiedOtp
                     ?'bg-gray-300 text-gray-400'
                     : 'bg-green-500 text-white'
                     }
