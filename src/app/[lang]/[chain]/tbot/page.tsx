@@ -47,9 +47,10 @@ import Image from 'next/image';
 
 
 
-import { useRouter }from "next//navigation";
-
-
+import {
+    useRouter,
+    useSearchParams
+  }from "next//navigation";
 
 import AppBarComponent from "@/components/Appbar/AppBar";
 import { getDictionary } from "../../../dictionaries";
@@ -138,6 +139,13 @@ export default function AIPage({ params }: any) {
     console.log("SettingsPage params", params);
     
     
+    // get params from the URL
+
+    const searchParams = useSearchParams();
+
+    const wallet = searchParams.get('wallet');
+
+    const agent = searchParams.get('agent');
     
     
     const [data, setData] = useState({
@@ -720,7 +728,9 @@ export default function AIPage({ params }: any) {
 
                 <AppBarComponent />
 
-                <Header />
+                <Header
+                    agent={agent || ""}
+                />
                 
 
 
@@ -1504,7 +1514,13 @@ export default function AIPage({ params }: any) {
 
 
 
-function Header() {
+function Header(
+    {
+        agent,
+    } : {
+        agent: string
+    }
+) {
 
     const router = useRouter();
   
@@ -1519,7 +1535,7 @@ function Header() {
             {/* logo */}
             <button
                 onClick={() => {
-                    router.push("/");
+                    router.push('/kr/tron/?agent=' + agent);
                 }}
             >            
                 <div className="flex flex-row gap-2 items-center">
@@ -1564,7 +1580,7 @@ function Header() {
             <button
               onClick={() => {
                 router.push(
-                    "/kr/polygon/tbot"
+                    "/kr/polygon/tbot?agent=" + agent
                   );
               }}
               className="text-gray-600 hover:underline text-xs xl:text-lg"
@@ -1573,7 +1589,7 @@ function Header() {
             </button>
             <button
               onClick={() => {
-                router.push('/kr/polygon/profile-settings');
+                router.push('/kr/polygon/profile-settings?agent=' + agent);
               }}
               className="text-gray-600 hover:underline text-xs xl:text-lg"
             >

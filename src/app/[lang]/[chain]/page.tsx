@@ -120,6 +120,10 @@ export default function Index({ params }: any) {
  
   const wallet = searchParams.get('wallet');
 
+  const agent = searchParams.get('agent');
+
+
+
   //console.log(wallet);
 
 
@@ -865,39 +869,34 @@ export default function Index({ params }: any) {
       <div className="py-0 w-full">
         
         
-        <Header />
+        <Header
+          agent={agent || ""}
+        />
 
         <div className="w-full flex flex-row gap-2 justify-between items-center">
-          {/* blockchain network selection */}
+          
+          {/* goto TBOT */}
           <div className=" flex flex-row gap-2 justify-start items-center">
-            <Image
-              src="/logo-tron.png"
-              alt="Tron"
-              width={50}
-              height={50}
-              className="rounded-lg w-10 h-10 md:w-14 md:h-14"
-            />
-            <Image
-              src="/logo-ethereum.png"
-              alt="Ethereum"
-              width={50}
-              height={50}
-              className="rounded-lg w-10 h-10 md:w-14 md:h-14"
-            />
-            <Image
-              src="/logo-polygon.png"
-              alt="Polygon"
-              width={50}
-              height={50}
-              className="rounded-lg w-10 h-10 md:w-14 md:h-14"
-            />
-            <Image
-              src="/logo-arbitrum.png"
-              alt="Arbitrum"
-              width={50}
-              height={50}
-              className="rounded-lg w-10 h-10 md:w-14 md:h-14"
-            />
+            
+            <button
+              onClick={() => {
+                router.push(
+                  "/" + params.lang + "/polygon/tbot?agent=" + agent
+                );
+              }}
+              className="p-2 bg-zinc-800 text-white rounded"
+            >
+              <div className="flex flex-row gap-2 items-center">
+                <Image
+                  src="/icon-tbot.png"
+                  alt="TBOT"
+                  width={50}
+                  height={50}
+                />
+                <span>Go to TBOT</span>
+              </div>
+            </button>
+
           </div>
 
           {/* language selection */}
@@ -2032,7 +2031,16 @@ export default function Index({ params }: any) {
 
 
 
-function Header() {
+function Header(
+  {
+    agent,
+  }
+  :
+  {
+    agent: string;
+  }
+
+) {
 
   const router = useRouter();
 
@@ -2085,7 +2093,7 @@ function Header() {
           <button
             onClick={() => {
               router.push(
-                "/kr/polygon/tbot"
+                "/kr/polygon/tbot/?agent=" + agent
               );
             }}
             className="text-gray-600 hover:underline text-xs xl:text-lg"
@@ -2094,7 +2102,7 @@ function Header() {
           </button>
           <button
             onClick={() => {
-              router.push('/kr/polygon/profile-settings');
+              router.push('/kr/polygon/profile-settings/?agent=' + agent);
             }}
             className="text-gray-600 hover:underline text-xs xl:text-lg"
           >
