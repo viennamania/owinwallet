@@ -1091,24 +1091,6 @@ export default function SendUsdt({ params }: any) {
 
             </div>
 
-            {/* goto buy usdt page */}
-            <div className="text-sm font-semibold text-zinc-100 mt-2 w-full text-right">
-  
-              <a
-                href={
-
-                  '/' + params.lang + '/' + params.chain + '/buy-usdt' + '?wallet=' + wallet
-                
-                }
-
-                className="text-zinc-100 underline"
-              >
-                {token} 구매하러 가기
-              </a>
-            </div>
-
-
-          
             {/* my usdt balance */}
             <div className="w-full flex flex-col gap-2 items-start">
 
