@@ -92,6 +92,8 @@ export default function SettingsPage({ params }: any) {
  
     const wallet = searchParams.get('wallet');
 
+    const agent = searchParams.get('agent');
+
 
 
 
@@ -804,7 +806,9 @@ export default function SettingsPage({ params }: any) {
 
                 <AppBarComponent />
 
-                <Header />
+                <Header
+                    agent={agent}
+                />
         
 
 
@@ -1421,7 +1425,14 @@ export default function SettingsPage({ params }: any) {
 
           
 
-function Header() {
+function Header(
+    {
+      agent,
+    }: {
+      agent: string;
+    }
+
+) {
 
     const router = useRouter();
   
@@ -1436,7 +1447,7 @@ function Header() {
             {/* logo */}
             <button
                 onClick={() => {
-                router.push("/");
+                router.push("/kr/tron/?agent=" + agent);
                 }}
             >
                 <div className="flex flex-row gap-2 items-center">
@@ -1480,7 +1491,7 @@ function Header() {
             <button
               onClick={() => {
                 router.push(
-                    "/kr/polygon/tbot"
+                    "/kr/polygon/tbot?agent=" + agent
                 );
               }}
               className="text-gray-600 hover:underline text-xs xl:text-lg"
@@ -1489,7 +1500,7 @@ function Header() {
             </button>
             <button
               onClick={() => {
-                router.push('/kr/polygon/profile-settings');
+                router.push('/kr/polygon/profile-settings/agent=' + agent);
               }}
               className="text-gray-600 hover:underline text-xs xl:text-lg"
             >
