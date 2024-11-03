@@ -908,7 +908,7 @@ export default function SettingsPage({ params }: any) {
                             <button
                                 onClick={() => {
                                     navigator.clipboard.writeText(referralCode);
-                                    toast.success('Referral code copied to clipboard');
+                                    toast.success('에이전트 코드가 복사되었습니다');
                                 }}
                                 className="p-2 bg-blue-500 text-zinc-100 rounded"
                             >
