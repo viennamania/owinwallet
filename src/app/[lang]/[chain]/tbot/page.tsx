@@ -71,10 +71,12 @@ import {
     //nextTokenIdToClaim,
 
     getOwnedNFTs,
+
+    getNFT,
   
 } from "thirdweb/extensions/erc1155";
 
-import { Alert } from '@mui/material';
+import { Alert, useForkRef } from '@mui/material';
 
 
 import thirdwebIcon from "@public/thirdweb.svg";
@@ -94,6 +96,40 @@ const contractAddressArbitrum = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"; //
 
 
 
+const erc1155ContractAddress = "0xd782447a0762966714a150dBC0E5a16fE488d566"; // Polygon
+
+/*
+const contractErc1155 = getContract({
+    client,
+    chain: polygon,
+    address: erc1155ContractAddress,
+});
+
+
+const nftInfoTbot100 = await getNFT({
+    contract: contractErc1155,
+    tokenId: 0n,
+});
+
+console.log("nftInfoTbot100", nftInfoTbot100);
+
+const nftInfoTbot1000 = await getNFT({
+    contract: erc1155ContractAddress,
+    tokenId: 1n,
+});
+
+const nftInfoTbot10000 = await getNFT({
+    contract: erc1155ContractAddress,
+    tokenId: 2n,
+});
+*/
+
+
+const contractErc1155 = getContract({
+    client,
+    chain: polygon,
+    address: erc1155ContractAddress,
+});
 
 
 export default function AIPage({ params }: any) {
@@ -350,13 +386,14 @@ export default function AIPage({ params }: any) {
       if (address) getBalance();
   
       // get the balance in the interval
-  
+      /*
       const interval = setInterval(() => {
         getBalance();
       }, 1000);
   
   
       return () => clearInterval(interval);
+        */
   
     } , [address, contract]);
 
@@ -498,15 +535,7 @@ export default function AIPage({ params }: any) {
 
 
 
-    const erc1155ContractAddress = "0xfDf9fFC5e782e11660D908E428966AF212ffE842"; // Polygon
 
-
-    const contractErc1155 = getContract({
-        client,
-        chain: params.chain === "arbitrum" ? arbitrum : polygon,
-        
-        address: erc1155ContractAddress,
-    });
 
 
 
@@ -519,6 +548,7 @@ export default function AIPage({ params }: any) {
     const [amountNft10000, setAmountNft10000] = useState(0);
 
 
+    
     useEffect(() => {
 
 
@@ -563,7 +593,8 @@ export default function AIPage({ params }: any) {
         }
 
     }
-    , [address, contractErc1155]);
+    , [ address ]);
+    
 
 
     console.log("myNfts", myNfts);
@@ -609,7 +640,7 @@ export default function AIPage({ params }: any) {
 
                 // get NFTs again
                 const nfts = await getOwnedNFTs({
-                    contract,
+                    contract: contractErc1155,
                     start: 0,
                     count: 10,
                     address: address,
@@ -1036,7 +1067,7 @@ export default function AIPage({ params }: any) {
                                 </span>
                                 <div className='flex flex-row items-center gap-2'>
                                     <Image
-                                        src="/tbot100.png"
+                                        src="/logo-tbot-100.png"
                                         alt="TBOT"
                                         width={200}
                                         height={200}
@@ -1075,7 +1106,7 @@ export default function AIPage({ params }: any) {
                                 {/* claimingNFT */}
                                 {claimingNFT && (
                                     <span className='text-sm font-semibold text-blue-500'>
-                                        {Minting_NFT}
+                                        TBOT NFT 구매중...
                                     </span>
                                 )}
 
@@ -1251,7 +1282,7 @@ export default function AIPage({ params }: any) {
                             '>
                                 <div className='flex flex-row items-center gap-2'>
                                     <Image
-                                        src="/tbot.png"
+                                        src="/logo-tbot-1000.png"
                                         alt="TBOT"
                                         width={200}
                                         height={200}
@@ -1372,7 +1403,7 @@ export default function AIPage({ params }: any) {
                             '>
                                 <div className='flex flex-row items-center gap-2'>
                                     <Image
-                                        src="/tbot.png"
+                                        src="/logo-tbot-10000.png"
                                         alt="TBOT"
                                         width={200}
                                         height={200}
