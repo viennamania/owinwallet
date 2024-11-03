@@ -11,9 +11,11 @@ import { client } from "../../../client";
 import {
     getContract,
     sendAndConfirmTransaction,
+
+    
 } from "thirdweb";
 
-
+import { deployERC721Contract } from 'thirdweb/deploys';
 
 import {
     polygon,
@@ -27,6 +29,8 @@ import {
 
     useConnectedWallets,
     useSetActiveWallet,
+
+
 } from "thirdweb/react";
 import { inAppWallet } from "thirdweb/wallets";
 
@@ -75,6 +79,7 @@ import {
 } from "next//navigation";
 
 import { N } from 'ethers';
+import { add } from 'thirdweb/extensions/farcaster/keyGateway';
 
 
 
@@ -343,6 +348,9 @@ export default function SettingsPage({ params }: any) {
     const [seller, setSeller] = useState(null) as any;
 
 
+    const [isAgent, setIsAgent] = useState(false);
+
+    const [referralCode, setReferralCode] = useState("");
 
 
     useEffect(() => {
@@ -359,7 +367,7 @@ export default function SettingsPage({ params }: any) {
 
             const data = await response.json();
 
-            ////console.log("data", data);
+            console.log("data", data);
 
             if (data.result) {
                 setNickname(data.result.nickname);
@@ -370,6 +378,11 @@ export default function SettingsPage({ params }: any) {
                 setUserCode(data.result.id);
 
                 setSeller(data.result.seller);
+
+                setIsAgent(data.result.agent);
+
+                setReferralCode(data.result.erc721ContractAddress);
+
             } else {
                 setNickname('');
                 setAvatar('/profile-default.png');
@@ -379,6 +392,10 @@ export default function SettingsPage({ params }: any) {
                 setAccountHolder('');
                 setAccountNumber('');
                 setBankName('');
+
+                setIsAgent(false);
+
+                setReferralCode('');
             }
 
         };
@@ -493,6 +510,8 @@ export default function SettingsPage({ params }: any) {
     const [bankName, setBankName] = useState("");
     const [accountNumber, setAccountNumber] = useState("");
     const [accountHolder, setAccountHolder] = useState("");
+
+
 
     const [applying, setApplying] = useState(false);
 
@@ -669,6 +688,106 @@ export default function SettingsPage({ params }: any) {
   
 
 
+    const [loadingDeployErc721Contract, setLoadingDeployErc721Contract] = useState(false);
+    const deployErc721Contract = async () => {
+  
+        if (!address) {
+            toast.error('Please connect your wallet first');
+            return;
+        }
+
+        if (loadingDeployErc721Contract) {
+            return;
+        }
+        
+        //if (confirm("Are you sure you want to deploy ERC721 contract?")) {
+        // chinese confirm
+        if (confirm("에이전트 코드를 생성하시겠습니까?")) {
+
+            setLoadingDeployErc721Contract(true);
+
+
+            try {
+
+                const erc721ContractAddress = await deployERC721Contract({
+                    chain: params.chain === "arbitrum" ? arbitrum : polygon,
+                    client: client,
+                    account: activeAccount as any,
+            
+                    /*  type ERC721ContractType =
+                    | "DropERC721"
+                    | "TokenERC721"
+                    | "OpenEditionERC721";
+                    */
+            
+                    //type: "DropERC721",
+            
+                    type: "TokenERC721",
+                    
+                    
+                    params: {
+                        name: "TBOT NFT",
+                        description: "TBOT NFT",
+                        symbol: "TBOT",
+                    },
+            
+                });
+
+                console.log("erc721ContractAddress", erc721ContractAddress);
+
+                // save the contract address to the database
+                // /api/user/updateUser
+                // walletAddress, erc721ContractAddress
+
+                if (!erc721ContractAddress) {
+                    throw new Error('Failed to deploy ERC721 contract');
+                }
+
+
+                const response = await fetch('/api/user/updateUserErc721Contract', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        walletAddress: address,
+                        erc721ContractAddress: erc721ContractAddress,
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to save ERC721 contract address');
+                }
+
+                ///const data = await response.json();
+
+                ///console.log("data", data);
+
+
+                setReferralCode(erc721ContractAddress);
+                
+
+
+                toast.success('에이전트 코드 생성 완료');
+
+
+                
+
+
+            } catch (error) {
+                console.error("deployErc721Contract error", error);
+            }
+
+            setLoadingDeployErc721Contract(false);
+
+      
+        }
+  
+    };
+
+
+
+
 
 
 
@@ -692,7 +811,13 @@ export default function SettingsPage({ params }: any) {
                 <div className="flex flex-col items-start justify-center space-y-4">
 
                     <div className='flex flex-row items-center space-x-4'>
-                        <GearSetupIcon/>
+                        <Image
+                            src="/logo-tbot.webp"
+                            alt="Profile Picture"
+                            width={50}
+                            height={50}
+                            className="rounded-full"  
+                        />
                         <div className="text-2xl font-semibold">
                             {Profile_Settings}
                         </div>
@@ -736,6 +861,68 @@ export default function SettingsPage({ params }: any) {
                         )}
 
                     </div>
+
+
+                    {address && !referralCode && (
+
+ 
+                        <button
+                            disabled={loadingDeployErc721Contract}
+                            onClick={deployErc721Contract}
+                            className={`
+                                ${loadingDeployErc721Contract ? 'bg-gray-300 text-gray-400' : 'bg-green-500 text-zinc-100'}
+                                p-2 rounded-lg text-sm font-semibold
+                            `}
+                        >
+                            {loadingDeployErc721Contract ? '에이전트 코드 생성중...' : '에이전트 코드 생성하기'}
+
+                        </button>
+                        
+                    )}
+
+                    {/* My Referral Code */}
+                    {/* address */}
+                    {address && referralCode && (
+
+                    <div className='w-full flex flex-col gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>   
+                        
+
+
+
+
+                        <div className='flex flex-row gap-2 items-start justify-start'>
+                            {/* dot icon */}
+                            <div className='bg-green-500 w-4 h-4 rounded-full'></div>
+                            <span className='text-sm font-semibold'>
+                                에이전트
+                            </span>
+                        </div>
+
+
+
+
+
+
+
+                        <div className='w-full flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
+                            <span className='text-sm font-semibold'>
+                                My Referral Code
+                            </span>
+                            <span className='text-lg font-semibold'>
+                                {referralCode.substring(0, 6) + '...' + referralCode.substring(referralCode.length - 4)}
+                            </span>
+                            <button
+                                onClick={() => {
+                                    navigator.clipboard.writeText(referralCode);
+                                    toast.success('Referral code copied to clipboard');
+                                }}
+                                className="p-2 bg-blue-500 text-zinc-100 rounded"
+                            >
+                                Copy
+                            </button>
+                        </div>
+                    </div>
+                    )}
 
 
                     <div className='w-full  flex flex-col gap-5 '>

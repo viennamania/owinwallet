@@ -1017,3 +1017,25 @@ export async function setTronWalletAddressByWalletAddress(
   );
   
 }
+
+
+
+export async function setErc721ContractAddressByWalletAddress(
+  walletAddress: string,
+  erc721ContractAddress: string,
+) {
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('users');
+
+  return await collection.updateOne(
+    { walletAddress },
+    {
+      $set: {
+        walletAddress: walletAddress,
+        erc721ContractAddress: erc721ContractAddress,
+      }
+    }
+  );
+  
+}
