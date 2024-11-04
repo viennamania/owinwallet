@@ -741,9 +741,9 @@ export default function SettingsPage({ params }: any) {
                     | "OpenEditionERC721";
                     */
             
-                    //////type: "DropERC721",
+                    type: "DropERC721",
             
-                    type: "TokenERC721",
+                    /////type: "TokenERC721",
                     
                     
                     params: {
