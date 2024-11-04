@@ -777,8 +777,9 @@ export default function AIPage({ params }: any) {
 
 
     // getNFt721 for agentBot (ERC721 contract address)
-
+    /*
     const [agentBotErc721, setAgentBotErc721] = useState({} as any);
+
 
     const [agentBotImage, setAgentBotImage] = useState("/logo-masterbot100.png");
 
@@ -827,10 +828,13 @@ export default function AIPage({ params }: any) {
 
 
     console.log("agentBotErc721", agentBotErc721);
+    */
 
 
+    // selectedBotNumber
+    const [selectedBotNumber, setSelectedBotNumber] = useState(0);
 
-
+    const [myAgent, setMyAgent] = useState({} as any);
 
     // apply to mint NFT
     // 이름, 핸드폰번호, 이메일주소, HTX UID, HTX USDT(TRON) 지갑주소, API Access Key, API Secret Key
@@ -844,6 +848,7 @@ export default function AIPage({ params }: any) {
     const [apiSecretKey, setApiSecretKey] = useState("");
 
     
+    const [applyingMintNFT, setApplyingMintNFT] = useState(false);
 
     const applyMintAgentBot = async () => {
 
@@ -892,6 +897,7 @@ export default function AIPage({ params }: any) {
             return;
         }
 
+        setApplyingMintNFT(true);
 
         // api call
 
@@ -903,6 +909,7 @@ export default function AIPage({ params }: any) {
             body: JSON.stringify({
                 walletAddress: address,
                 agentBot: agentBot,
+                agentBotNumber: selectedBotNumber,
                 userName: userName,
                 userPhoneNumber: userPhoneNumber,
                 userEmail: userEmail,
@@ -914,21 +921,32 @@ export default function AIPage({ params }: any) {
         });
 
         if (!response.ok) {
-            console.error("Error applying mint NFT");
+            setApplyingMintNFT(false);
+            toast.error("NFT Mint 신청에 실패했습니다.");
             return;
         }
 
         const data = await response.json();
 
-        console.log("data", data);
+        //console.log("data", data);
 
         if (data.result) {
+            setApplyingMintNFT(false);
             toast.success("NFT Mint 신청이 완료되었습니다.");
+
+            // get applied NFTs again
+
+            setMyAgent(data.result);
+
+
+        } else {
+            setApplyingMintNFT(false);
+            toast.error("NFT Mint 신청에 실패했습니다.");
         }
 
     }
 
-    const [myAgent, setMyAgent] = useState({} as any);
+
     useEffect(() => {
         const fetchData = async () => {
             const response = await fetch("/api/agent/getMyAgent", {
@@ -956,6 +974,63 @@ export default function AIPage({ params }: any) {
         fetchData();
     } , [address]);
 
+
+    // changeAgentBot
+    // fetch 
+
+  
+   const [agentBotList, setAgentBotList] = useState([] as any[]);
+   const [loadingAgentBotList, setLoadingAgentBotList] = useState(false);
+
+   const changeAgentBot = async (agentBot: string) => {
+
+        if (agentBot === "") {
+            return;
+        }
+
+        setAgentBot(agentBot);
+
+        try {
+
+
+            setLoadingAgentBotList(true);
+
+            // api /api/agent/getAgentNFTByWalletAddress
+
+            const response = await fetch("/api/agent/getAgentNFTByContractAddress", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    erc721ContractAddress: agentBot,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to get NFTs');
+            }
+
+            const data = await response.json();
+
+            console.log("data.result====", data.result);
+
+            if (data.result) {
+                setAgentBotList(data.result.nfts);
+            } else {
+                setAgentBotList([]);
+            }
+            
+
+        } catch (error) {
+            console.error("Error getting NFTs", error);
+        }
+           
+        setLoadingAgentBotList(false);
+
+    };
+
+ 
 
 
     return (
@@ -1444,8 +1519,18 @@ export default function AIPage({ params }: any) {
                                                     Agent Code
                                                 </span>
                                             </div>
-                                            <span className='text-sm font-semibold text-gray-500'>
+                                            <span className='text-2xl font-semibold text-gray-500'>
                                                 {myAgent?.agentBot.substring(0, 15) + "..."}
+                                            </span>
+                                            <div className='flex flex-row items-center gap-2'>
+                                                {/* dot */}
+                                                <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
+                                                <span className='text-lg font-semibold'>
+                                                    Agent Number
+                                                </span>
+                                            </div>
+                                            <span className='text-5xl font-semibold text-gray-500'>
+                                                #{myAgent?.agentBotNumber}
                                             </span>
                                         </div>
 
@@ -1475,13 +1560,13 @@ export default function AIPage({ params }: any) {
                                                 HTX UID: {myAgent.htxUid}
                                             </span>
                                             <span className='text-sm font-semibold text-gray-500'>
-                                                HTX USDT(TRON) 지갑주소: {myAgent.htxUsdtWalletAddress}
+                                                API Access Key: {myAgent.apiAccessKey.substring(0, 10) + "..."}
                                             </span>
                                             <span className='text-sm font-semibold text-gray-500'>
-                                                API Access Key: {myAgent.apiAccessKey}
+                                                API Secret Key: {myAgent.apiSecretKey.substring(0, 10) + "..."}
                                             </span>
                                             <span className='text-sm font-semibold text-gray-500'>
-                                                API Secret Key: {myAgent.apiSecretKey}
+                                                HTX USDT(TRON) 지갑주소: {myAgent.htxUsdtWalletAddress.substring(0, 10) + "..."}
                                             </span>
                                         </div>
                                     </div>
@@ -1535,88 +1620,139 @@ export default function AIPage({ params }: any) {
 
 
                                         {agents.length > 0 && (
-                                            <div className='flex flex-col gap-2'>
+                                            <div className='w-full flex flex-col items-center gap-2'>
+
                                                 <span className='text-lg font-semibold text-blue-500'>
                                                     AI 에이전트를 선택하세요
                                                 </span>
-                                                <div className='flex flex-col gap-2'>
-                                                    {agents.map((agent) => (
-                                                        <div key={agent.erc721ContractAddress} className='flex flex-row items-center gap-2'>
-                                            
-                                                            {/*
+
+                                                <div className='w-full grid grid-cols-2 items-start justify-between gap-2'>
+
+                                                    <div className='flex flex-col gap-2'>
+                                                        {agents.map((agent) => (
+                                                            <div key={agent.erc721ContractAddress} className='flex flex-row items-center gap-2'>
+                                                
+                                                                {/*
+                                                                <Image
+                                                                    src={agent.avatar || "/icon-anonymous.png"}
+                                                                    alt="TBOT"
+                                                                    width={50}
+                                                                    height={50}
+                                                                />
+                                                                */}
+
+                                                                <input
+                                                                    type="radio"
+                                                                    value={agent.erc721ContractAddress}
+                                                                    name="agent"
+                                                                    checked={agent.erc721ContractAddress === agentBot}
+                                                                    onChange={(e) => {
+                                                                        console.log(e.target.value);
+
+                                                                        //setAgentBot(e.target.value);
+                                                                        changeAgentBot(e.target.value);
+
+                                                                    }}
+                                                                />
+
+                                                                <Image
+                                                                    src={agent.avatar || "/icon-anonymous.png"}
+                                                                    alt={agent.nickname}
+                                                                    width={50}
+                                                                    height={50}
+                                                                    className='rounded-full h-4 w-4'
+                                                                />
+
+                                                                <span className='text-xs font-semibold text-gray-500'>
+                                                                    {
+                                                                        //agent.erc721ContractAddress.substring(0, 15) + "..."
+                                                                        agent.nickname
+                                                                    }
+                                                                </span>
+                                                                
+
+
+                                                            </div>
+
+                                                        ))}
+                                                    </div>
+
+                                                    <div className='flex flex-col gap-2'>
+
+                                                        {loadingAgentBotList && (
                                                             <Image
-                                                                src={agent.avatar || "/icon-anonymous.png"}
-                                                                alt="TBOT"
+                                                                src="/loading.png"
+                                                                alt="loading"
                                                                 width={50}
                                                                 height={50}
+                                                                className='animate-spin'
                                                             />
-                                                            */}
+                                                        )}
 
-                                                            <input
-                                                                type="radio"
-                                                                value={agent.erc721ContractAddress}
-                                                                name="agent"
-                                                                checked={agent.erc721ContractAddress === agentBot}
-                                                                onChange={(e) => {
-                                                                    console.log(e.target.value);
-                                                                    setAgentBot(e.target.value);
-                                                                }}
-                                                            />
+                                                        {!loadingAgentBotList && agentBotList.map((nft) => (
+                                                            <div
+                                                                key={nft.tokenId}
+                                                                className={`flex flex-col items-center gap-2
+                                                                    border border-gray-300 p-2 rounded-lg
+                                                                    ${selectedBotNumber === nft.tokenId ? 'bg-blue-500 text-zinc-100' : 'bg-white text-gray-500'}
+                                                                `}
+                                                                onClick={() => setSelectedBotNumber(nft.tokenId)}
+                                                            >
+                                                                <Image
+                                                                    src={nft.image.thumbnailUrl}
+                                                                    alt={nft.name}
+                                                                    width={200}
+                                                                    height={200}
+                                                                    className='rounded-lg w-44'
+                                                                />
+                                                                <div className='w-full flex flex-col items-start gap-2'>
+                                                                    <span className='text-lg font-semibold'>
+                                                                        #{nft.tokenId}
+                                                                    </span>
+                                                                    <span className='text-sm font-semibold'>
+                                                                        {nft.name}
+                                                                    </span>
+                                                                    <span className='text-sm font-semibold'>
+                                                                        {nft.description}
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
 
-                                                            <Image
-                                                                src={agent.avatar || "/icon-anonymous.png"}
-                                                                alt="TBOT"
-                                                                width={50}
-                                                                height={50}
-                                                                className='rounded-full h-10 w-10'
-                                                            />
-
-                                                            <span className='text-xl font-semibold text-gray-500'>
-                                                                {
-                                                                    //agent.erc721ContractAddress.substring(0, 15) + "..."
-                                                                    agent.nickname
-                                                                }
-                                                            </span>
-                                                            
 
 
-                                                        </div>
 
-                                                    ))}
                                                 </div>
                                             </div>
                                         )}
-
-
-                                        <Image
-                                            src="/logo-masterbot100.png"
-                                            alt="TBOT"
-                                            width={200}
-                                            height={200}
-                                        />
 
                                         {/* input for apply */}
                                         {/* 이름, 핸드폰번호, 이메일주소, HTX UID, HTX USDT(TRON) 지갑주소 */}
                                         {/* API Access Key, API Secret Key */}
                                         <input
+                                            disabled={applyingMintNFT}
                                             onChange={(e) => setUserName(e.target.value)}
                                             type="text"
                                             placeholder="이름"
                                             className="w-full p-2 rounded-lg border border-gray-300"
                                         />
                                         <input
+                                            disabled={applyingMintNFT}
                                             onChange={(e) => setUserPhoneNumber(e.target.value)}
                                             type="text"
                                             placeholder="핸드폰번호"
                                             className="w-full p-2 rounded-lg border border-gray-300"
                                         />
                                         <input
+                                            disabled={applyingMintNFT}
                                             onChange={(e) => setUserEmail(e.target.value)}
                                             type="text"
                                             placeholder="이메일주소"
                                             className="w-full p-2 rounded-lg border border-gray-300"
                                         />
                                         <input
+                                            disabled={applyingMintNFT}
                                             onChange={(e) => setHtxUid(e.target.value)}
                                             type="text"
                                             placeholder="HTX UID"
@@ -1624,12 +1760,14 @@ export default function AIPage({ params }: any) {
                                         />
 
                                         <input
+                                            disabled={applyingMintNFT}
                                             onChange={(e) => setApiAccessKey(e.target.value)}
                                             type="text"
                                             placeholder="API Access Key"
                                             className="w-full p-2 rounded-lg border border-gray-300"
                                         />
                                         <input
+                                            disabled={applyingMintNFT}
                                             onChange={(e) => setApiSecretKey(e.target.value)}
                                             type="text"
                                             placeholder="API Secret Key"
@@ -1637,6 +1775,7 @@ export default function AIPage({ params }: any) {
                                         />
 
                                         <input
+                                            disabled={applyingMintNFT}
                                             onChange={(e) => setHtxUsdtWalletAddress(e.target.value)}
                                             type="text"
                                             placeholder="HTX USDT(TRON) 지갑주소"
@@ -1645,11 +1784,11 @@ export default function AIPage({ params }: any) {
 
 
                                         <button
+                                            disabled={applyingMintNFT}
                                             onClick={applyMintAgentBot}
                                             className="mt-5 w-full bg-blue-500 text-zinc-100 p-2 rounded-lg text-lg font-semibold"
-
                                         >
-                                            민팅 신청
+                                            {applyingMintNFT ? "AI 에이전트 NFT 신청중..." : "AI 에이전트 NFT 민팅 신청"}
                                         </button>
                                         
 

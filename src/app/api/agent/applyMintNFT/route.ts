@@ -22,13 +22,14 @@ export async function POST(request: NextRequest) {
   apiSecretKey: apiSecretKey,
   */
 
-  const { walletAddress, agentBot, userName, userPhoneNumber, userEmail, htxUid, htxUsdtWalletAddress, apiAccessKey, apiSecretKey } = body;
+  const { walletAddress, agentBot, agentBotNumber, userName, userPhoneNumber, userEmail, htxUid, htxUsdtWalletAddress, apiAccessKey, apiSecretKey } = body;
 
 
 
   const result = await insertOne({
     walletAddress: walletAddress,
     agentBot: agentBot,
+    agentBotNumber: agentBotNumber,
     userName: userName,
     userPhoneNumber: userPhoneNumber,
     userEmail: userEmail,

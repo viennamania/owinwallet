@@ -1000,6 +1000,7 @@ export default function SettingsPage({ params }: any) {
 
     const [agentName, setAgentName] = useState("");
     const [agentDescription, setAgentDescription] = useState("");
+
     const [agentImage, setAgentImage] = useState("https://owinwallet.com/logo-aiagent.png");
 
     const [mintingAgentNft, setMintingAgentNft] = useState(false);
@@ -1039,6 +1040,13 @@ export default function SettingsPage({ params }: any) {
         setMintingAgentNft(true);
 
         try {
+
+
+            // genrate image from api
+            // /api/ai/generateImage
+
+
+
 
             const contract = getContract({
                 client,
