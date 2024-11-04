@@ -1294,13 +1294,15 @@ export default function AIPage({ params }: any) {
                     <div className='w-full flex flex-col gap-5 '> 
 
                   
-                        <div className='flex flex-col xl:flex-row gap-5 items-center xl:items-start justify-between border border-gray-300 p-4 rounded-lg'>
+                        <div className='flex flex-col xl:flex-row gap-5 items-center xl:items-start justify-between border
+                         border-yellow-500 p-4 rounded-lg
+                        '>
                             
                             <div className='flex flex-row items-center gap-2'>
                                 {/* dot */}
-                                <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
-                                <span className='text-lg font-semibold'>
-                                    100 TBOT for HTX
+                                <div className='w-4 h-4 bg-red-500 rounded-full'></div>
+                                <span className='text-2xl font-semibold text-blue-500'>
+                                    100 TBOT
                                 </span>
                             </div>
 
@@ -1325,12 +1327,6 @@ export default function AIPage({ params }: any) {
                                             alt="TBOT"
                                             width={200}
                                             height={200}
-                                        />
-                                        <Image
-                                            src="/logo-exchange-htx.png"
-                                            alt="HTX"
-                                            width={50}
-                                            height={50}
                                         />
                                     </div>
                                     {/* button for buy */}
@@ -1662,10 +1658,6 @@ export default function AIPage({ params }: any) {
                                 <span className='text-sm text-gray-500'>
                                     • AI 자동매매 트레이딩 서비스 이용권 NFT 입니다.
                                 </span>
-                                <span className='text-sm text-gray-500'>
-                                    • HTX 거래소 전용
-                                </span>
-
                                 <span className='text-lg font-semibold text-blue-500 mt-2'>
                                     계정 운영 방식
                                 </span>
@@ -1743,12 +1735,13 @@ export default function AIPage({ params }: any) {
 
                     <div className='w-full flex flex-col gap-5 '> 
 
-                        <div className='flex flex-col xl:flex-row gap-5 items-center xl:items-start justify-between border border-gray-300 p-4 rounded-lg'>
+                        <div className='flex flex-col xl:flex-row gap-5 items-center xl:items-start justify-between border
+                         border-blue-500 p-4 rounded-lg'>
                             <div className='flex flex-row items-center gap-2'>
                                 {/* dot */}
-                                <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
-                                <span className='text-lg font-semibold'>
-                                    1000 TBOT for OKEX
+                                <div className='w-4 h-4 bg-red-500 rounded-full'></div>
+                                <span className='text-2xl font-semibold text-blue-500'>
+                                    1000 TBOT
                                 </span>
                             </div>
                             <div className='flex flex-col items-center gap-2
@@ -1760,12 +1753,6 @@ export default function AIPage({ params }: any) {
                                         alt="TBOT"
                                         width={200}
                                         height={200}
-                                    />
-                                    <Image
-                                        src="/logo-exchange-okex.png"
-                                        alt="HTX"
-                                        width={50}
-                                        height={50}
                                     />
                                 </div>
                                 {/* button for buy */}
@@ -1788,10 +1775,6 @@ export default function AIPage({ params }: any) {
                                 <span className='text-sm text-gray-500'>
                                     • AI 자동매매 트레이딩 서비스 이용권 NFT 입니다.
                                 </span>
-                                <span className='text-sm text-gray-500'>
-                                    • OKEX 거래소 전용
-                                </span>
-
                                 <span className='text-lg font-semibold text-blue-500 mt-2'>
                                     계정 운영 방식
                                 </span>
@@ -1799,7 +1782,7 @@ export default function AIPage({ params }: any) {
                                     • 본인 거래소 계정에서 직접 자금 관리
                                 </span>
                                 <span className='text-sm text-gray-500'>
-                                    • 최소 운영자금: 100 USDT
+                                    • 최소 운영자금: 1000 USDT
                                 </span>
                                 <span className='text-sm text-gray-500'>
                                     • 자유로운 입출금 가능
@@ -1867,12 +1850,13 @@ export default function AIPage({ params }: any) {
                         •추가 지원AI 트레이딩 시스템 운영 교육
                         */}
 
-                        <div className='flex flex-col xl:flex-row gap-5 items-center xl:items-start justify-between border border-gray-300 p-4 rounded-lg'>
+                        <div className='flex flex-col xl:flex-row gap-5 items-center xl:items-start justify-between border
+                        border-red-500 p-4 rounded-lg'>
                             <div className='flex flex-row items-center gap-2'>
                                 {/* dot */}
-                                <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
-                                <span className='text-lg font-semibold'>
-                                    10000 TBOT for BYBIT
+                                <div className='w-4 h-4 bg-red-500 rounded-full'></div>
+                                <span className='text-2xl font-semibold text-blue-500'>
+                                    10000 TBOT
                                 </span>
                             </div>
                             <div className='flex flex-col items-center gap-2
@@ -1884,12 +1868,6 @@ export default function AIPage({ params }: any) {
                                         alt="TBOT"
                                         width={200}
                                         height={200}
-                                    />
-                                    <Image
-                                        src="/logo-exchange-bybit.webp"
-                                        alt="HTX"
-                                        width={50}
-                                        height={50}
                                     />
                                 </div>
                                 {/* button for buy */}
@@ -1912,10 +1890,6 @@ export default function AIPage({ params }: any) {
                                 <span className='text-sm text-gray-500'>
                                     • AI 자동매매 트레이딩 서비스 이용권 NFT 입니다.
                                 </span>
-                                <span className='text-sm text-gray-500'>
-                                    • BYBIT 거래소 전용
-                                </span>
-
                                 <span className='text-lg font-semibold text-blue-500 mt-2'>
                                     계정 운영 방식
                                 </span>
@@ -1923,7 +1897,7 @@ export default function AIPage({ params }: any) {
                                     • 본인 거래소 계정에서 직접 자금 관리
                                 </span>
                                 <span className='text-sm text-gray-500'>
-                                    • 최소 운영자금: 100 USDT
+                                    • 최소 운영자금: 10000 USDT
                                 </span>
                                 <span className='text-sm text-gray-500'>
                                     • 자유로운 입출금 가능
