@@ -1183,7 +1183,7 @@ export default function SettingsPage({ params }: any) {
                                         />
                                         <input
                                             className="p-2 w-64 text-zinc-100 bg-zinc-800 rounded text-lg font-semibold"
-                                            placeholder="Recipient Wallet Address"
+                                            placeholder="받는 사람 지갑주소"
                                             type='text'
                                             onChange={(e) => {
                                                 setRecipient({
