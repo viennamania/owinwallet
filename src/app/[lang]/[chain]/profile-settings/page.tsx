@@ -834,15 +834,15 @@ export default function SettingsPage({ params }: any) {
                     | "OpenEditionERC721";
                     */
             
-                    type: "DropERC721",
+                    ///type: "DropERC721",
             
-                    /////type: "TokenERC721",
+                    type: "TokenERC721",
                     
                     
                     params: {
-                        name: "TBOT NFT",
-                        description: "TBOT NFT",
-                        symbol: "TBOT",
+                        name: "AI Agent",
+                        description: "This is AI Agent",
+                        symbol: "AGENT",
                     },
             
                 });
@@ -922,7 +922,7 @@ export default function SettingsPage({ params }: any) {
                 });
 
 
-                /*
+                
                 const nfts = await getOwnedNFTs({
                     contract: contract,
                     owner: address as string,
@@ -931,8 +931,9 @@ export default function SettingsPage({ params }: any) {
                 console.log("nfts=======", nfts);
 
                 setMyNfts( nfts );
-                */
+                
 
+                /*
                 setMyNfts([
                     {
                          name: "AI Agent",
@@ -940,7 +941,7 @@ export default function SettingsPage({ params }: any) {
                          image: "https://owinwallet.com/logo-aiagent.png",
                     },
                 ]);
-
+                */
                    
    
 
@@ -965,13 +966,43 @@ export default function SettingsPage({ params }: any) {
    console.log("myNfts", myNfts);
 
 
+    const [agentName, setAgentName] = useState("");
+    const [agentDescription, setAgentDescription] = useState("");
+    const [agentImage, setAgentImage] = useState("https://owinwallet.com/logo-aiagent.png");
 
     const [mintingAgentNft, setMintingAgentNft] = useState(false);
     const mintAgentNft = async () => {
 
         if (mintingAgentNft) {
+            toast.error('이미 실행중입니다');
             return;
         }
+
+        if (!address) {
+            toast.error('지갑을 먼저 연결해주세요');
+            return;
+        }
+
+        if (!erc721ContractAddress) {
+            toast.error('AI 에이전트 코드를 먼저 생성해주세요');
+            return;
+        }
+
+        if (agentName.length < 5 || agentName.length > 15) {
+            toast.error('에이전트 이름은 5자 이상 15자 이하로 입력해주세요');
+            return;
+        }
+
+        if (agentDescription.length < 5 || agentDescription.length > 100) {
+            toast.error('에이전트 설명은 5자 이상 100자 이하로 입력해주세요');
+            return;
+        }
+
+        if (!agentImage) {
+            toast.error('에이전트 이미지를 선택해주세요');
+            return;
+        }
+
 
         setMintingAgentNft(true);
 
@@ -989,9 +1020,9 @@ export default function SettingsPage({ params }: any) {
                 contract: contract,
                 to: address as string,
                 nft: {
-                    name: "AI Agent",
-                    description: "This is AI Agent",
-                    image: "https://owinwallet.com/logo-aiagent.png",
+                    name: agentName,
+                    description: agentDescription,
+                    image: agentImage,
                 },
             });
 
@@ -1005,11 +1036,15 @@ export default function SettingsPage({ params }: any) {
             console.log("transactionResult", transactionResult);
 
 
-            if (transactionResult) {
-                toast.success('AI 에이전트 NFT 발행 완료');
-            } else {
-                toast.error('AI 에이전트 NFT 발행 실패');
+            if (!transactionResult) {
+                throw new Error('AI 에이전트 NFT 발행 실패');
             }
+
+
+
+            toast.success('AI 에이전트 NFT 발행 완료');
+
+
 
 
         } catch (error) {
@@ -1020,6 +1055,8 @@ export default function SettingsPage({ params }: any) {
 
         setMintingAgentNft(false);
     }
+
+
 
 
 
@@ -1851,7 +1888,28 @@ export default function SettingsPage({ params }: any) {
                                 }
 
                                 {/* mint AI Agent NFT */}
-                                {myNfts.length === 0 && (
+                                <div className='w-full flex flex-col gap-2 items-start justify-between border border-gray-300 p-4 rounded-lg'>
+                                    <span className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
+                                        AI 에이전트 NFT 발행
+                                    </span>
+
+                                    <input 
+                                        className="p-2 w-64 text-zinc-100 bg-zinc-800 rounded text-lg font-semibold"
+                                        placeholder="에이전트 이름"
+                                        type='text'
+                                        onChange={(e) => {
+                                            setAgentName(e.target.value);
+                                        }}
+                                    />
+                                    <input 
+                                        className="p-2 w-64 text-zinc-100 bg-zinc-800 rounded text-lg font-semibold"
+                                        placeholder="에이전트 설명"
+                                        type='text'
+                                        onChange={(e) => {
+                                            setAgentDescription(e.target.value);
+                                        }}
+                                    />
+
                                     <button
                                         disabled={mintingAgentNft}
                                         onClick={mintAgentNft}
@@ -1875,27 +1933,29 @@ export default function SettingsPage({ params }: any) {
                                             {!mintingAgentNft && 'AI 에이전트 NFT 발행하기'}
                                         </div>
                                     </button>
-                                )}
+                               
 
 
-                                {/* my NFTs */}
-                                <div className='w-full grid grid-cols-1 xl:grid-cols-1 gap-2'>
-                                    {myNfts.map((nft, index) => (
-                                        <div key={index} className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
-                                            <div className='flex flex-row gap-2 items-center justify-between'>
-                                                <Image
-                                                    src={nft.image}
-                                                    alt="NFT"
-                                                    width={200}
-                                                    height={200}
-                                                    className="rounded-lg"
-                                                />
-                                                <div className='text-lg font-semibold'>
-                                                    {nft.name}
+                                    {/* my NFTs */}
+                                    <div className='w-full grid grid-cols-1 xl:grid-cols-1 gap-2'>
+                                        {myNfts.map((nft, index) => (
+                                            <div key={index} className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
+                                                <div className='flex flex-row gap-2 items-center justify-between'>
+                                                    <Image
+                                                        src={nft.image}
+                                                        alt="NFT"
+                                                        width={200}
+                                                        height={200}
+                                                        className="rounded-lg"
+                                                    />
+                                                    <div className='text-lg font-semibold'>
+                                                        {nft.name}
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        ))}
+                                    </div>
+
                                 </div>
 
 

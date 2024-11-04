@@ -1511,14 +1511,27 @@ export default function AIPage({ params }: any) {
                                             </span>
                                         </div>
 
-                                        <button
-                                            className='w-full bg-blue-500 text-zinc-100 p-2 rounded-lg text-lg font-semibold'
-                                            onClick={() => {
-                                                window.open("https://www.htx.com.pk/invite/en-us/1h?invite_code=z73y9223", "_blank");
-                                            }}
-                                        >
-                                            HTX 가입
-                                        </button>
+                                        <div className='w-full flex flex-col xl:flex-row items-center justify-between gap-2'>
+                                            <button
+                                                className='w-full bg-blue-500 text-zinc-100 p-2 rounded-lg text-lg font-semibold'
+                                                onClick={() => {
+                                                    window.open("https://www.htx.com.pk/invite/en-us/1h?invite_code=z73y9223", "_blank");
+                                                }}
+                                            >
+                                                HTX 가입
+                                            </button>
+                                            {/* HTX 가입 메뉴얼 */}
+                                            {/* https://drive.google.com/file/d/1eK_1jIc1PmZxJ-JYnxJKYJohoVqe1Dw9/view */}
+
+                                            <button
+                                                className='w-full bg-blue-500 text-zinc-100 p-2 rounded-lg text-lg font-semibold'
+                                                onClick={() => {
+                                                    window.open("https://drive.google.com/file/d/1eK_1jIc1PmZxJ-JYnxJKYJohoVqe1Dw9/view", "_blank");
+                                                }}
+                                            >
+                                                HTX 가입 메뉴얼
+                                            </button>
+                                        </div>
 
 
                                         {agents.length > 0 && (
