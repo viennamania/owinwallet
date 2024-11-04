@@ -990,6 +990,8 @@ export default function AIPage({ params }: any) {
 
         setAgentBot(agentBot);
 
+        setSelectedBotNumber(0);
+
         try {
 
 
