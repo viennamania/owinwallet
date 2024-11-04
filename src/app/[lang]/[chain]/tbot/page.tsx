@@ -1552,7 +1552,8 @@ export default function AIPage({ params }: any) {
                                                             />
                                                             <span className='text-sm font-semibold text-gray-500'>
                                                                 {
-                                                                    agent.erc721ContractAddress.substring(0, 15) + "..."
+                                                                    //agent.erc721ContractAddress.substring(0, 15) + "..."
+                                                                    agent.nickname
                                                                 }
                                                             </span>
                                                         </div>
