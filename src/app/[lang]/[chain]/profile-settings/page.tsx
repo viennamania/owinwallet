@@ -1072,7 +1072,29 @@ export default function SettingsPage({ params }: any) {
                 throw new Error('AI 에이전트 NFT 발행 실패');
             }
 
+            // fetch the NFTs again
+            const response = await fetch("/api/agent/getAgentNFTByWalletAddress", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    walletAddress: address,
+                    erc721ContractAddress: erc721ContractAddress,
+                }),
+            });
 
+            if (response.ok) {
+                const data = await response.json();
+                if (data.result) {
+                    setMyNfts(data.result.ownedNfts);
+                } else {
+                    setMyNfts([]);
+                }
+            }
+
+            setAgentName("");
+            setAgentDescription("");
 
             toast.success('AI 에이전트 NFT 발행 완료');
 
@@ -1912,22 +1934,24 @@ export default function SettingsPage({ params }: any) {
                                         AI 에이전트 NFT 발행
                                     </span>
 
-                                    <input 
-                                        className="p-2 w-64 text-zinc-100 bg-zinc-800 rounded text-lg font-semibold"
-                                        placeholder="에이전트 이름"
-                                        type='text'
-                                        onChange={(e) => {
-                                            setAgentName(e.target.value);
-                                        }}
-                                    />
-                                    <input 
-                                        className="p-2 w-64 text-zinc-100 bg-zinc-800 rounded text-lg font-semibold"
-                                        placeholder="에이전트 설명"
-                                        type='text'
-                                        onChange={(e) => {
-                                            setAgentDescription(e.target.value);
-                                        }}
-                                    />
+                                    <div className='flex flex-col xl:flex-row gap-2 items-start justify-between'>
+                                        <input 
+                                            className="p-2 w-64 text-zinc-100 bg-zinc-800 rounded text-lg font-semibold"
+                                            placeholder="에이전트 이름"
+                                            type='text'
+                                            onChange={(e) => {
+                                                setAgentName(e.target.value);
+                                            }}
+                                        />
+                                        <input 
+                                            className="p-2 w-64 text-zinc-100 bg-zinc-800 rounded text-lg font-semibold"
+                                            placeholder="에이전트 설명"
+                                            type='text'
+                                            onChange={(e) => {
+                                                setAgentDescription(e.target.value);
+                                            }}
+                                        />
+                                    </div>
 
                                     <button
                                         disabled={mintingAgentNft}
@@ -1970,7 +1994,7 @@ export default function SettingsPage({ params }: any) {
                                                         alt="NFT"
                                                         width={200}
                                                         height={200}
-                                                        className="rounded-lg w-20 h-20 xl:w-32 xl:h-32"
+                                                        className="rounded-lg w-20 xl:w-32"
                                                         
                                                     />
                                                     <div className='flex flex-col gap-2 items-center justify-between'>
