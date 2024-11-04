@@ -19,6 +19,7 @@ const nextConfig = {
       "replicate.delivery",
       "fal.media",
       "owinwallet.com",
+      "res.cloudinary.com",
     ],
   },
 

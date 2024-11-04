@@ -913,8 +913,10 @@ export default function SettingsPage({ params }: any) {
 
        const getMyNFTs = async () => {
 
+            
            try {
 
+                /*
                 const contract = getContract({
                      client,
                      chain: polygon,
@@ -931,7 +933,7 @@ export default function SettingsPage({ params }: any) {
                 console.log("nfts=======", nfts);
 
                 setMyNfts( nfts );
-                
+                */
 
                 /*
                 setMyNfts([
@@ -942,6 +944,35 @@ export default function SettingsPage({ params }: any) {
                     },
                 ]);
                 */
+
+
+                // api /api/agent/getAgentNFTByWalletAddress
+
+                const response = await fetch("/api/agent/getAgentNFTByWalletAddress", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        walletAddress: address,
+                        erc721ContractAddress: erc721ContractAddress,
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to get NFTs');
+                }
+
+                const data = await response.json();
+
+                console.log("myOwnedNfts====", data.result);
+
+                if (data.result) {
+                    setMyNfts(data.result.ownedNfts);
+                } else {
+                    setMyNfts([]);
+                }
+                
                    
    
 
@@ -949,6 +980,7 @@ export default function SettingsPage({ params }: any) {
            } catch (error) {
                console.error("Error getting NFTs", error);
            }
+           
 
        };
 
@@ -1678,12 +1710,12 @@ export default function SettingsPage({ params }: any) {
                                         
                                         ${isSendedOtp && 'hidden'}
 
-                                        w-32 p-2 rounded-lg text-sm font-semibold
+                                        w-32 p-2 rounded-md text-sm font-semibold
 
                                             ${
                                             !address || isSendingOtp
                                             ?'bg-gray-300 text-gray-400'
-                                            : 'bg-green-500 text-white'
+                                            : 'bg-blue-500 text-white'
                                             }
                                         
                                         `}
@@ -1872,20 +1904,7 @@ export default function SettingsPage({ params }: any) {
                                     />
                                 </div>
 
-                                {
-                                <button
-                                    onClick={() => {
-                                        navigator.clipboard.writeText(
-                                            'https://owinwallet.com/kr/polygon/tbot/?agent=' +
-                                            erc721ContractAddress
-                                        );
-                                        toast.success('레퍼럴 URL 복사 완료');
-                                    }}
-                                    className="p-2 bg-blue-500 text-zinc-100 rounded"
-                                >
-                                    레퍼럴 URL 복사
-                                </button>
-                                }
+                                
 
                                 {/* mint AI Agent NFT */}
                                 <div className='w-full flex flex-col gap-2 items-start justify-between border border-gray-300 p-4 rounded-lg'>
@@ -1914,8 +1933,8 @@ export default function SettingsPage({ params }: any) {
                                         disabled={mintingAgentNft}
                                         onClick={mintAgentNft}
                                         className={`
-                                            ${mintingAgentNft ? 'bg-gray-300 text-gray-400' : 'bg-green-500 text-zinc-100'}
-                                            p-2 rounded-lg text-sm font-semibold
+                                            ${mintingAgentNft ? 'bg-gray-300 text-gray-400' : 'bg-blue-500 text-zinc-100'}
+                                            p-2 rounded-sm text-sm font-semibold
                                         `}
                                     >
                                         <div className='flex flex-row gap-2 items-center justify-center'>
@@ -1937,21 +1956,48 @@ export default function SettingsPage({ params }: any) {
 
 
                                     {/* my NFTs */}
-                                    <div className='w-full grid grid-cols-1 xl:grid-cols-1 gap-2'>
+                                    <div className='mt-10 flex flex-col gap-2 items-start justify-between'>
+                                        <span className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
+                                            My AI 에이전트 NFT
+                                        </span>
+                                    </div>
+                                    <div className='w-full grid grid-cols-1 xl:grid-cols-2 gap-2'>
                                         {myNfts.map((nft, index) => (
-                                            <div key={index} className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
+                                            <div key={index} className='flex flex-col gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
                                                 <div className='flex flex-row gap-2 items-center justify-between'>
                                                     <Image
-                                                        src={nft.image}
+                                                        src={nft.image.thumbnailUrl}
                                                         alt="NFT"
                                                         width={200}
                                                         height={200}
-                                                        className="rounded-lg"
+                                                        className="rounded-lg w-20 h-20 xl:w-32 xl:h-32"
+                                                        
                                                     />
-                                                    <div className='text-lg font-semibold'>
-                                                        {nft.name}
+                                                    <div className='flex flex-col gap-2 items-center justify-between'>
+                                                        <div className='text-lg font-semibold text-green-500'>
+                                                            {nft.name}
+                                                        </div>
+                                                        <div className='text-sm font-semibold'>
+                                                            {nft.description}
+                                                        </div>
                                                     </div>
+
                                                 </div>
+
+                                                <button
+                                                    onClick={() => {
+                                                        navigator.clipboard.writeText(
+                                                            'https://owinwallet.com/kr/polygon/tbot/?agent=' +
+                                                            erc721ContractAddress + '&tokenId=' + nft.tokenId
+                                                        );
+                                                        toast.success('레퍼럴 URL 복사 완료');
+                                                    }}
+                                                    className="p-2 bg-blue-500 text-zinc-100 rounded"
+                                                >
+                                                    레퍼럴 URL 복사
+                                                </button>
+
+
                                             </div>
                                         ))}
                                     </div>
