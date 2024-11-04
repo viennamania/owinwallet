@@ -1014,6 +1014,93 @@ export default function SettingsPage({ params }: any) {
 
 
 
+    const [recipient, setRecipient] = useState({
+        walletAddress: "",
+        tronWalletAddress: "",
+    });
+
+    const [amount, setAmount] = useState(0);
+
+    const [sending, setSending] = useState(false);
+
+    const sendUsdt = async () => {
+
+        if (sending) {
+            toast.error('이미 실행중입니다');
+            return;
+        }
+    
+       if (!address) {
+            toast.error('지갑을 먼저 연결해주세요');
+            return;
+        }
+    
+        if (!amount) {
+          toast.error('금액을 입력해주세요');
+          return;
+        }
+
+        if (!recipient.walletAddress) {
+            toast.error('받는 사람 지갑주소를 입력해주세요');
+            return;
+        }
+
+    
+        if (balance < amount) {
+          toast.error('잔액이 부족합니다');
+          return;
+        }
+    
+        setSending(true);
+    
+    
+    
+        try {
+    
+    
+            // send USDT
+            // Call the extension function to prepare the transaction
+            const transaction = transfer({
+                contract: contract,
+                to: recipient.walletAddress,
+                amount: amount,
+            });
+            
+
+            const { transactionHash } = await sendTransaction({
+                account: activeAccount as any,
+                transaction,
+            });
+
+            console.log("transactionHash", transactionHash);
+
+            if (!transactionHash) {
+                throw new Error('Failed to send USDT');
+            }
+    
+          
+            setAmount(0);
+            setRecipient({
+                walletAddress: "",
+                tronWalletAddress: "",
+            });
+    
+            toast.success('전송을 완료했습니다');
+          
+    
+    
+        } catch (error) {
+          
+          console.error("error", error);
+    
+          toast.error('전송에 실패했습니다');
+        }
+    
+        setSending(false);
+      };
+
+
+
 
 
 
@@ -1077,6 +1164,56 @@ export default function SettingsPage({ params }: any) {
                                         {
                                             Number(balance).toFixed(2)
                                         } USDT
+                                    </div>
+                                </div>
+
+                                {/* send USDT */}
+                                <div className='w-full flex flex-col gap-2 items-start justify-between border border-gray-300 p-4 rounded-lg'>
+                                    <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
+                                        {Send_USDT}
+                                    </div>
+                                    <div className='flex flex-col xl:flex-row gap-2 items-start justify-between'>
+                                        <input
+                                            className="p-2 w-64 text-zinc-100 bg-zinc-800 rounded text-lg font-semibold"
+                                            placeholder="0.00"
+                                            type='number'
+                                            onChange={(e) => {
+                                                setAmount(Number(e.target.value));
+                                            }}
+                                        />
+                                        <input
+                                            className="p-2 w-64 text-zinc-100 bg-zinc-800 rounded text-lg font-semibold"
+                                            placeholder="Recipient Wallet Address"
+                                            type='text'
+                                            onChange={(e) => {
+                                                setRecipient({
+                                                    ...recipient,
+                                                    walletAddress: e.target.value,
+                                                });
+                                            }}
+                                        />
+                                        <button
+                                            disabled={sending}
+                                            onClick={() => {
+                                                sendUsdt();
+                                            }}
+                                            className={`p-2 bg-blue-500 text-zinc-100 rounded ${sending ? 'opacity-50' : ''}`}
+                                        >
+                                            <div className='flex flex-row gap-2 items-center justify-between'>
+                                                {sending && (
+                                                    <Image
+                                                        src="/loading.png"
+                                                        alt="Send"
+                                                        width={25}
+                                                        height={25}
+                                                        className="animate-spin"
+                                                    />
+                                                )}
+                                                <span className='text-lg font-semibold'>
+                                                    {Pay_USDT}
+                                                </span>
+                                            </div>
+                                        </button>
                                     </div>
                                 </div>
 
