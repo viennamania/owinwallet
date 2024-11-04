@@ -758,6 +758,14 @@ export default function SettingsPage({ params }: any) {
 
     const [loadingDeployErc721Contract, setLoadingDeployErc721Contract] = useState(false);
     const deployErc721Contract = async () => {
+
+        console.log("deployErc721Contract=====================");
+
+        console.log("address", address);
+        console.log("userCode", userCode);
+        console.log("loadingDeployErc721Contract", loadingDeployErc721Contract);
+        console.log("balance", balance);
+
   
         if (!address) {
             toast.error('지갑을 먼저 연결해주세요');
@@ -765,6 +773,7 @@ export default function SettingsPage({ params }: any) {
         }
 
         if (!userCode) {
+            //console.log("userCode=====", userCode);
             toast.error('닉네임을 먼저 설정해주세요');
             return;
         }
