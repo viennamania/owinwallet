@@ -1942,6 +1942,7 @@ export default function SettingsPage({ params }: any) {
                                             onChange={(e) => {
                                                 setAgentName(e.target.value);
                                             }}
+                                            value={agentName}
                                         />
                                         <input 
                                             className="p-2 w-64 text-zinc-100 bg-zinc-800 rounded text-lg font-semibold"
@@ -1950,6 +1951,7 @@ export default function SettingsPage({ params }: any) {
                                             onChange={(e) => {
                                                 setAgentDescription(e.target.value);
                                             }}
+                                            value={agentDescription}
                                         />
                                     </div>
 
@@ -1987,8 +1989,9 @@ export default function SettingsPage({ params }: any) {
                                     </div>
                                     <div className='w-full grid grid-cols-1 xl:grid-cols-2 gap-2'>
                                         {myNfts.map((nft, index) => (
-                                            <div key={index} className='flex flex-col gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
-                                                <div className='flex flex-row gap-2 items-center justify-between'>
+                                            <div key={index} className='w-full flex flex-col gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
+                                                
+                                                <div className='w-full grid grid-cols-2 gap-2 items-center justify-between'>
                                                     <Image
                                                         src={nft.image.thumbnailUrl}
                                                         alt="NFT"
@@ -1997,7 +2000,10 @@ export default function SettingsPage({ params }: any) {
                                                         className="rounded-lg w-20 xl:w-32"
                                                         
                                                     />
-                                                    <div className='flex flex-col gap-2 items-center justify-between'>
+                                                    <div className='flex flex-col gap-2 items-start justify-between'>
+                                                        <div className='text-2xl font-semibold text-blue-500'>
+                                                            #{nft.tokenId}
+                                                        </div>
                                                         <div className='text-lg font-semibold text-green-500'>
                                                             {nft.name}
                                                         </div>
@@ -2020,7 +2026,6 @@ export default function SettingsPage({ params }: any) {
                                                 >
                                                     레퍼럴 URL 복사
                                                 </button>
-
 
                                             </div>
                                         ))}
