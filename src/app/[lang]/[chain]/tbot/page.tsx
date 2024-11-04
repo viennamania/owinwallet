@@ -1556,12 +1556,13 @@ export default function AIPage({ params }: any) {
                                                                     agent.nickname
                                                                 }
                                                             </span>
+                                                            
                                                             <Image
                                                                 src={agent.avatar || "/icon-anonymous.png"}
                                                                 alt="TBOT"
                                                                 width={50}
                                                                 height={50}
-                                                                className='rounded-full'
+                                                                className='rounded-full h-10 w-10'
                                                             />
                                                         </div>
 
@@ -1605,12 +1606,7 @@ export default function AIPage({ params }: any) {
                                             placeholder="HTX UID"
                                             className="w-full p-2 rounded-lg border border-gray-300"
                                         />
-                                        <input
-                                            onChange={(e) => setHtxUsdtWalletAddress(e.target.value)}
-                                            type="text"
-                                            placeholder="HTX USDT(TRON) 지갑주소"
-                                            className="w-full p-2 rounded-lg border border-gray-300"
-                                        />
+
                                         <input
                                             onChange={(e) => setApiAccessKey(e.target.value)}
                                             type="text"
@@ -1621,6 +1617,13 @@ export default function AIPage({ params }: any) {
                                             onChange={(e) => setApiSecretKey(e.target.value)}
                                             type="text"
                                             placeholder="API Secret Key"
+                                            className="w-full p-2 rounded-lg border border-gray-300"
+                                        />
+
+                                        <input
+                                            onChange={(e) => setHtxUsdtWalletAddress(e.target.value)}
+                                            type="text"
+                                            placeholder="HTX USDT(TRON) 지갑주소"
                                             className="w-full p-2 rounded-lg border border-gray-300"
                                         />
 
