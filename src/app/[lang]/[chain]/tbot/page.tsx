@@ -1233,43 +1233,42 @@ export default function AIPage({ params }: any) {
                                 <ConnectButton
                                     client={client}
                                     wallets={wallets}
-                                    theme={"light"}
+
+                                    
                                     accountAbstraction={{   
-                                        chain: params.chain === "arbitrum" ? arbitrum : polygon,
-                                        factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                                        gasless: true,
+                                    chain: params.chain === "arbitrum" ? arbitrum : polygon,
+                                    factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+                                    gasless: true,
+                                    }}
+                                    
+                                    
+                                    theme={"light"}
+
+                                    
+
+                                    connectButton={{
+                                    label: "Sign in with OWIN Magic Wallet",
                                     }}
 
                                     connectModal={{
-                                        size: "wide",
+                                    size: "wide",                            
+                                    showThirdwebBranding: false,
+
                                     }}
+
                                     appMetadata={
-                                        {
+                                    {
                                         logoUrl: "https://gold.goodtether.com/logo.png",
                                         name: "Next App",
                                         url: "https://gold.goodtether.com",
                                         description: "This is a Next App.",
-                                        }
+
                                     }
+                                    }
+
+                                    //locale={"ko_KR"}
+                                    locale={"en_US"}
                                 />
-                                
-
-
-                                <button
-                                    onClick={handleConnect}
-                                    className="w-full bg-zinc-800 text-white px-4 py-2 rounded-lg hover:bg-zinc-900"
-                                >
-                                <div className="flex flex-row justify-center items-center gap-2">
-                                    <Image
-                                        src={thirdwebIcon}
-                                        alt="Thirdweb"
-                                        width={20}
-                                        height={20}
-                                        className="rounded-lg w-10 h-10"
-                                    />
-                                    <span>Sign in with OWIN Magic Wallet</span>
-                                </div>
-                                </button>
 
 
                                 <span className='text-xs font-semibold text-red-500'>

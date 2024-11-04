@@ -731,7 +731,7 @@ export default function SettingsPage({ params }: any) {
             try {
 
                 const erc721ContractAddress = await deployERC721Contract({
-                    chain: params.chain === "arbitrum" ? arbitrum : polygon,
+                    chain: polygon,
                     client: client,
                     account: activeAccount as any,
             
@@ -824,7 +824,7 @@ export default function SettingsPage({ params }: any) {
 
                 const contract = getContract({
                      client,
-                     chain: params.chain === "arbitrum" ? arbitrum : polygon,
+                     chain: polygon,
                      address: erc721ContractAddress,
                 });
 
@@ -886,7 +886,7 @@ export default function SettingsPage({ params }: any) {
 
             const contract = getContract({
                 client,
-                chain: params.chain === "arbitrum" ? arbitrum : polygon,
+                chain: polygon,
                 address: erc721ContractAddress,
 
               });
@@ -966,47 +966,50 @@ export default function SettingsPage({ params }: any) {
                         </div>
 
 
-                        {!address && (
-                            <ConnectButton
+                    </div>
+
+
+                    <div className='w-full flex flex-col gap-4 items-start justify-center'>
+                        <ConnectButton
                             client={client}
                             wallets={wallets}
 
                             
                             accountAbstraction={{   
-                                chain: params.chain === "arbitrum" ? arbitrum : polygon,
-                                //
-                                //chain: polygon,
-
-                                //chain: arbitrum,
-                                factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                                gasless: true,
+                            chain: params.chain === "arbitrum" ? arbitrum : polygon,
+                            factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+                            gasless: true,
                             }}
                             
                             
                             theme={"light"}
+
+                            
+
+                            connectButton={{
+                            label: "Sign in with OWIN Magic Wallet",
+                            }}
+
                             connectModal={{
-                                size: "wide",                            
-                                //title: "Connect",
+                            size: "wide",                            
+                            showThirdwebBranding: false,
 
                             }}
 
                             appMetadata={
-                                {
+                            {
                                 logoUrl: "https://gold.goodtether.com/logo.png",
                                 name: "Next App",
                                 url: "https://gold.goodtether.com",
                                 description: "This is a Next App.",
 
-                                }
+                            }
                             }
 
-                            />
-                        )}
-
+                            //locale={"ko_KR"}
+                            locale={"en_US"}
+                        />
                     </div>
-
-
-
 
 
                     <div className='w-full  flex flex-col gap-5 '>
@@ -1245,7 +1248,7 @@ export default function SettingsPage({ params }: any) {
                                     </div>
 
                                     {!seller && (
-                                        <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
+                                        <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-sm font-semibold">
                                             {Not_a_seller}
                                         </div>
                                     )}
