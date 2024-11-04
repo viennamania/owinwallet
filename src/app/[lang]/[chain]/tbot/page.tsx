@@ -1032,6 +1032,63 @@ export default function AIPage({ params }: any) {
 
     };
 
+
+    // check htx api key
+    const [checkingHtxApiKey, setCheckingHtxApiKey] = useState(false);
+    const checkHtxApiKey = async (
+        htxAccessKey: string,
+        htxSecretKey: string,
+    ) => {
+
+       
+        if (htxAccessKey === "") {
+            toast.error("HTX Access Key를 입력해 주세요.");
+            return;
+        }
+
+        if (htxSecretKey === "") {
+            toast.error("HTX Secret Key를 입력해 주세요.");
+            return;
+        }
+
+        setCheckingHtxApiKey(true);
+
+        const response = await fetch("/api/agent/getAccount", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                htxAccessKey: htxAccessKey,
+                htxSecretKey: htxSecretKey,
+            }),
+        });
+        /*
+        {
+            status: 'ok',
+            data: [ { id: 63912897, type: 'spot', subtype: '', state: 'working' } ]
+        }
+        */
+
+        const data = await response.json();
+
+        console.log("data.result", data.result);
+
+        if (data.result) {
+            toast.success("HTX API Key가 확인되었습니다.");
+        } else {
+            toast.error("HTX API Key를 확인할 수 없습니다.");
+        }
+
+        setCheckingHtxApiKey(false);
+
+    };
+
+
+
+
+
+        
  
 
 
@@ -1571,6 +1628,16 @@ export default function AIPage({ params }: any) {
                                                 HTX USDT(TRON) 지갑주소: {myAgent.htxUsdtWalletAddress.substring(0, 10) + "..."}
                                             </span>
                                         </div>
+
+                                        {/* button for api call /api/agent/getAccount */}
+                                        <button
+                                            className='bg-blue-500 text-zinc-100 p-2 rounded-lg text-lg font-semibold'
+                                            onClick={() => {
+                                                checkHtxApiKey(myAgent.apiAccessKey, myAgent.apiSecretKey);
+                                            }}
+                                        >
+                                            HTX API 정보 확인
+                                        </button>
                                     </div>
                                 )}
 
