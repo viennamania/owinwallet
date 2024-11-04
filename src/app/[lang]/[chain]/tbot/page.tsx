@@ -1549,13 +1549,7 @@ export default function AIPage({ params }: any) {
                                                                     setAgentBot(e.target.value);
                                                                 }}
                                                             />
-                                                            <span className='text-sm font-semibold text-gray-500'>
-                                                                {
-                                                                    //agent.erc721ContractAddress.substring(0, 15) + "..."
-                                                                    agent.nickname
-                                                                }
-                                                            </span>
-                                                            
+
                                                             <Image
                                                                 src={agent.avatar || "/icon-anonymous.png"}
                                                                 alt="TBOT"
@@ -1563,6 +1557,16 @@ export default function AIPage({ params }: any) {
                                                                 height={50}
                                                                 className='rounded-full h-10 w-10'
                                                             />
+
+                                                            <span className='text-xl font-semibold text-gray-500'>
+                                                                {
+                                                                    //agent.erc721ContractAddress.substring(0, 15) + "..."
+                                                                    agent.nickname
+                                                                }
+                                                            </span>
+                                                            
+
+
                                                         </div>
 
                                                     ))}
