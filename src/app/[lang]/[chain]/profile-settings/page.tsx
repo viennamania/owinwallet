@@ -969,46 +969,61 @@ export default function SettingsPage({ params }: any) {
                     </div>
 
 
+                
                     <div className='w-full flex flex-col gap-4 items-start justify-center'>
-                        <ConnectButton
-                            client={client}
-                            wallets={wallets}
 
-                            
-                            accountAbstraction={{   
-                            chain: params.chain === "arbitrum" ? arbitrum : polygon,
-                            factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                            gasless: true,
-                            }}
-                            
-                            
-                            theme={"light"}
+                        {address ? (
 
-                            
+                            <Image
+                                src="/icon-wallet-live.gif"
+                                alt="Wallet"
+                                width={65}
+                                height={25}
+                                className="rounded"
+                            />
 
-                            connectButton={{
-                            label: "Sign in with OWIN Magic Wallet",
-                            }}
+                        ) : (
 
-                            connectModal={{
-                            size: "wide",                            
-                            showThirdwebBranding: false,
+                            <ConnectButton
+                                client={client}
+                                wallets={wallets}
 
-                            }}
+                                
+                                accountAbstraction={{   
+                                chain: params.chain === "arbitrum" ? arbitrum : polygon,
+                                factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+                                gasless: true,
+                                }}
+                                
+                                
+                                theme={"light"}
 
-                            appMetadata={
-                            {
-                                logoUrl: "https://gold.goodtether.com/logo.png",
-                                name: "Next App",
-                                url: "https://gold.goodtether.com",
-                                description: "This is a Next App.",
+                                
 
-                            }
-                            }
+                                connectButton={{
+                                label: "Sign in with OWIN Magic Wallet",
+                                }}
 
-                            //locale={"ko_KR"}
-                            locale={"en_US"}
-                        />
+                                connectModal={{
+                                size: "wide",                            
+                                showThirdwebBranding: false,
+
+                                }}
+
+                                appMetadata={
+                                {
+                                    logoUrl: "https://gold.goodtether.com/logo.png",
+                                    name: "Next App",
+                                    url: "https://gold.goodtether.com",
+                                    description: "This is a Next App.",
+
+                                }
+                                }
+
+                                //locale={"ko_KR"}
+                                locale={"en_US"}
+                            />
+                        )}
                     </div>
 
 
@@ -1556,7 +1571,7 @@ export default function SettingsPage({ params }: any) {
                                 <button
                                     onClick={() => {
                                         navigator.clipboard.writeText(
-                                            'https://owinwallet.com/kr/tron/?agent=' +
+                                            'https://owinwallet.com/kr/polygon/tbot/?agent=' +
                                             erc721ContractAddress
                                         );
                                         toast.success('레퍼럴 URL 복사 완료');
