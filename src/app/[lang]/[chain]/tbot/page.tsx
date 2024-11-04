@@ -1278,10 +1278,7 @@ export default function AIPage({ params }: any) {
                             </div>
                         )}
                     </div>
-
      
-
-                 
 
 
                     {/* TBOT Image */}
@@ -1291,9 +1288,17 @@ export default function AIPage({ params }: any) {
                     10,000 TBOT for BYBIT
                     */}
 
-                    <div className='w-full flex flex-col gap-5 '> 
+                    {/* TBOT 구매 */}
+                    <div className='mt-10 flex flex-row items-center gap-2'>
+                        {/* dot */}
+                        <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
+                        <span className='text-xl font-semibold text-zinc-800'>
+                            TBOT 구매
+                        </span>
+                    </div>
 
-                  
+                    <div className='mt-5 w-full flex flex-col gap-10 '> 
+
                         <div className='flex flex-col xl:flex-row gap-5 items-center xl:items-start justify-between border
                          border-yellow-500 p-4 rounded-lg
                         '>
@@ -1731,9 +1736,7 @@ export default function AIPage({ params }: any) {
                         •주 단위 리워드 정산
                         •추가 지원AI 트레이딩 시스템 운영 교육
                         */}
-                    </div>
 
-                    <div className='w-full flex flex-col gap-5 '> 
 
                         <div className='flex flex-col xl:flex-row gap-5 items-center xl:items-start justify-between border
                          border-blue-500 p-4 rounded-lg'>
