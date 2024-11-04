@@ -1556,6 +1556,13 @@ export default function AIPage({ params }: any) {
                                                                     agent.nickname
                                                                 }
                                                             </span>
+                                                            <Image
+                                                                src={agent.avatar || "/icon-anonymous.png"}
+                                                                alt="TBOT"
+                                                                width={50}
+                                                                height={50}
+                                                                className='rounded-full'
+                                                            />
                                                         </div>
 
                                                     ))}
