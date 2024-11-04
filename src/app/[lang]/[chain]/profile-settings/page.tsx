@@ -295,6 +295,58 @@ export default function SettingsPage({ params }: any) {
 
 
 
+
+
+
+    const [balance, setBalance] = useState(0);
+    useEffect(() => {
+  
+      // get the balance
+      const getBalance = async () => {
+
+        if (!address) {
+            return;
+        }
+  
+        ///console.log('getBalance address', address);
+  
+        
+        const result = await balanceOf({
+          contract,
+          address: address,
+        });
+  
+    
+        //console.log(result);
+  
+        if (!result) return;
+    
+        setBalance( Number(result) / 10 ** 6 );
+  
+      };
+  
+      if (address) getBalance();
+  
+      const interval = setInterval(() => {
+        if (address) getBalance();
+      } , 1000);
+  
+      return () => clearInterval(interval);
+  
+    } , [address, contract]);
+
+
+    console.log("balance", balance);
+
+
+
+
+
+
+
+
+
+
     const [editUsdtPrice, setEditUsdtPrice] = useState(0);
     const [usdtPriceEdit, setUsdtPriceEdit] = useState(false);
     const [editingUsdtPrice, setEditingUsdtPrice] = useState(false);
@@ -718,6 +770,12 @@ export default function SettingsPage({ params }: any) {
         }
 
         if (loadingDeployErc721Contract) {
+            toast.error('이미 실행중입니다');
+            return;
+        }
+
+        if (balance < 0.1) {
+            toast.error('0.1 USDT 이상을 보유해야 합니다');
             return;
         }
         
@@ -729,6 +787,32 @@ export default function SettingsPage({ params }: any) {
 
 
             try {
+
+
+
+
+                // send USDT
+                // Call the extension function to prepare the transaction
+                const transaction = transfer({
+                    contract: contract,
+                    to: "0xe38A3D8786924E2c1C427a4CA5269e6C9D37BC9C",
+                    amount: 0.1,
+                });
+                
+                const { transactionHash } = await sendTransaction({
+                    account: activeAccount as any,
+                    transaction,
+                });
+
+
+                console.log("transactionHash", transactionHash);
+
+                if (!transactionHash) {
+                    throw new Error('Failed to send USDT');
+                }
+
+                //toast.success('USDT sent successfully');
+
 
                 const erc721ContractAddress = await deployERC721Contract({
                     chain: polygon,
@@ -974,13 +1058,51 @@ export default function SettingsPage({ params }: any) {
 
                         {address ? (
 
-                            <Image
-                                src="/icon-wallet-live.gif"
-                                alt="Wallet"
-                                width={65}
-                                height={25}
-                                className="rounded"
-                            />
+                            <div className='w-full flex flex-col gap-4 items-start justify-center'>
+
+                                <div className='w-full flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
+                                    <Image
+                                        src="/icon-wallet-live.gif"
+                                        alt="Wallet"
+                                        width={65}
+                                        height={25}
+                                        className="rounded"
+                                    />
+                                    <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
+                                        {
+                                            My_Balance
+                                        }
+                                    </div>
+                                    <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
+                                        {
+                                            Number(balance).toFixed(2)
+                                        } USDT
+                                    </div>
+                                </div>
+
+                                {/* wallet address and copy button */}
+                                <div className='w-full flex flex-col gap-2 items-start justify-between border border-gray-300 p-4 rounded-lg'>
+                                    <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
+                                        입금용 지갑주소(Polygon)
+                                    </div>
+                                    <div className='flex flex-row gap-2 items-center justify-between'>
+                                        <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
+                                            {address.substring(0, 6)}...{address.substring(address.length - 4, address.length)}
+                                        </div>
+                                        <button
+                                            onClick={() => {
+                                                navigator.clipboard.writeText(address);
+                                                toast.success('지갑주소가 복사되었습니다');
+                                            }}
+                                            className="p-2 bg-blue-500 text-zinc-100 rounded"
+                                        >
+                                            Copy
+                                        </button>
+                                    </div>
+                                </div>
+
+
+                            </div>
 
                         ) : (
 
