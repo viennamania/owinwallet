@@ -1889,16 +1889,23 @@ export default function AIPage({ params }: any) {
                                                             </div>
                                                         )}
 
+                                                        {/* top left overlapping */}
                                                         {!loadingAgentBotList && agentBotList.map((nft) => (
+
+                                                           
                                                             <div
                                                                 key={nft.tokenId}
                                                                 className={`flex flex-col items-center gap-2
                                                                     border border-gray-300 p-2 rounded-lg
                                                                     hover:shadow-lg cursor-pointer
+
                                                                     ${selectedBotNumber === nft.tokenId ? 'bg-blue-500 text-zinc-100' : 'bg-white text-gray-500'}
                                                                 `}
                                                                 onClick={() => setSelectedBotNumber(nft.tokenId)}
                                                             >
+
+
+
                                                                 <Image
                                                                     src={nft.image.thumbnailUrl}
                                                                     alt={nft.name}
@@ -1907,9 +1914,28 @@ export default function AIPage({ params }: any) {
                                                                     className='rounded-lg w-44'
                                                                 />
                                                                 <div className='w-full flex flex-col items-start gap-2'>
-                                                                    <span className='text-2xl font-semibold text-red-500'>
-                                                                        #{nft.tokenId}
-                                                                    </span>
+                                                                    <div className='flex flex-row items-center gap-2'>
+                                                                        <span className='text-2xl font-semibold text-red-500'>
+                                                                            #{nft.tokenId}
+                                                                        </span>
+                                                                        {/* opensea link */}
+                                                                        <button
+                                                                            className='p-2 rounded-lg hover:bg-gray-300'
+                                                                            onClick={() => {
+                                                                                window.open(
+                                                                                    `https://opensea.io/assets/matic/${nft.contract.address}/${nft.tokenId}`,
+                                                                                    "_blank"
+                                                                                );
+                                                                            }}
+                                                                        >
+                                                                            <Image
+                                                                                src="/logo-opensea.png"
+                                                                                alt="opensea"
+                                                                                width={20}
+                                                                                height={20}
+                                                                            />
+                                                                        </button>
+                                                                    </div>
                                                                     <span className='text-sm font-semibold text-yellow-500'>
                                                                         {nft.name}
                                                                     </span>
@@ -1925,16 +1951,24 @@ export default function AIPage({ params }: any) {
                                                                             : `${Math.floor((new Date().getTime() - new Date(nft.mint.timestamp).getTime()) / 1000 / 60 / 60)} hours ago`
                                                                         }
                                                                     </span>
-                                                                    {/* 수익률 */}
-                                                                    <span className='text-xs xl:text-lg font-semibold'>
-                                                                        ROI: {23.5}%
-                                                                    </span>
                                                                     {/* Accounts */}
                                                                     <span className='text-xs xl:text-lg font-semibold'>
                                                                         Accounts: 163
                                                                     </span>
+                                                                    {/* 수익률 */}
+                                                                    <span className='text-xs xl:text-lg font-semibold'>
+                                                                        ROI: {23.5}%
+                                                                    </span>
+                                                                    {/* Funds */}
+                                                                    <span className='text-xs xl:text-lg font-semibold'>
+                                                                        Funds: 53650 USDT
+                                                                    </span>
+
+
                                                                 </div>
                                                             </div>
+
+                                                     
                                                         ))}
                                                     </div>
 

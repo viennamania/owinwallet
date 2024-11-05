@@ -1978,7 +1978,7 @@ export default function SettingsPage({ params }: any) {
                                         onClick={() => {
                                             window.open('https://opensea.io/assets/matic/' + erc721ContractAddress);
                                         }}
-                                        className="p-2 "
+                                        className="p-2 rounded hover:bg-gray-300"
                                     >
                                         <Image
                                             src="/logo-opensea.png"
@@ -2086,6 +2086,38 @@ export default function SettingsPage({ params }: any) {
                                                         <div className='text-sm font-semibold'>
                                                             {nft.description}
                                                         </div>
+
+                                                        <div className='flex flex-col gap-2 items-start justify-between'>
+                                                            {/* // from now to mint in hours minutes seconds
+                                                            // now - mint */}
+                                                            <span className='text-xs xl:text-lg font-semibold'>
+                                                                Start{' '}{(new Date().getTime() - new Date(nft.mint.timestamp).getTime()) / 1000 / 60 / 60 / 24 > 1
+                                                                    ? `${Math.floor((new Date().getTime() - new Date(nft.mint.timestamp).getTime()) / 1000 / 60 / 60 / 24)} days ago`
+                                                                    : `${Math.floor((new Date().getTime() - new Date(nft.mint.timestamp).getTime()) / 1000 / 60 / 60)} hours ago`
+                                                                }
+                                                            </span>
+                                                            
+                                                            {/* Accounts */}
+                                                            <span className='text-xs xl:text-lg font-semibold'>
+                                                                Accounts: 163
+                                                            </span>
+
+                                                            {/* Funds */}
+                                                            <span className='text-xs xl:text-lg font-semibold'>
+                                                                Funds: 77500 USDT
+                                                            </span>
+
+                                                            {/* 수익률 */}
+                                                            <span className='text-xs xl:text-lg font-semibold'>
+                                                                ROI: {23.5}%
+                                                            </span>
+
+                                                            
+
+                                                        </div>
+
+
+
                                                     </div>
 
                                                 </div>
@@ -2100,7 +2132,7 @@ export default function SettingsPage({ params }: any) {
                                                             );
                                                             toast.success('레퍼럴 URL 복사 완료');
                                                         }}
-                                                        className="p-2 bg-blue-500 text-zinc-100 rounded"
+                                                        className="p-2 bg-blue-500 text-zinc-100 rounded hover:bg-blue-600"
                                                     >
                                                         레퍼럴 URL 복사
                                                     </button>
@@ -2110,7 +2142,7 @@ export default function SettingsPage({ params }: any) {
                                                         onClick={() => {
                                                             window.open('https://opensea.io/assets/matic/' + erc721ContractAddress + '/' + nft.tokenId);
                                                         }}
-                                                        className="p-2"
+                                                        className="p-2 rounded hover:bg-gray-300"
                                                     >
                                                         <Image
                                                             src="/logo-opensea.png"
