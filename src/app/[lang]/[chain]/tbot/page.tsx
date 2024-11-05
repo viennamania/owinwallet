@@ -1872,16 +1872,21 @@ export default function AIPage({ params }: any) {
                                                         ))}
                                                     </div>
 
-                                                    <div className='flex flex-col gap-2'>
+                                                    <div className='w-full flex flex-col gap-2 h-min-96'>
 
                                                         {loadingAgentBotList && (
-                                                            <Image
-                                                                src="/loading.png"
-                                                                alt="loading"
-                                                                width={50}
-                                                                height={50}
-                                                                className='animate-spin'
-                                                            />
+                                                            <div className='flex flex-col items-center gap-2'>
+                                                                <Image
+                                                                    src="/loading.png"
+                                                                    alt="loading"
+                                                                    width={50}
+                                                                    height={50}
+                                                                    className='animate-spin'
+                                                                />
+                                                                <span className='text-sm font-semibold text-blue-500'>
+                                                                    AI 에이전트 목록을 불러오는 중...
+                                                                </span>
+                                                            </div>
                                                         )}
 
                                                         {!loadingAgentBotList && agentBotList.map((nft) => (
@@ -1889,6 +1894,7 @@ export default function AIPage({ params }: any) {
                                                                 key={nft.tokenId}
                                                                 className={`flex flex-col items-center gap-2
                                                                     border border-gray-300 p-2 rounded-lg
+                                                                    hover:shadow-lg cursor-pointer
                                                                     ${selectedBotNumber === nft.tokenId ? 'bg-blue-500 text-zinc-100' : 'bg-white text-gray-500'}
                                                                 `}
                                                                 onClick={() => setSelectedBotNumber(nft.tokenId)}
@@ -1901,14 +1907,31 @@ export default function AIPage({ params }: any) {
                                                                     className='rounded-lg w-44'
                                                                 />
                                                                 <div className='w-full flex flex-col items-start gap-2'>
-                                                                    <span className='text-lg font-semibold'>
+                                                                    <span className='text-2xl font-semibold text-red-500'>
                                                                         #{nft.tokenId}
                                                                     </span>
-                                                                    <span className='text-sm font-semibold'>
+                                                                    <span className='text-sm font-semibold text-yellow-500'>
                                                                         {nft.name}
                                                                     </span>
                                                                     <span className='text-sm font-semibold'>
                                                                         {nft.description}
+                                                                    </span>
+                                                                    
+                                                                    {/* // from now to mint in hours minutes seconds
+                                                                    // now - mint */}
+                                                                    <span className='text-xs xl:text-lg font-semibold'>
+                                                                        Start{' '}{(new Date().getTime() - new Date(nft.mint.timestamp).getTime()) / 1000 / 60 / 60 / 24 > 1
+                                                                            ? `${Math.floor((new Date().getTime() - new Date(nft.mint.timestamp).getTime()) / 1000 / 60 / 60 / 24)} days ago`
+                                                                            : `${Math.floor((new Date().getTime() - new Date(nft.mint.timestamp).getTime()) / 1000 / 60 / 60)} hours ago`
+                                                                        }
+                                                                    </span>
+                                                                    {/* 수익률 */}
+                                                                    <span className='text-xs xl:text-lg font-semibold'>
+                                                                        ROI: {23.5}%
+                                                                    </span>
+                                                                    {/* Accounts */}
+                                                                    <span className='text-xs xl:text-lg font-semibold'>
+                                                                        Accounts: 163
                                                                     </span>
                                                                 </div>
                                                             </div>

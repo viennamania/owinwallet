@@ -1,3 +1,4 @@
+import { create } from 'domain';
 import clientPromise from '../mongodb';
 
 
@@ -109,6 +110,7 @@ export async function insertOne(data: any) {
       htxUsdtWalletAddress: data.htxUsdtWalletAddress,
       apiAccessKey: data.apiAccessKey,
       apiSecretKey: data.apiSecretKey,
+
     };
   } else {
     return null;
@@ -145,6 +147,7 @@ export async function getOneByWalletAddress(walletAddress: string) {
       htxUsdtWalletAddress: result.htxUsdtWalletAddress,
       apiAccessKey: result.apiAccessKey,
       apiSecretKey: result.apiSecretKey,
+      createdAt: result.createdAt,
     };
   } else {
     return null;
