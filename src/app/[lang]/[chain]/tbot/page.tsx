@@ -839,8 +839,16 @@ export default function AIPage({ params }: any) {
     // apply to mint NFT
     // 이름, 핸드폰번호, 이메일주소, HTX UID, HTX USDT(TRON) 지갑주소, API Access Key, API Secret Key
 
-    const [userName, setUserName] = useState( nickname || "");
-    const [userPhoneNumber, setUserPhoneNumber] = useState( phoneNumber || "");
+    const [userName, setUserName] = useState("");
+    useEffect(() => {
+        nickname && setUserName(nickname);
+    } , [nickname]);
+
+    const [userPhoneNumber, setUserPhoneNumber] = useState("");
+    useEffect(() => {
+        phoneNumber && setUserPhoneNumber(phoneNumber);
+    } , [phoneNumber]);
+
     const [userEmail, setUserEmail] = useState("");
     const [htxUid, setHtxUid] = useState("");
     const [htxUsdtWalletAddress, setHtxUsdtWalletAddress] = useState("");
