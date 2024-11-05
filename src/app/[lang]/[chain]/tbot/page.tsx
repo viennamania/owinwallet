@@ -1033,6 +1033,8 @@ export default function AIPage({ params }: any) {
     };
 
 
+    const [isValidAPIKey, setIsValidAPIKey] = useState(false);
+
     // check htx api key
     const [checkingHtxApiKey, setCheckingHtxApiKey] = useState(false);
     const checkHtxApiKey = async (
@@ -1074,7 +1076,10 @@ export default function AIPage({ params }: any) {
 
         console.log("data.result", data.result);
 
-        if (data.result) {
+        if (data.result?.status === "ok") {
+
+            setIsValidAPIKey(true);
+
             toast.success("HTX API Key가 확인되었습니다.");
         } else {
             toast.error("HTX API Key를 확인할 수 없습니다.");
@@ -1618,12 +1623,15 @@ export default function AIPage({ params }: any) {
                                             <span className='text-sm font-semibold text-gray-500'>
                                                 HTX UID: {myAgent.htxUid}
                                             </span>
+
+
                                             <span className='text-sm font-semibold text-gray-500'>
                                                 API Access Key: {myAgent.apiAccessKey.substring(0, 10) + "..."}
                                             </span>
                                             <span className='text-sm font-semibold text-gray-500'>
                                                 API Secret Key: {myAgent.apiSecretKey.substring(0, 10) + "..."}
                                             </span>
+
                                             <span className='text-sm font-semibold text-gray-500'>
                                                 HTX USDT(TRON) 지갑주소: {myAgent.htxUsdtWalletAddress.substring(0, 10) + "..."}
                                             </span>
@@ -1631,12 +1639,13 @@ export default function AIPage({ params }: any) {
 
                                         {/* button for api call /api/agent/getAccount */}
                                         <button
-                                            className='bg-blue-500 text-zinc-100 p-2 rounded-lg text-lg font-semibold'
+                                            disabled={checkingHtxApiKey}
+                                            className={` ${checkingHtxApiKey ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold`}
                                             onClick={() => {
                                                 checkHtxApiKey(myAgent.apiAccessKey, myAgent.apiSecretKey);
                                             }}
                                         >
-                                            HTX API 정보 확인
+                                            HTX API 정보 확인하기
                                         </button>
                                     </div>
                                 )}
@@ -1828,20 +1837,57 @@ export default function AIPage({ params }: any) {
                                             className="w-full p-2 rounded-lg border border-gray-300"
                                         />
 
-                                        <input
-                                            disabled={applyingMintNFT}
-                                            onChange={(e) => setApiAccessKey(e.target.value)}
-                                            type="text"
-                                            placeholder="API Access Key"
-                                            className="w-full p-2 rounded-lg border border-gray-300"
-                                        />
-                                        <input
-                                            disabled={applyingMintNFT}
-                                            onChange={(e) => setApiSecretKey(e.target.value)}
-                                            type="text"
-                                            placeholder="API Secret Key"
-                                            className="w-full p-2 rounded-lg border border-gray-300"
-                                        />
+                                        <div className='w-full flex flex-col gap-2
+                                            border border-gray-300 p-4 rounded-lg
+                                        '>
+
+                                            <span className='text-sm font-semibold text-gray-500'>
+                                                HTX API Access Key
+                                            </span>
+                                            <input
+                                                disabled={applyingMintNFT}
+                                                onChange={(e) => setApiAccessKey(e.target.value)}
+                                                type="text"
+                                                placeholder="API Access Key"
+                                                className="w-full p-2 rounded-lg border border-gray-300"
+                                            />
+                                            <span className='text-sm font-semibold text-gray-500'>
+                                                HTX API Secret Key
+                                            </span>
+                                            <input
+                                                disabled={applyingMintNFT}
+                                                onChange={(e) => setApiSecretKey(e.target.value)}
+                                                type="text"
+                                                placeholder="API Secret Key"
+                                                className="w-full p-2 rounded-lg border border-gray-300"
+                                            />
+
+                                            {/* button for api call /api/agent/getAccount */}
+                                            <button
+                                                disabled={checkingHtxApiKey || !apiAccessKey || !apiSecretKey || isValidAPIKey}
+                                                className={` ${checkingHtxApiKey || !apiAccessKey || !apiSecretKey || isValidAPIKey
+                                                    ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold`}
+                                                onClick={() => {
+                                                    checkHtxApiKey(apiAccessKey, apiSecretKey);
+                                                }}
+                                            >
+                                                HTX API 정보 확인하기
+                                            </button>
+
+                                            {checkingHtxApiKey && (
+                                                <span className='text-sm font-semibold text-blue-500'>
+                                                    HTX API Key 확인중...
+                                                </span>
+                                            )}
+
+                                            {isValidAPIKey && (
+                                                <span className='text-sm font-semibold text-green-500'>
+                                                    HTX API Key가 확인되었습니다.
+                                                </span>
+                                            )}
+
+                                        </div>
+
 
                                         <input
                                             disabled={applyingMintNFT}
@@ -1853,9 +1899,9 @@ export default function AIPage({ params }: any) {
 
 
                                         <button
-                                            disabled={applyingMintNFT}
+                                            disabled={applyingMintNFT || !isValidAPIKey}
                                             onClick={applyMintAgentBot}
-                                            className="mt-5 w-full bg-blue-500 text-zinc-100 p-2 rounded-lg text-lg font-semibold"
+                                            className={` ${applyingMintNFT || !isValidAPIKey ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold`}
                                         >
                                             {applyingMintNFT ? "AI 에이전트 NFT 신청중..." : "AI 에이전트 NFT 민팅 신청"}
                                         </button>
