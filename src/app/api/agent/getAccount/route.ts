@@ -37,10 +37,15 @@ export async function POST(request: NextRequest) {
 
   const body = await request.json();
 
+  
   const {
     htxAccessKey,
     htxSecretKey,
    } = body;
+  
+
+  //const htxAccessKey = process.env.HTX_ACCESS_KEY || '';
+  //const htxSecretKey = process.env.HTX_SECRET_KEY || '';
 
 
 
@@ -66,7 +71,12 @@ export async function POST(request: NextRequest) {
 
 
     //const HOST = 'api.huobipro.com';
+    
     const HOST = 'api.huobi.pro';
+
+    ///const HOST = 'https://api.hbdm.com';
+
+
 
     const DEFAULT_HEADERS = {
       "Content-Type": "application/json",
@@ -75,6 +85,11 @@ export async function POST(request: NextRequest) {
 
 
     const path = `/v1/account/accounts`;
+
+
+
+    ////const path = "/api/v1/contract_account_info";
+
 
     const huobiBody: { [key: string]: string | number | undefined } = {
         AccessKeyId: htxAccessKey,
@@ -88,31 +103,30 @@ export async function POST(request: NextRequest) {
 
     //const payload = sign_sha('GET', HOST, path, huobiBody);
 
-
-    var p = '';
-
-    var pars = [];
-    for (let item in huobiBody) {
-        const value = huobiBody[item];
-        if (value !== undefined) {
-            pars.push(item + "=" + encodeURIComponent(value));
-        }
-        p = pars.sort().join("&");
-        var meta = ['GET', HOST, path, p].join('\n');
-        
-        if (!process.env.HUOBI_SECRET_KEY) {
-            throw new Error("HUOBI_SECRET_KEY is not defined");
-        }
-        var hash = HmacSHA256(meta, htxSecretKey);
-
-        var Signature = encodeURIComponent(CryptoJS.enc.Base64.stringify(hash));
-        p += `&Signature=${Signature}`;
-    }
-
-    console.log(p);
-
-
     try {
+
+
+      var p = '';
+
+      var pars = [];
+      for (let item in huobiBody) {
+          const value = huobiBody[item];
+          if (value !== undefined) {
+              pars.push(item + "=" + encodeURIComponent(value));
+          }
+          p = pars.sort().join("&");
+          var meta = ['GET', HOST, path, p].join('\n');
+          
+          var hash = HmacSHA256(meta, htxSecretKey);
+
+          var Signature = encodeURIComponent(CryptoJS.enc.Base64.stringify(hash));
+          p += `&Signature=${Signature}`;
+      }
+
+      console.log(p);
+
+
+
 
       const response = await fetch(`https://${HOST}${path}?${p}`, {
           method: 'GET',

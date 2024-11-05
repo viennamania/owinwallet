@@ -1080,6 +1080,8 @@ export default function AIPage({ params }: any) {
 
             setIsValidAPIKey(true);
 
+            setHtxUid(data.result?.data[0]?.id);
+
             toast.success("HTX API Key가 확인되었습니다.");
         } else {
             toast.error("HTX API Key를 확인할 수 없습니다.");
@@ -1829,13 +1831,7 @@ export default function AIPage({ params }: any) {
                                             placeholder="이메일주소"
                                             className="w-full p-2 rounded-lg border border-gray-300"
                                         />
-                                        <input
-                                            disabled={applyingMintNFT}
-                                            onChange={(e) => setHtxUid(e.target.value)}
-                                            type="text"
-                                            placeholder="HTX UID"
-                                            className="w-full p-2 rounded-lg border border-gray-300"
-                                        />
+
 
                                         <div className='w-full flex flex-col gap-2
                                             border border-gray-300 p-4 rounded-lg
@@ -1888,14 +1884,35 @@ export default function AIPage({ params }: any) {
 
                                         </div>
 
+                                        <div className='w-full flex flex-col gap-2'>
+                                            <span className='text-sm font-semibold text-gray-500'>
+                                                HTX UID
+                                            </span>
+                                            <input
+                                                disabled={applyingMintNFT}
+                                                value={htxUid}
+                                                onChange={(e) => setHtxUid(e.target.value)}
+                                                type="text"
+                                                placeholder="HTX UID"
+                                                className="w-full p-2 rounded-lg border border-gray-300"
+                                            />
+                                        </div>
 
-                                        <input
-                                            disabled={applyingMintNFT}
-                                            onChange={(e) => setHtxUsdtWalletAddress(e.target.value)}
-                                            type="text"
-                                            placeholder="HTX USDT(TRON) 지갑주소"
-                                            className="w-full p-2 rounded-lg border border-gray-300"
-                                        />
+
+                                        <div className='w-full flex flex-col gap-2'>
+                                            <span className='text-sm font-semibold text-gray-500'>
+                                                HTX USDT(TRON) 지갑주소
+                                            </span>
+                                            <input
+                                                disabled={applyingMintNFT}
+                                                onChange={(e) => setHtxUsdtWalletAddress(e.target.value)}
+                                                type="text"
+                                                placeholder="HTX USDT(TRON) 지갑주소"
+                                                className="w-full p-2 rounded-lg border border-gray-300"
+                                            />
+                                        </div>
+
+                                        {/* button for apply */}
 
 
                                         <button
