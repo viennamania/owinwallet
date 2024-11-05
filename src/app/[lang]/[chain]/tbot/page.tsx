@@ -968,7 +968,7 @@ export default function AIPage({ params }: any) {
 
             const data = await response.json();
 
-            console.log("data", data);
+            console.log("getMyAgent data", data);
 
             setMyAgent(data.result);
 
@@ -1701,7 +1701,10 @@ export default function AIPage({ params }: any) {
                                             </span>
                                         </div>
 
+
+
                                         {/* button for api call /api/agent/getAccount */}
+                                        {/*
                                         <button
                                             disabled={checkingHtxApiKey}
                                             className={` ${checkingHtxApiKey ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold`}
@@ -1711,6 +1714,46 @@ export default function AIPage({ params }: any) {
                                         >
                                             HTX API 정보 확인하기
                                         </button>
+                                        */}
+
+                                        {/* button for api call /api/agent/getBalance */}
+
+                                        <div className='w-full flex flex-col gap-2
+                                            border border-gray-300 p-4 rounded-lg
+                                        '>
+                                            <span className='text-lg font-semibold text-blue-500'>
+                                                HTX 계정 잔고 확인
+                                            </span>
+                                            <button
+                                                disabled={checkingAccountBalance}
+                                                className={` ${checkingAccountBalance ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold`}
+                                                onClick={() => {
+                                                    checkAccountBalance(myAgent.apiAccessKey, myAgent.apiSecretKey, myAgent.htxUid);
+                                                }}
+                                            >
+                                                HTX 계정 잔고 확인하기
+                                            </button>
+                                            {checkingAccountBalance && (
+                                                <span className='text-sm font-semibold text-blue-500'>
+                                                    HTX 계정 잔고 확인중...
+                                                </span>
+                                            )}
+                                        
+                                            {isValidBalance && (
+                                                <span className='text-sm font-semibold text-green-500'>
+                                                    HTX 계정 잔고가 100 USDT 이상입니다.
+                                                </span>
+                                            )}
+
+                                            {!isValidBalance && (
+                                                <span className='text-sm font-semibold text-red-500'>
+                                                    HTX 계정 잔고가 100 USDT 미만입니다.
+                                                </span>
+                                            )}
+                                        </div>
+                                        
+
+
                                     </div>
                                 )}
 
