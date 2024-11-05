@@ -839,13 +839,15 @@ export default function AIPage({ params }: any) {
     // apply to mint NFT
     // 이름, 핸드폰번호, 이메일주소, HTX UID, HTX USDT(TRON) 지갑주소, API Access Key, API Secret Key
 
-    const [userName, setUserName] = useState("");
-    const [userPhoneNumber, setUserPhoneNumber] = useState("");
+    const [userName, setUserName] = useState( nickname || "");
+    const [userPhoneNumber, setUserPhoneNumber] = useState( phoneNumber || "");
     const [userEmail, setUserEmail] = useState("");
     const [htxUid, setHtxUid] = useState("");
     const [htxUsdtWalletAddress, setHtxUsdtWalletAddress] = useState("");
     const [apiAccessKey, setApiAccessKey] = useState("");
     const [apiSecretKey, setApiSecretKey] = useState("");
+
+    const [accountBalance, setAccountBalance] = useState(0);
 
     
     const [applyingMintNFT, setApplyingMintNFT] = useState(false);
@@ -1093,6 +1095,66 @@ export default function AIPage({ params }: any) {
 
 
 
+    const [isValidBalance, setIsValidBalance] = useState(false);
+
+    // check account balance
+    const [checkingAccountBalance, setCheckingAccountBalance] = useState(false);
+    const checkAccountBalance = async (
+        htxAccessKey: string,
+        htxSecretKey: string,
+        accountId: string,
+    ) => {
+
+        if (htxAccessKey === "") {
+            toast.error("HTX Access Key를 입력해 주세요.");
+            return;
+        }
+
+        if (htxSecretKey === "") {
+            toast.error("HTX Secret Key를 입력해 주세요.");
+            return;
+        }
+
+        setCheckingAccountBalance(true);
+
+        const response = await fetch("/api/agent/getBalance", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                htxAccessKey: htxAccessKey,
+                htxSecretKey: htxSecretKey,
+                accountId: accountId,
+                currency: "usdt",
+            }),
+        });
+
+        const data = await response.json();
+
+        console.log("data.result", data.result);
+
+        if (data.result?.status === "ok") {
+            //balance = {"currency":"usdt","type":"trade","balance":"0","available":"0","debt":"0","seq-num":"0"}
+
+            const balance = Number(data.result?.balance.balance);
+
+            if (balance < 100) {
+                setIsValidBalance(false);
+            } else {
+                setIsValidBalance(true);
+            }
+
+            setAccountBalance(balance);
+
+            toast.success("HTX 계정 잔고가 확인되었습니다.");
+        } else {
+            toast.error("HTX 계정 잔고를 확인할 수 없습니다.");
+        }
+
+        setCheckingAccountBalance(false);
+
+    };
 
 
         
@@ -1700,7 +1762,9 @@ export default function AIPage({ params }: any) {
 
 
                                         {agents.length > 0 && (
-                                            <div className='w-full flex flex-col items-center gap-2'>
+                                            <div className='mt-10 w-full flex flex-col items-center gap-2
+                                                border border-gray-300 p-4 rounded-lg
+                                            '>
 
                                                 <span className='text-lg font-semibold text-blue-500'>
                                                     AI 에이전트를 선택하세요
@@ -1810,27 +1874,7 @@ export default function AIPage({ params }: any) {
                                         {/* input for apply */}
                                         {/* 이름, 핸드폰번호, 이메일주소, HTX UID, HTX USDT(TRON) 지갑주소 */}
                                         {/* API Access Key, API Secret Key */}
-                                        <input
-                                            disabled={applyingMintNFT}
-                                            onChange={(e) => setUserName(e.target.value)}
-                                            type="text"
-                                            placeholder="이름"
-                                            className="w-full p-2 rounded-lg border border-gray-300"
-                                        />
-                                        <input
-                                            disabled={applyingMintNFT}
-                                            onChange={(e) => setUserPhoneNumber(e.target.value)}
-                                            type="text"
-                                            placeholder="핸드폰번호"
-                                            className="w-full p-2 rounded-lg border border-gray-300"
-                                        />
-                                        <input
-                                            disabled={applyingMintNFT}
-                                            onChange={(e) => setUserEmail(e.target.value)}
-                                            type="text"
-                                            placeholder="이메일주소"
-                                            className="w-full p-2 rounded-lg border border-gray-300"
-                                        />
+
 
 
                                         <div className='w-full flex flex-col gap-2
@@ -1884,12 +1928,12 @@ export default function AIPage({ params }: any) {
 
                                         </div>
 
-                                        <div className='w-full flex flex-col gap-2'>
+                                        <div className='w-full flex flex-col gap-2 border border-gray-300 p-4 rounded-lg'>
                                             <span className='text-sm font-semibold text-gray-500'>
                                                 HTX UID
                                             </span>
                                             <input
-                                                disabled={applyingMintNFT}
+                                                disabled={true}
                                                 value={htxUid}
                                                 onChange={(e) => setHtxUid(e.target.value)}
                                                 type="text"
@@ -1897,6 +1941,49 @@ export default function AIPage({ params }: any) {
                                                 className="w-full p-2 rounded-lg border border-gray-300"
                                             />
                                         </div>
+
+
+                                        {/* check account balance */}
+
+                                        <div className='w-full flex flex-col gap-2 border border-gray-300 p-4 rounded-lg'> 
+                                            <span className='text-sm font-semibold text-gray-500'>
+                                                계정 잔고(USDT) 확인하기
+                                            </span>
+                                            <button
+                                                disabled={!isValidAPIKey || checkingAccountBalance}
+                                                onClick={() => {
+                                                    checkAccountBalance(apiAccessKey, apiSecretKey, htxUid);
+                                                }}
+                                                className={` ${!isValidAPIKey || checkingAccountBalance ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold`}
+                                            >
+                                                계정 잔고 확인하기
+                                            </button>
+
+                                            {checkingAccountBalance && (
+                                                <span className='text-sm font-semibold text-blue-500'>
+                                                    계정 잔고 확인중...
+                                                </span>
+                                            )}
+
+                                            {accountBalance && (
+                                                <span className='text-2xl font-semibold text-gray-500'>
+                                                    계정 잔고: {accountBalance.toFixed(2)} USDT
+                                                </span>
+                                            )}
+
+                                            {isValidBalance ? (
+                                                <span className='text-sm font-semibold text-green-500'>
+                                                    계정 잔고가 100 USDT 이상입니다.
+                                                </span>
+                                            ) : (
+                                                <span className='text-sm font-semibold text-red-500'>
+                                                    계정 잔고가 100 USDT 미만입니다. 100 USDT 이상 입금해주세요.
+                                                </span>
+                                            )}
+
+                                        </div>
+
+                                        {/* HTX USDT(TRON) 지갑주소 */}
 
 
                                         <div className='w-full flex flex-col gap-2'>
@@ -1912,13 +1999,47 @@ export default function AIPage({ params }: any) {
                                             />
                                         </div>
 
+
+                                        <div className='w-full flex flex-col gap-2 border border-gray-300 p-4 rounded-lg'>
+                                            <span className='text-sm font-semibold text-gray-500'>
+                                                이름, 핸드폰번호, 이메일주소
+                                            </span>
+
+                                            <input
+                                                disabled={applyingMintNFT}
+                                                value={userName}
+                                                onChange={(e) => setUserName(e.target.value)}
+                                                type="text"
+                                                placeholder="이름"
+                                                className="w-full p-2 rounded-lg border border-gray-300"
+                                            />
+                                            <input
+                                                disabled={applyingMintNFT}
+                                                value={userPhoneNumber}
+                                                onChange={(e) => setUserPhoneNumber(e.target.value)}
+                                                type="text"
+                                                placeholder="핸드폰번호"
+                                                className="w-full p-2 rounded-lg border border-gray-300"
+                                            />
+                                            <input
+                                                disabled={applyingMintNFT}
+                                                value={userEmail}
+                                                onChange={(e) => setUserEmail(e.target.value)}
+                                                type="text"
+                                                placeholder="이메일주소"
+                                                className="w-full p-2 rounded-lg border border-gray-300"
+                                            />
+                                        </div>
+
+
+
                                         {/* button for apply */}
 
 
                                         <button
-                                            disabled={applyingMintNFT || !isValidAPIKey}
+                                            disabled={applyingMintNFT || !isValidAPIKey || !isValidBalance}
                                             onClick={applyMintAgentBot}
-                                            className={` ${applyingMintNFT || !isValidAPIKey ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold`}
+                                            className={` ${applyingMintNFT || !isValidAPIKey || !isValidBalance ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold`}
                                         >
                                             {applyingMintNFT ? "AI 에이전트 NFT 신청중..." : "AI 에이전트 NFT 민팅 신청"}
                                         </button>
