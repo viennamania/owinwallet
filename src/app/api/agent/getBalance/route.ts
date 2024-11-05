@@ -149,7 +149,8 @@ export async function POST(request: NextRequest) {
 
       // balance for currency is usdt
       const balance = data.data.list.find((element: any) => element.currency === currency && element.type === "trade");
-    
+
+     
       console.log(JSON.stringify(balance));
 
 

@@ -1040,7 +1040,7 @@ export default function Index({ params }: any) {
 
                 
                 accountAbstraction={{   
-                  chain: params.chain === "arbitrum" ? arbitrum : polygon,
+                  chain: polygon,
                   factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
                   gasless: true,
                 }}

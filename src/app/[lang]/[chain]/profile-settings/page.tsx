@@ -93,6 +93,12 @@ import { add } from 'thirdweb/extensions/farcaster/keyGateway';
 
 
 
+
+
+
+
+
+
 export default function SettingsPage({ params }: any) {
 
 
@@ -268,6 +274,17 @@ export default function SettingsPage({ params }: any) {
     const address = activeAccount?.address;
   
   
+    console.log("activeAccount===", activeAccount);
+
+
+    const activeWallet = useActiveWallet();
+
+    console.log("activeWallet", activeWallet);
+
+
+
+
+
       
     console.log("address", address);
  
@@ -1045,6 +1062,26 @@ export default function SettingsPage({ params }: any) {
             // genrate image from api
             // /api/ai/generateImage
 
+            const responseGenerateImage = await fetch("/api/ai/generateImage", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    englishPrompt: "",
+                }),
+            });
+
+            const dataGenerateImage = await responseGenerateImage.json();
+
+
+            const imageUrl = dataGenerateImage?.result?.imageUrl;
+
+        
+            if (!imageUrl) {
+                throw new Error('Failed to generate image');
+            }
+
 
 
 
@@ -1062,7 +1099,10 @@ export default function SettingsPage({ params }: any) {
                 nft: {
                     name: agentName,
                     description: agentDescription,
-                    image: agentImage,
+
+                    ////image: agentImage,
+                    image: imageUrl,
+
                 },
             });
 
@@ -1070,7 +1110,12 @@ export default function SettingsPage({ params }: any) {
 
             const transactionResult = await sendAndConfirmTransaction({
                 transaction: transaction,
+                
+                
                 account: activeAccount as any,
+
+
+
             });
 
             console.log("transactionResult", transactionResult);
@@ -1357,9 +1402,9 @@ export default function SettingsPage({ params }: any) {
 
                                 
                                 accountAbstraction={{   
-                                chain: params.chain === "arbitrum" ? arbitrum : polygon,
-                                factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                                gasless: true,
+                                    chain: polygon,
+                                    factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+                                    gasless: true,
                                 }}
                                 
                                 
@@ -1368,7 +1413,7 @@ export default function SettingsPage({ params }: any) {
                                 
 
                                 connectButton={{
-                                label: "Sign in with OWIN Magic Wallet",
+                                    label: "Sign in with OWIN Magic Wallet",
                                 }}
 
                                 connectModal={{
@@ -1924,7 +1969,28 @@ export default function SettingsPage({ params }: any) {
                                         {erc721ContractAddress.substring(0, 6) + '...' + erc721ContractAddress.substring(erc721ContractAddress.length - 4)}
                                     </span>
 
+
+
+
+                                    {/* https://opensea.io/assets/matic/0xC1F501331E5d471230189E4A57E5268f10d0072A */}
+                                    {/* open new window */}
+                                    <button
+                                        onClick={() => {
+                                            window.open('https://opensea.io/assets/matic/' + erc721ContractAddress);
+                                        }}
+                                        className="p-2 "
+                                    >
+                                        <Image
+                                            src="/logo-opensea.png"
+                                            alt="OpenSea"
+                                            width={30}
+                                            height={30}
+                                            className="rounded-lg"
+                                        />
+                                    </button>
+
                                     {/* verified icon */}
+
                                     <Image
                                         src="/verified.png"
                                         alt="Verified"
@@ -1932,6 +1998,8 @@ export default function SettingsPage({ params }: any) {
                                         height={20}
                                         className="rounded-lg"
                                     />
+
+
                                 </div>
 
                                 
@@ -2022,18 +2090,38 @@ export default function SettingsPage({ params }: any) {
 
                                                 </div>
 
-                                                <button
-                                                    onClick={() => {
-                                                        navigator.clipboard.writeText(
-                                                            'https://owinwallet.com/kr/polygon/tbot/?agent=' +
-                                                            erc721ContractAddress + '&tokenId=' + nft.tokenId
-                                                        );
-                                                        toast.success('레퍼럴 URL 복사 완료');
-                                                    }}
-                                                    className="p-2 bg-blue-500 text-zinc-100 rounded"
-                                                >
-                                                    레퍼럴 URL 복사
-                                                </button>
+                                                <div className='w-full flex flex-row gap-2 items-center justify-between'>
+                                            
+                                                    <button
+                                                        onClick={() => {
+                                                            navigator.clipboard.writeText(
+                                                                'https://owinwallet.com/kr/polygon/tbot/?agent=' +
+                                                                erc721ContractAddress + '&tokenId=' + nft.tokenId
+                                                            );
+                                                            toast.success('레퍼럴 URL 복사 완료');
+                                                        }}
+                                                        className="p-2 bg-blue-500 text-zinc-100 rounded"
+                                                    >
+                                                        레퍼럴 URL 복사
+                                                    </button>
+
+                                                    {/* opensea */}
+                                                    <button
+                                                        onClick={() => {
+                                                            window.open('https://opensea.io/assets/matic/' + erc721ContractAddress + '/' + nft.tokenId);
+                                                        }}
+                                                        className="p-2"
+                                                    >
+                                                        <Image
+                                                            src="/logo-opensea.png"
+                                                            alt="OpenSea"
+                                                            width={30}
+                                                            height={30}
+                                                            className="rounded-lg"
+                                                        />
+                                                    </button>
+
+                                                </div>
 
                                             </div>
                                         ))}

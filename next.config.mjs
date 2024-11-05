@@ -16,10 +16,15 @@ const nextConfig = {
     domains: [
       "cryptologos.cc",
       "vzrcy5vcsuuocnf3.public.blob.vercel-storage.com",
-      "replicate.delivery",
+
       "fal.media",
       "owinwallet.com",
       "res.cloudinary.com",
+
+      "replicate.delivery",
+      "replicate.com",
+ 
+
     ],
   },
 
