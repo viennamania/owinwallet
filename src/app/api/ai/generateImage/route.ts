@@ -22,8 +22,13 @@ const replicate = new Replicate({
 export async function POST(request: NextRequest) {
 
 
+    // array of strings
+    // gold, silver, blue, red, green, black, white, yellow, orange, pink, purple, brown, gray, cyan, magenta
+    const robotColors = ["gold", "silver", "blue", "red", "green", "black", "white", "yellow", "orange", "pink", "purple", "brown", "gray", "cyan", "magenta"];
 
-    const englishPrompt = "One cute and metallic robot character with shiny skin in Japanese anime style. transparent background.";
+    const randomColor = Math.floor(Math.random() * robotColors.length);
+
+    const englishPrompt = "One cute and " + randomColor + "color metallic robot character with shiny skin in Japanese anime style. transparent background.";
 
 
     const negative_prompt = "easynegative,ng_deepnegative_v1_75t,((monochrome)),((grayscale)),bad-picture-chill-75v, (worst quality, low quality:1.4), monochrome, grayscale, sketches, paintings, lowres, normalres, blurry, acnes on face, {{sperm}}, {{bra}}";
@@ -54,7 +59,7 @@ export async function POST(request: NextRequest) {
     if (randomModel == 0) {
         model = "bytedance/sdxl-lightning-4step:5f24084160c9089501c1b3545d9be3c27883ae2239b6f412990e82d4a6210f8f";
     } else if (randomModel == 1) {
-        model = "bytedance/sdxl-lightning-4step:5f24084160c9089501c1b3545d9be3c27883ae2239b6f412990e82d4a6210f8f";
+        model = "datacte/proteus-v0.2:06775cd262843edbde5abab958abdbb65a0a6b58ca301c9fd78fa55c775fc019";
     }
 
 
