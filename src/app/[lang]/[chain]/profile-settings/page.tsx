@@ -2068,14 +2068,30 @@ export default function SettingsPage({ params }: any) {
                                             <div key={index} className='w-full flex flex-col gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
                                                 
                                                 <div className='w-full grid grid-cols-2 gap-2 items-center justify-between'>
-                                                    <Image
-                                                        src={nft.image.thumbnailUrl}
-                                                        alt="NFT"
-                                                        width={200}
-                                                        height={200}
-                                                        className="rounded-lg w-20 xl:w-32"
-                                                        
-                                                    />
+                                                    
+                                                    <div className="flex flex-col gap-2 items-start justify-between">
+
+                                                        {/* goto button for detail page */}
+                                                        <button
+                                                            onClick={() => {
+                                                                router.push('/' + params.lang + '/' + params.chain + '/agent/' + nft.contract.address + '/' + nft.tokenId);
+                                                            }}
+                                                        >
+                                                            <span className='text-xs xl:text-lg font-semibold'>
+                                                                상세보기
+                                                            </span>
+                                                        </button>
+
+                                                        <Image
+                                                            src={nft.image.thumbnailUrl}
+                                                            alt="NFT"
+                                                            width={200}
+                                                            height={200}
+                                                            className="rounded-lg w-20 xl:w-32"
+                                                            
+                                                        />
+                                                    </div>
+
                                                     <div className='flex flex-col gap-2 items-start justify-between'>
                                                         <div className='text-2xl font-semibold text-blue-500'>
                                                             #{nft.tokenId}
