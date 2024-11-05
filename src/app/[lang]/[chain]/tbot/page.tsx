@@ -1147,7 +1147,9 @@ export default function AIPage({ params }: any) {
 
             const balance = Number(data.result?.balance.balance);
 
-            if (balance < 100) {
+            //if (balance < 100) {
+            if (balance < 0) {
+
                 setIsValidBalance(false);
             } else {
                 setIsValidBalance(true);
