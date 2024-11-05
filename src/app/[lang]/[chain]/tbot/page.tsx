@@ -835,6 +835,7 @@ export default function AIPage({ params }: any) {
     const [selectedBotNumber, setSelectedBotNumber] = useState(0);
 
     const [myAgent, setMyAgent] = useState({} as any);
+    const [myAgentNFT, setMyAgentNFT] = useState({} as any);
 
     // apply to mint NFT
     // 이름, 핸드폰번호, 이메일주소, HTX UID, HTX USDT(TRON) 지갑주소, API Access Key, API Secret Key
@@ -944,9 +945,30 @@ export default function AIPage({ params }: any) {
             setApplyingMintNFT(false);
             toast.success("NFT Mint 신청이 완료되었습니다.");
 
-            // get applied NFTs again
 
             setMyAgent(data.result);
+
+            const erc721ContractAddress = data.result.agentBot;
+            const tokenId = data.result.agentBotNumber;
+
+            const fetchedNFT = await fetch("/api/agent/getAgentNFTByContractAddressAndTokenId", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    erc721ContractAddress: erc721ContractAddress,
+                    tokenId: tokenId,
+                }),
+            });
+
+            if (!fetchedNFT.ok) {
+                console.error("Error fetching NFT");
+                return;
+            }
+
+            const nftData = await fetchedNFT.json();
+            setMyAgentNFT(nftData.result);
 
 
         } else {
@@ -976,17 +998,38 @@ export default function AIPage({ params }: any) {
 
             const data = await response.json();
 
-            console.log("getMyAgent data", data);
+            if (data.result) {
 
-            setMyAgent(data.result);
+                setMyAgent(data.result);
+
+
+                const erc721ContractAddress = data.result.agentBot;
+                const tokenId = data.result.agentBotNumber;
+
+                const fetchedNFT = await fetch("/api/agent/getAgentNFTByContractAddressAndTokenId", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        erc721ContractAddress: erc721ContractAddress,
+                        tokenId: tokenId,
+                    }),
+                });
+
+
+                const nftData = await fetchedNFT.json();
+                setMyAgentNFT(nftData.result);
+
+            }
+
 
         };
         fetchData();
     } , [address]);
 
 
-    // changeAgentBot
-    // fetch 
+    console.log("myAgentNFT", myAgentNFT);
 
   
    const [agentBotList, setAgentBotList] = useState([] as any[]);
@@ -1025,7 +1068,6 @@ export default function AIPage({ params }: any) {
 
             const data = await response.json();
 
-            console.log("data.result====", data.result);
 
             if (data.result) {
                 setAgentBotList(data.result.nfts);
@@ -1648,37 +1690,58 @@ export default function AIPage({ params }: any) {
                                             </span>
                                         </div>
 
-                                        {/* agentBot */}
-                                        <div className='flex flex-col gap-2'>
-                                            <div className='flex flex-row items-center gap-2'>
-                                                {/* dot */}
-                                                <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
-                                                <span className='text-lg font-semibold'>
-                                                    Agent Code
+                                        <div className='flex flex-col gap-2
+                                            border border-gray-300 p-4 rounded-lg
+                                        '>
+
+                                            <div className='flex flex-col gap-2'>
+                                                <div className='flex flex-row items-center gap-2'>
+                                                    {/* dot */}
+                                                    <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
+                                                    <span className='text-lg font-semibold'>
+                                                        Agent Code
+                                                    </span>
+                                                </div>
+                                                <span className='text-2xl font-semibold text-gray-500'>
+                                                    {myAgent?.agentBot.substring(0, 15) + "..."}
+                                                </span>
+                                                <div className='flex flex-row items-center gap-2'>
+                                                    {/* dot */}
+                                                    <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
+                                                    <span className='text-lg font-semibold'>
+                                                        Agent Number
+                                                    </span>
+                                                </div>
+                                                <span className='text-5xl font-semibold text-gray-500'>
+                                                    #{myAgent?.agentBotNumber}
                                                 </span>
                                             </div>
-                                            <span className='text-2xl font-semibold text-gray-500'>
-                                                {myAgent?.agentBot.substring(0, 15) + "..."}
-                                            </span>
-                                            <div className='flex flex-row items-center gap-2'>
-                                                {/* dot */}
-                                                <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
-                                                <span className='text-lg font-semibold'>
-                                                    Agent Number
-                                                </span>
-                                            </div>
-                                            <span className='text-5xl font-semibold text-gray-500'>
-                                                #{myAgent?.agentBotNumber}
-                                            </span>
+
+                                            {myAgentNFT && myAgentNFT.image ? (
+                                                <div className='flex flex-col gap-2'>
+                                                    {/* masterbot image */}
+                                                    <Image
+                                                        src={myAgentNFT?.image?.pngUrl || "/logo-masterbot100.png"}
+                                                        alt="masterbot"
+                                                        width={400}
+                                                        height={400}
+                                                    />
+                                                    <span className='text-2xl font-semibold text-blue-500'>
+                                                        {myAgentNFT?.name}
+                                                    </span>
+                                                    <span className='text-lg font-semibold text-yellow-500'>
+                                                        {myAgentNFT?.description}
+                                                    </span>
+                                                </div>
+                                            ) : (
+                                                <div className='flex flex-col gap-2'>
+                                                    <span className='text-lg font-semibold text-blue-500'>
+                                                        AI 에이전트 NFT 로딩중...
+                                                    </span>
+                                                </div>
+                                            )}
                                         </div>
 
-                                        {/* masterbot image */}
-                                        <Image
-                                            src="/logo-masterbot100.png"
-                                            alt="masterbot"
-                                            width={400}
-                                            height={400}
-                                        />
 
 
                                         <span className='text-lg font-semibold text-blue-500'>
@@ -1749,17 +1812,12 @@ export default function AIPage({ params }: any) {
                                                 </span>
                                             )}
                                         
-                                            {isValidBalance && (
-                                                <span className='text-sm font-semibold text-green-500'>
-                                                    HTX 계정 잔고가 100 USDT 이상입니다.
+                                            {accountBalance && (
+                                                <span className='text-2xl font-semibold text-gray-500'>
+                                                    계정 잔고: {accountBalance.toFixed(2)} USDT
                                                 </span>
                                             )}
-
-                                            {!isValidBalance && (
-                                                <span className='text-sm font-semibold text-red-500'>
-                                                    HTX 계정 잔고가 100 USDT 미만입니다.
-                                                </span>
-                                            )}
+                                            
                                         </div>
                                         
 
@@ -2081,6 +2139,7 @@ export default function AIPage({ params }: any) {
                                                 </span>
                                             )}
 
+                                            {/*}
                                             {isValidBalance ? (
                                                 <span className='text-sm font-semibold text-green-500'>
                                                     계정 잔고가 100 USDT 이상입니다.
@@ -2090,6 +2149,7 @@ export default function AIPage({ params }: any) {
                                                     계정 잔고가 100 USDT 미만입니다. 100 USDT 이상 입금해주세요.
                                                 </span>
                                             )}
+                                            */}
 
                                         </div>
 
