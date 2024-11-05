@@ -2112,7 +2112,23 @@ export default function SettingsPage({ params }: any) {
                                                                 ROI: {23.5}%
                                                             </span>
 
-                                                            
+                                                            {/* 누적 배당수익 */}
+                                                            <div className='flex flex-col gap-2 items-start justify-between
+                                                            border border-gray-300 p-4 rounded-lg'>
+                                                                <span className='text-xs xl:text-lg font-semibold'>
+                                                                    Total Dividend
+                                                                </span>
+                                                                <span className='text-xl xl:text-2xl font-semibold text-green-500'>
+                                                                    434.5 USDT
+                                                                </span>
+                                                                {/* 배당 수령 */}
+                                                                <button
+                                                                    className="p-2 bg-blue-500 text-zinc-100 rounded
+                                                                    hover:bg-blue-600"
+                                                                >
+                                                                    Claim Dividend
+                                                                </button>
+                                                            </div>
 
                                                         </div>
 
@@ -2132,7 +2148,7 @@ export default function SettingsPage({ params }: any) {
                                                             );
                                                             toast.success('레퍼럴 URL 복사 완료');
                                                         }}
-                                                        className="p-2 bg-blue-500 text-zinc-100 rounded hover:bg-blue-600"
+                                                        className="w-full p-2 bg-blue-500 text-zinc-100 rounded hover:bg-blue-600"
                                                     >
                                                         레퍼럴 URL 복사
                                                     </button>
