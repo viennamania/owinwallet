@@ -1209,6 +1209,55 @@ export default function AIPage({ params }: any) {
     };
 
 
+    // check htx asset valuation
+    const [checkingHtxAssetValuation, setCheckingHtxAssetValuation] = useState(false);
+    const [htxAssetValuation, setHtxAssetValuation] = useState(0);
+    const checkHtxAssetValuation = async (
+        htxAccessKey: string,
+        htxSecretKey: string,
+    ) => {
+
+        if (htxAccessKey === "") {
+            toast.error("HTX Access Key를 입력해 주세요.");
+            return;
+        }
+
+        if (htxSecretKey === "") {
+            toast.error("HTX Secret Key를 입력해 주세요.");
+            return;
+        }
+
+        setCheckingHtxAssetValuation(true);
+
+        const response = await fetch("/api/agent/getAssetValuation", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                htxAccessKey: htxAccessKey,
+                htxSecretKey: htxSecretKey,
+            }),
+        });
+
+        const data = await response.json();
+
+        console.log("data.result", data.result);
+
+        if (data.result?.status === "ok") {
+
+            setHtxAssetValuation(Number(data.result?.balance));
+
+            toast.success("HTX 자산 가치가 확인되었습니다.");
+        } else {
+            toast.error("HTX 자산 가치를 확인할 수 없습니다.");
+        }
+
+        setCheckingHtxAssetValuation(false);
+
+    };
+
+
         
  
 
@@ -1919,6 +1968,40 @@ export default function AIPage({ params }: any) {
                                                 
                                             </div>
 
+
+                                            {/* button for api call /api/agent/getAssetValuation */}
+                                            <div className='w-full flex flex-col gap-2
+                                                border border-gray-300 p-4 rounded-lg
+                                            '>
+                                                <button
+                                                    disabled={checkingHtxAssetValuation}
+                                                    className={` ${checkingHtxAssetValuation ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold
+                                                        hover:bg-blue-700 hover:text-zinc-100
+                                                    `}
+                                                    onClick={() => {
+                                                        checkHtxAssetValuation(myAgent.apiAccessKey, myAgent.apiSecretKey);
+                                                    }}
+                                                >
+                                                    HTX 자산 가치 확인하기 (KRW)
+                                                </button>
+                                                {checkingHtxAssetValuation && (
+                                                    <span className='text-sm font-semibold text-blue-500'>
+                                                        HTX 자산 가치 확인중...
+                                                    </span>
+                                                )}
+                                            
+                                                {htxAssetValuation && (
+                                                    <span className='text-xl font-semibold text-gray-500'>
+                                                        HTX 자산 가치: {
+                                                            htxAssetValuation.toLocaleString('ko-KR', {
+                                                                style: 'currency',
+                                                                currency: 'KRW'
+                                                            })
+                                                        }
+                                                    </span>
+                                                )}
+                                            </div>
+
                                         </div>
                                         
 
@@ -2213,7 +2296,6 @@ export default function AIPage({ params }: any) {
 
 
                                         {/* check account balance */}
-
                                         <div className='w-full flex flex-col gap-2 border border-gray-300 p-4 rounded-lg'> 
                                             <span className='text-sm font-semibold text-gray-500'>
                                                 계정 잔고(USDT) 확인하기
