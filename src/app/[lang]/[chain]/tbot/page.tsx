@@ -352,7 +352,7 @@ export default function AIPage({ params }: any) {
 
 
 
-
+    /*
     const connectWallets = useConnectedWallets();
     const smartConnectWallet = connectWallets?.[0];
     const setActiveAccount = useSetActiveWallet();
@@ -362,6 +362,7 @@ export default function AIPage({ params }: any) {
         )
 
     } , [smartConnectWallet , setActiveAccount]);
+    */
 
 
 
@@ -2267,7 +2268,7 @@ export default function AIPage({ params }: any) {
                                 )}
 
 
-                                {!myAgent && (
+                                {!myAgent?.id && (
 
                                     <div className='w-full flex flex-col items-center gap-2
                                         border border-gray-300 p-4 rounded-lg
