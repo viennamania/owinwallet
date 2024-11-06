@@ -159,6 +159,8 @@ export default function AIPage({ params }: any) {
     const wallet = searchParams.get('wallet');
 
     const agent = searchParams.get('agent');
+
+    const agentNumber = searchParams.get('tokenId');
     
     
     const [data, setData] = useState({
@@ -1115,6 +1117,27 @@ export default function AIPage({ params }: any) {
         setLoadingAgentBotList(false);
 
     };
+
+
+    // if agentBot then get the list of NFTs
+    useEffect(() => {
+        if (agentBot) {
+            changeAgentBot(agentBot);
+        }
+    } , [agentBot]);
+
+    // if agentNumber then set the selectedBotNumber
+    useEffect(() => {
+        if (agentNumber) {
+            setSelectedBotNumber(Number(agentNumber));
+        }
+    } , [agentNumber]);
+
+
+    console.log("selectedBotNumber", selectedBotNumber);
+
+
+
 
 
     const [isValidAPIKey, setIsValidAPIKey] = useState(false);
@@ -2411,7 +2434,7 @@ export default function AIPage({ params }: any) {
                                                                     border border-gray-300 p-2 rounded-lg
                                                                     hover:shadow-lg cursor-pointer
 
-                                                                    ${selectedBotNumber === nft.tokenId ? 'bg-blue-500 text-zinc-100' : 'bg-white text-gray-500'}
+                                                                    ${selectedBotNumber && selectedBotNumber === nft.tokenId ? 'bg-blue-500 text-zinc-100' : 'bg-white text-gray-500'}
                                                                 `}
                                                                 onClick={() => setSelectedBotNumber(nft.tokenId)}
                                                             >
