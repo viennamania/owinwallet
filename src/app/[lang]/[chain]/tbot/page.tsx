@@ -1981,10 +1981,15 @@ export default function AIPage({ params }: any) {
                                                 {accountBalanceList && (
                                                     <div className='w-full flex flex-col gap-2'>
                                                         {accountBalanceList.map((account) => (
-                                                            <div key={account.currency} className='flex flex-row items-center gap-2'>
+                                                            <div key={account.currency} className='flex flex-row items-center justify-between gap-2'>
                                                                 <span className='text-sm font-semibold text-gray-500'>
-                                                                    {account.currency}: {account.balance}
+                                                                    {account.currency}
+                                                                </span>                                                                
+                                                                <span className='text-right text-lg font-semibold text-gray-500'>
+                                                                    {account.balance}
                                                                 </span>
+
+
                                                             </div>
                                                         ))}
                                                     </div>
@@ -2006,7 +2011,7 @@ export default function AIPage({ params }: any) {
                                                         checkHtxAssetValuation(myAgent.apiAccessKey, myAgent.apiSecretKey);
                                                     }}
                                                 >
-                                                    HTX 자산 가치 확인하기 (KRW)
+                                                    HTX 자산 가치 확인하기
                                                 </button>
                                                 {checkingHtxAssetValuation && (
                                                     <span className='text-sm font-semibold text-blue-500'>
@@ -2015,8 +2020,8 @@ export default function AIPage({ params }: any) {
                                                 )}
                                             
                                                 {htxAssetValuation && (
-                                                    <span className='text-xl font-semibold text-gray-500'>
-                                                        HTX 자산 가치: {
+                                                    <span className='text-right text-2xl font-semibold text-red-500'>
+                                                        {
                                                             htxAssetValuation.toLocaleString('ko-KR', {
                                                                 style: 'currency',
                                                                 currency: 'KRW'
