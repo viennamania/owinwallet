@@ -1321,7 +1321,9 @@ export default function AIPage({ params }: any) {
                             <div className='w-full flex flex-col gap-5'>
 
                                 {applications.map((application) => (
-                                    <div className='w-full flex flex-col gap-5
+                                    <div
+                                        key={application._id}
+                                        className='w-full flex flex-col gap-5
                                         border border-gray-300 p-4 rounded-lg bg-gray-100
                                     '>
 
