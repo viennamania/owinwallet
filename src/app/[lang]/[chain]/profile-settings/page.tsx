@@ -473,6 +473,10 @@ export default function SettingsPage({ params }: any) {
     const [erc721ContractAddress, setErc721ContractAddress] = useState("");
 
 
+
+
+    /* block for testing */
+    /*
     useEffect(() => {
         const fetchData = async () => {
             const response = await fetch("/api/user/getUser", {
@@ -523,6 +527,7 @@ export default function SettingsPage({ params }: any) {
 
         fetchData();
     }, [address]);
+    */
 
 
 
@@ -1966,7 +1971,7 @@ export default function SettingsPage({ params }: any) {
 
 
 
-                    {address && !erc721ContractAddress && (
+                    {address && userCode && !erc721ContractAddress && (
 
  
                         <button
