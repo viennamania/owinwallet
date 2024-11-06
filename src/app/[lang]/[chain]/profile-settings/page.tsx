@@ -1334,6 +1334,49 @@ export default function SettingsPage({ params }: any) {
                 
                     <div className='w-full flex flex-col gap-4 items-start justify-center'>
 
+                        <ConnectButton
+                            client={client}
+                            wallets={wallets}
+
+                            
+                            accountAbstraction={{   
+                                chain: polygon,
+                                factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+                                gasless: true,
+                            }}
+                            
+                            
+                            theme={"light"}
+
+                            
+
+                            connectButton={{
+                                label: "Sign in with OWIN Magic Wallet",
+                            }}
+
+                            connectModal={{
+                            size: "wide",                            
+                            showThirdwebBranding: false,
+
+                            }}
+
+                            appMetadata={
+                            {
+                                logoUrl: "https://gold.goodtether.com/logo.png",
+                                name: "Next App",
+                                url: "https://gold.goodtether.com",
+                                description: "This is a Next App.",
+
+                            }
+                            }
+
+                            //locale={"ko_KR"}
+                            locale={"en_US"}
+                        />
+
+
+
+
                         {address && (
 
                             <div className='w-full flex flex-col gap-4 items-start justify-center'>
@@ -1434,45 +1477,7 @@ export default function SettingsPage({ params }: any) {
 
                         )}
 
-                            <ConnectButton
-                                client={client}
-                                wallets={wallets}
 
-                                
-                                accountAbstraction={{   
-                                    chain: polygon,
-                                    factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                                    gasless: true,
-                                }}
-                                
-                                
-                                theme={"light"}
-
-                                
-
-                                connectButton={{
-                                    label: "Sign in with OWIN Magic Wallet",
-                                }}
-
-                                connectModal={{
-                                size: "wide",                            
-                                showThirdwebBranding: false,
-
-                                }}
-
-                                appMetadata={
-                                {
-                                    logoUrl: "https://gold.goodtether.com/logo.png",
-                                    name: "Next App",
-                                    url: "https://gold.goodtether.com",
-                                    description: "This is a Next App.",
-
-                                }
-                                }
-
-                                //locale={"ko_KR"}
-                                locale={"en_US"}
-                            />
                         
                     </div>
 
