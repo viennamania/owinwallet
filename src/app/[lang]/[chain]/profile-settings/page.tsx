@@ -268,21 +268,58 @@ export default function SettingsPage({ params }: any) {
     const router = useRouter();
 
 
+    /*
+    const connectWallets = useConnectedWallets();
+    const smartConnectWallet = connectWallets?.[0];
+    const setActiveAccount = useSetActiveWallet();
+
+    useEffect(() => {
+        if (smartConnectWallet) {
+            setActiveAccount(smartConnectWallet);
+        }
+    } , [smartConnectWallet, setActiveAccount]);
+
+    */
+
+
 
     const activeAccount = useActiveAccount();
+    console.log("activeAccount===", activeAccount);
+
 
     const address = activeAccount?.address;
   
   
-    console.log("activeAccount===", activeAccount);
+
 
 
     const activeWallet = useActiveWallet();
 
-    console.log("activeWallet", activeWallet);
 
 
 
+
+
+
+
+
+
+    
+    ////console.log("activeWallet", activeWallet);
+
+
+
+    /*
+    const connectWallets = useConnectedWallets();
+    const smartConnectWallet = connectWallets?.[0];
+    const setActiveAccount = useSetActiveWallet();
+    useEffect(() => {
+        setActiveAccount(
+            smartConnectWallet
+        )
+
+    } , [smartConnectWallet , setActiveAccount]);
+    */
 
 
       
@@ -1108,14 +1145,15 @@ export default function SettingsPage({ params }: any) {
 
             //await sendTransaction({ transaction, account: activeAccount as any });
 
+
+
+            //setActiveAccount(smartConnectWallet);
+
             const transactionResult = await sendAndConfirmTransaction({
                 transaction: transaction,
-                
-                
-                account: activeAccount as any,
+                account: activeAccount,
 
-
-
+                ///////account: smartConnectWallet as any,
             });
 
             console.log("transactionResult", transactionResult);
@@ -2138,12 +2176,14 @@ export default function SettingsPage({ params }: any) {
                                                                     434.5 USDT
                                                                 </span>
                                                                 {/* 배당 수령 */}
+                                                                {/*
                                                                 <button
                                                                     className="p-2 bg-blue-500 text-zinc-100 rounded
                                                                     hover:bg-blue-600"
                                                                 >
                                                                     Claim Dividend
                                                                 </button>
+                                                                */}
                                                             </div>
 
                                                         </div>

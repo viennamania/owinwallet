@@ -30,6 +30,9 @@ import {
     useActiveAccount,
     useActiveWallet,
     useConnectModal,
+
+    useConnectedWallets,
+    useSetActiveWallet,
 } from "thirdweb/react";
 import { inAppWallet } from "thirdweb/wallets";
 
@@ -344,6 +347,26 @@ export default function AIPage({ params }: any) {
     const smartAccount = useActiveAccount();
 
     const address = smartAccount?.address || "";
+
+
+
+
+
+
+    const connectWallets = useConnectedWallets();
+    const smartConnectWallet = connectWallets?.[0];
+    const setActiveAccount = useSetActiveWallet();
+    useEffect(() => {
+        setActiveAccount(
+            smartConnectWallet
+        )
+
+    } , [smartConnectWallet , setActiveAccount]);
+
+
+
+
+
 
 
 
