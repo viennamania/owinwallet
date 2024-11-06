@@ -856,7 +856,10 @@ export default function AIPage({ params }: any) {
     const [apiAccessKey, setApiAccessKey] = useState("");
     const [apiSecretKey, setApiSecretKey] = useState("");
 
-    const [accountBalance, setAccountBalance] = useState(0);
+
+
+    //const [accountBalance, setAccountBalance] = useState(0);
+    const [accountBalanceList, setAccountBalanceList] = useState([] as any[]);
 
     
     const [applyingMintNFT, setApplyingMintNFT] = useState(false);
@@ -1185,19 +1188,10 @@ export default function AIPage({ params }: any) {
         console.log("data.result", data.result);
 
         if (data.result?.status === "ok") {
-            //balance = {"currency":"usdt","type":"trade","balance":"0","available":"0","debt":"0","seq-num":"0"}
+            
+            ///{ currency: 'usdt', balance: '0.00117522' }, { currency: 'htx', balance: '0.00000000' }
 
-            const balance = Number(data.result?.balance.balance);
-
-            //if (balance < 100) {
-            if (balance < 0) {
-
-                setIsValidBalance(false);
-            } else {
-                setIsValidBalance(true);
-            }
-
-            setAccountBalance(balance);
+            setAccountBalanceList(data.result?.data);
 
             toast.success("HTX 계정 잔고가 확인되었습니다.");
         } else {
@@ -1960,10 +1954,40 @@ export default function AIPage({ params }: any) {
                                                     </span>
                                                 )}
                                             
+                                                {/*
                                                 {accountBalance && (
                                                     <span className='text-xl font-semibold text-gray-500'>
                                                         SPOT 계정 잔고: {accountBalance.toFixed(2)} USDT
                                                     </span>
+                                                )}
+                                                    */}
+
+                                                {/*
+                                                [
+                                                    {
+                                                        "currency": "USDT",
+                                                        "balance": "83.60737576044"
+                                                    },
+                                                    {
+                                                        "currency": "BTC",
+                                                        "balance": "0.000000902"
+                                                    },
+                                                    {
+                                                        "currency": "ETH",
+                                                        "balance": "0.0000482"
+                                                    }
+                                                ]
+                                                */}
+                                                {accountBalanceList && (
+                                                    <div className='w-full flex flex-col gap-2'>
+                                                        {accountBalanceList.map((account) => (
+                                                            <div key={account.currency} className='flex flex-row items-center gap-2'>
+                                                                <span className='text-sm font-semibold text-gray-500'>
+                                                                    {account.currency}: {account.balance}
+                                                                </span>
+                                                            </div>
+                                                        ))}
+                                                    </div>
                                                 )}
                                                 
                                             </div>
@@ -2316,10 +2340,23 @@ export default function AIPage({ params }: any) {
                                                 </span>
                                             )}
 
+                                            {/*
                                             {accountBalance && (
                                                 <span className='text-2xl font-semibold text-gray-500'>
                                                     계정 잔고: {accountBalance.toFixed(2)} USDT
                                                 </span>
+                                            )}
+                                            */}
+                                            {accountBalanceList && (
+                                                <div className='w-full flex flex-col gap-2'>
+                                                    {accountBalanceList.map((account) => (
+                                                        <div key={account.currency} className='flex flex-row items-center gap-2'>
+                                                            <span className='text-sm font-semibold text-gray-500'>
+                                                                {account.currency}: {account.balance}
+                                                            </span>
+                                                        </div>
+                                                    ))}
+                                                </div>
                                             )}
 
                                             {/*}

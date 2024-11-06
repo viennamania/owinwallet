@@ -147,11 +147,14 @@ export async function POST(request: NextRequest) {
       */
 
 
-      // balance for currency is usdt
-      const balance = data.data.list.find((element: any) => element.currency === currency && element.type === "trade");
+        // balance for currency is usdt
+        const balanceUsdt = data.data.list.find((element: any) => element.currency === 'usdt' && element.type === "trade");
+        const balanceBtc = data.data.list.find((element: any) => element.currency === 'btc' && element.type === "trade");
+        const balanceEth = data.data.list.find((element: any) => element.currency === 'eth' && element.type === "trade");
 
+        // 
      
-      console.log(JSON.stringify(balance));
+      //console.log(JSON.stringify(balance));
 
 
       /*
@@ -163,8 +166,21 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json({
           result: {
-              status: "ok",
-              balance: balance,
+                status: "ok",
+                data: [
+                    {
+                        currency: 'USDT',
+                        balance: balanceUsdt ? balanceUsdt.balance : 0,
+                    },
+                    {
+                        currency: 'BTC',
+                        balance: balanceBtc ? balanceBtc.balance : 0,
+                    },
+                    {
+                        currency: 'ETH',
+                        balance: balanceEth ? balanceEth.balance : 0,
+                    },
+                ]
           }
       });
       
