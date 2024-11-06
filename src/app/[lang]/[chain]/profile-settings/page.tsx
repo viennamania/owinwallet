@@ -2155,17 +2155,17 @@ export default function SettingsPage({ params }: any) {
                                                             
                                                             {/* Accounts */}
                                                             <span className='text-xs xl:text-lg font-semibold'>
-                                                                Accounts: 163
+                                                                Accounts: 0
                                                             </span>
 
                                                             {/* Funds */}
                                                             <span className='text-xs xl:text-lg font-semibold'>
-                                                                Funds: 77500 USDT
+                                                                Funds: 0 USDT
                                                             </span>
 
                                                             {/* 수익률 */}
                                                             <span className='text-xs xl:text-lg font-semibold'>
-                                                                ROI: {23.5}%
+                                                                ROI: ??%
                                                             </span>
 
                                                             {/* 누적 배당수익 */}

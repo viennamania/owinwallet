@@ -2462,15 +2462,15 @@ export default function AIPage({ params }: any) {
                                                                         </span>
                                                                         {/* Accounts */}
                                                                         <span className='text-xs xl:text-sm'>
-                                                                            Accounts: 163
+                                                                            Accounts: 0
                                                                         </span>
                                                                         {/* 수익률 */}
                                                                         <span className='text-xs xl:text-sm'>
-                                                                            ROI: {23.5}%
+                                                                            ROI: ??%
                                                                         </span>
                                                                         {/* Funds */}
                                                                         <span className='text-xs xl:text-sm'>
-                                                                            Funds: 53650 USDT
+                                                                            Funds: 0 USDT
                                                                         </span>
                                                                     </div>
 
