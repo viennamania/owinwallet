@@ -2707,7 +2707,7 @@ export default function AIPage({ params }: any) {
                                                 'w-full bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold
                                                 hover:bg-blue-700 hover:text-zinc-100`}
                                         >
-                                            {applyingMintNFT ? "AI 에이전트 NFT 신청중..." : "AI 에이전트 NFT 민팅 신청"}
+                                            {applyingMintNFT ? "Master Bot NFT 민팅중..." : "Master Bot NFT 민팅하기"}
                                         </button>
                                         
 
