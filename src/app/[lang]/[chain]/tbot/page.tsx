@@ -1837,9 +1837,15 @@ export default function AIPage({ params }: any) {
                                     '>
 
                                         {isAgentTradingStarted ? (
-                                            <div className='flex flex-col gap-2'>
+                                            <div className='w-full flex flex-row items-center justify-start gap-2'>
+                                                <Image
+                                                    src="/icon-agent-live.gif"
+                                                    alt="Live"
+                                                    width={60}
+                                                    height={40}
+                                                />
                                                 <span className='text-sm font-semibold text-blue-500'>
-                                                    AI 에이전트 트레이딩을 시작했습니다.
+                                                    트레이딩을 시작했습니다.
                                                 </span>
                                             </div>
                                         ) : (
