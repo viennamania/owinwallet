@@ -2274,7 +2274,7 @@ export default function AIPage({ params }: any) {
                                 )}
 
 
-                                {!myAgent?.id && (
+                                {amountNft100 > 0 && !myAgent?.id && (
 
                                     <div className='w-full flex flex-col items-center gap-2
                                         border border-gray-300 p-4 rounded-lg
@@ -2674,9 +2674,11 @@ export default function AIPage({ params }: any) {
 
 
                                         <button
-                                            disabled={!address || applyingMintNFT || !isValidAPIKey || !isValidBalance}
+                                            disabled={!address || applyingMintNFT || !isValidAPIKey || !isValidBalance || !userName || !userPhoneNumber || !userEmail || !htxUsdtWalletAddress}
                                             onClick={applyMintAgentBot}
-                                            className={` ${applyingMintNFT || !isValidAPIKey || !isValidBalance ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold`}
+                                            className={` ${!address || applyingMintNFT || !isValidAPIKey || !isValidBalance || !userName || !userPhoneNumber || !userEmail || !htxUsdtWalletAddress ?
+                                                'w-full bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold
+                                                hover:bg-blue-700 hover:text-zinc-100`}
                                         >
                                             {applyingMintNFT ? "AI 에이전트 NFT 신청중..." : "AI 에이전트 NFT 민팅 신청"}
                                         </button>
