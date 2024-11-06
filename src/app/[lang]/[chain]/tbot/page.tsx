@@ -525,6 +525,11 @@ export default function AIPage({ params }: any) {
                 }),
             });
 
+            if (!response.ok) {
+                console.error("Error fetching user");
+                return;
+            }
+
             const data = await response.json();
 
             console.log("data", data);
@@ -1256,6 +1261,10 @@ export default function AIPage({ params }: any) {
     };
 
 
+
+    const [isAgentTradingStarted, setIsAgentTradingStarted] = useState(false);
+
+
     // search match results
     const [searchResults, setSearchResults] = useState([] as any[]);
     const [searchingMatchResults, setSearchingMatchResults] = useState(false);
@@ -1295,6 +1304,12 @@ export default function AIPage({ params }: any) {
 
             setSearchResults(data.result?.data);
 
+            if (data.result?.data.length > 0) {
+                setIsAgentTradingStarted(true);
+            }
+
+
+
             toast.success("HTX 매치 결과가 확인되었습니다.");
         } else {
             toast.error("HTX 매치 결과를 확인할 수 없습니다.");
@@ -1303,6 +1318,30 @@ export default function AIPage({ params }: any) {
         setSearchingMatchResults(false);
 
     };
+
+
+  
+    useEffect(() => {
+
+        let interval: any = null;
+
+        if (myAgent && myAgent.apiAccessKey && myAgent.apiSecretKey) {
+
+            searchMatchResults(myAgent.apiAccessKey, myAgent.apiSecretKey);
+        
+
+            interval = setInterval(() => {
+                searchMatchResults(myAgent.apiAccessKey, myAgent.apiSecretKey);
+            } , 1000 * 60 * 1);
+
+        }
+
+        if (interval !== null) {
+            clearInterval(interval);
+        }
+
+    } , [myAgent]);
+    
 
         
  
@@ -1772,18 +1811,28 @@ export default function AIPage({ params }: any) {
                                         items-center justify-center
                                         border border-gray-300 p-4 rounded-lg
                                     '>
-                                        <div className='flex flex-row items-center gap-2'>
-                                            <Image
-                                                src="/loading.png"
-                                                alt="loading"
-                                                width={30}
-                                                height={30}
-                                                className='animate-spin'
-                                            />
-                                            <span className='text-lg font-semibold text-blue-500'>
-                                                AI 에이전트 트레이딩 준비중...
-                                            </span>
-                                        </div>
+
+                                        {isAgentTradingStarted ? (
+                                            <div className='flex flex-col gap-2'>
+                                                <span className='text-sm font-semibold text-blue-500'>
+                                                    AI 에이전트 트레이딩을 시작했습니다.
+                                                </span>
+                                            </div>
+                                        ) : (
+                                            <div className='flex flex-row items-center gap-2'>
+                                                <Image
+                                                    src="/loading.png"
+                                                    alt="loading"
+                                                    width={30}
+                                                    height={30}
+                                                    className='animate-spin'
+                                                />
+                                                <span className='text-sm font-semibold text-blue-500'>
+                                                    AI 에이전트 트레이딩 준비중...
+                                                </span>
+                                            </div>
+                                        )}
+
 
                                         <div className='flex flex-col gap-2
                                             border border-yellow-500 p-4 rounded-lg
@@ -2123,10 +2172,7 @@ export default function AIPage({ params }: any) {
                                                                         symbol
                                                                     </th>
                                                                     <th className='w-full border border-gray-300'>
-                                                                        price
-                                                                    </th>
-                                                                    <th className='w-full border border-gray-300'>
-                                                                        amount
+                                                                        price / amount
                                                                     </th>
                                                                 </tr>
                                                             </thead>
@@ -2139,7 +2185,7 @@ export default function AIPage({ params }: any) {
                                                                     >
 
                                                                         <td className='w-full
-                                                                            border border-gray-300
+                                                                            border border-gray-300 p-2
                                                                         '>
                                                                             {/* 34 minutes ago */}
                                                                             {
@@ -2158,15 +2204,20 @@ export default function AIPage({ params }: any) {
                                                                             }
 
                                                                         </td>
-                                                                        <td className='w-full border border-gray-300'>
+                                                                        <td className='w-full border border-gray-300 p-2'>
                                                                             {result.symbol}
                                                                         </td>
-                                                                        <td className='w-full border border-gray-300'>
-                                                                            {result.price}
+                                                                        <td className='w-full border border-gray-300 p-2'>
+                                                                            <div className='flex flex-col gap-2'>
+                                                                                <span className='text-sm font-semibold text-gray-500'>
+                                                                                    {result.price}
+                                                                                </span>
+                                                                                <span className='text-sm font-semibold text-gray-500'>
+                                                                                    {Number(result['filled-amount']).toFixed(6)}
+                                                                                </span>
+                                                                            </div>
                                                                         </td>
-                                                                        <td className='w-full border border-gray-300'>
-                                                                            {Number(result['filled-amount']).toFixed(6)}
-                                                                        </td>
+
                                                                     </tr>
                                                                 ))}
                                                             </tbody>
