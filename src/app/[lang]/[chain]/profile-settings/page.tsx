@@ -476,7 +476,7 @@ export default function SettingsPage({ params }: any) {
 
 
     /* block for testing */
-    /*
+
     useEffect(() => {
         const fetchData = async () => {
             const response = await fetch("/api/user/getUser", {
@@ -527,7 +527,7 @@ export default function SettingsPage({ params }: any) {
 
         fetchData();
     }, [address]);
-    */
+    
 
 
 
