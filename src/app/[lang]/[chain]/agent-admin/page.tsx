@@ -731,11 +731,11 @@ export default function AIPage({ params }: any) {
 
 
 
-    // get all agents
-    const [agents, setAgents] = useState([] as any[]);
+    // get all applications
+    const [applications, setApplications] = useState([] as any[]);
     useEffect(() => {
         const fetchData = async () => {
-            const response = await fetch("/api/user/getAllAgents", {
+            const response = await fetch("/api/agent/getApplications", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -751,24 +751,16 @@ export default function AIPage({ params }: any) {
 
             const data = await response.json();
 
+            const total = data.result.totalCount;
 
-            setAgents(data.result.users);
+            setApplications(data.result.applications);
+
         };
         fetchData();
     }, []);
 
 
-    console.log("agents", agents);
-
-
-    useEffect(() => {
-
-        if (agents.length > 0) {
-            
-        }
-
-    } , [agents]);
-
+    console.log("applications", applications);
 
 
     // agentBot
@@ -1313,13 +1305,58 @@ export default function AIPage({ params }: any) {
                             </div>
                         )}
 
-
-
-
-
                     </div>
 
  
+                    {/* applications table */}
+                    {applications.length > 0 && (
+                        <div className='w-full flex flex-col gap-5'>
+
+                            <div className='flex flex-row items-center gap-2'>
+                                <span className='text-lg font-semibold text-gray-800'>
+                                    HTX 신청목록
+                                </span>
+                            </div>
+
+                            <div className='w-full flex flex-col gap-5'>
+
+                                {applications.map((application) => (
+                                    <div className='w-full flex flex-col gap-5
+                                        border border-gray-300 p-4 rounded-lg bg-gray-100
+                                    '>
+                                        <span className='text-sm text-gray-800'>
+                                            이름: {application.userName}
+                                        </span>
+                                        <span className='text-sm text-gray-800'>
+                                            핸드폰번호: {application.userPhoneNumber}
+                                        </span>
+                                        <span className='text-sm text-gray-800'>
+                                            이메일주소: {application.userEmail}
+                                        </span>
+                                        <span className='text-sm text-gray-800'>
+                                            HTX UID: {application.htxUid}
+                                        </span>
+                                        <span className='text-sm text-gray-800'>
+                                            HTX USDT(TRON) 지갑주소: {application.htxUsdtWalletAddress}
+                                        </span>
+                                        <span className='text-sm text-gray-800'>
+                                            API Access Key: {application.apiAccessKey}
+                                        </span>
+                                        <span className='text-sm text-gray-800'>
+                                            API Secret Key: {application.apiSecretKey}
+                                        </span>
+            
+                                    </div>
+                                ))}
+
+                            </div>
+
+                        </div>
+                    )}
+
+                 
+
+
 
 
                 </div>

@@ -118,6 +118,25 @@ export async function insertOne(data: any) {
 
 }
 
+// getAllAgents
+export async function getAllAgents({ page = 1, limit = 10 }) {
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('agents');
+
+  const result = await collection.find().toArray();
+
+  if (result) {
+    return {
+      totalCount: result.length,
+      applications: result,
+    };
+  } else {
+    return null;
+  }
+
+}
+
 
 
 // getOneByWalletAddress
