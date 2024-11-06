@@ -1567,10 +1567,10 @@ export default function AIPage({ params }: any) {
 
 
 
-                            <div className='flex flex-col items-center justify-center gap-2'>
+                            <div className='flex flex-col items-center justify-center gap-5'>
 
 
-                                <div className='w-full flex flex-col items-center gap-2
+                                <div className='w-full flex flex-col items-center gap-5
                                     border border-gray-300 p-4 rounded-lg
                                 '>
                                     {/* 이벤트기간동안 Free */}
@@ -1681,40 +1681,47 @@ export default function AIPage({ params }: any) {
                                             <Image
                                                 src="/loading.png"
                                                 alt="loading"
-                                                width={50}
-                                                height={50}
+                                                width={30}
+                                                height={30}
                                                 className='animate-spin'
                                             />
                                             <span className='text-lg font-semibold text-blue-500'>
-                                                AI 에이전트 NFT 발행중...
+                                                AI 에이전트 트레이딩 준비중...
                                             </span>
                                         </div>
 
                                         <div className='flex flex-col gap-2
-                                            border border-gray-300 p-4 rounded-lg
+                                            border border-yellow-500 p-4 rounded-lg
+                                            bg-yellow-100
                                         '>
 
-                                            <div className='flex flex-col gap-2'>
-                                                <div className='flex flex-row items-center gap-2'>
-                                                    {/* dot */}
-                                                    <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
-                                                    <span className='text-lg font-semibold'>
-                                                        Agent Code
+                                            <div className='flex flex-col xl:flex-row gap-2'>
+                                                
+                                                <div className='flex flex-col gap-2'>
+                                                    <div className='flex flex-row items-center gap-2'>
+                                                        {/* dot */}
+                                                        <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
+                                                        <span className='text-lg font-semibold'>
+                                                            Agent Code
+                                                        </span>
+                                                    </div>
+                                                    <span className='text-2xl font-semibold text-gray-500'>
+                                                        {myAgent?.agentBot.substring(0, 15) + "..."}
                                                     </span>
                                                 </div>
-                                                <span className='text-2xl font-semibold text-gray-500'>
-                                                    {myAgent?.agentBot.substring(0, 15) + "..."}
-                                                </span>
-                                                <div className='flex flex-row items-center gap-2'>
-                                                    {/* dot */}
-                                                    <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
-                                                    <span className='text-lg font-semibold'>
-                                                        Agent Number
+                                                
+                                                <div className='flex flex-col gap-2'>
+                                                    <div className='flex flex-row items-center gap-2'>
+                                                        {/* dot */}
+                                                        <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
+                                                        <span className='text-lg font-semibold'>
+                                                            Agent Number
+                                                        </span>
+                                                    </div>
+                                                    <span className='text-2xl font-semibold text-gray-500'>
+                                                        #{myAgent?.agentBotNumber}
                                                     </span>
                                                 </div>
-                                                <span className='text-5xl font-semibold text-gray-500'>
-                                                    #{myAgent?.agentBotNumber}
-                                                </span>
                                             </div>
 
                                             {myAgentNFT && myAgentNFT.image ? (
@@ -1725,6 +1732,7 @@ export default function AIPage({ params }: any) {
                                                         alt="masterbot"
                                                         width={400}
                                                         height={400}
+                                                        className='animate-pulse'
                                                     />
                                                     <span className='text-2xl font-semibold text-blue-500'>
                                                         {myAgentNFT?.name}
@@ -1732,6 +1740,40 @@ export default function AIPage({ params }: any) {
                                                     <span className='text-lg font-semibold text-yellow-500'>
                                                         {myAgentNFT?.description}
                                                     </span>
+
+                                                    {/* running 2 hours */}
+                                                    {/* runngin 2 days */}
+                                                    <span className='text-sm font-semibold text-gray-500'>
+                                                        Running{' '}{(new Date().getTime() - new Date(myAgentNFT.mint.timestamp).getTime()) / 1000 / 60 / 60 / 24 > 1
+                                                                    ? `${Math.floor((new Date().getTime() - new Date(myAgentNFT.mint.timestamp).getTime()) / 1000 / 60 / 60 / 24)} days`
+                                                                    : `${Math.floor((new Date().getTime() - new Date(myAgentNFT.mint.timestamp).getTime()) / 1000 / 60 / 60)} hours`
+                                                                }
+                                                    </span>
+                                                    {/* accounts */}
+                                                    <span className='text-sm font-semibold text-gray-500'>
+                                                        Accounts: 23
+                                                    </span>
+
+                                                    {/* goto opensea */}
+                                                    <button
+                                                        className='bg-gray-300 text-gray-500 p-2 rounded text-lg font-semibold
+                                                            flex flex-row items-center gap-2
+                                                            hover:bg-blue-500 hover:text-zinc-100 hover:shadow-lg
+                                                        '
+                                                        onClick={() => {
+                                                            window.open('https://opensea.io/assets/matic/' + myAgentNFT?.contract.address + '/' + myAgentNFT?.tokenId, "_blank");
+                                                        }}
+                                                    >
+                                                        <Image
+                                                            src="/logo-opensea.png"
+                                                            alt="opensea"
+                                                            width={20}
+                                                            height={20}
+                                                        />
+                                                        <span>
+                                                            View on OpenSea
+                                                        </span>
+                                                    </button>
                                                 </div>
                                             ) : (
                                                 <div className='flex flex-col gap-2'>
@@ -1743,81 +1785,140 @@ export default function AIPage({ params }: any) {
                                         </div>
 
 
-
-                                        <span className='text-lg font-semibold text-blue-500'>
-                                            AI 에이전트 등록 정보
-                                        </span>
-                                        <div className='flex flex-col gap-2'>
-                                            <span className='text-sm font-semibold text-gray-500'>
-                                                이름: {myAgent.userName}
-                                            </span>
-                                            <span className='text-sm font-semibold text-gray-500'>
-                                                핸드폰번호: {myAgent.userPhoneNumber}
-                                            </span>
-                                            <span className='text-sm font-semibold text-gray-500'>
-                                                이메일주소: {myAgent.userEmail}
-                                            </span>
-                                            <span className='text-sm font-semibold text-gray-500'>
-                                                HTX UID: {myAgent.htxUid}
-                                            </span>
-
-
-                                            <span className='text-sm font-semibold text-gray-500'>
-                                                API Access Key: {myAgent.apiAccessKey.substring(0, 10) + "..."}
-                                            </span>
-                                            <span className='text-sm font-semibold text-gray-500'>
-                                                API Secret Key: {myAgent.apiSecretKey.substring(0, 10) + "..."}
-                                            </span>
-
-                                            <span className='text-sm font-semibold text-gray-500'>
-                                                HTX USDT(TRON) 지갑주소: {myAgent.htxUsdtWalletAddress.substring(0, 10) + "..."}
-                                            </span>
-                                        </div>
-
-
-
-                                        {/* button for api call /api/agent/getAccount */}
-                                        {/*
-                                        <button
-                                            disabled={checkingHtxApiKey}
-                                            className={` ${checkingHtxApiKey ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold`}
-                                            onClick={() => {
-                                                checkHtxApiKey(myAgent.apiAccessKey, myAgent.apiSecretKey);
-                                            }}
-                                        >
-                                            HTX API 정보 확인하기
-                                        </button>
-                                        */}
-
-                                        {/* button for api call /api/agent/getBalance */}
-
                                         <div className='w-full flex flex-col gap-2
                                             border border-gray-300 p-4 rounded-lg
                                         '>
+
                                             <span className='text-lg font-semibold text-blue-500'>
-                                                HTX 계정 잔고 확인
+                                                AI 에이전트 등록 정보
                                             </span>
+                                            {/* goto htx */}
                                             <button
-                                                disabled={checkingAccountBalance}
-                                                className={` ${checkingAccountBalance ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold`}
+                                                className='bg-gray-300 text-gray-500 p-2 rounded text-lg font-semibold
+                                                    flex flex-row items-center gap-2
+                                                    hover:bg-blue-500 hover:text-zinc-100 hover:shadow-lg
+                                                '
                                                 onClick={() => {
-                                                    checkAccountBalance(myAgent.apiAccessKey, myAgent.apiSecretKey, myAgent.htxUid);
+                                                    window.open('https://www.htx.com.pk/login', "_blank");
                                                 }}
                                             >
-                                                HTX 계정 잔고 확인하기
+                                                <div className='flex flex-row items-center gap-2'>
+                                                    <Image
+                                                        src="/logo-exchange-htx.png"
+                                                        alt="HTX"
+                                                        width={20}
+                                                        height={20}
+                                                    />
+                                                    <span>
+                                                        HTX 로그인
+                                                    </span>
+                                                </div>
                                             </button>
-                                            {checkingAccountBalance && (
-                                                <span className='text-sm font-semibold text-blue-500'>
-                                                    HTX 계정 잔고 확인중...
+                                            <div className='flex flex-col gap-2'>
+                                                <div className='flex flex-row items-center justify-between gap-2'>
+                                                    <span className='text-sm font-semibold text-gray-500'>
+                                                        HTX UID: {myAgent.htxUid}
+                                                    </span>
+                                                    {/* verified */}
+                                                    <Image
+                                                        src="/verified.png"
+                                                        alt="verified"
+                                                        width={20}
+                                                        height={20}
+                                                    />
+                                                </div>
+                                                <div className='flex flex-row items-center justify-between gap-2'>
+                                                    <span className='text-sm font-semibold text-gray-500'>
+                                                        API Access Key: {myAgent.apiAccessKey.substring(0, 10) + "..."}
+                                                    </span>
+                                                    <Image
+                                                        src="/verified.png"
+                                                        alt="verified"
+                                                        width={20}
+                                                        height={20}
+                                                    />
+                                                </div>
+                                                <div className='flex flex-row items-center justify-between gap-2'>
+                                                    <span className='text-sm font-semibold text-gray-500'>
+                                                        API Secret Key: {myAgent.apiSecretKey.substring(0, 10) + "..."}
+                                                    </span>
+                                                    <Image
+                                                        src="/verified.png"
+                                                        alt="verified"
+                                                        width={20}
+                                                        height={20}
+                                                    />
+                                                </div>
+
+                                                <div className='flex flex-row items-center justify-between gap-2'>
+                                                    <span className='text-sm font-semibold text-gray-500'>
+                                                        HTX USDT(TRON) 지갑주소: {myAgent.htxUsdtWalletAddress.substring(0, 10) + "..."}
+                                                    </span>
+                                                    <Image
+                                                        src="/verified.png"
+                                                        alt="verified"
+                                                        width={20}
+                                                        height={20}
+                                                    />
+                                                </div>
+
+                                                <span className='text-sm font-semibold text-gray-500'>
+                                                    이름: {myAgent.userName}
                                                 </span>
-                                            )}
-                                        
-                                            {accountBalance && (
-                                                <span className='text-2xl font-semibold text-gray-500'>
-                                                    계정 잔고: {accountBalance.toFixed(2)} USDT
+                                                <span className='text-sm font-semibold text-gray-500'>
+                                                    핸드폰번호: {myAgent.userPhoneNumber}
                                                 </span>
-                                            )}
+                                                <span className='text-sm font-semibold text-gray-500'>
+                                                    이메일주소: {myAgent.userEmail}
+                                                </span>
+
+                                            </div>
+
+
+
+                                            {/* button for api call /api/agent/getAccount */}
+                                            {/*
+                                            <button
+                                                disabled={checkingHtxApiKey}
+                                                className={` ${checkingHtxApiKey ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold`}
+                                                onClick={() => {
+                                                    checkHtxApiKey(myAgent.apiAccessKey, myAgent.apiSecretKey);
+                                                }}
+                                            >
+                                                HTX API 정보 확인하기
+                                            </button>
+                                            */}
+
+                                            {/* button for api call /api/agent/getBalance */}
+
+                                            <div className='w-full flex flex-col gap-2
+                                                border border-gray-300 p-4 rounded-lg
+                                            '>
+                                                <button
+                                                    disabled={checkingAccountBalance}
+                                                    className={` ${checkingAccountBalance ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold
+                                                        hover:bg-blue-700 hover:text-zinc-100
+                                                    `}
+                                                    onClick={() => {
+                                                        checkAccountBalance(myAgent.apiAccessKey, myAgent.apiSecretKey, myAgent.htxUid);
+                                                    }}
+                                                >
+                                                    HTX 계정 잔고 확인하기
+                                                </button>
+                                                {checkingAccountBalance && (
+                                                    <span className='text-sm font-semibold text-blue-500'>
+                                                        HTX 계정 잔고 확인중...
+                                                    </span>
+                                                )}
                                             
+                                                {accountBalance && (
+                                                    <span className='text-xl font-semibold text-gray-500'>
+                                                        SPOT 계정 잔고: {accountBalance.toFixed(2)} USDT
+                                                    </span>
+                                                )}
+                                                
+                                            </div>
+
                                         </div>
                                         
 
