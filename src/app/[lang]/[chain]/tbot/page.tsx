@@ -2165,7 +2165,7 @@ export default function AIPage({ params }: any) {
                                                                             {result.price}
                                                                         </td>
                                                                         <td className='w-full border border-gray-300'>
-                                                                            {result['filled-amount']}
+                                                                            {Number(result['filled-amount']).toFixed(8)}
                                                                         </td>
                                                                     </tr>
                                                                 ))}
