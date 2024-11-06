@@ -1334,7 +1334,7 @@ export default function SettingsPage({ params }: any) {
                 
                     <div className='w-full flex flex-col gap-4 items-start justify-center'>
 
-                        {address ? (
+                        {address && (
 
                             <div className='w-full flex flex-col gap-4 items-start justify-center'>
 
@@ -1432,7 +1432,7 @@ export default function SettingsPage({ params }: any) {
 
                             </div>
 
-                        ) : (
+                        )}
 
                             <ConnectButton
                                 client={client}
@@ -1473,7 +1473,7 @@ export default function SettingsPage({ params }: any) {
                                 //locale={"ko_KR"}
                                 locale={"en_US"}
                             />
-                        )}
+                        
                     </div>
 
 
