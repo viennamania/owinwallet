@@ -2503,7 +2503,7 @@ export default function AIPage({ params }: any) {
                                                 HTX API Access Key
                                             </span>
                                             <input
-                                                disabled={applyingMintNFT}
+                                                disabled={!address || applyingMintNFT}
                                                 onChange={(e) => setApiAccessKey(e.target.value)}
                                                 type="text"
                                                 placeholder="API Access Key"
@@ -2513,7 +2513,7 @@ export default function AIPage({ params }: any) {
                                                 HTX API Secret Key
                                             </span>
                                             <input
-                                                disabled={applyingMintNFT}
+                                                disabled={!address || applyingMintNFT}
                                                 onChange={(e) => setApiSecretKey(e.target.value)}
                                                 type="text"
                                                 placeholder="API Secret Key"
@@ -2522,7 +2522,7 @@ export default function AIPage({ params }: any) {
 
                                             {/* button for api call /api/agent/getAccount */}
                                             <button
-                                                disabled={checkingHtxApiKey || !apiAccessKey || !apiSecretKey || isValidAPIKey}
+                                                disabled={!address || checkingHtxApiKey || !apiAccessKey || !apiSecretKey || isValidAPIKey}
                                                 className={` ${checkingHtxApiKey || !apiAccessKey || !apiSecretKey || isValidAPIKey
                                                     ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold`}
                                                 onClick={() => {
@@ -2628,7 +2628,7 @@ export default function AIPage({ params }: any) {
                                                 HTX USDT(TRON) 지갑주소
                                             </span>
                                             <input
-                                                disabled={applyingMintNFT}
+                                                disabled={!address || applyingMintNFT}
                                                 onChange={(e) => setHtxUsdtWalletAddress(e.target.value)}
                                                 type="text"
                                                 placeholder="HTX USDT(TRON) 지갑주소"
@@ -2643,7 +2643,7 @@ export default function AIPage({ params }: any) {
                                             </span>
 
                                             <input
-                                                disabled={applyingMintNFT}
+                                                disabled={!address || applyingMintNFT}
                                                 value={userName}
                                                 onChange={(e) => setUserName(e.target.value)}
                                                 type="text"
@@ -2651,7 +2651,7 @@ export default function AIPage({ params }: any) {
                                                 className="w-full p-2 rounded-lg border border-gray-300"
                                             />
                                             <input
-                                                disabled={applyingMintNFT}
+                                                disabled={!address || applyingMintNFT}
                                                 value={userPhoneNumber}
                                                 onChange={(e) => setUserPhoneNumber(e.target.value)}
                                                 type="text"
@@ -2659,7 +2659,7 @@ export default function AIPage({ params }: any) {
                                                 className="w-full p-2 rounded-lg border border-gray-300"
                                             />
                                             <input
-                                                disabled={applyingMintNFT}
+                                                disabled={!address || applyingMintNFT}
                                                 value={userEmail}
                                                 onChange={(e) => setUserEmail(e.target.value)}
                                                 type="text"
@@ -2674,7 +2674,7 @@ export default function AIPage({ params }: any) {
 
 
                                         <button
-                                            disabled={applyingMintNFT || !isValidAPIKey || !isValidBalance}
+                                            disabled={!address || applyingMintNFT || !isValidAPIKey || !isValidBalance}
                                             onClick={applyMintAgentBot}
                                             className={` ${applyingMintNFT || !isValidAPIKey || !isValidBalance ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold`}
                                         >
