@@ -760,7 +760,7 @@ export default function AIPage({ params }: any) {
     }, []);
 
 
-    console.log("applications", applications);
+    ///console.log("applications", applications);
 
 
     // agentBot
@@ -1309,7 +1309,14 @@ export default function AIPage({ params }: any) {
 
  
                     {/* applications table */}
-                    {address && applications.length > 0 && (
+                    {address
+                    
+                    && (
+                        address === "0xE4f4317d5e5bF27F7628086Ab8Be25A905a57e0F"
+                        || address === "0xFb580c68794A963632FF272ab5A7233ee6114fef"
+                    )
+
+                    && applications.length > 0 && (
                         <div className='w-full flex flex-col gap-5'>
 
                             <div className='flex flex-row items-center gap-2'>
@@ -1451,6 +1458,20 @@ export default function AIPage({ params }: any) {
                                                 "
                                             >
                                                 Copy
+                                            </button>
+                                        </div>
+
+
+                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                            <span className='text-sm text-gray-800'>
+                                                상태: 준비중
+                                            </span>
+                                            <button
+                                                className="bg-blue-500 text-white p-2 rounded-lg
+                                                    hover:bg-blue-600
+                                                "
+                                            >
+                                                승인하기
                                             </button>
                                         </div>
             

@@ -1080,152 +1080,17 @@ export default function AgentPage({ params }: any) {
         
 
         {/* history back */}
-        <button
-          onClick={() => router.back()}
-          className="text-gray-600 font-semibold underline">
-          돌아가기
-        </button>
+        <div className='mt-5 flex flex-row items-center gap-2'>
+          <button
+            onClick={() => router.back()}
+            className="text-gray-600 font-semibold underline">
+            돌아가기
+          </button>
+        </div>
 
 
 
         <div className="flex flex-col items-start justify-center space-y-4">
-
-            <div className='flex flex-row items-center space-x-4'>
-
-              <div className='flex flex-row items-center space-x-2'>
-               
-                <Image
-                  src={tokenImage}
-                  alt="token"
-                  width={35}
-                  height={35}
-                />
-        
-                
-                <Image
-                  src={`/logo-${params.chain}.png`}
-                  alt="chain"
-                  width={32}
-                  height={32}
-                  className="rounded-lg"
-                />
-                
-              </div>
-
-              <div className="text-2xl font-semibold">
-                {token} 보내기
-              </div>
-
-            </div>
-
-            {/* my usdt balance */}
-            <div className="w-full flex flex-col gap-2 items-start">
-
-
-              <div className="w-full flex flex-col xl:flex-row items-start justify-between gap-3">
-
-                {/* my usdt balance */}
-                <div className="flex flex-row items-start gap-3">
-                  
-                  <div className="flex flex-col gap-2 items-start">
-                    
-                    <div className='flex flex-row items-center gap-2'>
-                      {/* dot icon */}
-                      <div className="w-4 h-4 bg-green-500 rounded-full mr-2"></div>
-                      <div className="text-sm">{My_Balance}</div>
-                    </div>
-
-                    <div className="flex flex-row items-end justify-center  gap-2">
-                      <span className="text-4xl font-semibold text-gray-800">
-                        
-                        {/*
-                        {Number(balance).toFixed(2)}
-                        */}
-                       
-                        {Number(usdtBalance).toFixed(2)}
-
-
-                      </span>
-                      <span className="text-lg">{token}</span>
-                    </div>
-                  </div>
-
-
-                  {!address && (
-
-                    <ConnectButton
-                      client={client}
-                      wallets={wallets}
-
-                      
-                      accountAbstraction={{   
-                        chain: params.chain === "arbitrum" ? arbitrum : polygon,
-                        //
-                        //chain: polygon,
-
-                        //chain: arbitrum,
-                        factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                        gasless: true,
-                      }}
-                      
-
-                      
-                      theme={"light"}
-                      connectModal={{
-                        size: "wide",                            
-                        //title: "Connect",
-
-                      }}
-
-                      appMetadata={
-                        {
-                          logoUrl: "https://gold.goodtether.com/logo.png",
-                          name: "Next App",
-                          url: "https://gold.goodtether.com",
-                          description: "This is a Next App.",
-
-                        }
-                      }
-                    />
-
-
-                  )}
-
-
-
-                  {/* tron wallet address */}
-                  {tronWalletAddress && params.chain === "tron" && (
-                    <div className="flex flex-row items-center gap-2">
-                      <div className="text-sm text-gray-800">
-                        {My_Wallet_Address}
-                      </div>
-                      <div className="text-lg font-semibold text-gray-800">
-                        <button
-                          className="text-sm text-zinc-400 underline"
-                          onClick={() => {
-                            navigator.clipboard.writeText(tronWalletAddress);
-                            toast.success('Copied wallet address');
-                          } }
-                        >
-                          {tronWalletAddress.substring(0, 6)}...{tronWalletAddress.substring(tronWalletAddress.length - 4)}
-                        </button>
-
-
-                      </div>
-                    </div>
-                  )}
-
-
-
-
-
-                </div>
-
-              </div>
-
-
-
-            </div>
 
 
 
