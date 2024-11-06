@@ -1309,7 +1309,7 @@ export default function AIPage({ params }: any) {
 
  
                     {/* applications table */}
-                    {applications.length > 0 && (
+                    {address && applications.length > 0 && (
                         <div className='w-full flex flex-col gap-5'>
 
                             <div className='flex flex-row items-center gap-2'>
@@ -1324,6 +1324,25 @@ export default function AIPage({ params }: any) {
                                     <div className='w-full flex flex-col gap-5
                                         border border-gray-300 p-4 rounded-lg bg-gray-100
                                     '>
+
+                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                            <span className='text-xl font-semibold text-gray-800'>
+                                                HTX UID: {application.htxUid}
+                                            </span>
+                                            {/* copy button */}
+                                            <button
+                                                onClick={() => {
+                                                    navigator.clipboard.writeText(application.htxUid);
+                                                    toast.success("Copied to clipboard");
+                                                }}
+                                                className="bg-gray-500 text-white p-2 rounded-lg
+                                                    hover:bg-gray-600
+                                                "
+                                            >
+                                                Copy
+                                            </button>
+                                        </div>
+
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                                             <span className='text-sm text-gray-800'>
                                                 이름: {application.userName}
@@ -1377,23 +1396,7 @@ export default function AIPage({ params }: any) {
                                             </button>
                                         </div>
 
-                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                            <span className='text-sm text-gray-800'>
-                                                HTX UID: {application.htxUid}
-                                            </span>
-                                            {/* copy button */}
-                                            <button
-                                                onClick={() => {
-                                                    navigator.clipboard.writeText(application.htxUid);
-                                                    toast.success("Copied to clipboard");
-                                                }}
-                                                className="bg-gray-500 text-white p-2 rounded-lg
-                                                    hover:bg-gray-600
-                                                "
-                                            >
-                                                Copy
-                                            </button>
-                                        </div>
+
 
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                                             <span className='text-xs text-gray-800'>
@@ -1496,8 +1499,7 @@ function Header(
   
         {/* header menu */}
         <div className="w-full flex flex-row justify-between items-center gap-2
-          bg-red-500
-          p-4 rounded-lg mb-5
+          bg-black bg-opacity-10 p-4 rounded-lg  md:p-6
         ">
             {/* logo */}
             <button
@@ -1514,10 +1516,33 @@ function Header(
                     className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
                     />
                     <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
-                    OWIN Agent Admin
+                    OWIN Admin
                     </span>
                 </div>
+                
             </button>
+
+            <div className="flex flex-row gap-2 items-center">
+                <button
+                onClick={() => {
+                    router.push(
+                        "/kr/polygon/tbot?agent=" + agent
+                    );
+                }}
+                className="text-gray-600 hover:underline text-xs xl:text-lg"
+                >
+                TBOT
+                </button>
+                <button
+                onClick={() => {
+                    router.push('/kr/polygon/profile-settings?agent=' + agent);
+                }}
+                className="text-gray-600 hover:underline text-xs xl:text-lg"
+                >
+                SETTINGS
+                </button>
+            </div>
+
 
         </div>
         
