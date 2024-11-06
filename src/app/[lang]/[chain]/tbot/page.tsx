@@ -2413,7 +2413,7 @@ export default function AIPage({ params }: any) {
                                                                     alt={nft.name}
                                                                     width={200}
                                                                     height={200}
-                                                                    className='rounded-lg w-44'
+                                                                    className='rounded-lg w-32'
                                                                 />
                                                                 <div className='w-full flex flex-col items-start gap-2'>
                                                                     <div className='flex flex-row items-center gap-2'>
@@ -2445,26 +2445,28 @@ export default function AIPage({ params }: any) {
                                                                         {nft.description}
                                                                     </span>
                                                                     
-                                                                    {/* // from now to mint in hours minutes seconds
-                                                                    // now - mint */}
-                                                                    <span className='text-xs xl:text-lg font-semibold'>
-                                                                        Start{' '}{(new Date().getTime() - new Date(nft.mint.timestamp).getTime()) / 1000 / 60 / 60 / 24 > 1
-                                                                            ? `${Math.floor((new Date().getTime() - new Date(nft.mint.timestamp).getTime()) / 1000 / 60 / 60 / 24)} days ago`
-                                                                            : `${Math.floor((new Date().getTime() - new Date(nft.mint.timestamp).getTime()) / 1000 / 60 / 60)} hours ago`
-                                                                        }
-                                                                    </span>
-                                                                    {/* Accounts */}
-                                                                    <span className='text-xs xl:text-lg font-semibold'>
-                                                                        Accounts: 163
-                                                                    </span>
-                                                                    {/* 수익률 */}
-                                                                    <span className='text-xs xl:text-lg font-semibold'>
-                                                                        ROI: {23.5}%
-                                                                    </span>
-                                                                    {/* Funds */}
-                                                                    <span className='text-xs xl:text-lg font-semibold'>
-                                                                        Funds: 53650 USDT
-                                                                    </span>
+                                                                    <div className='flex flex-col items-start justify-center  gap-1'>
+                                                                        {/* // from now to mint in hours minutes seconds
+                                                                        // now - mint */}
+                                                                        <span className='text-xs xl:text-sm'>
+                                                                            Start{' '}{(new Date().getTime() - new Date(nft.mint.timestamp).getTime()) / 1000 / 60 / 60 / 24 > 1
+                                                                                ? `${Math.floor((new Date().getTime() - new Date(nft.mint.timestamp).getTime()) / 1000 / 60 / 60 / 24)} days ago`
+                                                                                : `${Math.floor((new Date().getTime() - new Date(nft.mint.timestamp).getTime()) / 1000 / 60 / 60)} hours ago`
+                                                                            }
+                                                                        </span>
+                                                                        {/* Accounts */}
+                                                                        <span className='text-xs xl:text-sm'>
+                                                                            Accounts: 163
+                                                                        </span>
+                                                                        {/* 수익률 */}
+                                                                        <span className='text-xs xl:text-sm'>
+                                                                            ROI: {23.5}%
+                                                                        </span>
+                                                                        {/* Funds */}
+                                                                        <span className='text-xs xl:text-sm'>
+                                                                            Funds: 53650 USDT
+                                                                        </span>
+                                                                    </div>
 
 
                                                                 </div>
