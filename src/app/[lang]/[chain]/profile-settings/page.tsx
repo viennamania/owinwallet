@@ -2107,13 +2107,15 @@ export default function SettingsPage({ params }: any) {
                                                 
                                                 <div className='w-full grid grid-cols-2 gap-2 items-center justify-between'>
                                                     
-                                                    <div className="flex flex-col gap-2 items-start justify-between">
+                                                    <div className="flex flex-col gap-2 items-center justify-center">
 
                                                         {/* goto button for detail page */}
                                                         <button
                                                             onClick={() => {
                                                                 router.push('/' + params.lang + '/' + params.chain + '/agent/' + nft.contract.address + '/' + nft.tokenId);
                                                             }}
+                                                            className="p-2 bg-blue-500 text-zinc-100 rounded
+                                                            hover:bg-blue-600"
                                                         >
                                                             <span className='text-xs xl:text-lg font-semibold'>
                                                                 상세보기
@@ -2125,7 +2127,7 @@ export default function SettingsPage({ params }: any) {
                                                             alt="NFT"
                                                             width={200}
                                                             height={200}
-                                                            className="rounded-lg w-20 xl:w-32"
+                                                            className="rounded-lg w-32 xl:w-40 border border-gray-300"
                                                             
                                                         />
                                                     </div>
