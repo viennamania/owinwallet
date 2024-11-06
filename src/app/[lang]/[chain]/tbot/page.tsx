@@ -1185,13 +1185,17 @@ export default function AIPage({ params }: any) {
 
         const data = await response.json();
 
-        console.log("data.result", data.result);
+        ///console.log("data.result", data.result);
 
         if (data.result?.status === "ok") {
             
             ///{ currency: 'usdt', balance: '0.00117522' }, { currency: 'htx', balance: '0.00000000' }
 
             setAccountBalanceList(data.result?.data);
+
+
+            setIsValidBalance(true);
+
 
             toast.success("HTX 계정 잔고가 확인되었습니다.");
         } else {
@@ -1251,6 +1255,54 @@ export default function AIPage({ params }: any) {
 
     };
 
+
+    // search match results
+    const [searchResults, setSearchResults] = useState([] as any[]);
+    const [searchingMatchResults, setSearchingMatchResults] = useState(false);
+    const searchMatchResults = async (
+        htxAccessKey: string,
+        htxSecretKey: string,
+    ) => {
+
+        if (htxAccessKey === "") {
+            toast.error("HTX Access Key를 입력해 주세요.");
+            return;
+        }
+
+        if (htxSecretKey === "") {
+            toast.error("HTX Secret Key를 입력해 주세요.");
+            return;
+        }
+
+        setSearchingMatchResults(true);
+
+        const response = await fetch("/api/agent/searchMatchResults", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                htxAccessKey: htxAccessKey,
+                htxSecretKey: htxSecretKey,
+            }),
+        });
+
+        const data = await response.json();
+
+        ///console.log("data.result====", data.result);
+
+        if (data.result?.status === "ok") {
+
+            setSearchResults(data.result?.data);
+
+            toast.success("HTX 매치 결과가 확인되었습니다.");
+        } else {
+            toast.error("HTX 매치 결과를 확인할 수 없습니다.");
+        }
+
+        setSearchingMatchResults(false);
+
+    };
 
         
  
@@ -2030,6 +2082,103 @@ export default function AIPage({ params }: any) {
                                                     </span>
                                                 )}
                                             </div>
+
+                                            {/* button for searchMatchResults */}
+                                            <div className='w-full flex flex-col gap-2
+                                                border border-gray-300 p-4 rounded-lg
+                                            '>
+                                                <button
+                                                    disabled={searchingMatchResults}
+                                                    className={` ${searchingMatchResults ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold
+                                                        hover:bg-blue-700 hover:text-zinc-100
+                                                    `}
+                                                    onClick={() => {
+                                                        searchMatchResults(myAgent.apiAccessKey, myAgent.apiSecretKey);
+                                                    }}
+                                                >
+                                                    HTX 매치 결과 확인하기
+                                                </button>
+                                                {searchingMatchResults && (
+                                                    <span className='text-sm font-semibold text-blue-500'>
+                                                        HTX 매치 결과 확인중...
+                                                    </span>
+                                                )}
+
+                                                {/*
+                                                [{"symbol":"btcusdt","fee-currency":"usdt","source":"spot-android","updated-at":1730784059466,"price":"68378.06","order-id":1195719544670156,"role":"taker","created-at":1730784059466,"filled-amount":"0.000087","filled-fees":"0.01189778244","filled-points":"0.0","fee-deduct-currency":"","fee-deduct-state":"done","match-id":174384101920,"trade-id":103066447911,"id":1159862024172110,"type":"sell-limit"},{"symbol":"btcusdt","fee-currency":"usdt","source":"spot-android","updated-at":1730784059465,"price":"68378.06","order-id":1195719544670156,"role":"taker","created-at":1730784059465,"filled-amount":"0.00046","filled-fees":"0.0629078152","filled-points":"0.0","fee-deduct-currency":"","fee-deduct-state":"done","match-id":174384101920,"trade-id":103066447910,"id":1159862024172109,"type":"sell-limit"},{"symbol":"btcusdt","fee-currency":"btc","source":"spot-android","updated-at":1730783999096,"price":"68381.57","order-id":1195719536250386,"role":"taker","created-at":1730783999096,"filled-amount":"0.000189","filled-fees":"0.000000378","filled-points":"0.0","fee-deduct-currency":"","fee-deduct-state":"done","match-id":174384090807,"trade-id":103066447535,"id":1173744717713267,"type":"buy-limit"},{"symbol":"btcusdt","fee-currency":"btc","source":"spot-android","updated-at":1730783999095,"price":"68381.57","order-id":1195719536250386,"role":"taker","created-at":1730783999095,"filled-amount":"0.00036","filled-fees":"0.00000072","filled-points":"0.0","fee-deduct-currency":"","fee-deduct-state":"done","match-id":174384090807,"trade-id":103066447534,"id":1173744717713268,"type":"buy-limit"}]
+                                                */}
+
+                                            
+                                                {searchResults && (
+                                                    <div className='w-full flex flex-col gap-2'>
+                                                        <table className='w-full
+                                                            border border-gray-300 rounded-lg
+                                                        '>
+                                                            <thead className='w-full'>
+                                                                <tr className='w-full bg-gray-200'>
+                                                                    <th className='w-full border border-gray-300'>
+                                                                        time
+                                                                    </th>
+                                                                    <th className='w-full border border-gray-300'>
+                                                                        symbol
+                                                                    </th>
+                                                                    <th className='w-full border border-gray-300'>
+                                                                        price
+                                                                    </th>
+                                                                    <th className='w-full border border-gray-300'>
+                                                                        amount
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody className='w-full'>
+                                                                {searchResults.map((result) => (
+                                                                    <tr key={result.id}
+                                                                        className='w-full
+                                                                            border border-gray-300
+                                                                        '
+                                                                    >
+
+                                                                        <td className='w-full
+                                                                            border border-gray-300
+                                                                        '>
+                                                                            {/* 34 minutes ago */}
+                                                                            {
+                                                                                //result['created-at']
+
+                                                                                // 34 minutes ago
+
+
+                                                                                new Date().getTime() - result['created-at'] > 1000 * 60 * 60 * 24 ? `${Math.floor((new Date().getTime() - result['created-at']) / 1000 / 60 / 60 / 24)} days ago`
+                                                                                    : new Date().getTime() - result['created-at'] > 1000 * 60 * 60 ? `${Math.floor((new Date().getTime() - result['created-at']) / 1000 / 60 / 60)} hours ago`
+                                                                                        : new Date().getTime() - result['created-at'] > 1000 * 60 ? `${Math.floor((new Date().getTime() - result['created-at']) / 1000 / 60)} minutes ago`
+                                                                                            : new Date().getTime() - result['created-at'] > 1000 ? `${Math.floor((new Date().getTime() - result['created-at']) / 1000)} seconds ago`
+                                                                                                : 'just now'
+                                                                                
+
+                                                                            }
+
+                                                                        </td>
+                                                                        <td className='w-full border border-gray-300'>
+                                                                            {result.symbol}
+                                                                        </td>
+                                                                        <td className='w-full border border-gray-300'>
+                                                                            {result.price}
+                                                                        </td>
+                                                                        <td className='w-full border border-gray-300'>
+                                                                            {result['filled-amount']}
+                                                                        </td>
+                                                                    </tr>
+                                                                ))}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                )}
+                                            </div>
+
+
+
+
+
 
                                         </div>
                                         
