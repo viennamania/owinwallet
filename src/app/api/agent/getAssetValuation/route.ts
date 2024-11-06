@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
         Timestamp: moment.utc().format('YYYY-MM-DDTHH:mm:ss'),
 
         accountType: 'spot',
-        valuationCurrency: 'KRW',
+        valuationCurrency: 'USD',
     };
 
 

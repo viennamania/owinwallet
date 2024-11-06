@@ -2038,10 +2038,10 @@ export default function AIPage({ params }: any) {
                                                                     {account.currency}
                                                                 </span>                                                                
                                                                 <span className='text-right text-lg font-semibold text-gray-500'>
-                                                                    {account.balance}
+                                                                    {
+                                                                        Number(account.balance).toFixed(6)
+                                                                    }
                                                                 </span>
-
-
                                                             </div>
                                                         ))}
                                                     </div>
@@ -2074,9 +2074,9 @@ export default function AIPage({ params }: any) {
                                                 {htxAssetValuation && (
                                                     <span className='text-right text-2xl font-semibold text-red-500'>
                                                         {
-                                                            htxAssetValuation.toLocaleString('ko-KR', {
+                                                            htxAssetValuation.toLocaleString('en-US', {
                                                                 style: 'currency',
-                                                                currency: 'KRW'
+                                                                currency: 'USD',
                                                             })
                                                         }
                                                     </span>
@@ -2109,7 +2109,7 @@ export default function AIPage({ params }: any) {
                                                 */}
 
                                             
-                                                {searchResults && (
+                                                {searchResults ? (
                                                     <div className='w-full flex flex-col gap-2'>
                                                         <table className='w-full
                                                             border border-gray-300 rounded-lg
@@ -2172,7 +2172,12 @@ export default function AIPage({ params }: any) {
                                                             </tbody>
                                                         </table>
                                                     </div>
+                                                ) : (
+                                                    <span className='text-sm font-semibold text-gray-500'>
+                                                        HTX 매치 결과가 없습니다.
+                                                    </span>
                                                 )}
+
                                             </div>
 
 
@@ -2504,9 +2509,14 @@ export default function AIPage({ params }: any) {
                                             {accountBalanceList && (
                                                 <div className='w-full flex flex-col gap-2'>
                                                     {accountBalanceList.map((account) => (
-                                                        <div key={account.currency} className='flex flex-row items-center gap-2'>
+                                                        <div key={account.currency} className='flex flex-row items-center justify-between gap-2'>
                                                             <span className='text-sm font-semibold text-gray-500'>
-                                                                {account.currency}: {account.balance}
+                                                                {account.currency}
+                                                            </span>                                                                
+                                                            <span className='text-right text-lg font-semibold text-gray-500'>
+                                                                {
+                                                                    Number(account.balance).toFixed(6)
+                                                                }
                                                             </span>
                                                         </div>
                                                     ))}
