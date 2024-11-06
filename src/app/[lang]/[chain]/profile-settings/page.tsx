@@ -42,7 +42,9 @@ import {
 
 
 } from "thirdweb/react";
-import { inAppWallet } from "thirdweb/wallets";
+
+
+import { smartWallet, inAppWallet } from "thirdweb/wallets";
 
 
 import { getUserPhoneNumber } from "thirdweb/wallets/in-app";
@@ -61,18 +63,46 @@ import { balanceOf, transfer } from "thirdweb/extensions/erc20";
 import AppBarComponent from "@/components/Appbar/AppBar";
 import { getDictionary } from "../../../dictionaries";
 
+import {
+    useRouter,
+    useSearchParams,
+} from "next//navigation";
 
 
 
 
 
-const wallets = [
-    inAppWallet({
-      auth: {
-        options: ["phone"],
-      },
-    }),
-];
+
+
+
+/*
+const wallet = smartWallet({
+    chain: polygon,
+    sponsorGas: true, // enable sponsored transactions
+});
+
+
+
+// any wallet can be used as an admin account
+// in this example we use an in-app wallet
+
+const adminWallet = inAppWallet();
+
+
+const personalAccount = await adminWallet.connect({
+  client,
+  chain: polygon,
+  strategy: "google",
+});
+
+ 
+const smartAccount = await wallet.connect({
+  client,
+  personalAccount, // pass the admin account
+});
+*/
+
+
 
 
 
@@ -83,13 +113,6 @@ const contractAddressArbitrum = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"; //
 
 
 
-import {
-    useRouter,
-    useSearchParams,
-} from "next//navigation";
-
-import { N } from 'ethers';
-import { add } from 'thirdweb/extensions/farcaster/keyGateway';
 
 
 
@@ -110,6 +133,15 @@ export default function SettingsPage({ params }: any) {
 
     const agent = searchParams.get('agent');
 
+
+
+    const wallets = [
+        inAppWallet({
+          auth: {
+            options: ["phone"],
+          },
+        }),
+    ];
 
 
 
@@ -284,6 +316,8 @@ export default function SettingsPage({ params }: any) {
 
 
     const activeAccount = useActiveAccount();
+
+
     console.log("activeAccount===", activeAccount);
 
 
@@ -1060,7 +1094,10 @@ export default function SettingsPage({ params }: any) {
     const [agentName, setAgentName] = useState("");
     const [agentDescription, setAgentDescription] = useState("");
 
+
     const [agentImage, setAgentImage] = useState("https://owinwallet.com/logo-aiagent.png");
+    const [ganeratingAgentImage, setGeneratingAgentImage] = useState(false);
+
 
     const [mintingAgentNft, setMintingAgentNft] = useState(false);
     const mintAgentNft = async () => {
@@ -1101,6 +1138,8 @@ export default function SettingsPage({ params }: any) {
         try {
 
 
+            setGeneratingAgentImage(true);
+
             // genrate image from api
             // /api/ai/generateImage
 
@@ -1121,10 +1160,15 @@ export default function SettingsPage({ params }: any) {
 
         
             if (!imageUrl) {
+
+                setGeneratingAgentImage(false);
+
                 throw new Error('Failed to generate image');
             }
 
 
+            setGeneratingAgentImage(false);
+            setAgentImage(imageUrl);
 
 
             const contract = getContract({
@@ -1341,7 +1385,16 @@ export default function SettingsPage({ params }: any) {
 
                         <ConnectButton
                             client={client}
-                            wallets={wallets}
+
+                            //wallets={wallets}
+
+                            wallets={[
+                                inAppWallet({
+                                  auth: {
+                                    options: ["phone"],
+                                  },
+                                }),
+                            ]}
 
                             
                             accountAbstraction={{   
@@ -2102,6 +2155,30 @@ export default function SettingsPage({ params }: any) {
                                             {!mintingAgentNft && 'AI 에이전트 NFT 발행하기'}
                                         </div>
                                     </button>
+
+                                    {ganeratingAgentImage && (
+                                        <div className='flex flex-row gap-2 items-center justify-center'>
+                                            <Image
+                                                src="/loading.png"
+                                                alt="loding"
+                                                width={30}
+                                                height={30}
+                                                className='animate-spin'
+                                            />
+                                            <span className='text-xs font-semibold'>
+                                                AI 에이전트 이미지 생성중...
+                                            </span>
+                                        </div>
+                                    )}
+                                    {agentImage && (
+                                        <Image
+                                            src={agentImage}
+                                            alt="AI Agent"
+                                            width={200}
+                                            height={200}
+                                            className="rounded-lg"
+                                        />
+                                    )}
                                
 
 
