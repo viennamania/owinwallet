@@ -741,6 +741,7 @@ export default function AIPage({ params }: any) {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
+                    walletAddress: address,
                 }),
             });
 
@@ -757,7 +758,7 @@ export default function AIPage({ params }: any) {
 
         };
         fetchData();
-    }, []);
+    }, [address]);
 
 
     ///console.log("applications", applications);
@@ -947,6 +948,178 @@ export default function AIPage({ params }: any) {
         };
         fetchData();
     } , [address]);
+
+
+
+
+    // check account balance
+
+    const [accountBalanceList, setAccountBalanceList] = useState([] as any[]);
+
+    const [checkingAccountBalance, setCheckingAccountBalance] = useState(false);
+
+    const checkAccountBalance = async (
+        htxAccessKey: string,
+        htxSecretKey: string,
+        accountId: string,
+    ) => {
+
+        if (htxAccessKey === "") {
+            toast.error("HTX Access Key를 입력해 주세요.");
+            return;
+        }
+
+        if (htxSecretKey === "") {
+            toast.error("HTX Secret Key를 입력해 주세요.");
+            return;
+        }
+
+        setCheckingAccountBalance(true);
+
+        const response = await fetch("/api/agent/getBalance", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                htxAccessKey: htxAccessKey,
+                htxSecretKey: htxSecretKey,
+                accountId: accountId,
+                currency: "usdt",
+            }),
+        });
+
+        const data = await response.json();
+
+        ///console.log("data.result", data.result);
+
+        if (data.result?.status === "ok") {
+            
+            ///{ currency: 'usdt', balance: '0.00117522' }, { currency: 'htx', balance: '0.00000000' }
+
+            setAccountBalanceList(data.result?.data);
+
+
+
+            toast.success("HTX 계정 잔고가 확인되었습니다.");
+        } else {
+            toast.error("HTX 계정 잔고를 확인할 수 없습니다.");
+        }
+
+        setCheckingAccountBalance(false);
+
+    };
+
+
+    // check htx asset valuation
+    const [checkingHtxAssetValuation, setCheckingHtxAssetValuation] = useState(false);
+    const [htxAssetValuation, setHtxAssetValuation] = useState(0);
+    
+    const checkHtxAssetValuation = async (
+        htxAccessKey: string,
+        htxSecretKey: string,
+    ) => {
+
+        if (htxAccessKey === "") {
+            toast.error("HTX Access Key를 입력해 주세요.");
+            return;
+        }
+
+        if (htxSecretKey === "") {
+            toast.error("HTX Secret Key를 입력해 주세요.");
+            return;
+        }
+
+        setCheckingHtxAssetValuation(true);
+
+        const response = await fetch("/api/agent/getAssetValuation", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                htxAccessKey: htxAccessKey,
+                htxSecretKey: htxSecretKey,
+            }),
+        });
+
+        const data = await response.json();
+
+        console.log("data.result", data.result);
+
+        if (data.result?.status === "ok") {
+
+            setHtxAssetValuation(Number(data.result?.balance));
+
+            toast.success("HTX 자산 가치가 확인되었습니다.");
+        } else {
+            toast.error("HTX 자산 가치를 확인할 수 없습니다.");
+        }
+
+        setCheckingHtxAssetValuation(false);
+
+    };
+
+
+
+    const [isAgentTradingStarted, setIsAgentTradingStarted] = useState(false);
+
+
+    // search match results
+    const [searchResults, setSearchResults] = useState([] as any[]);
+    const [searchingMatchResults, setSearchingMatchResults] = useState(false);
+    const searchMatchResults = async (
+        htxAccessKey: string,
+        htxSecretKey: string,
+    ) => {
+
+        if (htxAccessKey === "") {
+            toast.error("HTX Access Key를 입력해 주세요.");
+            return;
+        }
+
+        if (htxSecretKey === "") {
+            toast.error("HTX Secret Key를 입력해 주세요.");
+            return;
+        }
+
+        setSearchingMatchResults(true);
+
+        const response = await fetch("/api/agent/searchMatchResults", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                htxAccessKey: htxAccessKey,
+                htxSecretKey: htxSecretKey,
+            }),
+        });
+
+        const data = await response.json();
+
+        ///console.log("data.result====", data.result);
+
+        if (data.result?.status === "ok") {
+
+            setSearchResults(data.result?.data);
+
+            if (data.result?.data.length > 0) {
+                setIsAgentTradingStarted(true);
+            }
+
+
+
+            toast.success("HTX 매치 결과가 확인되었습니다.");
+        } else {
+            toast.error("HTX 매치 결과를 확인할 수 없습니다.");
+        }
+
+        setSearchingMatchResults(false);
+
+    };
+
+
 
 
 
@@ -1279,28 +1452,50 @@ export default function AIPage({ params }: any) {
 
                             </div>
 
-                            )}
+                        )}
 
-                            {address && (
-                            <div className="mt-0 w-full flex items-center justify-start gap-5">
-                            <Image
-                                src="/icon-wallet-live.gif"
-                                alt="Wallet"
-                                width={65}
-                                height={25}
-                                className="rounded"
-                            />
-                            <div className="flex flex-col gap-2">
-                                {/* disconnect button */}
-                                <button
-                                onClick={() => {
-                                    activeWallet?.disconnect();
-                                }}
-                                className="bg-zinc-800 text-white p-2 rounded-lg"
-                                >
-                                Disconnect
-                                </button>
-                            </div>
+
+                        {address && (
+                            <div className='w-full flex flex-col items-start gap-2'>
+                                <div className="mt-0 w-full flex items-center justify-start gap-5">
+                                    <Image
+                                        src="/icon-wallet-live.gif"
+                                        alt="Wallet"
+                                        width={65}
+                                        height={25}
+                                        className="rounded"
+                                    />
+                                    <div className="flex flex-col gap-2">
+                                        {/* disconnect button */}
+                                        <button
+                                        onClick={() => {
+                                            activeWallet?.disconnect();
+                                        }}
+                                        className="bg-zinc-800 text-white p-2 rounded-lg"
+                                        >
+                                        Disconnect
+                                        </button>
+                                    </div>
+
+                                </div>
+
+                                <div className='flex flex-row items-center gap-2'>
+                                    <span className='text-sm text-gray-800'>
+                                        {My_Wallet_Address}: {address.slice(0, 10)}...{address.slice(-10)}
+                                    </span>
+                                    {/* copy button */}
+                                    <button
+                                        onClick={() => {
+                                            navigator.clipboard.writeText(address);
+                                            toast.success("Copied to clipboard");
+                                        }}
+                                        className="bg-gray-500 text-white p-2 rounded-lg
+                                            hover:bg-gray-600
+                                        "
+                                    >
+                                        {Copy}
+                                    </button>
+                                </div>
 
                             </div>
                         )}
@@ -1309,14 +1504,7 @@ export default function AIPage({ params }: any) {
 
  
                     {/* applications table */}
-                    {address
-                    
-                    && (
-                        address === "0xE4f4317d5e5bF27F7628086Ab8Be25A905a57e0F"
-                        || address === "0xFb580c68794A963632FF272ab5A7233ee6114fef"
-                    )
 
-                    && applications.length > 0 && (
                         <div className='w-full flex flex-col gap-5'>
 
                             <div className='flex flex-row items-center gap-2'>
@@ -1481,7 +1669,7 @@ export default function AIPage({ params }: any) {
                             </div>
 
                         </div>
-                    )}
+                    
 
                  
 

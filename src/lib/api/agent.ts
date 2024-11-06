@@ -137,6 +137,43 @@ export async function getAllAgents({ page = 1, limit = 10 }) {
 
 }
 
+// getMyReferAgents
+export async function getMyReferAgents(
+  {
+    page,
+    limit,
+    agentBot,
+    agentBotNumber,
+  }
+  :
+  {
+    page: number,
+    limit: number,
+    agentBot: string,
+    agentBotNumber: string,
+  },
+ ) {
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('agents');
+
+  const result = await collection.find(
+    {
+      agentBot: agentBot,
+      agentBotNumber: agentBotNumber,
+    }
+  ).toArray();
+
+  if (result) {
+    return {
+      totalCount: result.length,
+      applications: result,
+    };
+  } else {
+    return null;
+  }
+
+}
 
 
 // getOneByWalletAddress

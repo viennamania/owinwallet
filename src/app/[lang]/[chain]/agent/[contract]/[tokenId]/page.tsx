@@ -103,7 +103,7 @@ import { TronWeb, utils as TronWebUtils, Trx, TransactionBuilder, Contract, Even
 
 export default function AgentPage({ params }: any) {
 
-  const agentContractAddress = params.agent;
+  const agentContractAddress = params.contract;
   const agentTokenId = params.tokenId;
 
   console.log("agentContractAddress", agentContractAddress);
@@ -113,13 +113,52 @@ export default function AgentPage({ params }: any) {
 
   const searchParams = useSearchParams();
  
-  const wallet = searchParams.get('wallet');
+ 
 
-  const token = searchParams.get('token');
+  // getAgentNFTBYContractAddressAndTokenId
 
-  //console.log("token", token);
+  const [agent, setAgent] = useState({} as any);
 
-  const tokenImage = "/token-" + "usdt" + "-icon.png";
+  const [loadingAgent, setLoadingAgent] = useState(false);
+  useEffect(() => {
+      
+      const getAgent = async () => {
+
+        setLoadingAgent(true);
+  
+        const response = await fetch('/api/agent/getAgentNFTByContractAddressAndTokenId', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            erc721ContractAddress: agentContractAddress,
+            tokenId: agentTokenId,
+          }),
+        });
+
+        if (!response) {
+          setLoadingAgent(false);
+          return;
+        }
+  
+        const data = await response.json();
+  
+        setAgent(data.result);
+
+        console.log("agent======", data.result);
+        setLoadingAgent(false);
+  
+      };
+  
+      if (agentContractAddress && agentTokenId) getAgent();
+  
+  }, [agentContractAddress, agentTokenId]);
+
+   
+  ///console.log("agent", agent);
+
+  ///console.log("loadingAgent", loadingAgent);
   
   
   const contract = getContract({
@@ -1047,19 +1086,27 @@ export default function AgentPage({ params }: any) {
 
     // get all applications
     const [applications, setApplications] = useState([] as any[]);
+    const [loadingApplications, setLoadingApplications] = useState(false);
     useEffect(() => {
         const fetchData = async () => {
-            const response = await fetch("/api/agent/getApplications", {
+
+            setLoadingApplications(true);
+            const response = await fetch("/api/agent/getReferApplications", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
+                    page: 1,
+                    limit: 10,
+                    agentBot: agentContractAddress,
+                    agentBotNumber: agentTokenId,
                 }),
             });
 
             if (!response.ok) {
                 console.error("Error fetching agents");
+                setLoadingApplications(false);
                 return;
             }
 
@@ -1069,9 +1116,13 @@ export default function AgentPage({ params }: any) {
 
             setApplications(data.result.applications);
 
+            setLoadingApplications(false);
+
         };
-        fetchData();
-    }, []);
+
+        if (agentContractAddress && agentTokenId) fetchData();
+
+    }, [agentContractAddress, agentTokenId]);
 
 
 
@@ -1129,6 +1180,70 @@ export default function AgentPage({ params }: any) {
         <div className="flex flex-col items-start justify-center space-y-4">
 
 
+          {/* agent nft info */}
+          <div className='w-full flex flex-col gap-5'>
+
+            <div className='flex flex-row items-center gap-2'>
+                <span className='text-lg font-semibold text-gray-800'>
+                    에이전트 NFT 정보
+                </span>
+            </div>
+
+            {agent && (
+
+              <div className='w-full flex flex-col gap-5'>
+
+                <div className='w-full flex flex-row items-center justify-between gap-2'>
+                    <span className='text-lg font-semibold text-gray-800'>
+                        에이전트 NFT ID: {agentTokenId}
+                    </span>
+                </div>
+
+                <div className='w-full flex flex-row items-center justify-between gap-2'>
+                    <span className='text-sm text-gray-800'>
+                        에이전트 NFT 계약주소: {agentContractAddress}
+                    </span>
+                </div>
+
+                <div className='w-full flex flex-row items-center justify-between gap-2'>
+                    <span className='text-sm text-gray-800'>
+                        에이전트 NFT 이름: {agent.name}
+                    </span>
+                </div>
+
+                <div className='w-full flex flex-row items-center justify-between gap-2'>
+                    <span className='text-sm text-gray-800'>
+                        에이전트 NFT 설명: {agent.description}
+                    </span>
+                </div>
+
+                <div className='w-full flex flex-col items-start justify-between gap-2'>
+
+                    <span className='text-sm text-gray-800'>
+                        에이전트 NFT 이미지:
+                    </span>
+                    {agent.image && (
+                      <Image
+                        src={agent.image?.pngUrl}
+                        width={100}
+                        height={100}
+                        alt={agent.name}
+                        className='rounded-lg object-cover'
+                      />
+                    )}
+
+                </div>
+
+              </div>
+
+            )}
+
+          </div>
+
+
+
+
+
           {/* application list */}
           <div className='w-full flex flex-col gap-5'>
 
@@ -1137,6 +1252,18 @@ export default function AgentPage({ params }: any) {
                     HTX 신청목록
                 </span>
             </div>
+
+            {loadingApplications && (
+              <div className='w-full flex flex-col gap-5
+                border border-gray-300 p-4 rounded-lg bg-gray-100
+              '>
+                <div className='w-full flex flex-row items-center justify-between gap-2'>
+                  <span className='text-xl font-semibold text-gray-800'>
+                    Loading...
+                  </span>
+                </div>
+              </div>
+            )}
 
             <div className='w-full flex flex-col gap-5'>
 
