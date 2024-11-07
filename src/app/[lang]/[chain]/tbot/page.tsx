@@ -1885,7 +1885,7 @@ export default function AIPage({ params }: any) {
                                                     className='animate-spin'
                                                 />
                                                 <span className='text-sm font-semibold text-blue-500'>
-                                                    AI 트레이딩  & Masterbot 민팅 준비중...
+                                                    AI 트레이딩 & Masterbot 민팅 준비중...
                                                 </span>
                                             </div>
                                         )}
@@ -2577,7 +2577,7 @@ export default function AIPage({ params }: any) {
 
                                         </div>
 
-                                        <div className='w-full flex flex-col gap-2 border border-gray-300 p-4 rounded-lg'>
+                                        <div className='w-full hidden flex-col gap-2 border border-gray-300 p-4 rounded-lg'>
                                             <span className='text-sm font-semibold text-gray-500'>
                                                 HTX UID
                                             </span>
@@ -2593,9 +2593,9 @@ export default function AIPage({ params }: any) {
 
 
                                         {/* check account balance */}
-                                        <div className='w-full flex flex-col gap-2 border border-gray-300 p-4 rounded-lg'> 
+                                        <div className='mt-5 w-full flex flex-col gap-2 border border-gray-300 p-4 rounded-lg'> 
                                             <span className='text-sm font-semibold text-gray-500'>
-                                                계정 잔고(USDT) 확인하기
+                                                계정 잔고(SPOT) 확인하기
                                             </span>
                                             <button
                                                 disabled={!isValidAPIKey || checkingAccountBalance}
@@ -2654,9 +2654,9 @@ export default function AIPage({ params }: any) {
                                         {/* HTX USDT(TRON) 지갑주소 */}
 
 
-                                        <div className='w-full flex flex-col gap-2'>
+                                        <div className='mt-5 w-full flex flex-col gap-2'>
                                             <span className='text-sm font-semibold text-gray-500'>
-                                                HTX USDT(TRON) 지갑주소
+                                                HTX USDT(TRON) 입금용 지갑주소
                                             </span>
                                             <input
                                                 disabled={!address || applyingMintNFT}
@@ -2668,7 +2668,7 @@ export default function AIPage({ params }: any) {
                                         </div>
 
 
-                                        <div className='w-full flex flex-col gap-2 border border-gray-300 p-4 rounded-lg'>
+                                        <div className='mt-5 w-full flex flex-col gap-2 border border-gray-300 p-4 rounded-lg'>
                                             <span className='text-sm font-semibold text-gray-500'>
                                                 이름, 핸드폰번호, 이메일주소
                                             </span>
