@@ -300,10 +300,12 @@ export default function SettingsPage({ params }: any) {
     const router = useRouter();
 
 
-    /*
+    
     const connectWallets = useConnectedWallets();
     const smartConnectWallet = connectWallets?.[0];
     const setActiveAccount = useSetActiveWallet();
+
+    /*
 
     useEffect(() => {
         if (smartConnectWallet) {
@@ -1383,54 +1385,70 @@ export default function SettingsPage({ params }: any) {
                 
                     <div className='w-full flex flex-col gap-4 items-start justify-center'>
 
-                        <ConnectButton
-                            client={client}
+                        <div className='w-full flex flex-row gap-2'>
+                            <ConnectButton
+                                client={client}
 
-                            //wallets={wallets}
+                                //wallets={wallets}
 
-                            wallets={[
-                                inAppWallet({
-                                  auth: {
-                                    options: ["phone"],
-                                  },
-                                }),
-                            ]}
+                                wallets={[
+                                    inAppWallet({
+                                    auth: {
+                                        options: ["phone"],
+                                    },
+                                    }),
+                                ]}
 
-                            
-                            accountAbstraction={{   
-                                chain: polygon,
-                                factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                                gasless: true,
-                            }}
-                            
-                            
-                            theme={"light"}
+                                
+                                accountAbstraction={{   
+                                    chain: polygon,
+                                    factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+                                    gasless: true,
+                                }}
+                                
+                                
+                                theme={"light"}
 
-                            
+                                
 
-                            connectButton={{
-                                label: "Sign in with OWIN Magic Wallet",
-                            }}
+                                connectButton={{
+                                    label: "Sign in with OWIN Magic Wallet",
+                                }}
 
-                            connectModal={{
-                            size: "wide",                            
-                            showThirdwebBranding: false,
+                                connectModal={{
+                                size: "wide",                            
+                                showThirdwebBranding: false,
 
-                            }}
+                                }}
 
-                            appMetadata={
-                            {
-                                logoUrl: "https://gold.goodtether.com/logo.png",
-                                name: "Next App",
-                                url: "https://gold.goodtether.com",
-                                description: "This is a Next App.",
+                                appMetadata={
+                                {
+                                    logoUrl: "https://gold.goodtether.com/logo.png",
+                                    name: "Next App",
+                                    url: "https://gold.goodtether.com",
+                                    description: "This is a Next App.",
 
-                            }
-                            }
+                                }
+                                }
 
-                            //locale={"ko_KR"}
-                            locale={"en_US"}
-                        />
+                                //locale={"ko_KR"}
+                                locale={"en_US"}
+                            />
+
+                            {/* button for connect smart wallet */}
+                            {/*
+                            <button
+                                onClick={() => {
+                                    setActiveAccount(smartConnectWallet);
+                                    
+                                }}
+                                className="p-2 bg-blue-500 text-zinc-100 rounded"
+                            >
+                                Connect Smart Wallet
+                            </button>
+                            */}
+
+                        </div>
 
 
 
@@ -2262,7 +2280,7 @@ export default function SettingsPage({ params }: any) {
                                                                     Total Dividend
                                                                 </span>
                                                                 <span className='text-xl xl:text-2xl font-semibold text-green-500'>
-                                                                    434.5 USDT
+                                                                    0.00 USDT
                                                                 </span>
                                                                 {/* 배당 수령 */}
                                                                 {/*
