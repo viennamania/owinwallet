@@ -1527,6 +1527,8 @@ export default function AIPage({ params }: any) {
                                 <button
                                     onClick={() => {
                                         const fetchData = async () => {
+
+                                            setLoadingApplications(true);
                                             const response = await fetch("/api/agent/getApplications", {
                                                 method: "POST",
                                                 headers: {
@@ -1539,6 +1541,7 @@ export default function AIPage({ params }: any) {
 
                                             if (!response.ok) {
                                                 console.error("Error fetching agents");
+                                                setLoadingApplications(false);
                                                 return;
                                             }
 
@@ -1549,6 +1552,8 @@ export default function AIPage({ params }: any) {
                                             setApplications(data.result.applications);
 
                                             setIsAdmin(true);
+
+                                            setLoadingApplications(false);
 
                                         };
                                         fetchData();
@@ -1589,6 +1594,15 @@ export default function AIPage({ params }: any) {
                                         className='w-full flex flex-col gap-5
                                         border border-gray-300 p-4 rounded-lg bg-gray-100
                                     '>
+
+                                        {/* 신청일자 */}
+                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                            <span className='text-sm text-gray-800'>
+                                                신청일자: {
+                                                    new Date(application.createdAt).toLocaleString()
+                                                }
+                                            </span>
+                                        </div>
 
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                                             <span className='text-xl font-semibold text-gray-800'>

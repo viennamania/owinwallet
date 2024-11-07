@@ -120,12 +120,20 @@ export async function insertOne(data: any) {
 }
 
 // getAllAgents
-export async function getAllAgents({ page = 1, limit = 10 }) {
+// sort by createdAt desc
+export async function getAllAgents({ page = 1, limit = 100 }) {
 
   const client = await clientPromise;
   const collection = client.db('vienna').collection('agents');
 
-  const result = await collection.find().toArray();
+  const result = await collection.find(
+    {},
+    {
+      sort: { createdAt: -1 },
+      skip: (page - 1) * limit,
+      limit: limit,
+    }
+  ).toArray();
 
   if (result) {
     return {
@@ -169,6 +177,7 @@ export async function getMyReferAgents(
 
 
   // convert agentBotNumber to Int32
+  // order by createdAt desc
 
   const result = await collection.aggregate([
     {
@@ -187,7 +196,8 @@ export async function getMyReferAgents(
     },
     {
       $limit: limit,
-    }
+    },
+   
   ]).toArray();
 
 
