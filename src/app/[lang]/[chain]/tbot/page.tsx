@@ -2016,7 +2016,10 @@ export default function AIPage({ params }: any) {
                                                 </div>
                                             </button>
                                             <div className='flex flex-col gap-2'>
-                                                <div className='flex flex-row items-center justify-between gap-2'>
+                                                
+                                                <div className=' hidden
+                                                    flex-row items-center justify-between gap-2
+                                                '>
                                                     <span className='text-sm font-semibold text-gray-500'>
                                                         HTX UID: {myAgent.htxUid}
                                                     </span>
@@ -2028,6 +2031,7 @@ export default function AIPage({ params }: any) {
                                                         height={20}
                                                     />
                                                 </div>
+
                                                 <div className='flex flex-row items-center justify-between gap-2'>
                                                     <span className='text-sm font-semibold text-gray-500'>
                                                         API Access Key: {myAgent.apiAccessKey.substring(0, 10) + "..."}
