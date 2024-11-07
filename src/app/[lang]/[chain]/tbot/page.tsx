@@ -1885,7 +1885,7 @@ export default function AIPage({ params }: any) {
                                                     className='animate-spin'
                                                 />
                                                 <span className='text-sm font-semibold text-blue-500'>
-                                                    AI 에이전트 트레이딩 준비중...
+                                                    AI 트레이딩  & Masterbot 민팅 준비중...
                                                 </span>
                                             </div>
                                         )}
