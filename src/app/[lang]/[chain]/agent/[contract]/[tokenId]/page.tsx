@@ -1037,6 +1037,46 @@ export default function AgentPage({ params }: any) {
   */
 
 
+  const [nickname, setNickname] = useState("");
+  const [userCode, setUserCode] = useState("");
+  const [avatar, setAvatar] = useState("/profile-default.png");
+
+  useEffect(() => {
+    const fetchData = async () => {
+        const response = await fetch("/api/user/getUser", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                walletAddress: address,
+            }),
+        });
+
+        const data = await response.json();
+
+        console.log("data", data);
+
+        if (data.result) {
+            setNickname(data.result.nickname);
+            
+            data.result.avatar && setAvatar(data.result.avatar);
+            
+
+            setUserCode(data.result.id);
+
+
+        } else {
+            setNickname('');
+            setAvatar('/profile-default.png');
+            setUserCode('');
+        }
+
+    };
+
+    fetchData();
+}, [address]);
+
 
 
   // usdt balance
@@ -1166,10 +1206,96 @@ export default function AgentPage({ params }: any) {
         */}
         
 
+        {/* header */}
+        <div className="w-full flex flex-col items-start justify-center space-y-4">
+          <div className="flex flex-row items-center gap-2">
+            <Image
+              src={avatar}
+              width={50}
+              height={50}
+              alt="Agent"
+              className="rounded-lg
+                object-cover
+              "
+            />
+            <span className="text-lg font-semibold text-gray-800">
+              에이전트 NFT 상세정보
+            </span>
+
+            {!address && (
+              <ConnectButton
+                client={client}
+
+                //wallets={wallets}
+
+                wallets={[
+                    inAppWallet({
+                      auth: {
+                        options: ["phone"],
+                      },
+                    }),
+                ]}
+
+                
+                accountAbstraction={{   
+                    chain: polygon,
+                    factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+                    gasless: true,
+                }}
+                
+                
+                theme={"light"}
+
+                
+
+                connectButton={{
+                    label: "Sign in with OWIN Magic Wallet",
+                }}
+
+                connectModal={{
+                size: "wide",                            
+                showThirdwebBranding: false,
+
+                }}
+
+                appMetadata={
+                {
+                    logoUrl: "https://gold.goodtether.com/logo.png",
+                    name: "Next App",
+                    url: "https://gold.goodtether.com",
+                    description: "This is a Next App.",
+
+                }
+                }
+
+                //locale={"ko_KR"}
+                locale={"en_US"}
+              />
+            )}
+
+           {address && userCode && (
+
+                  <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
+                      {nickname}
+                  </div>
+
+            )}
+
+
+          </div>
+        </div>
+
+
+
+
+
+
         {/* history back */}
         <div className='mt-5 flex flex-row items-center gap-2'>
           <button
-            onClick={() => router.back()}
+            onClick={() => router.push(
+              '/' + params.lang + '/' + params.chain + '/profile-settings'
+            )}
             className="flex flex-row items-center gap-2 bg-gray-500 text-white p-2 rounded-lg
               hover:bg-gray-600
             "
@@ -1181,7 +1307,7 @@ export default function AgentPage({ params }: any) {
               alt="Back"
             />
             <span className='text-sm text-white'>
-              Back
+              Agent Home
             </span>
           </button>
         </div>
@@ -1208,6 +1334,9 @@ export default function AgentPage({ params }: any) {
           <div className='w-full flex flex-col gap-5
             border border-gray-300 p-4 rounded-lg bg-gray-100
           '>
+
+
+
 
 
 
