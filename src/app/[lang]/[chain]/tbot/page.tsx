@@ -3076,7 +3076,7 @@ function Header(
             {/* logo */}
             <button
                 onClick={() => {
-                    router.push('/kr/tron/?agent=' + agent);
+                    router.push('/kr/polygon/?agent=' + agent);
                 }}
             >            
                 <div className="flex flex-row gap-2 items-center">
