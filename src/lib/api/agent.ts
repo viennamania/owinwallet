@@ -1,5 +1,6 @@
 import { create } from 'domain';
 import clientPromise from '../mongodb';
+import { N } from 'ethers';
 
 
 export interface AgentProps {
@@ -154,15 +155,45 @@ export async function getMyReferAgents(
   },
  ) {
 
+
+  if (!agentBot || !agentBotNumber) {
+    return null;
+  }
+
+  console.log('getMyReferAgents agentBot: ' + agentBot);
+  console.log('getMyReferAgents agentBotNumber: ' + agentBotNumber);
+
+
   const client = await clientPromise;
   const collection = client.db('vienna').collection('agents');
 
-  const result = await collection.find(
+
+  // convert agentBotNumber to Int32
+
+  const result = await collection.aggregate([
     {
-      agentBot: agentBot,
-      agentBotNumber: agentBotNumber,
+      $match: {
+        agentBot: agentBot,
+        agentBotNumber: parseInt(agentBotNumber),
+      }
+    },
+    {
+      $sort: {
+        createdAt: -1,
+      }
+    },
+    {
+      $skip: (page - 1) * limit,
+    },
+    {
+      $limit: limit,
     }
-  ).toArray();
+  ]).toArray();
+
+
+  ///////console.log('getMyReferAgents result: ' + JSON.stringify(result));
+
+
 
   if (result) {
     return {

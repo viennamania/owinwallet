@@ -115,8 +115,9 @@ export default function AgentPage({ params }: any) {
  
  
 
-  // getAgentNFTBYContractAddressAndTokenId
+  console.log("agentContractAddress", agentContractAddress);
 
+  
   const [agent, setAgent] = useState({} as any);
 
   const [loadingAgent, setLoadingAgent] = useState(false);
@@ -146,7 +147,8 @@ export default function AgentPage({ params }: any) {
   
         setAgent(data.result);
 
-        console.log("agent======", data.result);
+        ////console.log("agent======", data.result);
+
         setLoadingAgent(false);
   
       };
@@ -415,47 +417,6 @@ export default function AgentPage({ params }: any) {
 
 
   const [tronWalletAddress, setTronWalletAddress] = useState('');
-  useEffect(() => {
-      
-    if (address && params.chain === "tron") {
-
-      // get tron wallet address
-      const getTronWalletAddress = async () => {
-
-        const response = await fetch('/api/tron/getTronWalletAddress', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            lang: params.lang,
-            chain: params.chain,
-            walletAddress: address,
-          }),
-        });
-
-        if (!response) return;
-
-        const data = await response.json();
-
-        setTronWalletAddress(data.result.tronWalletAddress);
-
-      };
-
-      getTronWalletAddress();
-
-    }
-
-  } , [address, params.chain, params.lang]);
-
-
-  console.log("tronWalletAddress", tronWalletAddress);
-
-
-
-
-
-
 
 
 
@@ -493,9 +454,6 @@ export default function AgentPage({ params }: any) {
       });
 
       const data = await response.json();
-
-      console.log("getUsers", data);
-
 
       ///setUsers(data.result.users);
       // set users except the current user
@@ -627,225 +585,6 @@ export default function AgentPage({ params }: any) {
 
   const [sending, setSending] = useState(false);
 
-
-
-  const sendUsdt = async () => {
-    if (sending) {
-      return;
-    }
-
-    // check chain
-    // if chain is tron, send TRC20 USDT
-
-    if (params.chain === "tron" && !recipient.tronWalletAddress) {
-      toast.error('Please enter a valid address');
-      return;
-    }
-
-    if (params.chain !== "tron" && !recipient.walletAddress) {
-      toast.error('Please enter a valid address');
-      return;
-    }
-
-    if (!amount) {
-      toast.error('Please enter a valid amount');
-      return;
-    }
-
-    //console.log('amount', amount, "balance", balance);
-
-    if (params.chain === "tron" && Number(amount) > usdtBalance) {
-      toast.error('Insufficient balance');
-      return;
-    }
-
-    if (params.chain !== "tron" && Number(amount) > balance) {
-      toast.error('Insufficient balance');
-      return;
-    }
-
-    setSending(true);
-
-
-
-    try {
-
-
-      if (params.chain === "tron") {
-
-        const tronWeb = new TronWeb({
-          fullHost: 'https://api.trongrid.io',
-          
-          headers: {
-
-            //'TRON-PRO-API-KEY': process.env.TRONGRID_API_KEY,
-
-            'TRON-PRO-API-KEY': '429a03b7-ef22-4723-867e-5dcfeef6f787',
-
-          },
-
-          ///privateKey: user.tronWalletPrivateKey,
-            
-        });
-
-        tronWeb.setPrivateKey(user.tronWalletPrivateKey);
-
-
-        // send TRC20 USDT
-        const contract = await tronWeb.contract().at(contractAddressTron);
-
-        // fee_limit
-        // out of energy error occurs when the fee_limit is too low
-        // send TRC20 USDT
-        // tronWeb.transactionBuilder
-
-
-
-        const result = await contract.transfer(
-          recipient.tronWalletAddress,
-          //amount * 10 ** 6
-          TronWeb.toSun(amount)
-        ).send();
-
-        /*
-        ).send({
-
-          feeLimit: 100000000,
-          callValue: 0,
-          shouldPollResponse: true,
-
-        });
-        */
-
-        ///const result = await contract.transfer(recipient.tronWalletAddress, amount * 10 ** 6).send();
-
-
-
-
-        console.log("result", result);
-
-
-        if (result) {
-          toast.success(USDT_sent_successfully);
-
-          setAmount(0); // reset amount
-
-          // refresh usdt balance
-
-          const response = await fetch('/api/tron/getUsdtBalance', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              lang: params.lang,
-              chain: params.chain,
-              tronWalletAddress: tronWalletAddress,
-            }),
-          });
-
-          if (!response) return;
-
-          const data = await response.json();
-
-          setUsdtBalance(data.result?.usdtBalance);
-
-
-
-
-
-        } else {
-          toast.error(Failed_to_send_USDT);
-        }
-
-
-
-
-
-
-
-
-
-      } else {
-
-
-
-        // send USDT
-        // Call the extension function to prepare the transaction
-        const transaction = transfer({
-            //contract,
-
-            contract: contract,
-
-            to: recipient.walletAddress,
-            amount: amount,
-        });
-        
-
-        const { transactionHash } = await sendTransaction({
-          
-          account: activeAccount as any,
-
-          transaction,
-        });
-
-        
-        if (transactionHash) {
-
-
-          await fetch('/api/transaction/setTransfer', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              lang: params.lang,
-              chain: params.chain,
-              walletAddress: address,
-              amount: amount,
-              toWalletAddress: recipient.walletAddress,
-            }),
-          });
-
-
-
-          toast.success(USDT_sent_successfully);
-
-          setAmount(0); // reset amount
-
-          // refresh balance
-
-          // get the balance
-
-          const result = await balanceOf({
-            contract,
-            address: address || "",
-          });
-
-          //console.log(result);
-
-          setBalance( Number(result) / 10 ** 6 );
-
-        } else {
-
-          toast.error(Failed_to_send_USDT);
-
-        }
-
-      }
-
-      
-
-
-    } catch (error) {
-      
-      console.error("error", error);
-
-      toast.error(Failed_to_send_USDT);
-    }
-
-    setSending(false);
-  };
 
 
 
@@ -1151,6 +890,10 @@ export default function AgentPage({ params }: any) {
             }
 
             const data = await response.json();
+
+            console.log("getReferApplications data", data);
+
+
 
             const total = data.result.totalCount;
 
@@ -1466,6 +1209,15 @@ export default function AgentPage({ params }: any) {
                         className='w-full flex flex-col gap-5
                         border border-gray-300 p-4 rounded-lg bg-gray-100
                     '>
+                        {/* 신청일 */}
+                        <div className='w-full flex flex-row items-center justify-between gap-2'>
+                            <span className='text-sm text-gray-800'>
+                                신청일: {
+                                application.createdAt
+                                ? new Date(application.createdAt).toLocaleString()
+                                : ''}
+                            </span>
+                        </div>
 
                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                             <span className='text-xl font-semibold text-gray-800'>

@@ -17,11 +17,15 @@ export async function POST(request: NextRequest) {
     agentBotNumber,
   } = body;
 
+  console.log("agentBot: ", agentBot);
+  console.log("agentBotNumber: ", agentBotNumber);
 
-  if (!agentBot) {
 
+  if (!agentBot || !agentBotNumber) {
     return NextResponse.error();
   }
+
+
 
 
   const result = await getMyReferAgents({

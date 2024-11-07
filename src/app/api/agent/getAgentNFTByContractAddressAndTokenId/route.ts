@@ -24,6 +24,14 @@ export async function POST(request: NextRequest) {
   } = body;
 
 
+  if (!erc721ContractAddress || !tokenId) {
+
+    return NextResponse.error();
+  }
+
+  //console.log("erc721ContractAddress: ", erc721ContractAddress);
+  //console.log("tokenId: ", tokenId);
+
   /*
   const response = await alchemy.nft.getNftsForOwner(
     walletAddress, {
