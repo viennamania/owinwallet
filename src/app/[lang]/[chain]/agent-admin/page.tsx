@@ -732,9 +732,13 @@ export default function AIPage({ params }: any) {
 
 
     // get all applications
+    const [isAdmin, setIsAdmin] = useState(false);
+
     const [applications, setApplications] = useState([] as any[]);
+    const [loadingApplications, setLoadingApplications] = useState(false);
     useEffect(() => {
         const fetchData = async () => {
+            setLoadingApplications(true);
             const response = await fetch("/api/agent/getApplications", {
                 method: "POST",
                 headers: {
@@ -747,6 +751,7 @@ export default function AIPage({ params }: any) {
 
             if (!response.ok) {
                 console.error("Error fetching agents");
+                setLoadingApplications(false);
                 return;
             }
 
@@ -756,8 +761,15 @@ export default function AIPage({ params }: any) {
 
             setApplications(data.result.applications);
 
+            setLoadingApplications(false);
+
+            setIsAdmin(true);
+
         };
-        fetchData();
+
+        if (address) {
+            fetchData();
+        }
     }, [address]);
 
 
@@ -1511,9 +1523,65 @@ export default function AIPage({ params }: any) {
                                 <span className='text-lg font-semibold text-gray-800'>
                                     HTX 신청목록
                                 </span>
+                                {/* reload button */}
+                                <button
+                                    onClick={() => {
+                                        const fetchData = async () => {
+                                            const response = await fetch("/api/agent/getApplications", {
+                                                method: "POST",
+                                                headers: {
+                                                    "Content-Type": "application/json",
+                                                },
+                                                body: JSON.stringify({
+                                                    walletAddress: address,
+                                                }),
+                                            });
+
+                                            if (!response.ok) {
+                                                console.error("Error fetching agents");
+                                                return;
+                                            }
+
+                                            const data = await response.json();
+
+                                            const total = data.result.totalCount;
+
+                                            setApplications(data.result.applications);
+
+                                            setIsAdmin(true);
+
+                                        };
+                                        fetchData();
+                                    }}
+                                    disabled={loadingApplications}
+                                    className={`${loadingApplications ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
+                                        hover:bg-blue-600
+                                    `}
+                                >
+                                    {loadingApplications ? "Loading..." : "Reload"}
+                                </button>
                             </div>
 
+                            {loadingApplications && (
+                                <div className='w-full flex flex-col items-center justify-center'>
+                                    <Image
+                                        src="/loading.png"
+                                        alt="Loading"
+                                        width={50}
+                                        height={50}
+                                        className='animate-spin'
+                                    />
+                                </div>
+                            )}
+
                             <div className='w-full flex flex-col gap-5'>
+
+                                {/* total count */}
+                                <span className='text-lg text-gray-800'>
+                                    총 {applications.length}개의 신청이 있습니다.
+                                </span>
+
+
 
                                 {applications.map((application) => (
                                     <div
