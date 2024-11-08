@@ -779,7 +779,7 @@ export default function SendUsdt({ params }: any) {
 
           const result = await balanceOf({
             contract,
-            address: address || "",
+            address: address,
           });
 
           //console.log(result);
@@ -1497,7 +1497,7 @@ export default function SendUsdt({ params }: any) {
                           } );
 
                       } }
-                      
+
                     />
 
 
