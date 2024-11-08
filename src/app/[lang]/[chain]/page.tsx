@@ -1011,9 +1011,9 @@ export default function Index({ params }: any) {
 
 
 
-        {!address && (
+        {true && (
 
-          <div className="w-full flex flex-col justify-center items-center gap-2">
+          <div className="w-full flex flex-col justify-center items-start gap-2 p-2">
 
             {/*
               <button
@@ -1322,137 +1322,140 @@ export default function Index({ params }: any) {
                   </button>
                 </div>
 
-                <div className="mt-4 flex flex-row gap-2 justify-between items-center p-2">
-                  <Image
-                    src="/token-camt-icon.png"
-                    alt="USDT"
-                    width={35}
-                    height={35}
-                    className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
-                  />
 
 
-                    {/* floating point number to fixed 5 and text size small */}
-                  <div className="text-4xl font-semibold text-zinc-100">
-                    {Number(balance).toFixed(2)}
-                  </div>
-                  <p className="w-12 text-sm text-gray-600">CAMT</p>
-                  <button
-                    onClick={() => {
-                      router.push(
-                        "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=CAMT"
-                      );
-
-                    }}
-                    className="text-sm text-blue-500 hover:underline"
-                  >
+                {params.chain === "tron" && (
+                  <div className="mt-4 flex flex-row gap-2 justify-between items-center p-2">
                     <Image
-                      src="/goto-icon.webp"
-                      alt="Send"
-                      width={20}
-                      height={20}
+                      src="/token-camt-icon.png"
+                      alt="USDT"
+                      width={35}
+                      height={35}
+                      className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
                     />
-                  </button>
-                </div>
 
-                <div className="mt-4 flex flex-row gap-2 justify-between items-center p-2">
-                  <Image
-                    src="/token-ccc-icon.png"
-                    alt="USDT"
-                    width={35}
-                    height={35}
-                    className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
-                  />
+                    <div className="text-4xl font-semibold text-zinc-100">
+                      {Number(balance).toFixed(2)}
+                    </div>
+                    <p className="w-12 text-sm text-gray-600">CAMT</p>
+                    <button
+                      onClick={() => {
+                        router.push(
+                          "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=CAMT"
+                        );
 
-
-                    {/* floating point number to fixed 5 and text size small */}
-                  <div className="text-4xl font-semibold text-zinc-100">
-                    {Number(balance).toFixed(2)}
+                      }}
+                      className="text-sm text-blue-500 hover:underline"
+                    >
+                      <Image
+                        src="/goto-icon.webp"
+                        alt="Send"
+                        width={20}
+                        height={20}
+                      />
+                    </button>
                   </div>
-                  <p className="w-12 text-sm text-gray-600">CCC</p>
-                  <button
-                    onClick={() => {
-                      router.push(
-                        "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=CCC"
-                      );
+                )}
 
-                    }}
-                    className="text-sm text-blue-500 hover:underline"
-                  >
+                {params.chain === "tron" && (
+                  <div className="mt-4 flex flex-row gap-2 justify-between items-center p-2">
                     <Image
-                      src="/goto-icon.webp"
-                      alt="Send"
-                      width={20}
-                      height={20}
+                      src="/token-ccc-icon.png"
+                      alt="USDT"
+                      width={35}
+                      height={35}
+                      className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
                     />
-                  </button>
-                </div>
 
-                <div className="mt-4 flex flex-row gap-2 justify-between items-center p-2">
-                  <Image
-                    src="/token-lenez-icon.jpeg"
-                    alt="USDT"
-                    width={35}
-                    height={35}
-                    className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
-                  />
+                    <div className="text-4xl font-semibold text-zinc-100">
+                      {Number(balance).toFixed(2)}
+                    </div>
+                    <p className="w-12 text-sm text-gray-600">CCC</p>
+                    <button
+                      onClick={() => {
+                        router.push(
+                          "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=CCC"
+                        );
 
-
-                    {/* floating point number to fixed 5 and text size small */}
-                  <div className="text-4xl font-semibold text-zinc-100">
-                    {Number(balance).toFixed(2)}
+                      }}
+                      className="text-sm text-blue-500 hover:underline"
+                    >
+                      <Image
+                        src="/goto-icon.webp"
+                        alt="Send"
+                        width={20}
+                        height={20}
+                      />
+                    </button>
                   </div>
-                  <p className="w-12 text-sm text-gray-600">LENEZ</p>
-                  <button
-                    onClick={() => {
-                      router.push(
-                        "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=LENEZ"
-                      );
+                )}
 
-                    }}
-                    className="text-sm text-blue-500 hover:underline"
-                  >
+                {params.chain === "tron" && (
+                  <div className="mt-4 flex flex-row gap-2 justify-between items-center p-2">
                     <Image
-                      src="/goto-icon.webp"
-                      alt="Send"
-                      width={20}
-                      height={20}
+                      src="/token-lenez-icon.jpeg"
+                      alt="USDT"
+                      width={35}
+                      height={35}
+                      className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
                     />
-                  </button>
-                </div>
 
-                <div className="mt-4 flex flex-row gap-2 justify-between items-center p-2">
-                  <Image
-                    src="/token-sundog-icon.png"
-                    alt="USDT"
-                    width={35}
-                    height={35}
-                    className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
-                  />
+                    <div className="text-4xl font-semibold text-zinc-100">
+                      {Number(balance).toFixed(2)}
+                    </div>
+                    <p className="w-12 text-sm text-gray-600">LENEZ</p>
+                    <button
+                      onClick={() => {
+                        router.push(
+                          "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=LENEZ"
+                        );
 
-
-                    {/* floating point number to fixed 5 and text size small */}
-                  <div className="text-4xl font-semibold text-zinc-100">
-                    {Number(balance).toFixed(2)}
+                      }}
+                      className="text-sm text-blue-500 hover:underline"
+                    >
+                      <Image
+                        src="/goto-icon.webp"
+                        alt="Send"
+                        width={20}
+                        height={20}
+                      />
+                    </button>
                   </div>
-                  <p className=" w-12 text-sm text-gray-600">SUNDOG</p>
-                  <button
-                    onClick={() => {
-                      router.push(
-                        "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=SUNDOG"
-                      );
+                )}
 
-                    }}
-                    className="text-sm text-blue-500 hover:underline"
-                  >
+
+                {params.chain === "tron" && (
+                  <div className="mt-4 flex flex-row gap-2 justify-between items-center p-2">
                     <Image
-                      src="/goto-icon.webp"
-                      alt="Send"
-                      width={20}
-                      height={20}
+                      src="/token-sundog-icon.png"
+                      alt="USDT"
+                      width={35}
+                      height={35}
+                      className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
                     />
-                  </button>
-                </div>
+
+                    <div className="text-4xl font-semibold text-zinc-100">
+                      {Number(balance).toFixed(2)}
+                    </div>
+                    <p className=" w-12 text-sm text-gray-600">SUNDOG</p>
+                    <button
+                      onClick={() => {
+                        router.push(
+                          "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=SUNDOG"
+                        );
+
+                      }}
+                      className="text-sm text-blue-500 hover:underline"
+                    >
+                      <Image
+                        src="/goto-icon.webp"
+                        alt="Send"
+                        width={20}
+                        height={20}
+                      />
+                    </button>
+                  </div>
+                )}
 
                 {/* apply button of listing for new token */}
 

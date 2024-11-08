@@ -1345,7 +1345,7 @@ export default function AIPage({ params }: any) {
 
         const data = await response.json();
 
-        ///console.log("data.result====", data.result);
+        console.log("data.result====", data.result);
 
         if (data.result?.status === "ok") {
 
@@ -2226,14 +2226,14 @@ export default function AIPage({ params }: any) {
                                                         '>
                                                             <thead className='w-full'>
                                                                 <tr className='w-full bg-gray-200'>
-                                                                    <th className='w-full border border-gray-300'>
+                                                                    <th className=' border border-gray-300'>
                                                                         time
                                                                     </th>
-                                                                    <th className='w-full border border-gray-300'>
+                                                                    <th className=' border border-gray-300'>
                                                                         symbol
                                                                     </th>
-                                                                    <th className='w-full border border-gray-300'>
-                                                                        price / amount
+                                                                    <th className=' border border-gray-300'>
+                                                                        buy-sell / price / amount
                                                                     </th>
                                                                 </tr>
                                                             </thead>
@@ -2245,7 +2245,7 @@ export default function AIPage({ params }: any) {
                                                                         '
                                                                     >
 
-                                                                        <td className='w-full
+                                                                        <td className='
                                                                             border border-gray-300 p-2
                                                                         '>
                                                                             {/* 34 minutes ago */}
@@ -2265,11 +2265,22 @@ export default function AIPage({ params }: any) {
                                                                             }
 
                                                                         </td>
-                                                                        <td className='w-full border border-gray-300 p-2'>
+                                                                        <td className=' border border-gray-300 p-2'>
                                                                             {result.symbol}
                                                                         </td>
                                                                         <td className='w-full border border-gray-300 p-2'>
                                                                             <div className='flex flex-col gap-2'>
+
+                                                                                {result.type === 'buy-market' ? (
+                                                                                    <span className='text-sm font-semibold text-green-500'>
+                                                                                        Buy
+                                                                                    </span>
+                                                                                ) : (
+                                                                                    <span className='text-sm font-semibold text-red-500'>
+                                                                                        Sell
+                                                                                    </span>
+                                                                                )}
+
                                                                                 <span className='text-sm font-semibold text-gray-500'>
                                                                                     {result.price}
                                                                                 </span>
