@@ -877,11 +877,6 @@ export default function SettingsPage({ params }: any) {
             toast.error('이미 실행중입니다');
             return;
         }
-
-        if (balance < 0.1) {
-            toast.error('0.1 USDT 이상을 보유해야 합니다');
-            return;
-        }
         
         //if (confirm("Are you sure you want to deploy ERC721 contract?")) {
         // chinese confirm
