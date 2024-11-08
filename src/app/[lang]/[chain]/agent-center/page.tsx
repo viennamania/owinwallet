@@ -1718,6 +1718,16 @@ export default function AIPage({ params }: any) {
                                             </span>
                                         </div>
 
+                                        {/* agentBot and agentBotNumber */}
+                                        <div className='w-full flex flex-col items-start justify-between gap-2'>
+                                            <span className='text-sm text-gray-800'>
+                                                Agent Bot: {application.agentBot}
+                                            </span>
+                                            <span className='text-sm text-gray-800'>
+                                                Agent Bot Number: {application.agentBotNumber}
+                                            </span>
+                                        </div>
+
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                                             <span className='text-xl font-semibold text-gray-800'>
                                                 HTX UID: {application.htxUid}
