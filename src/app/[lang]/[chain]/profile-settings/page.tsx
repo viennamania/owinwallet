@@ -2035,6 +2035,16 @@ export default function SettingsPage({ params }: any) {
                     </div>
 
 
+                    {/* 새로고침 버튼 */}
+                    <button
+                        onClick={() => {
+                            window.location.reload();
+                        }}
+                        className="p-2 bg-blue-500 text-zinc-100 rounded"
+                    >
+                        새로고침
+                    </button>
+
 
 
                     {address && userCode && !erc721ContractAddress && (
