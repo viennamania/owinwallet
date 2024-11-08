@@ -894,7 +894,7 @@ export default function SettingsPage({ params }: any) {
 
 
 
-
+                /*
                 // send USDT
                 // Call the extension function to prepare the transaction
                 const transaction = transfer({
@@ -916,7 +916,7 @@ export default function SettingsPage({ params }: any) {
                 }
 
                 //toast.success('USDT sent successfully');
-
+                */
 
                 const erc721ContractAddress = await deployERC721Contract({
                     chain: polygon,
