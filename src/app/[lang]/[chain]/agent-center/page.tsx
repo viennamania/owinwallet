@@ -1067,7 +1067,10 @@ export default function AIPage({ params }: any) {
 
         setCheckingHtxAssetValuationForAgent(
             applications.map((item) => {
-                return false;
+                return {
+                    htxUid: item.htxUid,
+                    checking: false,
+                }
             })
         );
 
@@ -1078,7 +1081,7 @@ export default function AIPage({ params }: any) {
         setHtxAssetValuationForAgent(
             applications.map((item) => {
                 return {
-                    accountId: item.accountId,
+                    htxUid: item.htxUid,
                     balance: 0,
                 };
             })
@@ -1086,12 +1089,16 @@ export default function AIPage({ params }: any) {
     
     } , [applications]);
 
+    console.log("checkingHtxAssetValuationForAgent", checkingHtxAssetValuationForAgent);
+
+    
+
 
     
     const checkHtxAssetValuation = async (
         htxAccessKey: string,
         htxSecretKey: string,
-        accountId: string,
+        htxUid: string,
     ) => {
 
         if (htxAccessKey === "") {
@@ -1104,10 +1111,22 @@ export default function AIPage({ params }: any) {
             return;
         }
 
+        if (htxUid === "") {
+            toast.error("계정 ID를 입력해 주세요.");
+            return;
+        }
+
+        console.log("checkHtxAssetValuation htxUid", htxUid);
+
+
+
         setCheckingHtxAssetValuationForAgent(
-            htxAssetValuationForAgent.map((item) => {
-                if (item.accountId === accountId) {
-                    return true;
+            applications.map((item) => {
+                if (item.htxUid === htxUid) {
+                    return {
+                        htxUid: htxUid,
+                        checking: true,
+                    }
                 }
             }
         ));
@@ -1131,10 +1150,10 @@ export default function AIPage({ params }: any) {
         if (data.result?.status === "ok") {
 
             setHtxAssetValuationForAgent(
-                htxAssetValuationForAgent.map((item) => {
-                    if (item.accountId === accountId) {
+                applications.map((item) => {
+                    if (item.htxUid === htxUid) {
                         return {
-                            accountId: accountId,
+                            htxUid: htxUid,
                             balance: data.result?.balance,
                         };
                     } else {
@@ -1149,9 +1168,12 @@ export default function AIPage({ params }: any) {
         }
 
         setCheckingHtxAssetValuationForAgent(
-            htxAssetValuationForAgent.map((item) => {
-                if (item.accountId === accountId) {
-                    return false;
+            applications.map((item) => {
+                if (item.htxUid === htxUid) {
+                    return {
+                        htxUid: htxUid,
+                        checking: false,
+                    }
                 }
             }
         ));
@@ -1829,29 +1851,32 @@ export default function AIPage({ params }: any) {
 
 
                                         {/* asset valuation */}
+
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                                             <span className='text-sm text-gray-800'>
-                                                HTX 자산 가치(SPOT): {htxAssetValuationForAgent.find((item) => item.accountId === application.accountId)?.balance || 0} USDT
+                                                HTX 자산 가치(SPOT): {htxAssetValuationForAgent.find((item) => item.htxUid === application.htxUid)?.balance || 0} USDT
                                             </span>
                                             <button
                                                 onClick={() => {
                                                     checkHtxAssetValuation(
                                                         application.apiAccessKey,
                                                         application.apiSecretKey,
-                                                        application.accountId,
+                                                        application.htxUid,
                                                     );
                                                 }}
-                                                disabled={checkingHtxAssetValuationForAgent.find((item) => item.accountId === application.accountId)}
-                                                className={`${checkingHtxAssetValuationForAgent.find((item) => item.accountId === application.accountId) ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
+                                                disabled={
+                                                    checkingHtxAssetValuationForAgent.find((item) => item?.htxUid === application.htxUid)?.checking
+                                                }
+                                                className={`${checkingHtxAssetValuationForAgent.find((item) => item?.htxUid === application.htxUid)?.checking ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
                                                     hover:bg-blue-600
                                                 `}
                                             >
-                                                {checkingHtxAssetValuationForAgent.find((item) => item.accountId === application.accountId) ? "Checking..." : "Check"}
+                                                {checkingHtxAssetValuationForAgent.find((item) => item?.htxUid === application.htxUid)?.checking ? "Checking..." : "Check"}
                                             </button>
                                         </div>
 
 
-
+                                                
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                                             <span className='text-sm text-gray-800'>
                                                 상태: 준비중
