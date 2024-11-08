@@ -1854,7 +1854,7 @@ export default function AIPage({ params }: any) {
 
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                                             <span className='text-sm text-gray-800'>
-                                                HTX 자산 가치(SPOT): {htxAssetValuationForAgent.find((item) => item.htxUid === application.htxUid)?.balance || 0} USDT
+                                                HTX 자산 가치(SPOT): {htxAssetValuationForAgent.find((item) => item.htxUid === application.htxUid)?.balance || 0} $(USD)
                                             </span>
                                             <button
                                                 onClick={() => {
