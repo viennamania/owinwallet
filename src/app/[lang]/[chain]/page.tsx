@@ -49,7 +49,7 @@ import {
 } from "thirdweb";
 
 
-import { balanceOf, transfer } from "thirdweb/extensions/erc20";
+import { balanceOf, getBalance, transfer } from "thirdweb/extensions/erc20";
  
 
 
@@ -369,9 +369,10 @@ export default function Index({ params }: any) {
   ///console.log('address', address);
 
 
+  /*
+  const [usdtBbalance, setBalance] = useState(0);
 
-  const [balance, setBalance] = useState(0);
-
+  
   useEffect(() => {
 
     if (!address) return;
@@ -412,6 +413,8 @@ export default function Index({ params }: any) {
     return () => clearInterval(interval);
 
   } , [address, contract]);
+   */
+  
 
 
 
@@ -804,38 +807,66 @@ export default function Index({ params }: any) {
   console.log("tronBalance", tronBalance);
 
 
+
+
   // usdt balance
   const [usdtBalance, setUsdtBalance] = useState(0);
   useEffect(() => {
-    if (tronWalletAddress && params.chain === "tron") {
+    
       const getUsdtBalance = async () => {
-        const response = await fetch('/api/tron/getUsdtBalance', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            lang: params.lang,
-            chain: params.chain,
-            tronWalletAddress: tronWalletAddress,
-          }),
-        });
 
-        if (!response) return;
+        if (tronWalletAddress && params.chain === "tron") {
 
-        const data = await response.json();
+          const response = await fetch('/api/tron/getUsdtBalance', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              chain: params.chain,
+              tronWalletAddress: tronWalletAddress,
+            }),
+          });
 
-        setUsdtBalance(data.result?.usdtBalance);
+          if (!response) return;
+
+          const data = await response.json();
+
+          setUsdtBalance(data.result?.usdtBalance);
+        }
+
+
+
+        if (address) {
+          
+          /*
+          const contract = getContract({
+            client,
+            chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+            address: params.chain === "arbitrum" ? contractAddressArbitrum : params.chain === "polygon" ? contractAddress : params.chain === "ethereum" ? contractAddressEthereum : contractAddress,
+          });
+          */
+
+          if (contract) {
+  
+            const balance = await balanceOf({
+              contract: contract,
+              address: address,
+            });
+
+            console.log("balance==========", balance);
+
+            setUsdtBalance(Number(balance) / 10 ** 6);
+          }
+
+        }
 
       };
 
       getUsdtBalance();
 
-    }
+  } , [address, tronWalletAddress, params.chain, contract]);
 
-  } , [tronWalletAddress, params.chain, params.lang]);
-
-  console.log("usdtBalance", usdtBalance);
 
 
 
@@ -846,17 +877,17 @@ export default function Index({ params }: any) {
     if (params.chain === "tron") {
       setChainBalance(tronBalance);
     } else if (params.chain === "polygon") {
-      setChainBalance(balance);
+      //setChainBalance(balance);
     } else if (params.chain === "arbitrum") {
-      setChainBalance(balance);
+      //setChainBalance(balance);
     } else if (params.chain === "ethereum") {
-      setChainBalance(balance);
+      //setChainBalance(balance);
     } else {
       setChainBalance(0);
     }
   }
 
-  , [tronBalance, balance, params.chain]);
+  , [tronBalance, params.chain]);
       
 
 
@@ -1325,140 +1356,6 @@ export default function Index({ params }: any) {
                   </button>
                 </div>
 
-
-
-                {params.chain === "tron" && (
-                  <div className="mt-4 flex flex-row gap-2 justify-between items-center p-2">
-                    <Image
-                      src="/token-camt-icon.png"
-                      alt="USDT"
-                      width={35}
-                      height={35}
-                      className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
-                    />
-
-                    <div className="text-4xl font-semibold text-zinc-100">
-                      {Number(balance).toFixed(2)}
-                    </div>
-                    <p className="w-12 text-sm text-gray-600">CAMT</p>
-                    <button
-                      onClick={() => {
-                        router.push(
-                          "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=CAMT"
-                        );
-
-                      }}
-                      className="text-sm text-blue-500 hover:underline"
-                    >
-                      <Image
-                        src="/goto-icon.webp"
-                        alt="Send"
-                        width={20}
-                        height={20}
-                      />
-                    </button>
-                  </div>
-                )}
-
-                {params.chain === "tron" && (
-                  <div className="mt-4 flex flex-row gap-2 justify-between items-center p-2">
-                    <Image
-                      src="/token-ccc-icon.png"
-                      alt="USDT"
-                      width={35}
-                      height={35}
-                      className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
-                    />
-
-                    <div className="text-4xl font-semibold text-zinc-100">
-                      {Number(balance).toFixed(2)}
-                    </div>
-                    <p className="w-12 text-sm text-gray-600">CCC</p>
-                    <button
-                      onClick={() => {
-                        router.push(
-                          "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=CCC"
-                        );
-
-                      }}
-                      className="text-sm text-blue-500 hover:underline"
-                    >
-                      <Image
-                        src="/goto-icon.webp"
-                        alt="Send"
-                        width={20}
-                        height={20}
-                      />
-                    </button>
-                  </div>
-                )}
-
-                {params.chain === "tron" && (
-                  <div className="mt-4 flex flex-row gap-2 justify-between items-center p-2">
-                    <Image
-                      src="/token-lenez-icon.jpeg"
-                      alt="USDT"
-                      width={35}
-                      height={35}
-                      className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
-                    />
-
-                    <div className="text-4xl font-semibold text-zinc-100">
-                      {Number(balance).toFixed(2)}
-                    </div>
-                    <p className="w-12 text-sm text-gray-600">LENEZ</p>
-                    <button
-                      onClick={() => {
-                        router.push(
-                          "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=LENEZ"
-                        );
-
-                      }}
-                      className="text-sm text-blue-500 hover:underline"
-                    >
-                      <Image
-                        src="/goto-icon.webp"
-                        alt="Send"
-                        width={20}
-                        height={20}
-                      />
-                    </button>
-                  </div>
-                )}
-
-
-                {params.chain === "tron" && (
-                  <div className="mt-4 flex flex-row gap-2 justify-between items-center p-2">
-                    <Image
-                      src="/token-sundog-icon.png"
-                      alt="USDT"
-                      width={35}
-                      height={35}
-                      className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
-                    />
-
-                    <div className="text-4xl font-semibold text-zinc-100">
-                      {Number(balance).toFixed(2)}
-                    </div>
-                    <p className=" w-12 text-sm text-gray-600">SUNDOG</p>
-                    <button
-                      onClick={() => {
-                        router.push(
-                          "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=SUNDOG"
-                        );
-
-                      }}
-                      className="text-sm text-blue-500 hover:underline"
-                    >
-                      <Image
-                        src="/goto-icon.webp"
-                        alt="Send"
-                        width={20}
-                        height={20}
-                      />
-                    </button>
-                  </div>
-                )}
 
                 {/* apply button of listing for new token */}
 

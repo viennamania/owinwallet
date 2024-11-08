@@ -29,6 +29,7 @@ import {
 import {
     polygon,
     arbitrum,
+    ethereum,
 } from "thirdweb/chains";
 
 import {
@@ -70,6 +71,8 @@ const wallets = [
 
 const contractAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT on Polygon
 const contractAddressArbitrum = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"; // USDT on Arbitrum
+const contractAddressEthereum = "0xdac17f958d2ee523a2206206994597c13d831ec7"; // USDT on Ethereum
+
 
 const contractAddressTron = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t"; // USDT on Tron
 
@@ -123,14 +126,14 @@ export default function SendUsdt({ params }: any) {
     // the chain the contract is deployed on
     
     
-    chain: params.chain === "arbitrum" ? arbitrum : polygon,
+    chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
   
   
   
     // the contract's address
     ///address: contractAddress,
 
-    address: params.chain === "arbitrum" ? contractAddressArbitrum : contractAddress,
+    address: params.chain === "arbitrum" ? contractAddressArbitrum : params.chain === "polygon" ? contractAddress : params.chain === "ethereum" ? contractAddressEthereum : contractAddress,
 
 
     // OPTIONAL: the contract's abi
@@ -260,6 +263,7 @@ export default function SendUsdt({ params }: any) {
 
 
   const [nativeBalance, setNativeBalance] = useState(0);
+
   const [balance, setBalance] = useState(0);
   useEffect(() => {
 
@@ -994,37 +998,63 @@ export default function SendUsdt({ params }: any) {
 
 
 
-
   // usdt balance
   const [usdtBalance, setUsdtBalance] = useState(0);
   useEffect(() => {
-    if (tronWalletAddress && params.chain === "tron") {
+    
       const getUsdtBalance = async () => {
-        const response = await fetch('/api/tron/getUsdtBalance', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            lang: params.lang,
-            chain: params.chain,
-            tronWalletAddress: tronWalletAddress,
-          }),
-        });
 
-        if (!response) return;
+        if (tronWalletAddress && params.chain === "tron") {
 
-        const data = await response.json();
+          const response = await fetch('/api/tron/getUsdtBalance', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              chain: params.chain,
+              tronWalletAddress: tronWalletAddress,
+            }),
+          });
 
-        setUsdtBalance(data.result?.usdtBalance);
+          if (!response) return;
+
+          const data = await response.json();
+
+          setUsdtBalance(data.result?.usdtBalance);
+        }
+
+
+
+        if (address) {
+          
+          /*
+          const contract = getContract({
+            client,
+            chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+            address: params.chain === "arbitrum" ? contractAddressArbitrum : params.chain === "polygon" ? contractAddress : params.chain === "ethereum" ? contractAddressEthereum : contractAddress,
+          });
+          */
+
+          if (contract) {
+  
+            const balance = await balanceOf({
+              contract: contract,
+              address: address,
+            });
+
+            console.log("balance==========", balance);
+
+            setUsdtBalance(Number(balance) / 10 ** 6);
+          }
+
+        }
 
       };
 
       getUsdtBalance();
 
-    }
-
-  } , [tronWalletAddress, params.chain, params.lang]);
+  } , [address, tronWalletAddress, params.chain, contract]);
 
 
 
@@ -1144,7 +1174,7 @@ export default function SendUsdt({ params }: any) {
 
                       
                       accountAbstraction={{   
-                        chain: params.chain === "arbitrum" ? arbitrum : polygon,
+                        chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
                         //
                         //chain: polygon,
 
@@ -1256,11 +1286,33 @@ export default function SendUsdt({ params }: any) {
                         >
                           {tronWalletAddress.substring(0, 6)}...{tronWalletAddress.substring(tronWalletAddress.length - 4)}
                         </button>
-
-
                       </div>
                     </div>
                   )}
+
+                  {/* evm wallet address */}
+                  {address && params.chain !== "tron" && (
+                    <div className="flex flex-row items-center gap-2">
+                      <div className="text-sm text-gray-800">
+                        {My_Wallet_Address}
+                      </div>
+                      <div className="text-lg font-semibold text-gray-800">
+                        <button
+                          className="text-sm text-zinc-400 underline"
+                          onClick={() => {
+                            navigator.clipboard.writeText(address);
+                            toast.success('Copied wallet address');
+                          } }
+                        >
+                          {address.substring(0, 6)}...{address.substring(address.length - 4)}
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                    
+
+
 
 
 
@@ -1411,11 +1463,14 @@ export default function SendUsdt({ params }: any) {
                       type="text"
                       placeholder={User_wallet_address}
                       className=" w-80  xl:w-full p-2 border border-gray-300 rounded text-white text-xs xl:text-lg font-semibold"
-                      value={recipient?.tronWalletAddress}
+                      value={
+                        params.chain === "tron" ?
+                        recipient?.tronWalletAddress
+                        :
+                        recipient?.walletAddress
+                      }
                       onChange={(e) => {
       
-                        
-                        
                           getUserByTronWalletAddress(e.target.value)
 
                           .then((data) => {
@@ -1427,17 +1482,22 @@ export default function SendUsdt({ params }: any) {
                             if (checkUser) {
                               setRecipient(checkUser as any);
                             } else {
-                              
-                              setRecipient({
+
+                              {params.chain === "tron" ? setRecipient({
                                 ...recipient,
                                 tronWalletAddress: e.target.value,
-                              });
-                              
+                              }) : setRecipient({
+                                ...recipient,
+                                walletAddress: e.target.value,
+                              }) 
+                              }
+
                             }
 
-                          });
+                          } );
 
                       } }
+                      
                     />
 
 
