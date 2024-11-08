@@ -2036,15 +2036,21 @@ export default function SettingsPage({ params }: any) {
 
 
                     {/* 새로고침 버튼 */}
-                    <button
-                        onClick={() => {
-                            window.location.reload();
-                        }}
-                        className="p-2 bg-blue-500 text-zinc-100 rounded"
-                    >
-                        새로고침
-                    </button>
+                    <div className='w-full flex flex-row items-center justify-center gap-2'>
+                        <button
+                            onClick={() => {
+                                window.location.reload();
+                            }}
+                            className="p-2 bg-blue-500 text-zinc-100 rounded"
+                        >
+                            새로고침
+                        </button>
 
+                        <span className="text-xs font-semibold text-red-500">
+                            민팅에 되지않을 경우 새로고침 해주세요
+                        </span>
+
+                    </div>
 
 
                     {address && userCode && !erc721ContractAddress && (
