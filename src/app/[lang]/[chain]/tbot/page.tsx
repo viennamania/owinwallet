@@ -1259,6 +1259,61 @@ export default function AIPage({ params }: any) {
     };
 
 
+    // transfer to futures account
+    const [amountOfTransferToFuturesAccount, setAmountOfTransferToFuturesAccount] = useState(0);
+    const [transferringToFuturesAccount, setTransferringToFuturesAccount] = useState(false);
+    const transferToFuturesAccount = async (
+        htxAccessKey: string,
+        htxSecretKey: string,
+        amount: number,
+    ) => {
+
+        if (htxAccessKey === "") {
+            toast.error("HTX Access Key를 입력해 주세요.");
+            return;
+        }
+
+        if (htxSecretKey === "") {
+            toast.error("HTX Secret Key를 입력해 주세요.");
+            return;
+        }
+
+        if (amount === 0) {
+            toast.error("이체할 금액을 입력해 주세요.");
+            return;
+        }
+
+        setTransferringToFuturesAccount(true);
+
+        const response = await fetch("/api/agent/htxFuturesTransfer", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                htxAccessKey: htxAccessKey,
+                htxSecretKey: htxSecretKey,
+                amount: amount,
+            }),
+        });
+
+        const data = await response.json();
+
+        console.log("data.result", data.result);
+
+        if (data.result?.status === "ok") {
+            toast.success("HTX 선물 계정으로 이체되었습니다.");
+        } else {
+            toast.error("HTX 선물 계정으로 이체할 수 없습니다.");
+        }
+
+        setTransferringToFuturesAccount(false);
+
+    };
+
+
+
+
     // check htx asset valuation
     const [checkingHtxAssetValuation, setCheckingHtxAssetValuation] = useState(false);
     const [htxAssetValuation, setHtxAssetValuation] = useState(0);
@@ -2115,31 +2170,7 @@ export default function AIPage({ params }: any) {
                                                         HTX 계정 잔고 확인중...
                                                     </span>
                                                 )}
-                                            
-                                                {/*
-                                                {accountBalance && (
-                                                    <span className='text-xl font-semibold text-gray-500'>
-                                                        SPOT 계정 잔고: {accountBalance.toFixed(2)} USDT
-                                                    </span>
-                                                )}
-                                                    */}
 
-                                                {/*
-                                                [
-                                                    {
-                                                        "currency": "USDT",
-                                                        "balance": "83.60737576044"
-                                                    },
-                                                    {
-                                                        "currency": "BTC",
-                                                        "balance": "0.000000902"
-                                                    },
-                                                    {
-                                                        "currency": "ETH",
-                                                        "balance": "0.0000482"
-                                                    }
-                                                ]
-                                                */}
                                                 {accountBalanceList && (
                                                     <div className='w-full flex flex-col gap-2'>
                                                         {accountBalanceList.map((account) => (
@@ -2158,6 +2189,45 @@ export default function AIPage({ params }: any) {
                                                 )}
                                                 
                                             </div>
+
+                                            {/* input amount and button for transferToFundingAccount */}
+                                            {/*
+                                            <div className='w-full flex flex-col gap-2
+                                                border border-gray-300 p-4 rounded-lg
+                                            '>
+                                                <input
+                                                    type="number"
+                                                    className='p-2 rounded-lg border border-gray-300'
+                                                    placeholder="Amount"
+                                                    value={amountOfTransferToFuturesAccount}
+                                                    onChange={(e) => {
+                                                        setAmountOfTransferToFuturesAccount(Number(e.target.value));
+                                                    }}
+                                                />
+                                                <button
+                                                    disabled={
+                                                        amountOfTransferToFuturesAccount <= 0
+                                                        || transferringToFuturesAccount
+                                                    }
+                                                    className='bg-blue-500 text-zinc-100 p-2 rounded-lg text-lg font-semibold
+                                                        hover:bg-blue-700 hover:text-zinc-100
+                                                    '
+                                                    onClick={() => {
+                                                        transferToFuturesAccount(myAgent.apiAccessKey, myAgent.apiSecretKey, amountOfTransferToFuturesAccount);
+                                                    }}
+                                                >
+                                                    Transfer to Futures Account
+                                                </button>
+
+                                                {transferringToFuturesAccount && (
+                                                    <span className='text-sm font-semibold text-blue-500'>
+                                                        Transfering to Futures Account...
+                                                    </span>
+                                                )}
+
+                                            </div>
+                                            */}
+
 
 
                                             {/* button for api call /api/agent/getAssetValuation */}

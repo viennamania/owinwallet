@@ -41,19 +41,23 @@ export async function POST(request: NextRequest) {
   const {
     htxAccessKey,
     htxSecretKey,
-    accountId,
-    currency,
+    amount,
    } = body;
   
+
+   console.log("htxFutureTransfer amount: ", amount);
+
 
 
    // /v1/account/accounts/{account-id}/balance
 
    //const path = `/v1/account/accounts`;
 
-   const path = `/v1/account/accounts/${accountId}/balance`;
+   //const path = `/v1/account/accounts/${accountId}/balance`;
 
+    //const path = `/v2/account/asset-valuation`;
 
+    const path = `/v1/futures/transfer`;
 
 
     //const HOST = 'api.huobipro.com';
@@ -75,11 +79,21 @@ export async function POST(request: NextRequest) {
     ////const path = "/api/v1/contract_account_info";
 
 
+    // accountType: 'spot', 'margin', 'otc', 'super-margin'
+    // valuationCurrency: 'USD', 'CNY'
+
+
+
     const huobiBody: { [key: string]: string | number | undefined } = {
         AccessKeyId: htxAccessKey,
         SignatureMethod: "HmacSHA256",
         SignatureVersion: 2,
         Timestamp: moment.utc().format('YYYY-MM-DDTHH:mm:ss'),
+
+        currency: 'usdt',
+        amount: amount,
+        type: "pro-to-futures"
+        ///type: "futures-to-pro"
     };
 
 
@@ -107,7 +121,7 @@ export async function POST(request: NextRequest) {
           p += `&Signature=${Signature}`;
       }
 
-      ///console.log(p);
+      //console.log(p);
 
 
 
@@ -116,6 +130,8 @@ export async function POST(request: NextRequest) {
           method: 'GET',
           headers: DEFAULT_HEADERS,
       });
+
+      ///console.log(response);
 
       if (!response) {
           return NextResponse.json({
@@ -127,34 +143,8 @@ export async function POST(request: NextRequest) {
 
       const data = await response.json();
 
-      //console.log(JSON.stringify(data.status));
-
-      ///console.log(JSON.stringify(data.data.list).substring(0, 1000));
-      /*
-      [{"currency":"ioi","type":"trade","balance":"0","available":"0","debt":"0","seq-num":"0"},
-      {"currency":"ioi","type":"frozen","balance":"0","debt":"0","seq-num":"0"},
-      {"currency":"ccrowd","type":"trade","balance":"0","available":"0","debt":"0","seq-num":"0"},
-      {"currency":"ccrowd","type":"frozen","balance":"0","debt":"0","seq-num":"0"},
-      {"currency":"ksm","type":"trade","balance":"0","available":"0","debt":"0","seq-num":"0"},
-      {"currency":"ksm","type":"frozen","balance":"0","debt":"0","seq-num":"0"},
-      {"currency":"tdx","type":"trade","balance":"0","available":"0","debt":"0","seq-num":"0"},
-      {"currency":"tdx","type":"frozen","balance":"0","debt":"0","seq-num":"0"},
-      {"currency":"kcash","type":"trade","balance":"0","available":"0","debt":"0","seq-num":"0"},
-      {"currency":"kcash","type":"frozen","balance":"0","debt":"0","seq-num":"0"},
-      {"currency":"opul","type":"trade","balance":"0","available":"0","debt":"0","seq-num":"0"},
-      {"currency":"opul","type":"frozen","balance":"0","debt":"0","seq-num":"0"},
-      ]
-      */
-
-
-        // balance for currency is usdt
-        const balanceUsdt = data.data.list.find((element: any) => element.currency === 'usdt' && element.type === "trade");
-        const balanceBtc = data.data.list.find((element: any) => element.currency === 'btc' && element.type === "trade");
-        const balanceEth = data.data.list.find((element: any) => element.currency === 'eth' && element.type === "trade");
-
-        // 
-     
-      //console.log(JSON.stringify(balance));
+ 
+      console.log(JSON.stringify(data));
 
 
       /*
@@ -166,21 +156,8 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json({
           result: {
-                status: "ok",
-                data: [
-                    {
-                        currency: 'USDT',
-                        balance: balanceUsdt ? balanceUsdt.balance : 0,
-                    },
-                    {
-                        currency: 'BTC',
-                        balance: balanceBtc ? balanceBtc.balance : 0,
-                    },
-                    {
-                        currency: 'ETH',
-                        balance: balanceEth ? balanceEth.balance : 0,
-                    },
-                ]
+              status: "ok",
+              data: data,
           }
       });
       

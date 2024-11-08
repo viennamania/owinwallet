@@ -964,11 +964,17 @@ export default function AIPage({ params }: any) {
 
 
 
-    // check account balance
+    // check account balance for each accountId
 
-    const [accountBalanceList, setAccountBalanceList] = useState([] as any[]);
+    //const [accountBalanceList, setAccountBalanceList] = useState([] as any[]);
 
-    const [checkingAccountBalance, setCheckingAccountBalance] = useState(false);
+    const [accountBalanceListForAgent, setAccountBalanceListForAgent] = useState([] as any[]);
+
+    //const [checkingAccountBalance, setCheckingAccountBalance] = useState(false);
+
+
+    const [checkingAccountBalanceForAgent, setCheckingAccountBalanceForAgent] = useState([] as any[]);
+
 
     const checkAccountBalance = async (
         htxAccessKey: string,
@@ -986,7 +992,16 @@ export default function AIPage({ params }: any) {
             return;
         }
 
-        setCheckingAccountBalance(true);
+        setCheckingAccountBalanceForAgent(
+            checkingAccountBalanceForAgent.map((item) => {
+                if (item.accountId === accountId) {
+                    return true;
+                } else {
+                    return item;
+                }
+            })
+        );
+
 
         const response = await fetch("/api/agent/getBalance", {
             method: "POST",
@@ -1009,7 +1024,15 @@ export default function AIPage({ params }: any) {
             
             ///{ currency: 'usdt', balance: '0.00117522' }, { currency: 'htx', balance: '0.00000000' }
 
-            setAccountBalanceList(data.result?.data);
+            setAccountBalanceListForAgent(
+                accountBalanceListForAgent.map((item) => {
+                    if (item.accountId === accountId) {
+                        return data.result?.data;
+                    } else {
+                        return item;
+                    }
+                })
+            );
 
 
 
@@ -1018,18 +1041,57 @@ export default function AIPage({ params }: any) {
             toast.error("HTX 계정 잔고를 확인할 수 없습니다.");
         }
 
-        setCheckingAccountBalance(false);
+        setCheckingAccountBalanceForAgent(
+            checkingAccountBalanceForAgent.map((item) => {
+                if (item.accountId === accountId) {
+                    return false;
+                } else {
+                    return item;
+                }
+            })
+        );
 
     };
 
 
-    // check htx asset valuation
-    const [checkingHtxAssetValuation, setCheckingHtxAssetValuation] = useState(false);
-    const [htxAssetValuation, setHtxAssetValuation] = useState(0);
+    // check htx asset valuation for each accountId
+    const [checkingHtxAssetValuationForAgent, setCheckingHtxAssetValuationForAgent] = useState([] as any[]);
+
+    const [htxAssetValuationForAgent, setHtxAssetValuationForAgent] = useState([] as any[]);
+
+
+
+    useEffect(() => {
+
+        // set false for all applications
+
+        setCheckingHtxAssetValuationForAgent(
+            applications.map((item) => {
+                return false;
+            })
+        );
+
+        
+
+        // set balance for all applications
+        
+        setHtxAssetValuationForAgent(
+            applications.map((item) => {
+                return {
+                    accountId: item.accountId,
+                    balance: 0,
+                };
+            })
+        );
+    
+    } , [applications]);
+
+
     
     const checkHtxAssetValuation = async (
         htxAccessKey: string,
         htxSecretKey: string,
+        accountId: string,
     ) => {
 
         if (htxAccessKey === "") {
@@ -1042,7 +1104,14 @@ export default function AIPage({ params }: any) {
             return;
         }
 
-        setCheckingHtxAssetValuation(true);
+        setCheckingHtxAssetValuationForAgent(
+            htxAssetValuationForAgent.map((item) => {
+                if (item.accountId === accountId) {
+                    return true;
+                }
+            }
+        ));
+
 
         const response = await fetch("/api/agent/getAssetValuation", {
             method: "POST",
@@ -1057,20 +1126,43 @@ export default function AIPage({ params }: any) {
 
         const data = await response.json();
 
-        console.log("data.result", data.result);
+        ////console.log("getAssetValuation data.result", data.result);
 
         if (data.result?.status === "ok") {
 
-            setHtxAssetValuation(Number(data.result?.balance));
+            setHtxAssetValuationForAgent(
+                htxAssetValuationForAgent.map((item) => {
+                    if (item.accountId === accountId) {
+                        return {
+                            accountId: accountId,
+                            balance: data.result?.balance,
+                        };
+                    } else {
+                        return item;
+                    }
+                })
+            );
 
             toast.success("HTX 자산 가치가 확인되었습니다.");
         } else {
             toast.error("HTX 자산 가치를 확인할 수 없습니다.");
         }
 
-        setCheckingHtxAssetValuation(false);
+        setCheckingHtxAssetValuationForAgent(
+            htxAssetValuationForAgent.map((item) => {
+                if (item.accountId === accountId) {
+                    return false;
+                }
+            }
+        ));
 
     };
+
+
+    console.log("htxAssetValuationForAgent", htxAssetValuationForAgent);
+
+
+
 
 
 
@@ -1728,6 +1820,29 @@ export default function AIPage({ params }: any) {
                                                 "
                                             >
                                                 Copy
+                                            </button>
+                                        </div>
+
+
+                                        {/* asset valuation */}
+                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                            <span className='text-sm text-gray-800'>
+                                                HTX 자산 가치(SPOT): {htxAssetValuationForAgent.find((item) => item.accountId === application.accountId)?.balance || 0} USDT
+                                            </span>
+                                            <button
+                                                onClick={() => {
+                                                    checkHtxAssetValuation(
+                                                        application.apiAccessKey,
+                                                        application.apiSecretKey,
+                                                        application.accountId,
+                                                    );
+                                                }}
+                                                disabled={checkingHtxAssetValuationForAgent.find((item) => item.accountId === application.accountId)}
+                                                className={`${checkingHtxAssetValuationForAgent.find((item) => item.accountId === application.accountId) ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
+                                                    hover:bg-blue-600
+                                                `}
+                                            >
+                                                {checkingHtxAssetValuationForAgent.find((item) => item.accountId === application.accountId) ? "Checking..." : "Check"}
                                             </button>
                                         </div>
 
