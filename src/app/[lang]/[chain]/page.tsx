@@ -39,6 +39,7 @@ import { inAppWallet } from "thirdweb/wallets";
 import {
   polygon,
   arbitrum,
+  ethereum,
 } from "thirdweb/chains";
 
 
@@ -98,6 +99,8 @@ const contractAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT on
 
 const contractAddressArbitrum = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"; // USDT on Arbitrum
 
+const contractAddressEthereum = "0xdac17f958d2ee523a2206206994597c13d831ec7"; // USDT on Ethereum
+
 
 /*
 const client = createThirdwebClient({
@@ -132,12 +135,12 @@ export default function Index({ params }: any) {
 
   const handleConnect = async () => {
     await connect({
-      chain: params.chain === "arbitrum" ? arbitrum : polygon,
+      chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
       client,
       wallets,
 
       accountAbstraction: {
-        chain: params.chain === "arbitrum" ? arbitrum : polygon,
+        chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
         factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
         gasless: true,
       },
@@ -184,14 +187,14 @@ export default function Index({ params }: any) {
     // the chain the contract is deployed on
     
     
-    chain: params.chain === "arbitrum" ? arbitrum : polygon,
+    chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
   
   
   
     // the contract's address
     ///address: contractAddress,
 
-    address: params.chain === "arbitrum" ? contractAddressArbitrum : contractAddress,
+    address: params.chain === "arbitrum" ? contractAddressArbitrum : params.chain === "polygon" ? contractAddress : params.chain === "ethereum" ? contractAddressEthereum : contractAddress,
 
 
     // OPTIONAL: the contract's abi
@@ -731,33 +734,33 @@ export default function Index({ params }: any) {
 
   const [tronWalletAddress, setTronWalletAddress] = useState('');
   useEffect(() => {
-      
+        
+      // get tron wallet address
+      const getTronWalletAddress = async () => {
+
+        const response = await fetch('/api/tron/getTronWalletAddress', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            lang: params.lang,
+            chain: params.chain,
+            walletAddress: address,
+          }),
+        });
+
+        const data = await response.json();
+
+        setTronWalletAddress(data?.result?.tronWalletAddress);
+
+      };
+  
       if (address && params.chain === "tron") {
-  
-        // get tron wallet address
-        const getTronWalletAddress = async () => {
-  
-          const response = await fetch('/api/tron/getTronWalletAddress', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              lang: params.lang,
-              chain: params.chain,
-              walletAddress: address,
-            }),
-          });
-  
-          const data = await response.json();
-  
-          setTronWalletAddress(data?.result?.tronWalletAddress);
-  
-        };
-  
         getTronWalletAddress();
-  
       }
+  
+      
   
     } , [address, params.chain, params.lang]);
 
@@ -770,30 +773,30 @@ export default function Index({ params }: any) {
   // getTronBalance
   const [tronBalance, setTronBalance] = useState(0);
   useEffect(() => {
+    
+    const getTronBalance = async () => {
+      const response = await fetch('/api/tron/getTronBalance', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          lang: params.lang,
+          chain: params.chain,
+          tronWalletAddress: tronWalletAddress,
+        }),
+      });
+
+      if (!response) return;
+
+      const data = await response.json();
+
+      setTronBalance(data.result.tronBalance);
+
+    };
+
     if (tronWalletAddress && params.chain === "tron") {
-      const getTronBalance = async () => {
-        const response = await fetch('/api/tron/getTronBalance', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            lang: params.lang,
-            chain: params.chain,
-            tronWalletAddress: tronWalletAddress,
-          }),
-        });
-
-        if (!response) return;
-
-        const data = await response.json();
-
-        setTronBalance(data.result.tronBalance);
-
-      };
-
       getTronBalance();
-
     }
 
   } , [tronWalletAddress, params.chain, params.lang]);
@@ -1040,8 +1043,8 @@ export default function Index({ params }: any) {
 
                 
                 accountAbstraction={{   
-                  chain: polygon,
-                  factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+                  chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+                  factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum, ethereum
                   gasless: true,
                 }}
                 
