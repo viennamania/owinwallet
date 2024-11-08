@@ -1054,12 +1054,12 @@ export default function AIPage({ params }: any) {
     };
 
 
-    // check htx asset valuation for each accountId
+
+
+
+    // check htx asset valuation for each htxUid
     const [checkingHtxAssetValuationForAgent, setCheckingHtxAssetValuationForAgent] = useState([] as any[]);
-
     const [htxAssetValuationForAgent, setHtxAssetValuationForAgent] = useState([] as any[]);
-
-
 
     useEffect(() => {
 
@@ -1089,10 +1089,7 @@ export default function AIPage({ params }: any) {
     
     } , [applications]);
 
-    console.log("checkingHtxAssetValuationForAgent", checkingHtxAssetValuationForAgent);
-
-    
-
+    ///console.log("checkingHtxAssetValuationForAgent", checkingHtxAssetValuationForAgent);
 
     
     const checkHtxAssetValuation = async (
@@ -1181,7 +1178,7 @@ export default function AIPage({ params }: any) {
     };
 
 
-    console.log("htxAssetValuationForAgent", htxAssetValuationForAgent);
+    ///console.log("htxAssetValuationForAgent", htxAssetValuationForAgent);
 
 
 
