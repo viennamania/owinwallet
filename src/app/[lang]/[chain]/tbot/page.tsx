@@ -94,6 +94,7 @@ import { Alert, useForkRef } from '@mui/material';
 
 
 import thirdwebIcon from "@public/thirdweb.svg";
+import { add } from 'thirdweb/extensions/farcaster/keyGateway';
 
 
 const wallets = [
@@ -1117,8 +1118,10 @@ export default function AIPage({ params }: any) {
     }
 
 
+    const [loadingMyAgent, setLoadingMyAgent] = useState(false);
     useEffect(() => {
         const fetchData = async () => {
+            setLoadingMyAgent(true);
             const response = await fetch("/api/agent/getMyAgent", {
                 method: "POST",
                 headers: {
@@ -1131,6 +1134,7 @@ export default function AIPage({ params }: any) {
 
             if (!response.ok) {
                 console.error("Error fetching my agent");
+                setLoadingMyAgent(false);
                 return;
             }
 
@@ -1161,13 +1165,17 @@ export default function AIPage({ params }: any) {
 
             }
 
+            setLoadingMyAgent(false);
+
 
         };
-        fetchData();
+
+        address && fetchData();
+
     } , [address]);
 
 
-    console.log("myAgentNFT", myAgentNFT);
+    ////console.log("myAgentNFT", myAgentNFT);
 
   
    const [agentBotList, setAgentBotList] = useState([] as any[]);
@@ -2030,7 +2038,15 @@ export default function AIPage({ params }: any) {
 
                                 </div>
 
-                                {address && myAgent?.id && (
+                                {address && loadingMyAgent && (
+                                    <div className='flex flex-col gap-2'>
+                                        <span className='text-lg font-semibold text-blue-500'>
+                                            AI 에이전트 로딩중...
+                                        </span>
+                                    </div>
+                                )}
+
+                                {address && !loadingMyAgent && myAgent?.id && (
                                     <div className='w-full flex flex-col gap-2
                                         items-center justify-center
                                         border border-gray-300 p-4 rounded-lg
@@ -2228,7 +2244,7 @@ export default function AIPage({ params }: any) {
                                                     />
                                                 </div>
 
-                                                <div className='flex flex-row items-center justify-between gap-2'>
+                                                <div className='hidden flex-row items-center justify-between gap-2'>
                                                     <span className='text-sm font-semibold text-gray-500'>
                                                         HTX USDT(TRON) 지갑주소: {myAgent.htxUsdtWalletAddress.substring(0, 10) + "..."}
                                                     </span>
@@ -2504,7 +2520,7 @@ export default function AIPage({ params }: any) {
                                 )}
 
 
-                                {amountNft100 > 0 && !myAgent?.id && (
+                                {amountNft100 > 0 && !loadingMyAgent && !myAgent?.id && (
 
                                     <div className='w-full flex flex-col items-center gap-2
                                         border border-gray-300 p-4 rounded-lg
