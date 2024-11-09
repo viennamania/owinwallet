@@ -1692,13 +1692,14 @@ export default function AIPage({ params }: any) {
                             )}
 
                             <div className='w-full flex flex-col gap-5'>
-
                                 {/* total count */}
                                 <span className='text-lg text-gray-800'>
                                     총 {applications.length}개의 신청이 있습니다.
                                 </span>
+                            </div>
 
 
+                            <div className='w-full grid grid-cols-1 xl:grid-cols-2 gap-5'>
 
                                 {applications.map((application) => (
                                     <div
@@ -1751,7 +1752,7 @@ export default function AIPage({ params }: any) {
                                                 Copy
                                             </button>
                                         </div>
-                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                        <div className='w-full hidden flex-row items-center justify-between gap-2'>
                                             <span className='text-sm text-gray-800'>
                                                 핸드폰번호: {application.userPhoneNumber}
                                             </span>
@@ -1789,7 +1790,7 @@ export default function AIPage({ params }: any) {
 
 
 
-                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                        <div className='w-full hidden flex-row items-center justify-between gap-2'>
                                             <span className='text-xs text-gray-800'>
                                                 HTX USDT(TRON) 지갑주소: {application.htxUsdtWalletAddress}
                                             </span>

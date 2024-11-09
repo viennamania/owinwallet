@@ -284,14 +284,11 @@ export default function SendUsdt({ params }: any) {
         address: address || "",
       });
 
-  
-      //console.log(result);
-
       if (!result) return;
   
       setBalance( Number(result) / 10 ** 6 );
 
-
+      /*
       await fetch('/api/user/getBalanceByWalletAddress', {
         method: 'POST',
         headers: {
@@ -308,8 +305,7 @@ export default function SendUsdt({ params }: any) {
       .then(data => {
           setNativeBalance(data.result?.displayValue);
       });
-
-
+      */
 
     };
 
@@ -1389,6 +1385,7 @@ export default function SendUsdt({ params }: any) {
                   )}
                 />
            
+       
 
                 {/* check box for want to receive wallet address */}
                 <div className="flex flex-row items-center gap-2">
@@ -1400,76 +1397,76 @@ export default function SendUsdt({ params }: any) {
                   />
                   <div className="text-white">{Enter_Wallet_Address}</div>
                 </div>
-
             
             
                 {!wantToReceiveWalletAddress ? (
                   <>
-                  <div className='w-full flex flex-row gap-5 items-center justify-between'>
-                    <select
-                      disabled={sending}
+                    <div className='w-full flex flex-col gap-5 items-start justify-between'>
 
-                      className="
+
+
+
+                      <select
+                        disabled={sending}
+
+                        className="
+                          
+                          w-56 p-2 border border-gray-300 rounded text-black text-2xl font-semibold "
+                          
+                        value={
+                          recipient?.nickname
+                        }
+
+
+                        onChange={(e) => {
+
+                          const selectedUser = users.find((user) => user.nickname === e.target.value) as any;
+
+                          console.log("selectedUser", selectedUser);
+
+                          setRecipient(selectedUser);
+
+                        } } 
+
+                      >
+                        <option value="">{Select_a_user}</option>
                         
-                        w-56 p-2 border border-gray-300 rounded text-black text-2xl font-semibold "
-                        
-                      value={
-                        recipient?.nickname
-                      }
 
+                        {users.map((user) => (
+                          <option key={user.id} value={user.nickname}>{user.nickname}</option>
+                        ))}
+                      </select>
 
-                      onChange={(e) => {
+                      {/* select user profile image */}
 
-                        const selectedUser = users.find((user) => user.nickname === e.target.value) as any;
-
-                        console.log("selectedUser", selectedUser);
-
-                        setRecipient(selectedUser);
-
-                      } } 
-
-                    >
-                      <option value="">{Select_a_user}</option>
-                      
-
-                      {users.map((user) => (
-                        <option key={user.id} value={user.nickname}>{user.nickname}</option>
-                      ))}
-                    </select>
-
-                    {/* select user profile image */}
-
-                    <div className=" w-full flex flex-row gap-2 items-center justify-center">
-                      <Image
-                        src={recipient?.avatar || '/profile-default.png'}
-                        alt="profile"
-                        width={38}
-                        height={38}
-                        className="rounded-full"
-                        style={{
-                          objectFit: 'cover',
-                          width: '38px',
-                          height: '38px',
-                        }}
-                      />
-
-                      {recipient?.walletAddress && (
+                      <div className=" w-full flex flex-row gap-2 items-center justify-center">
                         <Image
-                          src="/verified.png"
-                          alt="check"
-                          width={28}
-                          height={28}
+                          src={recipient?.avatar || '/profile-default.png'}
+                          alt="profile"
+                          width={38}
+                          height={38}
+                          className="rounded-full"
+                          style={{
+                            objectFit: 'cover',
+                            width: '38px',
+                            height: '38px',
+                          }}
                         />
-                      )}
+
+                        {recipient?.walletAddress && (
+                          <Image
+                            src="/verified.png"
+                            alt="check"
+                            width={28}
+                            height={28}
+                          />
+                        )}
+
+                      </div>
 
                     </div>
 
-                    
-
-
-                  </div>
-              
-
+             
                     {/* input wallet address */}
                     
                     <input
@@ -1514,11 +1511,13 @@ export default function SendUsdt({ params }: any) {
 
                     />
 
+               
+
 
           
 
 
-                </>
+                  </>
 
                 ) : (
 
@@ -1585,7 +1584,9 @@ export default function SendUsdt({ params }: any) {
 
                   </div>
 
-                )} 
+                )}
+
+                
 
               </div>
 
