@@ -56,7 +56,9 @@ export async function insertOne(data: any) {
     || !data.userPhoneNumber
     || !data.userEmail
     || !data.htxUid
-    || !data.htxUsdtWalletAddress
+    
+    //////|| !data.htxUsdtWalletAddress
+
     || !data.apiAccessKey
     || !data.apiSecretKey) {
     return null;

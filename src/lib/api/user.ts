@@ -355,6 +355,33 @@ export async function getOneByWalletAddress(
 
 
 
+
+export async function getOneByContractAddress(
+  erc721ContractAddress: string,
+): Promise<UserProps | null> {
+
+  console.log('getOneByContractAddress erc721ContractAddress: ' + erc721ContractAddress);
+
+  const client = await clientPromise;
+
+  const collection = client.db('vienna').collection('users');
+
+
+
+  ///console.log('getOneByWalletAddress walletAddress: ' + walletAddress);
+
+  // id is number
+
+  const results = await collection.findOne<UserProps>(
+    { erc721ContractAddress: erc721ContractAddress },
+  );
+
+
+  return results;
+
+}
+
+
 export async function getOneByTronWalletAddress(
   tronWalletAddress: string,
 ): Promise<UserProps | null> {

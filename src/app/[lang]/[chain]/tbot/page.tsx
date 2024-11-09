@@ -160,6 +160,10 @@ export default function AIPage({ params }: any) {
 
     const agent = searchParams.get('agent');
 
+    //console.log("agent", agent);
+
+
+
     const agentNumber = searchParams.get('tokenId');
     
     
@@ -332,6 +336,114 @@ export default function AIPage({ params }: any) {
     } = data;
     
     
+
+
+    const router = useRouter();
+
+
+
+    // agentBot
+    const [agentBot, setAgentBot] = useState("");
+
+
+    // selectedBotNumber
+    const [selectedBotNumber, setSelectedBotNumber] = useState(0);
+
+
+
+    const [referralUserInfo, setReferralUserInfo] = useState({} as any);
+
+    const [referralAgentNFT, setReferralAgentNFT] = useState({} as any);
+
+    const [isValidReferral, setIsValidReferral] = useState(false);
+    const [isValidReferralLoading, setIsValidReferralLoading] = useState(false);
+    useEffect(() => {
+
+        const checkReferral = async () => {
+
+            if (agent === "" || agentNumber === "") {
+                return;
+            }
+
+            setIsValidReferralLoading(true);
+
+
+            const fetchAgentUserInfo = await fetch("/api/user/getUserByContractAddress", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    erc721ContractAddress: agent,
+                }),
+            });
+
+            if (!fetchAgentUserInfo.ok) {
+                console.error("Error fetching agent");
+                setIsValidReferralLoading(false);
+                return;
+            }
+
+
+            const agentUserInfo = await fetchAgentUserInfo.json();
+
+            if (!agentUserInfo.result) {
+                setIsValidReferralLoading(false);
+                return;
+            }
+
+            console.log("agentUserInfo", agentUserInfo);
+
+            setReferralUserInfo(agentUserInfo.result);
+
+
+
+            const fetchedNFT = await fetch("/api/agent/getAgentNFTByContractAddressAndTokenId", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    erc721ContractAddress: agent,
+                    tokenId: agentNumber,
+                }),
+            });
+
+            if (!fetchedNFT.ok) {
+                console.error("Error fetching NFT");
+                setIsValidReferralLoading(false);
+                return;
+            }
+
+
+            const nftData = await fetchedNFT.json();
+
+            console.log("nftData.result.mint.transactionHash", nftData.result?.mint?.transactionHash);
+
+
+            if (nftData.result?.mint?.transactionHash) {
+
+                setIsValidReferral(true);
+
+                setReferralAgentNFT(nftData.result);
+
+
+                setAgentBot(agent || "");
+                setSelectedBotNumber(Number(agentNumber));
+
+            }
+
+            setIsValidReferralLoading(false);
+    
+        }
+
+        checkReferral();
+
+    } , [agent, agentNumber]);
+
+    console.log("isValidReferralLoading", isValidReferralLoading);
+    console.log("isValidReferral", isValidReferral);
+
     
 
 
@@ -339,7 +451,10 @@ export default function AIPage({ params }: any) {
 
 
 
-    const router = useRouter();
+
+
+
+
 
     // get the active wallet
     const activeWallet = useActiveWallet();
@@ -789,21 +904,9 @@ export default function AIPage({ params }: any) {
     }, []);
 
 
-    console.log("agents", agents);
+    ///////console.log("agents", agents);
 
 
-    useEffect(() => {
-
-        if (agents.length > 0) {
-            
-        }
-
-    } , [agents]);
-
-
-
-    // agentBot
-    const [agentBot, setAgentBot] = useState(agent || "");
 
 
 
@@ -862,8 +965,6 @@ export default function AIPage({ params }: any) {
     */
 
 
-    // selectedBotNumber
-    const [selectedBotNumber, setSelectedBotNumber] = useState(0);
 
     const [myAgent, setMyAgent] = useState({} as any);
     const [myAgentNFT, setMyAgentNFT] = useState({} as any);
@@ -927,10 +1028,13 @@ export default function AIPage({ params }: any) {
             return;
         }
 
+        /*
         if (htxUsdtWalletAddress === "") {
             toast.error("HTX USDT(TRON) 지갑주소를 입력해 주세요.");
             return;
         }
+        */
+
 
         if (apiAccessKey === "") {
             toast.error("API Access Key를 입력해 주세요.");
@@ -1071,9 +1175,12 @@ export default function AIPage({ params }: any) {
 
    const changeAgentBot = async (agentBot: string) => {
 
+        console.log("changeAgentBot agentBot", agentBot);
+
         if (agentBot === "") {
             return;
         }
+
 
         setAgentBot(agentBot);
 
@@ -2432,8 +2539,107 @@ export default function AIPage({ params }: any) {
                                         </div>
 
 
-                                        {agents.length > 0 && (
+
+                                        {!isValidReferralLoading && isValidReferral && (
                                             <div className='mt-10 w-full flex flex-col items-center gap-2
+                                                border border-gray-300 p-4 rounded-lg bg-green-100
+                                            '>
+                                                <span className='text-lg font-semibold text-green-500'>
+                                                    추천인 코드가 확인되었습니다.
+                                                </span>
+
+                                                <div className='flex flex-row items-start gap-5'>
+                                                    
+                                                    <div className='flex flex-col items-center gap-2'>
+                                                        <Image
+                                                            src={referralUserInfo.avatar || "/icon-anonymous.png"}
+                                                            alt={referralUserInfo.nickname}
+                                                            width={100}
+                                                            height={100}
+                                                            className='rounded-full h-12 w-12'
+                                                        />
+
+                                                        <span className='text-lg font-semibold text-gray-500'>
+                                                            {
+                                                                //agent.erc721ContractAddress.substring(0, 15) + "..."
+                                                                referralUserInfo.nickname
+                                                            }
+                                                        </span>
+                                                    </div>
+
+                                                    {/* referralAgentNFT */}
+                                                    <div className='flex flex-col gap-2 border border-gray-300 p-4 rounded-lg'>
+                                                        <Image
+                                                            src={referralAgentNFT?.image?.thumbnailUrl || "/logo-masterbot100.png"}
+                                                            alt="masterbot"
+                                                            width={200}
+                                                            height={200}
+                                                            className='animate-pulse rounded-lg'
+                                                        />
+                                                        <span className='text-2xl font-semibold text-blue-500'>
+                                                            {referralAgentNFT?.name}
+                                                        </span>
+                                                        <span className='text-lg font-semibold text-yellow-500'>
+                                                            {referralAgentNFT?.description}
+                                                        </span>
+
+                                                        {/* running 2 hours */}
+                                                        {/* runngin 2 days */}
+                                                        <span className='text-sm font-semibold text-gray-500'>
+                                                            Running{' '}{(new Date().getTime() - new Date(referralAgentNFT.mint.timestamp).getTime()) / 1000 / 60 / 60 / 24 > 1
+                                                                        ? `${Math.floor((new Date().getTime() - new Date(referralAgentNFT.mint.timestamp).getTime()) / 1000 / 60 / 60 / 24)} days`
+                                                                        : `${Math.floor((new Date().getTime() - new Date(referralAgentNFT.mint.timestamp).getTime()) / 1000 / 60 / 60)} hours`
+                                                                    }
+                                                        </span>
+                                                        {/* accounts */}
+                                                        <span className='text-sm font-semibold text-gray-500'>
+                                                            Accounts: ???
+                                                        </span>
+
+                                                        {/* goto opensea */}
+                                                        <button
+                                                            className='bg-gray-300 text-gray-500 p-2 rounded text-xs font-semibold
+                                                                flex flex-row items-center gap-2
+                                                                hover:bg-blue-500 hover:text-zinc-100 hover:shadow-lg
+                                                            '
+                                                            onClick={() => {
+                                                                window.open('https://opensea.io/assets/matic/' + referralAgentNFT?.contract.address + '/' + referralAgentNFT?.tokenId, "_blank");
+                                                            }}
+                                                        >
+                                                            <Image
+                                                                src="/logo-opensea.png"
+                                                                alt="opensea"
+                                                                width={20}
+                                                                height={20}
+                                                            />
+                                                            <span>
+                                                                View on OpenSea
+                                                            </span>
+                                                        </button>
+                                                    </div>
+
+                                                    
+
+                                                </div>
+
+
+                                            </div>
+                                        )}
+
+                                        {!isValidReferralLoading && !isValidReferral && (
+                                            <div className='mt-10 w-full flex flex-col items-center gap-2
+                                                border border-gray-300 p-4 rounded-lg
+                                            '>
+                                                <span className='text-lg font-semibold text-red-500'>
+                                                    추천인 코드가 확인되지 않았습니다.
+                                                </span>
+                                            </div>
+                                        )}
+
+
+                                        {!isValidReferralLoading && !isValidReferral
+                                        && agents.length > 0 && (
+                                            <div className=' w-full flex flex-col items-center gap-2
                                                 border border-gray-300 p-4 rounded-lg
                                             '>
 
@@ -2601,6 +2807,11 @@ export default function AIPage({ params }: any) {
                                             </div>
                                         )}
 
+
+
+
+
+
                                         {/* input for apply */}
                                         {/* 이름, 핸드폰번호, 이메일주소, HTX UID, HTX USDT(TRON) 지갑주소 */}
                                         {/* API Access Key, API Secret Key */}
@@ -2735,7 +2946,7 @@ export default function AIPage({ params }: any) {
                                         {/* HTX USDT(TRON) 지갑주소 */}
 
 
-                                        <div className='mt-5 w-full flex flex-col gap-2'>
+                                        <div className='mt-5 w-full flex-col gap-2 hidden'>
                                             <span className='text-sm font-semibold text-gray-500'>
                                                 HTX USDT(TRON) 입금용 지갑주소
                                             </span>
