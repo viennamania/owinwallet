@@ -1815,7 +1815,7 @@ export default function AIPage({ params }: any) {
 
                     </div>
 
-                    <div className='w-full flex flex-col gap-5 mt-5'>
+                    <div className='w-full flex flex-col items-start gap-5 mt-10'>
                         {/* live icon */}
                         {address ? (
                             <div className='flex flex-row items-center gap-2'>
@@ -1828,6 +1828,18 @@ export default function AIPage({ params }: any) {
                                 <span className='text-lg font-semibold text-blue-500'>
                                     {My_Nickname}: {nickname}
                                 </span>
+                                <div className="flex flex-col gap-2">
+                                    {/* disconnect button */}
+                                    <button
+                                        onClick={() => {
+                                            confirm("지갑 연결을 해제하시겠습니까?") && activeWallet?.disconnect();
+                                        }}
+                                        className="bg-zinc-800 text-white p-2 rounded-lg"
+                                    >
+                                        지갑 연결 해제
+                                    </button>
+                                </div>
+
                             </div>
                         ) : (
                             <div className='flex flex-col items-center gap-2'>
@@ -1842,14 +1854,12 @@ export default function AIPage({ params }: any) {
                                     factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
                                     gasless: true,
                                     }}
-                                    
-                                    
+  
                                     theme={"light"}
 
-                                    
 
                                     connectButton={{
-                                    label: "Sign in with OWIN Magic Wallet",
+                                        label: "Sign in with OWIN Magic Wallet",
                                     }}
 
                                     connectModal={{
