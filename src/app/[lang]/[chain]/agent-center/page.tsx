@@ -156,6 +156,8 @@ export default function AIPage({ params }: any) {
     const wallet = searchParams.get('wallet');
 
     const agent = searchParams.get('agent');
+
+    const agentNumber = searchParams.get('tokenId');
     
     
     const [data, setData] = useState({
@@ -1257,6 +1259,7 @@ export default function AIPage({ params }: any) {
 
                 <Header
                     agent={agent || ""}
+                    tokenId={agentNumber || ""}
                 />
                 
 
@@ -1933,8 +1936,10 @@ export default function AIPage({ params }: any) {
 function Header(
     {
         agent,
+        tokenId,
     } : {
-        agent: string
+        agent: string,
+        tokenId: string,
     }
 ) {
 
@@ -1973,7 +1978,7 @@ function Header(
                 <button
                 onClick={() => {
                     router.push(
-                        "/kr/polygon/tbot?agent=" + agent
+                        "/kr/polygon/tbot?agent=" + agent + "&tokenId=" + tokenId
                     );
                 }}
                 className="text-gray-600 hover:underline text-xs xl:text-lg"
@@ -1982,7 +1987,7 @@ function Header(
                 </button>
                 <button
                 onClick={() => {
-                    router.push('/kr/polygon/profile-settings?agent=' + agent);
+                    router.push('/kr/polygon/profile-settings?agent=' + agent + "&tokenId=" + tokenId);
                 }}
                 className="text-gray-600 hover:underline text-xs xl:text-lg"
                 >

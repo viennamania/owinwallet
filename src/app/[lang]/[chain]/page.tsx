@@ -125,6 +125,8 @@ export default function Index({ params }: any) {
 
   const agent = searchParams.get('agent');
 
+  const agentNumber = searchParams.get('tokenId');
+
 
 
   //console.log(wallet);
@@ -905,6 +907,7 @@ export default function Index({ params }: any) {
         
         <Header
           agent={agent || ""}
+          tokenId={agentNumber || ""}
         />
 
         <div className="w-full flex flex-row gap-2 justify-between items-center">
@@ -1946,10 +1949,12 @@ export default function Index({ params }: any) {
 function Header(
   {
     agent,
+    tokenId,
   }
   :
   {
     agent: string;
+    tokenId: string;
   }
 
 ) {
@@ -2005,7 +2010,7 @@ function Header(
           <button
             onClick={() => {
               router.push(
-                "/kr/polygon/tbot/?agent=" + agent
+                "/kr/polygon/tbot/?agent=" + agent + "&tokenId=" + tokenId
               );
             }}
             className="text-gray-600 hover:underline text-xs xl:text-lg"
@@ -2014,7 +2019,7 @@ function Header(
           </button>
           <button
             onClick={() => {
-              router.push('/kr/polygon/profile-settings/?agent=' + agent);
+              router.push('/kr/polygon/profile-settings/?agent=' + agent + '&tokenId=' + tokenId);
             }}
             className="text-gray-600 hover:underline text-xs xl:text-lg"
           >

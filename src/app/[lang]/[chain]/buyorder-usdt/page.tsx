@@ -133,6 +133,11 @@ export default function Index({ params }: any) {
  
   const wallet = searchParams.get('wallet');
 
+  const agent = searchParams.get('agent');
+
+  const agentNumber = searchParams.get('tokenId');
+
+
 
 
   const contract = getContract({
@@ -1354,7 +1359,10 @@ export default function Index({ params }: any) {
 
           <AppBarComponent />
 
-          <Header />
+          <Header
+              agent={agent || ""}
+              tokenId={agentNumber || ""}
+          />
   
           <div className="mt-4 flex justify-start space-x-4 mb-10">
               <button
@@ -3319,7 +3327,17 @@ const TradeDetail = (
   };
 
 
-  function Header() {
+
+
+  function Header(
+    {
+        agent,
+        tokenId,
+    } : {
+        agent: string
+        tokenId: string
+    }
+) {
 
     const router = useRouter();
   
@@ -3331,19 +3349,26 @@ const TradeDetail = (
         <div className="w-full flex flex-row justify-between items-center gap-2
           bg-green-500 p-4 rounded-lg mb-5
         ">
-          {/* logo */}
-          <div className="flex flex-row gap-2 items-center">
-            <Image
-              src="/circle-logo.webp"
-              alt="Circle Logo"
-              width={35}
-              height={35}
-              className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
-            />
-            <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
-              OWIN
-            </span>
-          </div>
+            {/* logo */}
+            <button
+                onClick={() => {
+                    router.push('/kr/polygon/?agent=' + agent + '&tokenId=' + tokenId);
+                }}
+            >            
+                <div className="flex flex-row gap-2 items-center">
+                    <Image
+                    src="/circle-logo.webp"
+                    alt="Circle Logo"
+                    width={35}
+                    height={35}
+                    className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
+                    />
+                    <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
+                    OWIN
+                    </span>
+                </div>
+            </button>
+
           {/* menu */}
           {/* COIN, NFT, DEFI */}
           <div className="flex flex-row gap-2 items-center">
@@ -3372,8 +3397,8 @@ const TradeDetail = (
             <button
               onClick={() => {
                 router.push(
-                  "/kr/polygon/tbot"
-                );
+                    "/kr/polygon/tbot?agent=" + agent + "&tokenId=" + tokenId
+                  );
               }}
               className="text-gray-600 hover:underline text-xs xl:text-lg"
             >
@@ -3381,7 +3406,7 @@ const TradeDetail = (
             </button>
             <button
               onClick={() => {
-                router.push('/kr/polygon/profile-settings');
+                router.push('/kr/polygon/profile-settings?agent=' + agent + '&tokenId=' + tokenId);
               }}
               className="text-gray-600 hover:underline text-xs xl:text-lg"
             >
@@ -3389,7 +3414,6 @@ const TradeDetail = (
             </button>
           </div>
         </div>
-        
         
       </header>
     );

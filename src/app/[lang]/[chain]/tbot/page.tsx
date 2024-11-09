@@ -1567,6 +1567,7 @@ export default function AIPage({ params }: any) {
 
                 <Header
                     agent={agent || ""}
+                    tokenId={agentNumber || ""}
                 />
                 
 
@@ -3360,8 +3361,10 @@ export default function AIPage({ params }: any) {
 function Header(
     {
         agent,
+        tokenId,
     } : {
         agent: string
+        tokenId: string
     }
 ) {
 
@@ -3378,7 +3381,7 @@ function Header(
             {/* logo */}
             <button
                 onClick={() => {
-                    router.push('/kr/polygon/?agent=' + agent);
+                    router.push('/kr/polygon/?agent=' + agent + '&tokenId=' + tokenId);
                 }}
             >            
                 <div className="flex flex-row gap-2 items-center">

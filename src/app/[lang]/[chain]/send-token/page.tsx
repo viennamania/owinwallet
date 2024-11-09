@@ -115,6 +115,12 @@ export default function SendUsdt({ params }: any) {
 
   const token = searchParams.get('token');
 
+
+  const agent = searchParams.get('agent');
+  const agentNumber = searchParams.get('tokenId');
+
+  
+
   //console.log("token", token);
 
   const tokenImage = "/token-" + String(token).toLowerCase() + "-icon.png";
@@ -591,6 +597,11 @@ export default function SendUsdt({ params }: any) {
 
   const sendUsdt = async () => {
     if (sending) {
+      return;
+    }
+
+    if (!address) {
+      toast.error('Please connect your wallet first');
       return;
     }
 
@@ -1078,7 +1089,10 @@ export default function SendUsdt({ params }: any) {
         <AppBarComponent />
 
 
-        <Header />
+        <Header
+            agent={agent || ""}
+            tokenId={agentNumber || ""}
+          />
 
         {/*
         <div className="mt-4 flex justify-start space-x-4 mb-10">
@@ -1753,7 +1767,15 @@ export default function SendUsdt({ params }: any) {
 
 
 
-function Header() {
+function Header(
+  {
+      agent,
+      tokenId,
+  } : {
+      agent: string
+      tokenId: string
+  }
+) {
 
   const router = useRouter();
 
@@ -1765,25 +1787,26 @@ function Header() {
       <div className="w-full flex flex-row justify-between items-center gap-2
         bg-green-500 p-4 rounded-lg mb-5
       ">
-        {/* logo */}
-        <button
-          onClick={() => {
-            router.push("/");
-          }}
-        >
-          <div className="flex flex-row gap-2 items-center">
-            <Image
-              src="/circle-logo.webp"
-              alt="Circle Logo"
-              width={35}
-              height={35}
-              className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
-            />
-            <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
-              OWIN
-            </span>
-          </div>
-        </button>
+          {/* logo */}
+          <button
+              onClick={() => {
+                  router.push('/kr/polygon/?agent=' + agent + '&tokenId=' + tokenId);
+              }}
+          >            
+              <div className="flex flex-row gap-2 items-center">
+                  <Image
+                  src="/circle-logo.webp"
+                  alt="Circle Logo"
+                  width={35}
+                  height={35}
+                  className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
+                  />
+                  <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
+                  OWIN
+                  </span>
+              </div>
+          </button>
+
         {/* menu */}
         {/* COIN, NFT, DEFI */}
         <div className="flex flex-row gap-2 items-center">
@@ -1812,8 +1835,8 @@ function Header() {
           <button
             onClick={() => {
               router.push(
-                "/kr/polygon/tbot"
-              );
+                  "/kr/polygon/tbot?agent=" + agent
+                );
             }}
             className="text-gray-600 hover:underline text-xs xl:text-lg"
           >
@@ -1821,7 +1844,7 @@ function Header() {
           </button>
           <button
             onClick={() => {
-              router.push('/kr/polygon/profile-settings');
+              router.push('/kr/polygon/profile-settings?agent=' + agent);
             }}
             className="text-gray-600 hover:underline text-xs xl:text-lg"
           >
@@ -1829,7 +1852,6 @@ function Header() {
           </button>
         </div>
       </div>
-      
       
     </header>
   );
