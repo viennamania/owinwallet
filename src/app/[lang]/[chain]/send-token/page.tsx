@@ -390,8 +390,6 @@ export default function SendUsdt({ params }: any) {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            lang: params.lang,
-            chain: params.chain,
             walletAddress: address,
           }),
         });
@@ -408,7 +406,7 @@ export default function SendUsdt({ params }: any) {
 
     }
 
-  } , [address, params.chain, params.lang]);
+  } , [address, params.chain]);
 
 
   console.log("tronWalletAddress", tronWalletAddress);
@@ -1019,7 +1017,6 @@ export default function SendUsdt({ params }: any) {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              chain: params.chain,
               tronWalletAddress: tronWalletAddress,
             }),
           });
@@ -1032,16 +1029,10 @@ export default function SendUsdt({ params }: any) {
         }
 
 
-
+        /*
         if (address) {
           
-          /*
-          const contract = getContract({
-            client,
-            chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-            address: params.chain === "arbitrum" ? contractAddressArbitrum : params.chain === "polygon" ? contractAddress : params.chain === "ethereum" ? contractAddressEthereum : contractAddress,
-          });
-          */
+
 
           if (contract) {
   
@@ -1056,6 +1047,9 @@ export default function SendUsdt({ params }: any) {
           }
 
         }
+          */
+
+
 
       };
 
