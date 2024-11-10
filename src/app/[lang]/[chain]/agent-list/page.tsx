@@ -1537,29 +1537,6 @@ export default function AIPage({ params }: any) {
     };
 
 
-  
-    useEffect(() => {
-
-        let interval: any = null;
-
-        if (myAgent && myAgent.apiAccessKey && myAgent.apiSecretKey) {
-
-            searchMatchResults(myAgent.apiAccessKey, myAgent.apiSecretKey);
-        
-
-            interval = setInterval(() => {
-                searchMatchResults(myAgent.apiAccessKey, myAgent.apiSecretKey);
-            } , 1000 * 60 * 1);
-
-        }
-
-        if (interval !== null) {
-            clearInterval(interval);
-        }
-
-    } , [myAgent]);
-    
-
         
  
 
@@ -1908,25 +1885,26 @@ export default function AIPage({ params }: any) {
                     10,000 TBOT for BYBIT
                     */}
 
-                    {/* TBOT 구매 */}
+                    {/* AI 에이전트 NFT */}
                     <div className='mt-10 flex flex-row items-center gap-2'>
                         {/* dot */}
                         <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
                         <span className='text-xl font-semibold text-zinc-800'>
-                            TBOT 구매
+                            AI 에이전트 NFT
                         </span>
                     </div>
 
                     <div className='mt-5 w-full flex flex-col gap-10 '> 
 
-                        <div className='flex flex-col xl:flex-row gap-5 items-center xl:items-start justify-between border
+                        <div className='w-full flex flex-col xl:flex-row gap-5 items-center xl:items-start justify-between border
                          border-yellow-500 p-4 rounded-lg
                         '>
 
 
-                            <div className='flex flex-col items-center justify-center gap-5'>
+                          
 
-                                {true && (
+                                {!isValidReferralLoading && !isValidReferral && agents.length > 0 && (
+                                
 
                                     <div className='w-full flex flex-col items-center gap-2
                                         border border-gray-300 p-4 rounded-lg
@@ -1934,17 +1912,23 @@ export default function AIPage({ params }: any) {
 
                                         {!isValidReferralLoading && !isValidReferral
                                         && agents.length > 0 && (
-                                            <div className=' w-full flex flex-col items-center gap-2
+                                            <div className=' w-full flex flex-col items-start gap-2
                                                 border border-gray-300 p-4 rounded-lg
                                             '>
 
                                                 <span className='text-lg font-semibold text-blue-500'>
-                                                    AI 에이전트를 선택하세요
+                                                    지갑 홀더 닉네임을 선택하세요
                                                 </span>
 
                                                 <div className='w-full grid grid-cols-2 items-start justify-between gap-2'>
 
                                                     <div className='flex flex-col gap-2'>
+
+                                                        <span className='text-sm font-semibold text-gray-500'>
+                                                            지갑 홀더 닉네임(알파벳 순서)
+                                                        </span>
+
+
                                                         {agents.map((agent) => (
                                                             <div key={agent.erc721ContractAddress} className='flex flex-row items-center gap-2'>
                                                 
@@ -2005,12 +1989,18 @@ export default function AIPage({ params }: any) {
                                                                     className='animate-spin'
                                                                 />
                                                                 <span className='text-sm font-semibold text-blue-500'>
-                                                                    AI 에이전트 목록을 불러오는 중...
+                                                                    AI 에이전트 NFT를 불러오는 중...
                                                                 </span>
                                                             </div>
                                                         )}
 
-                                                        {/* top left overlapping */}
+
+                                                        {!loadingAgentBotList && agentBotList.length === 0 && (
+                                                            <span className='text-sm font-semibold text-red-500'>
+                                                                AI 에이전트 NFT가 없습니다.
+                                                            </span>
+                                                        )}
+
                                                         {!loadingAgentBotList && agentBotList.map((nft) => (
 
                                                            
@@ -2101,290 +2091,16 @@ export default function AIPage({ params }: any) {
                                                 </div>
                                             </div>
                                         )}
-
-
-
-
-
-
-                                        {/* input for apply */}
-                                        {/* 이름, 핸드폰번호, 이메일주소, HTX UID, HTX USDT(TRON) 지갑주소 */}
-                                        {/* API Access Key, API Secret Key */}
-
-
-
-                                        <div className='w-full flex flex-col gap-2
-                                            border border-gray-300 p-4 rounded-lg
-                                        '>
-
-                                            <span className='text-sm font-semibold text-gray-500'>
-                                                HTX API Access Key
-                                            </span>
-                                            <input
-                                                disabled={!address || applyingMintNFT}
-                                                onChange={(e) => setApiAccessKey(e.target.value)}
-                                                type="text"
-                                                placeholder="API Access Key"
-                                                className="w-full p-2 rounded-lg border border-gray-300"
-                                            />
-                                            <span className='text-sm font-semibold text-gray-500'>
-                                                HTX API Secret Key
-                                            </span>
-                                            <input
-                                                disabled={!address || applyingMintNFT}
-                                                onChange={(e) => setApiSecretKey(e.target.value)}
-                                                type="text"
-                                                placeholder="API Secret Key"
-                                                className="w-full p-2 rounded-lg border border-gray-300"
-                                            />
-
-                                            {/* button for api call /api/agent/getAccount */}
-                                            <button
-                                                disabled={!address || checkingHtxApiKey || !apiAccessKey || !apiSecretKey || isValidAPIKey}
-                                                className={` ${checkingHtxApiKey || !apiAccessKey || !apiSecretKey || isValidAPIKey
-                                                    ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold`}
-                                                onClick={() => {
-                                                    checkHtxApiKey(apiAccessKey, apiSecretKey);
-                                                }}
-                                            >
-                                                HTX API 정보 확인하기
-                                            </button>
-
-                                            {checkingHtxApiKey && (
-                                                <span className='text-sm font-semibold text-blue-500'>
-                                                    HTX API Key 확인중...
-                                                </span>
-                                            )}
-
-                                            {isValidAPIKey && (
-                                                <span className='text-sm font-semibold text-green-500'>
-                                                    HTX API Key가 확인되었습니다.
-                                                </span>
-                                            )}
-
-                                        </div>
-
-                                        <div className='w-full hidden flex-col gap-2 border border-gray-300 p-4 rounded-lg'>
-                                            <span className='text-sm font-semibold text-gray-500'>
-                                                HTX UID
-                                            </span>
-                                            <input
-                                                disabled={true}
-                                                value={htxUid}
-                                                onChange={(e) => setHtxUid(e.target.value)}
-                                                type="text"
-                                                placeholder="HTX UID"
-                                                className="w-full p-2 rounded-lg border border-gray-300"
-                                            />
-                                        </div>
-
-
-                                        {/* check account balance */}
-                                        <div className='mt-5 w-full flex flex-col gap-2 border border-gray-300 p-4 rounded-lg'> 
-                                            <span className='text-sm font-semibold text-gray-500'>
-                                                계정 잔고(SPOT) 확인하기
-                                            </span>
-                                            <button
-                                                disabled={!isValidAPIKey || checkingAccountBalance}
-                                                onClick={() => {
-                                                    checkAccountBalance(apiAccessKey, apiSecretKey, htxUid);
-                                                }}
-                                                className={` ${!isValidAPIKey || checkingAccountBalance ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold`}
-                                            >
-                                                계정 잔고 확인하기
-                                            </button>
-
-                                            {checkingAccountBalance && (
-                                                <span className='text-sm font-semibold text-blue-500'>
-                                                    계정 잔고 확인중...
-                                                </span>
-                                            )}
-
-                                            {/*
-                                            {accountBalance && (
-                                                <span className='text-2xl font-semibold text-gray-500'>
-                                                    계정 잔고: {accountBalance.toFixed(2)} USDT
-                                                </span>
-                                            )}
-                                            */}
-                                            {accountBalanceList && (
-                                                <div className='w-full flex flex-col gap-2'>
-                                                    {accountBalanceList.map((account) => (
-                                                        <div key={account.currency} className='flex flex-row items-center justify-between gap-2'>
-                                                            <span className='text-sm font-semibold text-gray-500'>
-                                                                {account.currency}
-                                                            </span>                                                                
-                                                            <span className='text-right text-lg font-semibold text-gray-500'>
-                                                                {
-                                                                    Number(account.balance).toFixed(6)
-                                                                }
-                                                            </span>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            )}
-
-                                            {/*}
-                                            {isValidBalance ? (
-                                                <span className='text-sm font-semibold text-green-500'>
-                                                    계정 잔고가 100 USDT 이상입니다.
-                                                </span>
-                                            ) : (
-                                                <span className='text-sm font-semibold text-red-500'>
-                                                    계정 잔고가 100 USDT 미만입니다. 100 USDT 이상 입금해주세요.
-                                                </span>
-                                            )}
-                                            */}
-
-                                        </div>
-
-                                        {/* HTX USDT(TRON) 지갑주소 */}
-
-
-                                        <div className='mt-5 w-full flex-col gap-2 hidden'>
-                                            <span className='text-sm font-semibold text-gray-500'>
-                                                HTX USDT(TRON) 입금용 지갑주소
-                                            </span>
-                                            <input
-                                                disabled={!address || applyingMintNFT}
-                                                onChange={(e) => setHtxUsdtWalletAddress(e.target.value)}
-                                                type="text"
-                                                placeholder="HTX USDT(TRON) 지갑주소"
-                                                className="w-full p-2 rounded-lg border border-gray-300"
-                                            />
-                                        </div>
-
-
-                                        <div className='mt-5 w-full flex flex-col gap-2 border border-gray-300 p-4 rounded-lg'>
-                                            <span className='text-sm font-semibold text-gray-500'>
-                                                이름, 핸드폰번호, 이메일주소
-                                            </span>
-
-                                            <input
-                                                disabled={!address || applyingMintNFT}
-                                                value={userName}
-                                                onChange={(e) => setUserName(e.target.value)}
-                                                type="text"
-                                                placeholder="이름"
-                                                className="w-full p-2 rounded-lg border border-gray-300"
-                                            />
-                                            <input
-                                                disabled={!address || applyingMintNFT}
-                                                value={userPhoneNumber}
-                                                onChange={(e) => setUserPhoneNumber(e.target.value)}
-                                                type="text"
-                                                placeholder="핸드폰번호"
-                                                className="w-full p-2 rounded-lg border border-gray-300"
-                                            />
-                                            <input
-                                                disabled={!address || applyingMintNFT}
-                                                value={userEmail}
-                                                onChange={(e) => setUserEmail(e.target.value)}
-                                                type="text"
-                                                placeholder="이메일주소"
-                                                className="w-full p-2 rounded-lg border border-gray-300"
-                                            />
-                                        </div>
-
-
-
-                                        {/* button for apply */}
-
-
-                                        <button
-                                            disabled={!address || applyingMintNFT || !isValidAPIKey || !isValidBalance || !userName || !userPhoneNumber || !userEmail || !htxUsdtWalletAddress}
-                                            onClick={applyMintAgentBot}
-                                            className={` ${!address || applyingMintNFT || !isValidAPIKey || !isValidBalance || !userName || !userPhoneNumber || !userEmail || !htxUsdtWalletAddress ?
-                                                'w-full bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold
-                                                hover:bg-blue-700 hover:text-zinc-100`}
-                                        >
-                                            {applyingMintNFT ? "Master Bot NFT 민팅중..." : "Master Bot NFT 민팅하기"}
-                                        </button>
-                                        
+  
 
                                     </div>
 
                                 )}
 
 
-                            </div>
+                           
 
-                            {/*
-                            AI 트레이딩 100 TBOT
-                                • AI 자동매매 트레이딩 서비스 이용권 NFT 입니다.
-                                • HTX 거래소 전용
 
-                            계정 운영 방식
-                                • 본인 거래소 계정에서 직접 자금 관리
-                                • 최소 운영자금: 100 USDT
-                                • 자유로운 입출금 가능
-                                • 계좌 잔고 50% 이상 출금 시 서비스 일시 중지
-
-                            리스크 고지
-                                - 디지털자산 투자에는 원금 손실 위험이 있습니다
-                                - 과거 수익률이 미래 수익을 보장하지 않 습니다
-                                - 높은 레버리지 거래는 큰 손실을 초래할 수 있습니다
-
-                            Master BOT 혜택
-                                • 거래소 리베이트 프로그램 참여 자격 부여
-                                • 거래 실적에 따른 변동 리워드 제공
-                                • 주 단위 리워드 정산
-                                • 추가 지원AI 트레이딩 시스템 운영 교육
-                            */}
-                            <div className='flex flex-col gap-2'>
-
-                                <span className='text-lg font-semibold text-blue-500'>
-                                    AI 트레이딩 100 TBOT
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    • AI 자동매매 트레이딩 서비스 이용권 NFT 입니다.
-                                </span>
-                                <span className='text-lg font-semibold text-blue-500 mt-2'>
-                                    계정 운영 방식
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    • 본인 거래소 계정에서 직접 자금 관리
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    • 최소 운영자금: 100 USDT
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    • 자유로운 입출금 가능
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    • 계좌 잔고 50% 이상 출금 시 서비스 일시 중지
-                                </span>
-
-                                <span className='text-lg font-semibold text-blue-500 mt-2'>
-                                    리스크 고지
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    - 디지털자산 투자에는 원금 손실 위험이 있습니다
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    - 과거 수익률이 미래 수익을 보장하지 않 습니다
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    - 높은 레버리지 거래는 큰 손실을 초래할 수 있습니다
-                                </span>
-
-                                <span className='text-lg font-semibold text-blue-500 mt-2'>
-                                    Master BOT 혜택
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    • 거래소 리베이트 프로그램 참여 자격 부여
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    • 거래 실적에 따른 변동 리워드 제공
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    • 주 단위 리워드 정산
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    • 추가 지원AI 트레이딩 시스템 운영 교육
-                                </span>
-
-                            </div>
                                 
                         </div>
 
@@ -2408,15 +2124,13 @@ export default function AIPage({ params }: any) {
           
 
 
-
-
 function Header(
     {
         agent,
         tokenId,
     } : {
-        agent: string
-        tokenId: string
+        agent: string,
+        tokenId: string,
     }
 ) {
 
@@ -2428,12 +2142,12 @@ function Header(
   
         {/* header menu */}
         <div className="w-full flex flex-row justify-between items-center gap-2
-          bg-green-500 p-4 rounded-lg mb-5
+          bg-black bg-opacity-10 p-4 rounded-lg  md:p-6
         ">
             {/* logo */}
             <button
                 onClick={() => {
-                    router.push('/kr/polygon/?agent=' + agent + '&tokenId=' + tokenId);
+                    router.push('/kr/polygon/agent-center');
                 }}
             >            
                 <div className="flex flex-row gap-2 items-center">
@@ -2445,55 +2159,34 @@ function Header(
                     className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
                     />
                     <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
-                    OWIN
+                    OWIN Center
                     </span>
                 </div>
+                
             </button>
 
-          {/* menu */}
-          {/* COIN, NFT, DEFI */}
-          <div className="flex flex-row gap-2 items-center">
-            <button
+            <div className="flex flex-row gap-2 items-center">
+                <button
                 onClick={() => {
-  
-                  /*
-                  router.push(
-                    "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=CAMT"
-                  );
-                  */
-  
+                    router.push(
+                        "/kr/polygon/agent-center?agent=" + agent + "&tokenId=" + tokenId
+                    );
                 }}
-              className="text-gray-600 hover:underline text-xs xl:text-lg"
-            >
-              WALLET
-            </button>
-            <button
-              onClick={() => {
-                //console.log("chat");
-              }}
-              className="text-gray-600 hover:underline text-xs xl:text-lg"
-            >
-              TRADE
-            </button>
-            <button
-              onClick={() => {
-                router.push(
-                    "/kr/polygon/tbot?agent=" + agent
-                  );
-              }}
-              className="text-gray-600 hover:underline text-xs xl:text-lg"
-            >
-              TBOT
-            </button>
-            <button
-              onClick={() => {
-                router.push('/kr/polygon/profile-settings?agent=' + agent);
-              }}
-              className="text-gray-600 hover:underline text-xs xl:text-lg"
-            >
-              SETTINGS
-            </button>
-          </div>
+                className="text-gray-600 hover:underline text-xs xl:text-lg"
+                >
+                    마스터봇 NFT
+                </button>
+                <button
+                onClick={() => {
+                    router.push('/kr/polygon/agent-list?agent=' + agent + "&tokenId=" + tokenId);
+                }}
+                className="text-gray-600 hover:underline text-xs xl:text-lg"
+                >
+                    AI 에이전트 NFT
+                </button>
+            </div>
+
+
         </div>
         
       </header>

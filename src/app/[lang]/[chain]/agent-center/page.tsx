@@ -1513,7 +1513,7 @@ export default function AIPage({ params }: any) {
 
                         {!address && (
 
-                            <div className="w-full flex flex-col justify-center items-center gap-2">
+                            <div className="w-full flex flex-col justify-center items-start gap-2">
 
                             {/*
                                 <button
@@ -1574,7 +1574,9 @@ export default function AIPage({ params }: any) {
                                 locale={"en_US"}
                                 />
 
-
+                                <span className='text-xs font-semibold text-red-500'>
+                                    {Please_connect_your_wallet_first}
+                                </span>
 
                             </div>
 
@@ -1990,20 +1992,20 @@ function Header(
                 <button
                 onClick={() => {
                     router.push(
-                        "/kr/polygon/tbot?agent=" + agent + "&tokenId=" + tokenId
+                        "/kr/polygon/agent-center?agent=" + agent + "&tokenId=" + tokenId
                     );
                 }}
                 className="text-gray-600 hover:underline text-xs xl:text-lg"
                 >
-                TBOT
+                    마스터봇 NFT
                 </button>
                 <button
                 onClick={() => {
-                    router.push('/kr/polygon/profile-settings?agent=' + agent + "&tokenId=" + tokenId);
+                    router.push('/kr/polygon/agent-list?agent=' + agent + "&tokenId=" + tokenId);
                 }}
                 className="text-gray-600 hover:underline text-xs xl:text-lg"
                 >
-                SETTINGS
+                    AI 에이전트 NFT
                 </button>
             </div>
 

@@ -92,6 +92,7 @@ import { Alert, useForkRef } from '@mui/material';
 
 import thirdwebIcon from "@public/thirdweb.svg";
 import { verify } from 'crypto';
+import { tree } from 'next/dist/build/templates/app-page';
 
 
 const wallets = [
@@ -848,7 +849,7 @@ export default function AIPage({ params }: any) {
     const [userName, setUserName] = useState("");
     const [userPhoneNumber, setUserPhoneNumber] = useState("");
     const [userEmail, setUserEmail] = useState("");
-    const [htxUid, setHtxUid] = useState("");
+  
     const [htxUsdtWalletAddress, setHtxUsdtWalletAddress] = useState("");
     const [apiAccessKey, setApiAccessKey] = useState("");
     const [apiSecretKey, setApiSecretKey] = useState("");
@@ -882,10 +883,12 @@ export default function AIPage({ params }: any) {
             return;
         }
 
+        /*
         if (htxUid === "") {
             toast.error("HTX UID를 입력해 주세요.");
             return;
         }
+        */
 
         if (htxUsdtWalletAddress === "") {
             toast.error("HTX USDT(TRON) 지갑주소를 입력해 주세요.");
@@ -916,7 +919,7 @@ export default function AIPage({ params }: any) {
                 userName: userName,
                 userPhoneNumber: userPhoneNumber,
                 userEmail: userEmail,
-                htxUid: htxUid,
+                //htxUid: htxUid,
                 htxUsdtWalletAddress: htxUsdtWalletAddress,
                 apiAccessKey: apiAccessKey,
                 apiSecretKey: apiSecretKey,
@@ -965,6 +968,124 @@ export default function AIPage({ params }: any) {
         };
         fetchData();
     } , [address]);
+
+
+
+
+
+
+    const [htxUidList, setHtxUidList] = useState([] as any[]);
+
+    const [isValidAPIKeyList, setIsValidAPIKeyList] = useState([] as any[]);
+
+    // check htx api key
+    const [checkingHtxApiKeyList, setCheckingHtxApiKeyList] = useState([] as any[]);
+
+    console.log("checkingHtxApiKeyList", checkingHtxApiKeyList);
+    console.log("htxUidList", htxUidList);
+
+    useEffect(() => {
+        applications.forEach((application, index) => {
+            
+            setHtxUidList((htxUidList) => ['', ...htxUidList]);
+
+            setIsValidAPIKeyList((isValidAPIKeyList) => [false, ...isValidAPIKeyList]);
+            setCheckingHtxApiKeyList((checkingHtxApiKeyList) => [false, ...checkingHtxApiKeyList]);
+        } );
+    } , [applications]);
+  
+
+    const checkHtxApiKey = async (
+        htxAccessKey: string,
+        htxSecretKey: string,
+        index: number,
+    ) => {
+
+       
+        if (htxAccessKey === "") {
+            toast.error("HTX Access Key를 입력해 주세요.");
+            return;
+        }
+
+        if (htxSecretKey === "") {
+            toast.error("HTX Secret Key를 입력해 주세요.");
+            return;
+        }
+
+        setCheckingHtxApiKeyList(
+            checkingHtxApiKeyList.map((item, idx) => {
+                if (idx === index) {
+                    return true;
+                } else {
+                    return item;
+                }
+            })
+        );
+
+        const response = await fetch("/api/agent/getAccount", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                htxAccessKey: htxAccessKey,
+                htxSecretKey: htxSecretKey,
+            }),
+        });
+        /*
+        {
+            status: 'ok',
+            data: [ { id: 63912897, type: 'spot', subtype: '', state: 'working' } ]
+        }
+        */
+
+        const data = await response.json();
+
+        console.log("data.result", data.result);
+
+        if (data.result?.status === "ok") {
+
+            setIsValidAPIKeyList(
+                isValidAPIKeyList.map((item, idx) => {
+                    if (idx === index) {
+                        return true;
+                    } else {
+                        return item;
+                    }
+                })
+            );
+
+
+            setHtxUidList(
+                htxUidList.map((item, idx) => {
+                    if (idx === index) {
+                        return data.result?.data[0]?.id;
+                    } else {
+                        return item;
+                    }
+                })
+            );
+
+
+
+            toast.success("HTX API Key가 확인되었습니다.");
+        } else {
+            toast.error("HTX API Key를 확인할 수 없습니다.");
+        }
+
+        setCheckingHtxApiKeyList(
+            checkingHtxApiKeyList.map((item, idx) => {
+                if (idx === index) {
+                    return false;
+                } else {
+                    return item;
+                }
+            })
+        );
+
+    };
+
+
 
 
 
@@ -1066,124 +1187,6 @@ export default function AIPage({ params }: any) {
     const [checkingHtxAssetValuationForAgent, setCheckingHtxAssetValuationForAgent] = useState([] as any[]);
     const [htxAssetValuationForAgent, setHtxAssetValuationForAgent] = useState([] as any[]);
 
-    useEffect(() => {
-
-        // set false for all applications
-
-        setCheckingHtxAssetValuationForAgent(
-            applications.map((item) => {
-                return {
-                    htxUid: item.htxUid,
-                    checking: false,
-                }
-            })
-        );
-
-        
-
-        // set balance for all applications
-        
-        setHtxAssetValuationForAgent(
-            applications.map((item) => {
-                return {
-                    htxUid: item.htxUid,
-                    balance: 0,
-                };
-            })
-        );
-    
-    } , [applications]);
-
-    ///console.log("checkingHtxAssetValuationForAgent", checkingHtxAssetValuationForAgent);
-
-    
-    const checkHtxAssetValuation = async (
-        htxAccessKey: string,
-        htxSecretKey: string,
-        htxUid: string,
-    ) => {
-
-        if (htxAccessKey === "") {
-            toast.error("HTX Access Key를 입력해 주세요.");
-            return;
-        }
-
-        if (htxSecretKey === "") {
-            toast.error("HTX Secret Key를 입력해 주세요.");
-            return;
-        }
-
-        if (htxUid === "") {
-            toast.error("계정 ID를 입력해 주세요.");
-            return;
-        }
-
-        console.log("checkHtxAssetValuation htxUid", htxUid);
-
-
-
-        setCheckingHtxAssetValuationForAgent(
-            applications.map((item) => {
-                if (item.htxUid === htxUid) {
-                    return {
-                        htxUid: htxUid,
-                        checking: true,
-                    }
-                }
-            }
-        ));
-
-
-        const response = await fetch("/api/agent/getAssetValuation", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                htxAccessKey: htxAccessKey,
-                htxSecretKey: htxSecretKey,
-            }),
-        });
-
-        const data = await response.json();
-
-        ////console.log("getAssetValuation data.result", data.result);
-
-        if (data.result?.status === "ok") {
-
-            setHtxAssetValuationForAgent(
-                applications.map((item) => {
-                    if (item.htxUid === htxUid) {
-                        return {
-                            htxUid: htxUid,
-                            balance: data.result?.balance,
-                        };
-                    } else {
-                        return item;
-                    }
-                })
-            );
-
-            toast.success("HTX 자산 가치가 확인되었습니다.");
-        } else {
-            toast.error("HTX 자산 가치를 확인할 수 없습니다.");
-        }
-
-        setCheckingHtxAssetValuationForAgent(
-            applications.map((item) => {
-                if (item.htxUid === htxUid) {
-                    return {
-                        htxUid: htxUid,
-                        checking: false,
-                    }
-                }
-            }
-        ));
-
-    };
-
-
-
 
     // getPositionList
 
@@ -1199,7 +1202,7 @@ export default function AIPage({ params }: any) {
     const getPositionList = async (
         htxAccessKey: string,
         htxSecretKey: string,
-        htxUid: string,
+        index: number,
     ) => {
 
         if (htxAccessKey === "") {
@@ -1213,17 +1216,16 @@ export default function AIPage({ params }: any) {
         }
 
         setGettingPositionList(
-            gettingPositionList.map((item) => {
-                if (item.htxUid === htxUid) {
-                    return {
-                        htxUid: htxUid,
-                        getting: true,
-                    }
+            gettingPositionList.map((item, idx) => {
+                if (idx === index) {
+                    return true;
                 } else {
                     return item;
                 }
-            }
-        ));
+            })
+        );
+                
+
                 
         
 
@@ -1303,31 +1305,20 @@ export default function AIPage({ params }: any) {
 
 
             setPositionList(
-                positionList.map((item) => {
-                    if (item.htxUid === htxUid) {
-                        return {
-                            htxUid: htxUid,
-                            positions: data.result.data.positions,
-                        }
-                    } else {
+                positionList.map((item, idx) => {
+                    if (idx === index) {
                         return item;
                     }
-                }
-            ));
+                })
+            );
 
             setVerifiedPositionList(
-                verifiedPositionList.map((item) => {
-                    if (item.htxUid === htxUid) {
-                        return {
-                            htxUid: htxUid,
-                            verified: true,
-                        }
-                    } else {
-                        return item;
+                verifiedPositionList.map((item, idx) => {
+                    if (idx === index) {
+                        return true;
                     }
-                }
-            ));
-
+                })
+            );
 
 
             //toast.success("HTX 포지션 리스트가 확인되었습니다.");
@@ -1336,17 +1327,14 @@ export default function AIPage({ params }: any) {
         }
 
         setGettingPositionList(
-            gettingPositionList.map((item) => {
-                if (item.htxUid === htxUid) {
-                    return {
-                        htxUid: htxUid,
-                        getting: false,
-                    }
+            gettingPositionList.map((item, idx) => {
+                if (idx === index) {
+                    return false;
                 } else {
                     return item;
                 }
-            }
-        ));
+            })
+        );
 
     }
 
@@ -1356,32 +1344,23 @@ export default function AIPage({ params }: any) {
     console.log("gettingPositionList====", gettingPositionList);
 
 
+    
     useEffect(() => {
 
+        if (applications.length === 0) {
+            return;
+        }
 
-        setVerifiedPositionList(
-            applications.map((item) => {
-                return {
-                    htxUid: item.htxUid,
-                    verified: false,
-                }
-            })
-        );
-
-        // set balance for all applications
+        applications.forEach((application, index) => {
+  
+            setPositionList((positionList) => [[], ...positionList]);
+            setVerifiedPositionList((verifiedPositionList) => [false, ...verifiedPositionList]);
         
-        setPositionList(
-            applications.map((item) => {
-                return {
-                    htxUid: item.htxUid,
-                    positions: [],
-                }
-            })
-        );
+        } );
 
 
         // on promise
-        applications.forEach(async (application) => {
+        applications.forEach(async (application, index) => {
 
             ///getPositionList(item.apiAccessKey, item.apiSecretKey, item.htxUid);
 
@@ -1404,26 +1383,25 @@ export default function AIPage({ params }: any) {
             if (data.result?.status === "ok") {
 
                 setPositionList(
-                    applications.map((item) => {
-                        if (item.htxUid === application.htxUid) {
-                            return {
-                                htxUid: application.htxUid,
-                                positions: data.result.data.positions,
-                            }
+                    positionList.map((item, idx) => {
+                        if (idx === index) {
+                            return data.result.data.positions;
+                        } else {
+                            return item;
                         }
-                    }
-                ));
+                    })
+                );
+
     
                 setVerifiedPositionList(
-                    applications.map((item) => {
-                        if (item.htxUid === application.htxUid) {
-                            return {
-                                htxUid: application.htxUid,
-                                verified: true,
-                            }
+                    verifiedPositionList.map((item, idx) => {
+                        if (idx === index) {
+                            return true;
+                        } else {
+                            return item;
                         }
-                    }
-                ));
+                    } )
+                );
 
             }
 
@@ -1432,6 +1410,7 @@ export default function AIPage({ params }: any) {
 
     
     } , [applications]);
+    
 
 
 
@@ -1897,7 +1876,7 @@ export default function AIPage({ params }: any) {
 
                             <div className='w-full grid grid-cols-1 xl:grid-cols-2 gap-5'>
 
-                                {address && !loadingApplications && applications.map((application) => (
+                                {address && !loadingApplications && applications.map((application, index) => (
                                     <div
                                         key={application._id}
                                         className='w-full flex flex-col gap-5
@@ -1912,6 +1891,37 @@ export default function AIPage({ params }: any) {
                                                 }
                                             </span>
                                         </div>
+
+
+                                        {/* HTX UID */}
+                                        {/* checkHtxApiKey */}
+
+                                        <div className='w-full flex flex-row items-center justify-start gap-2'>
+                                            <button
+                                                onClick={() => {
+                                                    checkHtxApiKey(
+                                                        application.apiAccessKey,
+                                                        application.apiSecretKey,
+                                                        index,
+                                                    );
+                                                }}
+                                                disabled={
+                                                    checkingHtxApiKeyList[index]
+                                                }
+                                                className={`${checkingHtxApiKeyList[index] ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
+                                                    hover:bg-blue-600
+                                                `}
+                                            >
+                                                {checkingHtxApiKeyList[index] ? "Checking..." : "Check"}
+                                            </button>
+
+                                            <span className='text-xl font-semibold text-gray-800'>
+                                                HTX UID: {htxUidList[index]}
+                                            </span>
+                                        </div>
+
+
+
 
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                                             <span className='text-xl font-semibold text-gray-800'>
@@ -2042,6 +2052,7 @@ export default function AIPage({ params }: any) {
 
 
                                         {/* asset valuation */}
+                                        {/*
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                                             <span className='text-sm text-gray-800'>
                                                 HTX 자산 가치(SPOT): {htxAssetValuationForAgent.find((item) => item.htxUid === application.htxUid)?.balance || 0} $(USD)
@@ -2064,11 +2075,12 @@ export default function AIPage({ params }: any) {
                                                 {checkingHtxAssetValuationForAgent.find((item) => item?.htxUid === application.htxUid)?.checking ? "Checking..." : "Check"}
                                             </button>
                                         </div>
+                                        */}
 
                                         {/* get position list */}
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                                         
-                                            {verifiedPositionList.find((item: any) => item?.htxUid === application.htxUid)?.verified ? (
+                                            {verifiedPositionList[index] ? (
 
                                                 <>
                                                     <span className='text-sm text-gray-800'>
