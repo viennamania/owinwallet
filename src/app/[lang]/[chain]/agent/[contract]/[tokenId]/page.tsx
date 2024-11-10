@@ -949,15 +949,27 @@ export default function AgentPage({ params }: any) {
         {/* header */}
         <div className="w-full flex flex-col items-start justify-center space-y-4">
           <div className="flex flex-row items-center gap-2">
-            <Image
-              src={avatar}
-              width={50}
-              height={50}
-              alt="Agent"
-              className="rounded-lg
-                object-cover
-              "
-            />
+            {address && userCode && (
+
+              <div className="flex flex-row items-center gap-2">
+                <Image
+                  src={avatar}
+                  width={50}
+                  height={50}
+                  alt="Agent"
+                  className="rounded-lg
+                    object-cover
+                  "
+                />
+
+                <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
+                    {nickname}
+                </div>
+              </div>
+
+            )}
+
+
             <span className="text-lg font-semibold text-gray-800">
               에이전트 NFT 상세정보
             </span>
@@ -1013,13 +1025,7 @@ export default function AgentPage({ params }: any) {
               />
             )}
 
-           {address && userCode && (
 
-                  <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
-                      {nickname}
-                  </div>
-
-            )}
 
 
           </div>
