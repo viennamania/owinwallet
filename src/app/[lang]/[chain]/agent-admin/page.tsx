@@ -1869,7 +1869,7 @@ export default function AIPage({ params }: any) {
                                 </button>
                             </div>
 
-                            {loadingApplications && (
+                            {address && loadingApplications && (
                                 <div className='w-full flex flex-col items-center justify-center'>
                                     <Image
                                         src="/loading.png"
@@ -1881,17 +1881,23 @@ export default function AIPage({ params }: any) {
                                 </div>
                             )}
 
-                            <div className='w-full flex flex-col gap-5'>
-                                {/* total count */}
+                            {address && !loadingApplications && applications.length === 0 ? (
+                                <div className='w-full flex flex-col items-center justify-center gap-2'>
+                                    <span className='text-lg text-gray-800'>
+                                        권한이 없습니다. 관리자에게 문의하세요.
+                                    </span>
+                                </div>
+                            ) : (
                                 <span className='text-lg text-gray-800'>
                                     총 {applications.length}개의 신청이 있습니다.
                                 </span>
-                            </div>
+
+                            )}
 
 
                             <div className='w-full grid grid-cols-1 xl:grid-cols-2 gap-5'>
 
-                                {applications.map((application) => (
+                                {address && !loadingApplications && applications.map((application) => (
                                     <div
                                         key={application._id}
                                         className='w-full flex flex-col gap-5

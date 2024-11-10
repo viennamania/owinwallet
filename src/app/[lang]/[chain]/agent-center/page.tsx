@@ -1695,216 +1695,227 @@ export default function AIPage({ params }: any) {
 
                             <div className='w-full flex flex-col gap-5'>
 
-                                {/* total count */}
-                                <span className='text-lg text-gray-800'>
-                                    총 {applications.length}개의 신청이 있습니다.
-                                </span>
-
-
-
-                                {applications.map((application) => (
-                                    <div
-                                        key={application._id}
-                                        className='w-full flex flex-col gap-5
-                                        border border-gray-300 p-4 rounded-lg bg-gray-100
-                                    '>
-
-                                        {/* 신청일자 */}
-                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                            <span className='text-sm text-gray-800'>
-                                                신청일자: {
-                                                    new Date(application.createdAt).toLocaleString()
-                                                }
-                                            </span>
-                                        </div>
-
-                                        {/* agentBot and agentBotNumber */}
-                                        <div className='w-full flex flex-col items-start justify-between gap-2'>
-                                            <span className='text-sm text-gray-800'>
-                                                Agent Bot: {application.agentBot}
-                                            </span>
-                                            <span className='text-sm text-gray-800'>
-                                                Agent Bot Number: {application.agentBotNumber}
-                                            </span>
-                                        </div>
-
-                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                            <span className='text-xl font-semibold text-gray-800'>
-                                                HTX UID: {application.htxUid}
-                                            </span>
-                                            {/* copy button */}
-                                            <button
-                                                onClick={() => {
-                                                    navigator.clipboard.writeText(application.htxUid);
-                                                    toast.success("Copied to clipboard");
-                                                }}
-                                                className="bg-gray-500 text-white p-2 rounded-lg
-                                                    hover:bg-gray-600
-                                                "
-                                            >
-                                                Copy
-                                            </button>
-                                        </div>
-
-                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                            <span className='text-sm text-gray-800'>
-                                                이름: {application.userName}
-                                            </span>
-                                            {/* copy button */}
-                                            <button
-                                                onClick={() => {
-                                                    navigator.clipboard.writeText(application.userPhoneNumber);
-                                                    toast.success("Copied to clipboard");
-                                                }}
-                                                className="bg-gray-500 text-white p-2 rounded-lg
-                                                    hover:bg-gray-600
-                                                "
-                                            >  
-                                                Copy
-                                            </button>
-                                        </div>
-
-                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                            <span className='text-sm text-gray-800'>
-                                                핸드폰번호: {application.userPhoneNumber}
-                                            </span>
-                                            {/* copy button */}
-                                            <button
-                                                onClick={() => {
-                                                    navigator.clipboard.writeText(application.userPhoneNumber);
-                                                    toast.success("Copied to clipboard");
-                                                }}
-                                                className="bg-gray-500 text-white p-2 rounded-lg
-                                                    hover:bg-gray-600
-                                                "
-                                            >
-                                                Copy
-                                            </button>
-                                        </div>
-
-                                        
-                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                            <span className='text-sm text-gray-800'>
-                                                이메일주소: {application.userEmail}
-                                            </span>
-                                            <button
-                                                onClick={() => {
-                                                    navigator.clipboard.writeText(application.userEmail);
-                                                    toast.success("Copied to clipboard");
-                                                }}
-                                                className="bg-gray-500 text-white p-2 rounded-lg
-                                                    hover:bg-gray-600
-                                                "
-                                            >
-                                                Copy
-                                            </button>
-                                        </div>
-                                        
-
-
-
-                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                            <span className='text-xs text-gray-800'>
-                                                HTX USDT(TRON) 지갑주소: {application.htxUsdtWalletAddress}
-                                            </span>
-                                            {/* copy button */}
-                                            <button
-                                                onClick={() => {
-                                                    navigator.clipboard.writeText(application.htxUsdtWalletAddress);
-                                                    toast.success("Copied to clipboard");
-                                                }}
-                                                className="bg-gray-500 text-white p-2 rounded-lg
-                                                    hover:bg-gray-600
-                                                "
-                                            >
-                                                Copy
-                                            </button>
-                                        </div>
-
-                                        {/*
-                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                            <span className='text-sm text-gray-800'>
-                                                API Access Key: {application.apiAccessKey}
-                                            </span>
-                                            <button
-                                                onClick={() => {
-                                                    navigator.clipboard.writeText(application.apiAccessKey);
-                                                    toast.success("Copied to clipboard");
-                                                }}
-                                                className="bg-gray-500 text-white p-2 rounded-lg
-                                                    hover:bg-gray-600
-                                                "
-                                            >
-                                                Copy
-                                            </button>
-                                        </div>
-                                       
-
-                                        
-
-                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                            <span className='text-sm text-gray-800'>
-                                                API Secret Key: {application.apiSecretKey}
-                                            </span>
-                                            <button
-                                                onClick={() => {
-                                                    navigator.clipboard.writeText(application.apiSecretKey);
-                                                    toast.success("Copied to clipboard");
-                                                }}
-                                                className="bg-gray-500 text-white p-2 rounded-lg
-                                                    hover:bg-gray-600
-                                                "
-                                            >
-                                                Copy
-                                            </button>
-                                        </div>
-                                         */}
-
-
-                                        {/* asset valuation */}
-
-                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                            <span className='text-sm text-gray-800'>
-                                                HTX 자산 가치(SPOT): {htxAssetValuationForAgent.find((item) => item.htxUid === application.htxUid)?.balance || 0} $(USD)
-                                            </span>
-                                            <button
-                                                onClick={() => {
-                                                    checkHtxAssetValuation(
-                                                        application.apiAccessKey,
-                                                        application.apiSecretKey,
-                                                        application.htxUid,
-                                                    );
-                                                }}
-                                                disabled={
-                                                    checkingHtxAssetValuationForAgent.find((item) => item?.htxUid === application.htxUid)?.checking
-                                                }
-                                                className={`${checkingHtxAssetValuationForAgent.find((item) => item?.htxUid === application.htxUid)?.checking ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
-                                                    hover:bg-blue-600
-                                                `}
-                                            >
-                                                {checkingHtxAssetValuationForAgent.find((item) => item?.htxUid === application.htxUid)?.checking ? "Checking..." : "Check"}
-                                            </button>
-                                        </div>
-
-
-                                                
-                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                            <span className='text-sm text-gray-800'>
-                                                상태: 준비중
-                                            </span>
-                                            {/*
-                                            <button
-                                                className="bg-blue-500 text-white p-2 rounded-lg
-                                                    hover:bg-blue-600
-                                                "
-                                            >
-                                                승인하기
-                                            </button>
-                                            */}
-                                        </div>
-            
+                                {address && !loadingApplications && applications.length === 0 ? (
+                                    <div className='w-full flex flex-col items-center justify-center gap-2'>
+                                        <span className='text-lg text-gray-800'>
+                                            권한이 없습니다. 관리자에게 문의하세요.
+                                        </span>
                                     </div>
-                                ))}
+                                ) : (
+                                    <span className='text-lg text-gray-800'>
+                                        총 {applications.length}개의 신청이 있습니다.
+                                    </span>
+
+                                )}
+
+
+                                <div className='w-full grid grid-cols-1 xl:grid-cols-2 gap-5'>
+
+                                    {address && !loadingApplications && applications.map((application) => (
+                                        <div
+                                            key={application._id}
+                                            className='w-full flex flex-col gap-5
+                                            border border-gray-300 p-4 rounded-lg bg-gray-100
+                                        '>
+
+                                            {/* 신청일자 */}
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <span className='text-sm text-gray-800'>
+                                                    신청일자: {
+                                                        new Date(application.createdAt).toLocaleString()
+                                                    }
+                                                </span>
+                                            </div>
+
+                                            {/* agentBot and agentBotNumber */}
+                                            <div className='w-full flex flex-col items-start justify-between gap-2'>
+                                                <span className='text-xs text-gray-800'>
+                                                    Agent Bot: {application.agentBot}
+                                                </span>
+                                                <span className='text-sm text-gray-800'>
+                                                    Agent Bot Number: {application.agentBotNumber}
+                                                </span>
+                                            </div>
+
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <span className='text-xl font-semibold text-gray-800'>
+                                                    HTX UID: {application.htxUid}
+                                                </span>
+                                                {/* copy button */}
+                                                <button
+                                                    onClick={() => {
+                                                        navigator.clipboard.writeText(application.htxUid);
+                                                        toast.success("Copied to clipboard");
+                                                    }}
+                                                    className="bg-gray-500 text-white p-2 rounded-lg
+                                                        hover:bg-gray-600
+                                                    "
+                                                >
+                                                    Copy
+                                                </button>
+                                            </div>
+
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <span className='text-sm text-gray-800'>
+                                                    이름: {application.userName}
+                                                </span>
+                                                {/* copy button */}
+                                                <button
+                                                    onClick={() => {
+                                                        navigator.clipboard.writeText(application.userPhoneNumber);
+                                                        toast.success("Copied to clipboard");
+                                                    }}
+                                                    className="bg-gray-500 text-white p-2 rounded-lg
+                                                        hover:bg-gray-600
+                                                    "
+                                                >  
+                                                    Copy
+                                                </button>
+                                            </div>
+
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <span className='text-sm text-gray-800'>
+                                                    핸드폰번호: {application.userPhoneNumber}
+                                                </span>
+                                                {/* copy button */}
+                                                <button
+                                                    onClick={() => {
+                                                        navigator.clipboard.writeText(application.userPhoneNumber);
+                                                        toast.success("Copied to clipboard");
+                                                    }}
+                                                    className="bg-gray-500 text-white p-2 rounded-lg
+                                                        hover:bg-gray-600
+                                                    "
+                                                >
+                                                    Copy
+                                                </button>
+                                            </div>
+
+                                            
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <span className='text-sm text-gray-800'>
+                                                    이메일주소: {application.userEmail}
+                                                </span>
+                                                <button
+                                                    onClick={() => {
+                                                        navigator.clipboard.writeText(application.userEmail);
+                                                        toast.success("Copied to clipboard");
+                                                    }}
+                                                    className="bg-gray-500 text-white p-2 rounded-lg
+                                                        hover:bg-gray-600
+                                                    "
+                                                >
+                                                    Copy
+                                                </button>
+                                            </div>
+                                            
+
+
+
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <span className='text-xs text-gray-800'>
+                                                    HTX USDT(TRON) 지갑주소: {application.htxUsdtWalletAddress}
+                                                </span>
+                                                {/* copy button */}
+                                                <button
+                                                    onClick={() => {
+                                                        navigator.clipboard.writeText(application.htxUsdtWalletAddress);
+                                                        toast.success("Copied to clipboard");
+                                                    }}
+                                                    className="bg-gray-500 text-white p-2 rounded-lg
+                                                        hover:bg-gray-600
+                                                    "
+                                                >
+                                                    Copy
+                                                </button>
+                                            </div>
+
+                                            {/*
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <span className='text-sm text-gray-800'>
+                                                    API Access Key: {application.apiAccessKey}
+                                                </span>
+                                                <button
+                                                    onClick={() => {
+                                                        navigator.clipboard.writeText(application.apiAccessKey);
+                                                        toast.success("Copied to clipboard");
+                                                    }}
+                                                    className="bg-gray-500 text-white p-2 rounded-lg
+                                                        hover:bg-gray-600
+                                                    "
+                                                >
+                                                    Copy
+                                                </button>
+                                            </div>
+                                        
+
+                                            
+
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <span className='text-sm text-gray-800'>
+                                                    API Secret Key: {application.apiSecretKey}
+                                                </span>
+                                                <button
+                                                    onClick={() => {
+                                                        navigator.clipboard.writeText(application.apiSecretKey);
+                                                        toast.success("Copied to clipboard");
+                                                    }}
+                                                    className="bg-gray-500 text-white p-2 rounded-lg
+                                                        hover:bg-gray-600
+                                                    "
+                                                >
+                                                    Copy
+                                                </button>
+                                            </div>
+                                            */}
+
+
+                                            {/* asset valuation */}
+
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <span className='text-sm text-gray-800'>
+                                                    HTX 자산 가치(SPOT): {htxAssetValuationForAgent.find((item) => item.htxUid === application.htxUid)?.balance || 0} $(USD)
+                                                </span>
+                                                <button
+                                                    onClick={() => {
+                                                        checkHtxAssetValuation(
+                                                            application.apiAccessKey,
+                                                            application.apiSecretKey,
+                                                            application.htxUid,
+                                                        );
+                                                    }}
+                                                    disabled={
+                                                        checkingHtxAssetValuationForAgent.find((item) => item?.htxUid === application.htxUid)?.checking
+                                                    }
+                                                    className={`${checkingHtxAssetValuationForAgent.find((item) => item?.htxUid === application.htxUid)?.checking ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
+                                                        hover:bg-blue-600
+                                                    `}
+                                                >
+                                                    {checkingHtxAssetValuationForAgent.find((item) => item?.htxUid === application.htxUid)?.checking ? "Checking..." : "Check"}
+                                                </button>
+                                            </div>
+
+
+                                                    
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <span className='text-sm text-gray-800'>
+                                                    상태: 준비중
+                                                </span>
+                                                {/*
+                                                <button
+                                                    className="bg-blue-500 text-white p-2 rounded-lg
+                                                        hover:bg-blue-600
+                                                    "
+                                                >
+                                                    승인하기
+                                                </button>
+                                                */}
+                                            </div>
+                
+                                        </div>
+                                    ))}
+
+                                </div>
 
                             </div>
 
