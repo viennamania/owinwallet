@@ -1763,6 +1763,7 @@ export default function AIPage({ params }: any) {
                                                 Copy
                                             </button>
                                         </div>
+
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                                             <span className='text-sm text-gray-800'>
                                                 핸드폰번호: {application.userPhoneNumber}
@@ -1781,7 +1782,7 @@ export default function AIPage({ params }: any) {
                                             </button>
                                         </div>
 
-                                        {/*
+                                        
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                                             <span className='text-sm text-gray-800'>
                                                 이메일주소: {application.userEmail}
@@ -1798,7 +1799,7 @@ export default function AIPage({ params }: any) {
                                                 Copy
                                             </button>
                                         </div>
-                                        */}
+                                        
 
 
 
