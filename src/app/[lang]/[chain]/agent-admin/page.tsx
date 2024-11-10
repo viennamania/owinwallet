@@ -1184,16 +1184,45 @@ export default function AIPage({ params }: any) {
 
 
 
+    // getPositionList
+    const [positionList, setPositionList] = useState([] as any[]);
 
-    const [isAgentTradingStarted, setIsAgentTradingStarted] = useState(false);
 
 
-    // search match results
-    const [searchResults, setSearchResults] = useState([] as any[]);
-    const [searchingMatchResults, setSearchingMatchResults] = useState(false);
-    const searchMatchResults = async (
+    const [gettingPositionList, setGettingPositionList] = useState([] as any[]);
+
+
+    useEffect(() => {
+
+        // set false for all applications
+
+        setGettingPositionList(
+            applications.map((item) => {
+                return {
+                    htxUid: item.htxUid,
+                    getting: false,
+                }
+            })
+        );
+
+        // set balance for all applications
+        
+        setPositionList(
+            applications.map((item) => {
+                return {
+                    htxUid: item.htxUid,
+                    positions: [],
+                }
+            })
+        );
+    
+    } , [applications]);
+
+
+    const getPositionList = async (
         htxAccessKey: string,
         htxSecretKey: string,
+        htxUid: string,
     ) => {
 
         if (htxAccessKey === "") {
@@ -1206,9 +1235,22 @@ export default function AIPage({ params }: any) {
             return;
         }
 
-        setSearchingMatchResults(true);
+        setGettingPositionList(
+            gettingPositionList.map((item) => {
+                if (item.htxUid === htxUid) {
+                    return {
+                        htxUid: htxUid,
+                        getting: true,
+                    }
+                } else {
+                    return item;
+                }
+            }
+        ));
+                
+        
 
-        const response = await fetch("/api/agent/searchMatchResults", {
+        const response = await fetch("/api/agent/getPositionList", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -1222,27 +1264,101 @@ export default function AIPage({ params }: any) {
         const data = await response.json();
 
         ///console.log("data.result====", data.result);
+  
 
         if (data.result?.status === "ok") {
 
-            setSearchResults(data.result?.data);
 
-            if (data.result?.data.length > 0) {
-                setIsAgentTradingStarted(true);
+            /*
+            {
+                "positions": [
+                    {
+                        "lever": "5",
+                        "position_side": "long",
+                        "contract_code": "BCH-USDT",
+                        "open_avg_price": "377.48",
+                        "volume": "136",
+                        "margin_mode": "cross",
+                        "position_margin": "104.03456",
+                        "margin_rate": "0.033582556634879386",
+                        "unreal_profit": "6.8",
+                        "profit": "6.8",
+                        "profit_rate": "0.06622867436685387",
+                        "liquidation_price": "20.92"
+                    },
+                    {
+                        "lever": "5",
+                        "position_side": "long",
+                        "contract_code": "ONDO-USDT",
+                        "open_avg_price": "0.7358",
+                        "volume": "327",
+                        "margin_mode": "cross",
+                        "position_margin": "48.06246",
+                        "margin_rate": "0.033582556634879386",
+                        "unreal_profit": "-0.298199999999999949",
+                        "profit": "-0.298199999999999949",
+                        "profit_rate": "-0.006196737050128735",
+                        "liquidation_price": null
+                    },
+                    {
+                        "lever": "5",
+                        "position_side": "long",
+                        "contract_code": "MEW-USDT",
+                        "open_avg_price": "0.009241",
+                        "volume": "32",
+                        "margin_mode": "cross",
+                        "position_margin": "58.336",
+                        "margin_rate": "0.033582556634879386",
+                        "unreal_profit": "-4.057999999999968",
+                        "profit": "-4.057999999999968",
+                        "profit_rate": "-0.06860802467048483",
+                        "liquidation_price": null
+                    }
+                ]
             }
+            */
 
 
 
-            toast.success("HTX 매치 결과가 확인되었습니다.");
+
+            //console.log("data.result.data.positions====", data.result.data.positions);
+
+
+
+            setPositionList(
+                positionList.map((item) => {
+                    if (item.htxUid === htxUid) {
+                        return {
+                            htxUid: htxUid,
+                            positions: data.result.data.positions,
+                        }
+                    } else {
+                        return item;
+                    }
+                }
+            ));
+
+            toast.success("HTX 포지션 리스트가 확인되었습니다.");
         } else {
-            toast.error("HTX 매치 결과를 확인할 수 없습니다.");
+            toast.error("HTX 포지션 리스트를 확인할 수 없습니다.");
         }
 
-        setSearchingMatchResults(false);
+        setGettingPositionList(
+            gettingPositionList.map((item) => {
+                if (item.htxUid === htxUid) {
+                    return {
+                        htxUid: htxUid,
+                        getting: false,
+                    }
+                } else {
+                    return item;
+                }
+            }
+        ));
 
-    };
+    }
 
-
+    //console.log("positionList====", positionList);
 
 
 
@@ -1866,6 +1982,47 @@ export default function AIPage({ params }: any) {
                                                 `}
                                             >
                                                 {checkingHtxAssetValuationForAgent.find((item) => item?.htxUid === application.htxUid)?.checking ? "Checking..." : "Check"}
+                                            </button>
+                                        </div>
+
+                                        {/* get position list */}
+                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                            <div className='flex flex-col gap-2'>
+                                                <span className='text-sm text-gray-800'>
+                                                    HTX 포지션 리스트: {positionList.find((item) => item.htxUid === application.htxUid)?.positions.length || 0} 개
+                                                </span>
+                                                {positionList.map((item) => (
+
+                                                    item.htxUid === application.htxUid && item.positions.map((position: any) => (
+                                                        <div
+                                                            key={position.contract_code}
+                                                            className='w-full flex flex-row items-center justify-between gap-2'
+                                                        >
+                                                            <span className='text-xs text-gray-800'>
+                                                                {position.contract_code} {position.position_side} {position.volume} {position.open_avg_price} $ (USD)
+                                                            </span>
+                                                        </div>
+                                                    ))
+                                                    
+                                                ))}
+
+                                            </div>
+                                            <button
+                                                onClick={() => {
+                                                    getPositionList(
+                                                        application.apiAccessKey,
+                                                        application.apiSecretKey,
+                                                        application.htxUid,
+                                                    );
+                                                }}
+                                                disabled={
+                                                    gettingPositionList.find((item) => item?.htxUid === application.htxUid)?.getting
+                                                }
+                                                className={`${gettingPositionList.find((item) => item?.htxUid === application.htxUid)?.getting ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
+                                                    hover:bg-blue-600
+                                                `}
+                                            >
+                                                {gettingPositionList.find((item) => item?.htxUid === application.htxUid)?.getting ? "Getting..." : "Get"}
                                             </button>
                                         </div>
 

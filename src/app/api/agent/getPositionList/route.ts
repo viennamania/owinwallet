@@ -41,8 +41,6 @@ export async function POST(request: NextRequest) {
   const {
     htxAccessKey,
     htxSecretKey,
-    accountId,
-    currency,
    } = body;
   
 
@@ -53,15 +51,16 @@ export async function POST(request: NextRequest) {
 
    //const path = `/v1/account/accounts/${accountId}/balance`;
 
-   const path = `/v1/order/matchresults`;
+    //const path = `/v2/account/asset-valuation`;
 
+    const path = `/copytrading/trader/position_list`;
 
 
     //const HOST = 'api.huobipro.com';
     
-    const HOST = 'api.huobi.pro';
+    //const HOST = 'api.huobi.pro';
 
-    ///const HOST = 'api.hbdm.com';
+    const HOST = 'api.hbdm.com';
 
 
 
@@ -76,13 +75,16 @@ export async function POST(request: NextRequest) {
     ////const path = "/api/v1/contract_account_info";
 
 
+    // accountType: 'spot', 'margin', 'otc', 'super-margin'
+    // valuationCurrency: 'USD', 'CNY'
+
+
+
     const huobiBody: { [key: string]: string | number | undefined } = {
         AccessKeyId: htxAccessKey,
         SignatureMethod: "HmacSHA256",
         SignatureVersion: 2,
         Timestamp: moment.utc().format('YYYY-MM-DDTHH:mm:ss'),
-
-        symbol: 'btcusdt',
     };
 
 
@@ -110,7 +112,7 @@ export async function POST(request: NextRequest) {
           p += `&Signature=${Signature}`;
       }
 
-      ////console.log(p);
+      //console.log(p);
 
 
 
@@ -119,6 +121,8 @@ export async function POST(request: NextRequest) {
           method: 'GET',
           headers: DEFAULT_HEADERS,
       });
+
+      ///console.log(response);
 
       if (!response) {
           return NextResponse.json({
@@ -130,25 +134,29 @@ export async function POST(request: NextRequest) {
 
       const data = await response.json();
 
-      ///console.log(JSON.stringify(data.data));
-
-   
-     
-      //console.log(JSON.stringify(balance));
-
-
+      console.log(JSON.stringify(data));
       /*
       {
-        status: 'ok',
-        data: [ { id: 63912897, type: 'spot', subtype: '', state: 'working' } ]
+        "code":200,
+        "data":{"positions":[
+          {"lever":"5","position_side":"long","contract_code":"BCH-USDT","open_avg_price":"377.48","volume":"136","margin_mode":"cross","position_margin":"103.53408","margin_rate":"0.033641785791011462","unreal_profit":"4.2976","profit":"4.2976","profit_rate":"0.041856522199851645","liquidation_price":"19.61"},
+          {"lever":"5","position_side":"long","contract_code":"ONDO-USDT","open_avg_price":"0.7358","volume":"327","margin_mode":"cross","position_margin":"48.31752","margin_rate":"0.033641785791011462","unreal_profit":"0.977100000000000051","profit":"0.977100000000000051","profit_rate":"0.020304600173309145","liquidation_price":null},{"lever":"5","position_side":"long","contract_code":"MEW-USDT","open_avg_price":"0.009241","volume":"32","margin_mode":"cross","position_margin":"58.4384","margin_rate":"0.033641785791011462","unreal_profit":"-3.545999999999968","profit":"-3.545999999999968","profit_rate":"-0.05995171401713626","liquidation_price":null}]},
+          
+        "tid":"c9f98f245540463fa6a1d2e2f66069e1","success":true
       }
       */
+      /*
+      {\"status\":null,\"err_code\":300013,\"err_msg\":\"未知错误:300,013: subuser:50751676,fail\",\"ts\":1731205339092,\"function\":\"getContractPositionsNew\"} ",
+      "tid":"3b03bd41c5b3432e94fe7e91cdd69c48","code":400000,
+      "success":false}
+      */
+
+
 
       return NextResponse.json({
           result: {
-                status: "ok",
-                data: data.data   
-                
+              status: "ok",
+              data: data.data,
           }
       });
       

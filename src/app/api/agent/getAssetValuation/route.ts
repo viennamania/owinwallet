@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
     
     const HOST = 'api.huobi.pro';
 
-    ///const HOST = 'https://api.hbdm.com';
+    ///const HOST = 'api.hbdm.com';
 
 
 
