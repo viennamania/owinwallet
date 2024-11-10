@@ -2012,7 +2012,7 @@ export default function AIPage({ params }: any) {
 
                                                                     ${selectedBotNumber && selectedBotNumber === nft.tokenId ? 'bg-blue-500 text-zinc-100' : 'bg-white text-gray-500'}
                                                                 `}
-                                                                onClick={() => setSelectedBotNumber(nft.tokenId)}
+                                                                ///onClick={() => setSelectedBotNumber(nft.tokenId)}
                                                             >
 
 
