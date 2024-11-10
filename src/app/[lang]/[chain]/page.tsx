@@ -1077,9 +1077,16 @@ export default function Index({ params }: any) {
 
                 
                 accountAbstraction={{   
-                  chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+                  
+                  //chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+                  
+                  chain: polygon,
+
                   factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum, ethereum
                   gasless: true,
+
+                  ////sponsorGas: true,
+
                 }}
                 
                 
@@ -1167,7 +1174,7 @@ export default function Index({ params }: any) {
                         alt="Bank"
                         width={35}
                         height={35}
-                        className="rounded-lg w-10 h-10 xl:w-14 xl:h-14"
+                        className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
 
                       />
 
@@ -1284,6 +1291,7 @@ export default function Index({ params }: any) {
                 )}
                 */}
 
+                {/*
                 <div className="mt-4 flex flex-row gap-2 justify-between items-center
                   border border-gray-800 rounded-lg text-center p-2 mb-5
                 ">
@@ -1295,8 +1303,6 @@ export default function Index({ params }: any) {
                     className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
                   />
 
-
-                    {/* floating point number to fixed 5 and text size small */}
                   <div className="text-4xl font-semibold text-zinc-100">
                     {Number(chainBalance).toFixed(2)}
                   </div>
@@ -1321,6 +1327,7 @@ export default function Index({ params }: any) {
                     />
                   </button>
                 </div>
+                */}
 
 
 
