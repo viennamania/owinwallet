@@ -1098,37 +1098,47 @@ export default function SettingsPage({ params }: any) {
 
 
     const [mintingAgentNft, setMintingAgentNft] = useState(false);
+    const [messageMintingAgentNft, setMessageMintingAgentNft] = useState("");
     const mintAgentNft = async () => {
 
         if (mintingAgentNft) {
             toast.error('이미 실행중입니다');
+            setMessageMintingAgentNft('이미 실행중입니다');
             return;
         }
 
         if (!address) {
             toast.error('지갑을 먼저 연결해주세요');
+            setMessageMintingAgentNft('지갑을 먼저 연결해주세요');
             return;
         }
 
         if (!erc721ContractAddress) {
             toast.error('AI 에이전트 코드를 먼저 생성해주세요');
+            setMessageMintingAgentNft('AI 에이전트 코드를 먼저 생성해주세요');
             return;
         }
 
         if (agentName.length < 5 || agentName.length > 15) {
             toast.error('에이전트 이름은 5자 이상 15자 이하로 입력해주세요');
+            setMessageMintingAgentNft('에이전트 이름은 5자 이상 15자 이하로 입력해주세요');
             return;
         }
 
         if (agentDescription.length < 5 || agentDescription.length > 100) {
             toast.error('에이전트 설명은 5자 이상 100자 이하로 입력해주세요');
+            setMessageMintingAgentNft('에이전트 설명은 5자 이상 100자 이하로 입력해주세요');
             return;
         }
 
         if (!agentImage) {
             toast.error('에이전트 이미지를 선택해주세요');
+            setMessageMintingAgentNft('에이전트 이미지를 선택해주세요');
             return;
         }
+
+
+        setMessageMintingAgentNft('AI 에이전트 NFT 발행중입니다');
 
 
         setMintingAgentNft(true);
@@ -1137,6 +1147,9 @@ export default function SettingsPage({ params }: any) {
 
 
             setGeneratingAgentImage(true);
+
+
+            setMessageMintingAgentNft('AI 에이전트 이미지 생성중입니다');
 
             // genrate image from api
             // /api/ai/generateImage
@@ -1168,6 +1181,8 @@ export default function SettingsPage({ params }: any) {
             setGeneratingAgentImage(false);
             setAgentImage(imageUrl);
 
+
+            setMessageMintingAgentNft('AI 에이전트 NFT 발행중입니다');
 
             const contract = getContract({
                 client,
@@ -1203,12 +1218,15 @@ export default function SettingsPage({ params }: any) {
                 ///////account: smartConnectWallet as any,
             });
 
-            console.log("transactionResult", transactionResult);
+            //console.log("transactionResult", transactionResult);
 
 
             if (!transactionResult) {
-                throw new Error('AI 에이전트 NFT 발행 실패');
+                throw new Error('AI 에이전트 NFT 발행 실패. 관리자에게 문의해주세요');
             }
+
+            setMessageMintingAgentNft('AI 에이전트 NFT 발행 완료');
+
 
             // fetch the NFTs again
             const response = await fetch("/api/agent/getAgentNFTByWalletAddress", {
@@ -1243,9 +1261,14 @@ export default function SettingsPage({ params }: any) {
             console.error("mintAgentNft error", error);
 
             toast.error('AI 에이전트 NFT 발행 실패');
+
+            setMessageMintingAgentNft('AI 에이전트 NFT 발행 실패');
         }
 
         setMintingAgentNft(false);
+
+        setAgentImage("https://owinwallet.com/logo-aiagent.png");
+
     }
 
 
@@ -2187,6 +2210,13 @@ export default function SettingsPage({ params }: any) {
                                             {!mintingAgentNft && 'AI 에이전트 NFT 발행하기'}
                                         </div>
                                     </button>
+
+                                    {messageMintingAgentNft && (
+                                    <span className='text-lg font-semibold text-red-500
+                                        border border-gray-300 p-4 rounded-lg'>
+                                        {messageMintingAgentNft}
+                                    </span>
+                                    )}
 
                                     {ganeratingAgentImage && (
                                         <div className='flex flex-row gap-2 items-center justify-center'>
