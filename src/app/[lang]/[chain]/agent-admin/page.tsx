@@ -91,6 +91,7 @@ import { Alert, useForkRef } from '@mui/material';
 
 
 import thirdwebIcon from "@public/thirdweb.svg";
+import { verify } from 'crypto';
 
 
 const wallets = [
@@ -1185,38 +1186,14 @@ export default function AIPage({ params }: any) {
 
 
     // getPositionList
+
+    const [verifiedPositionList, setVerifiedPositionList] = useState([] as any[]);
+
     const [positionList, setPositionList] = useState([] as any[]);
-
-
 
     const [gettingPositionList, setGettingPositionList] = useState([] as any[]);
 
 
-    useEffect(() => {
-
-        // set false for all applications
-
-        setGettingPositionList(
-            applications.map((item) => {
-                return {
-                    htxUid: item.htxUid,
-                    getting: false,
-                }
-            })
-        );
-
-        // set balance for all applications
-        
-        setPositionList(
-            applications.map((item) => {
-                return {
-                    htxUid: item.htxUid,
-                    positions: [],
-                }
-            })
-        );
-    
-    } , [applications]);
 
 
     const getPositionList = async (
@@ -1263,7 +1240,7 @@ export default function AIPage({ params }: any) {
 
         const data = await response.json();
 
-        ///console.log("data.result====", data.result);
+        ////console.log("data.result====", data.result);
   
 
         if (data.result?.status === "ok") {
@@ -1338,9 +1315,24 @@ export default function AIPage({ params }: any) {
                 }
             ));
 
-            toast.success("HTX 포지션 리스트가 확인되었습니다.");
+            setVerifiedPositionList(
+                verifiedPositionList.map((item) => {
+                    if (item.htxUid === htxUid) {
+                        return {
+                            htxUid: htxUid,
+                            verified: true,
+                        }
+                    } else {
+                        return item;
+                    }
+                }
+            ));
+
+
+
+            //toast.success("HTX 포지션 리스트가 확인되었습니다.");
         } else {
-            toast.error("HTX 포지션 리스트를 확인할 수 없습니다.");
+            //toast.error("HTX 포지션 리스트를 확인할 수 없습니다.");
         }
 
         setGettingPositionList(
@@ -1359,6 +1351,88 @@ export default function AIPage({ params }: any) {
     }
 
     //console.log("positionList====", positionList);
+
+    console.log("verifiedPositionList====", verifiedPositionList);
+    console.log("gettingPositionList====", gettingPositionList);
+
+
+    useEffect(() => {
+
+
+        setVerifiedPositionList(
+            applications.map((item) => {
+                return {
+                    htxUid: item.htxUid,
+                    verified: false,
+                }
+            })
+        );
+
+        // set balance for all applications
+        
+        setPositionList(
+            applications.map((item) => {
+                return {
+                    htxUid: item.htxUid,
+                    positions: [],
+                }
+            })
+        );
+
+
+        // on promise
+        applications.forEach(async (application) => {
+
+            ///getPositionList(item.apiAccessKey, item.apiSecretKey, item.htxUid);
+
+            const response = await fetch("/api/agent/getPositionList", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    htxAccessKey: application.apiAccessKey,
+                    htxSecretKey: application.apiSecretKey,
+                }),
+            });
+    
+            const data = await response.json();
+    
+            ////console.log("data.result====", data.result);
+      
+    
+            if (data.result?.status === "ok") {
+
+                setPositionList(
+                    applications.map((item) => {
+                        if (item.htxUid === application.htxUid) {
+                            return {
+                                htxUid: application.htxUid,
+                                positions: data.result.data.positions,
+                            }
+                        }
+                    }
+                ));
+    
+                setVerifiedPositionList(
+                    applications.map((item) => {
+                        if (item.htxUid === application.htxUid) {
+                            return {
+                                htxUid: application.htxUid,
+                                verified: true,
+                            }
+                        }
+                    }
+                ));
+
+            }
+
+        });
+
+
+    
+    } , [applications]);
+
 
 
 
@@ -1987,43 +2061,68 @@ export default function AIPage({ params }: any) {
 
                                         {/* get position list */}
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                            <div className='flex flex-col gap-2'>
-                                                <span className='text-sm text-gray-800'>
-                                                    HTX 포지션 리스트: {positionList.find((item) => item.htxUid === application.htxUid)?.positions.length || 0} 개
+                                        
+                                            {verifiedPositionList.find((item: any) => item?.htxUid === application.htxUid)?.verified ? (
+
+                                                <>
+                                                    <span className='text-sm text-gray-800'>
+                                                        카피 트레이딩을 위한 포지션을 확인했습니다.
+                                                    </span>
+                                                    {/*
+                                                    <div className='flex flex-col gap-2'>
+                                                        <span className='text-sm text-gray-800'>
+                                                            HTX 포지션 리스트: {positionList.find((item) => item.htxUid === application.htxUid)?.positions.length || 0} 개
+                                                        </span>
+
+
+                                                            
+                                                            {positionList.map((item) => (
+
+                                                                item.htxUid === application.htxUid && item.positions.map((position: any) => (
+                                                                    <div
+                                                                        key={position.contract_code}
+                                                                        className='w-full flex flex-row items-center justify-between gap-2'
+                                                                    >
+                                                                        <span className='text-xs text-gray-800'>
+                                                                            {position.contract_code} {position.position_side} {position.volume} {position.open_avg_price} $ (USD)
+                                                                        </span>
+                                                                    </div>
+                                                                ))
+                                                                
+                                                            ))}
+
+                                                    </div>
+
+                                                    <button
+                                                        onClick={() => {
+                                                            getPositionList(
+                                                                application.apiAccessKey,
+                                                                application.apiSecretKey,
+                                                                application.htxUid,
+                                                            );
+                                                        }}
+                                                        disabled={
+                                                            gettingPositionList.find((item) => item?.htxUid === application.htxUid)?.getting
+                                                        }
+                                                        className={`${gettingPositionList.find((item) => item?.htxUid === application.htxUid)?.getting ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
+                                                            hover:bg-blue-600
+                                                        `}
+                                                    >
+                                                        {gettingPositionList.find((item) => item?.htxUid === application.htxUid)?.getting ? "Getting..." : "Get"}
+                                                    </button>   
+                                                    */}                                             
+
+
+                                                </>
+                                                
+
+                                            ) : (
+                                                <span className='text-sm text-red-500'>
+                                                    카피 트레이딩을 위한 포지션 리스트를 확인할 수 없습니다.
                                                 </span>
-                                                {positionList.map((item) => (
+                                            )}
 
-                                                    item.htxUid === application.htxUid && item.positions.map((position: any) => (
-                                                        <div
-                                                            key={position.contract_code}
-                                                            className='w-full flex flex-row items-center justify-between gap-2'
-                                                        >
-                                                            <span className='text-xs text-gray-800'>
-                                                                {position.contract_code} {position.position_side} {position.volume} {position.open_avg_price} $ (USD)
-                                                            </span>
-                                                        </div>
-                                                    ))
-                                                    
-                                                ))}
-
-                                            </div>
-                                            <button
-                                                onClick={() => {
-                                                    getPositionList(
-                                                        application.apiAccessKey,
-                                                        application.apiSecretKey,
-                                                        application.htxUid,
-                                                    );
-                                                }}
-                                                disabled={
-                                                    gettingPositionList.find((item) => item?.htxUid === application.htxUid)?.getting
-                                                }
-                                                className={`${gettingPositionList.find((item) => item?.htxUid === application.htxUid)?.getting ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
-                                                    hover:bg-blue-600
-                                                `}
-                                            >
-                                                {gettingPositionList.find((item) => item?.htxUid === application.htxUid)?.getting ? "Getting..." : "Get"}
-                                            </button>
+                                            
                                         </div>
 
 

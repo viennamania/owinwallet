@@ -42,6 +42,9 @@ export async function POST(request: NextRequest) {
     htxAccessKey,
     htxSecretKey,
    } = body;
+
+  //console.log("htxAccessKey", htxAccessKey);
+  //console.log("htxSecretKey", htxSecretKey);
   
 
 
@@ -134,7 +137,8 @@ export async function POST(request: NextRequest) {
 
       const data = await response.json();
 
-      console.log(JSON.stringify(data));
+      ///console.log(JSON.stringify(data));
+
       /*
       {
         "code":200,
@@ -148,29 +152,42 @@ export async function POST(request: NextRequest) {
       */
       /*
       {\"status\":null,\"err_code\":300013,\"err_msg\":\"未知错误:300,013: subuser:50751676,fail\",\"ts\":1731205339092,\"function\":\"getContractPositionsNew\"} ",
-      "tid":"3b03bd41c5b3432e94fe7e91cdd69c48","code":400000,
+      "tid":"3b03bd41c5b3432e94fe7e91cdd69c48",
+      "code":400000,
       "success":false
       }
       */
 
+      console.log("data.code", data.code);
+
+      if (data.code === 200) {
+
+        console.log(JSON.stringify(data.data));
 
 
-      return NextResponse.json({
-          result: {
-              status: "ok",
-              data: data.data,
-          }
-      });
+          return NextResponse.json({
+              result: {
+                  status: "ok",
+                  data: data.data,
+              }
+          });
+      } else {
+          return NextResponse.json({
+              result: {
+                  status: "error",
+              },
+          });
+      }
       
     } catch (error) {
         console.error("error", error);
+
+        return NextResponse.json({
+          result: {
+              status: "error",
+          },
+        });
     }
 
- 
-    return NextResponse.json({
-      result: {
-          status: "error",
-      },
-    });
   
 }
