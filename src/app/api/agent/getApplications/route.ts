@@ -15,10 +15,12 @@ export async function POST(request: NextRequest) {
   const { walletAddress } = body;
 
 
+  /*
   if (!walletAddress) {
 
     return NextResponse.error();
   }
+  */
 
   if (
       /*
