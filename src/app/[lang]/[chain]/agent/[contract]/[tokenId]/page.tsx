@@ -909,6 +909,7 @@ export default function AgentPage({ params }: any) {
 
 
 
+    console.log("agent=========", agent);
 
 
   return (
@@ -970,63 +971,71 @@ export default function AgentPage({ params }: any) {
             )}
 
 
-            <span className="text-lg font-semibold text-gray-800">
-              에이전트 NFT 상세정보
-            </span>
+            <Image
+              src="/logo-agent.png"
+              width={80}
+              height={80}
+              alt="Agent"
+              className="rounded-lg"
+            />
 
-            {!address && (
-              <ConnectButton
-                client={client}
+            <div className='flex flex-col items-start justify-center'>
+              <span className="text-lg font-semibold text-gray-800">
+                에이전트 NFT 상세정보
+              </span>
 
-                //wallets={wallets}
+              {!address && (
+                <ConnectButton
+                  client={client}
 
-                wallets={[
-                    inAppWallet({
-                      auth: {
-                        options: ["phone"],
-                      },
-                    }),
-                ]}
+                  //wallets={wallets}
 
-                
-                accountAbstraction={{   
-                    chain: polygon,
-                    factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                    gasless: true,
-                }}
-                
-                
-                theme={"light"}
+                  wallets={[
+                      inAppWallet({
+                        auth: {
+                          options: ["phone"],
+                        },
+                      }),
+                  ]}
 
-                
+                  
+                  accountAbstraction={{   
+                      chain: polygon,
+                      factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+                      gasless: true,
+                  }}
+                  
+                  
+                  theme={"light"}
 
-                connectButton={{
-                    label: "Sign in with OWIN Magic Wallet",
-                }}
+                  
 
-                connectModal={{
-                size: "wide",                            
-                showThirdwebBranding: false,
+                  connectButton={{
+                      label: "Sign in with OWIN Magic Wallet",
+                  }}
 
-                }}
+                  connectModal={{
+                  size: "wide",                            
+                  showThirdwebBranding: false,
 
-                appMetadata={
-                {
-                    logoUrl: "https://gold.goodtether.com/logo.png",
-                    name: "Next App",
-                    url: "https://gold.goodtether.com",
-                    description: "This is a Next App.",
+                  }}
 
-                }
-                }
+                  appMetadata={
+                  {
+                      logoUrl: "https://gold.goodtether.com/logo.png",
+                      name: "Next App",
+                      url: "https://gold.goodtether.com",
+                      description: "This is a Next App.",
 
-                //locale={"ko_KR"}
-                locale={"en_US"}
-              />
-            )}
+                  }
+                  }
 
+                  //locale={"ko_KR"}
+                  locale={"en_US"}
+                />
+              )}
 
-
+            </div>
 
           </div>
         </div>
@@ -1131,40 +1140,66 @@ export default function AgentPage({ params }: any) {
                     </span>
                 </div>
 
-                <div className='w-full flex flex-row items-center justify-between gap-2'>
-                    <span className='text-xs text-gray-800'>
-                        에이전트 NFT 계약주소: {agentContractAddress}
-                    </span>
-                </div>
 
-                <div className='w-full flex flex-row items-center justify-between gap-2'>
-                    <span className='text-sm text-gray-800'>
-                        에이전트 NFT 이름: {agent.name}
-                    </span>
-                </div>
+                <div className='w-full grid grid-cols-1 xl:grid-cols-2 items-start justify-start gap-5'>
 
-                <div className='w-full flex flex-row items-center justify-between gap-2'>
-                    <span className='text-sm text-gray-800'>
-                        에이전트 NFT 설명: {agent.description}
-                    </span>
-                </div>
 
-                <div className='w-full flex flex-col items-start justify-between gap-2'>
+                  <div className='w-full flex flex-col items-start justify-start gap-2'>
+                    <div className='w-full flex flex-row items-center justify-between gap-2'>
 
-                    <span className='text-sm text-gray-800'>
-                        에이전트 NFT 이미지:
+                      <div className='flex flex-col items-start justify-between gap-2'>
+                        <span className='text-sm text-yellow-500'>
+                            에이전트 NFT 계약주소
+                        </span>
+                        <span className='text-xs text-gray-800'>
+                            {agentContractAddress.slice(0, 10) + '...' + agentContractAddress.slice(-10)}
+                        </span>
+                      </div>
+
+                    </div>
+
+                    <div className='w-full flex flex-row items-center justify-between gap-2'>
+                      <div className='flex flex-col items-start justify-between gap-2'>
+                        <span className='text-sm text-yellow-500'>
+                            에이전트 NFT 이름
+                        </span>
+                        <span className='text-xs text-gray-800'>
+                            {agent.name}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className='w-full flex flex-row items-center justify-between gap-2'>
+                      <div className='flex flex-col items-start justify-between gap-2'>
+                        <span className='text-sm text-yellow-500'>
+                            에이전트 NFT 설명
+                        </span>
+                        <span className='text-xs text-gray-800'>
+                            {agent.description}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <div className='w-full flex flex-col items-start justify-start gap-2'>
+                    <span className='text-sm text-yellow-500'>
+                        에이전트 NFT 이미지
                     </span>
                     {agent.image && (
                       <Image
-                        src={agent.image?.pngUrl}
-                        width={100}
-                        height={100}
+                        src={agent?.image?.thumbnailUrl}
+                        width={200}
+                        height={200}
                         alt={agent.name}
-                        className='rounded-lg object-cover'
+                        className='rounded-lg object-cover w-full'
                       />
                     )}
+                  </div>
 
                 </div>
+
+
 
               </div>
 
