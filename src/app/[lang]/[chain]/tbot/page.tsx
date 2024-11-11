@@ -2987,66 +2987,10 @@ export default function AIPage({ params }: any) {
 
 
                                         {/* check account balance */}
-                                        <div className='mt-5 w-full flex flex-col gap-2 border border-gray-300 p-4 rounded-lg'> 
-                                            <span className='text-sm font-semibold text-gray-500'>
-                                                계정 잔고(SPOT) 확인하기
-                                            </span>
-                                            <button
-                                                disabled={!isValidAPIKey || checkingAccountBalance}
-                                                onClick={() => {
-                                                    checkAccountBalance(apiAccessKey, apiSecretKey, htxUid);
-                                                }}
-                                                className={` ${!isValidAPIKey || checkingAccountBalance ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold`}
-                                            >
-                                                계정 잔고 확인하기
-                                            </button>
 
-                                            {checkingAccountBalance && (
-                                                <span className='text-sm font-semibold text-blue-500'>
-                                                    계정 잔고 확인중...
-                                                </span>
-                                            )}
 
-                                            {/*
-                                            {accountBalance && (
-                                                <span className='text-2xl font-semibold text-gray-500'>
-                                                    계정 잔고: {accountBalance.toFixed(2)} USDT
-                                                </span>
-                                            )}
-                                            */}
-                                            {accountBalanceList && (
-                                                <div className='w-full flex flex-col gap-2'>
-                                                    {accountBalanceList.map((account) => (
-                                                        <div key={account.currency} className='flex flex-row items-center justify-between gap-2'>
-                                                            <span className='text-sm font-semibold text-gray-500'>
-                                                                {account.currency}
-                                                            </span>                                                                
-                                                            <span className='text-right text-lg font-semibold text-gray-500'>
-                                                                {
-                                                                    Number(account.balance).toFixed(6)
-                                                                }
-                                                            </span>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            )}
-
-                                            {/*}
-                                            {isValidBalance ? (
-                                                <span className='text-sm font-semibold text-green-500'>
-                                                    계정 잔고가 100 USDT 이상입니다.
-                                                </span>
-                                            ) : (
-                                                <span className='text-sm font-semibold text-red-500'>
-                                                    계정 잔고가 100 USDT 미만입니다. 100 USDT 이상 입금해주세요.
-                                                </span>
-                                            )}
-                                            */}
-
-                                        </div>
 
                                         {/* HTX USDT(TRON) 지갑주소 */}
-
 
                                         <div className='mt-5 w-full flex-col gap-2 hidden'>
                                             <span className='text-sm font-semibold text-gray-500'>
