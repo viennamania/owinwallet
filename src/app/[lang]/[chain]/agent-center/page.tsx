@@ -1493,7 +1493,7 @@ export default function AIPage({ params }: any) {
                                 )}
 
 
-                                <div className='w-full grid grid-cols-1 xl:grid-cols-2 gap-5'>
+                                <div className='w-full grid grid-cols-1 xl:grid-cols-3 gap-5'>
 
                                     {address && !loadingApplications && applications.map((application) => (
                                         <div
@@ -1502,8 +1502,13 @@ export default function AIPage({ params }: any) {
                                             border border-gray-300 p-4 rounded-lg bg-gray-100
                                         '>
 
-                                            {/* 신청일자 */}
-                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                            {/* 신청번호, 신청일자 */}
+                                            <div className='w-full flex flex-col items-start justify-between gap-2
+                                                border-b border-gray-300 pb-2
+                                            '>
+                                                <span className='text-lg font-semibold text-gray-800'>
+                                                    신청번호: {application.id}
+                                                </span>
                                                 <span className='text-sm text-gray-800'>
                                                     신청일자: {
                                                         new Date(application.createdAt).toLocaleString()
@@ -1512,13 +1517,26 @@ export default function AIPage({ params }: any) {
                                             </div>
 
                                             {/* agentBot and agentBotNumber */}
-                                            <div className='w-full flex flex-col items-start justify-between gap-2'>
-                                                <span className='text-xs text-gray-800'>
-                                                    Agent Bot: {application.agentBot}
-                                                </span>
-                                                <span className='text-sm text-gray-800'>
-                                                    Agent Bot Number: {application.agentBotNumber}
-                                                </span>
+                                            <div className='w-full flex flex-col items-start justify-between gap-2
+                                                border-b border-gray-300 pb-2
+                                            '>
+                                                <div className='flex flex-col gap-2'>
+                                                    <span className='text-xs text-yellow-800'>
+                                                        Agent Bot Code
+                                                    </span>
+                                                    <span className='text-lg text-gray-800'>
+                                                        {application.agentBot.slice(0, 10)}...{application.agentBot.slice(-10)}
+                                                    </span>
+                                                </div>
+
+                                                <div className='flex flex-col gap-2'>
+                                                    <span className='text-xs text-yellow-800'>
+                                                        Agent Bot Number
+                                                    </span>
+                                                    <span className='text-lg text-gray-800'>
+                                                        #{application.agentBotNumber}
+                                                    </span>
+                                                </div>
                                             </div>
 
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
@@ -1597,9 +1615,14 @@ export default function AIPage({ params }: any) {
 
 
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                                <span className='text-xs text-gray-800'>
-                                                    HTX USDT(TRON) 지갑주소: {application.htxUsdtWalletAddress}
-                                                </span>
+                                                <div className='flex flex-col gap-2'>
+                                                    <span className='text-xs text-yellow-800'>
+                                                        HTX USDT(TRON) 지갑주소
+                                                    </span>
+                                                    <span className='text-xs text-gray-800'>
+                                                        {application.htxUsdtWalletAddress.slice(0, 10)}...{application.htxUsdtWalletAddress.slice(-10)}
+                                                    </span>
+                                                </div>
                                                 {/* copy button */}
                                                 <button
                                                     onClick={() => {
