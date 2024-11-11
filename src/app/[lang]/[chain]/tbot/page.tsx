@@ -1537,6 +1537,7 @@ export default function AIPage({ params }: any) {
     };
 
 
+    /*
   
     useEffect(() => {
 
@@ -1558,6 +1559,7 @@ export default function AIPage({ params }: any) {
         }
 
     } , [myAgent]);
+    */
     
 
     // get rebate info
@@ -2128,7 +2130,7 @@ export default function AIPage({ params }: any) {
                                                     className='animate-spin'
                                                 />
                                                 <span className='text-sm font-semibold text-blue-500'>
-                                                    AI 트레이딩 & Masterbot 민팅 준비중...
+                                                    AI 트레이딩 & Master Bot 민팅 준비중...
                                                 </span>
                                             </div>
                                         )}
@@ -2234,30 +2236,9 @@ export default function AIPage({ params }: any) {
                                         '>
 
                                             <span className='text-lg font-semibold text-blue-500'>
-                                                AI 에이전트 등록 정보
+                                                Master Bot 정보
                                             </span>
-                                            {/* goto htx */}
-                                            <button
-                                                className='bg-gray-300 text-gray-500 p-2 rounded text-lg font-semibold
-                                                    flex flex-row items-center gap-2
-                                                    hover:bg-blue-500 hover:text-zinc-100 hover:shadow-lg
-                                                '
-                                                onClick={() => {
-                                                    window.open('https://www.htx.com.pk/login', "_blank");
-                                                }}
-                                            >
-                                                <div className='flex flex-row items-center gap-2'>
-                                                    <Image
-                                                        src="/logo-exchange-htx.png"
-                                                        alt="HTX"
-                                                        width={20}
-                                                        height={20}
-                                                    />
-                                                    <span>
-                                                        HTX 로그인
-                                                    </span>
-                                                </div>
-                                            </button>
+
                                             <div className='flex flex-col gap-2'>
                                                 
                                                 <div className=' hidden
@@ -2321,270 +2302,6 @@ export default function AIPage({ params }: any) {
                                                 </span>
 
                                             </div>
-
-
-
-                                            {/* button for api call /api/agent/getAccount */}
-                                            {/*
-                                            <button
-                                                disabled={checkingHtxApiKey}
-                                                className={` ${checkingHtxApiKey ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold`}
-                                                onClick={() => {
-                                                    checkHtxApiKey(myAgent.apiAccessKey, myAgent.apiSecretKey);
-                                                }}
-                                            >
-                                                HTX API 정보 확인하기
-                                            </button>
-                                            */}
-
-                                            {/* button for api call /api/agent/getBalance */}
-
-                                            <div className='w-full flex flex-col gap-2
-                                                border border-gray-300 p-4 rounded-lg
-                                            '>
-                                                <button
-                                                    disabled={checkingAccountBalance}
-                                                    className={` ${checkingAccountBalance ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold
-                                                        hover:bg-blue-700 hover:text-zinc-100
-                                                    `}
-                                                    onClick={() => {
-                                                        checkAccountBalance(myAgent.apiAccessKey, myAgent.apiSecretKey, myAgent.htxUid);
-                                                    }}
-                                                >
-                                                    HTX 계정 잔고 확인하기
-                                                </button>
-                                                {checkingAccountBalance && (
-                                                    <span className='text-sm font-semibold text-blue-500'>
-                                                        HTX 계정 잔고 확인중...
-                                                    </span>
-                                                )}
-
-                                                {accountBalanceList && (
-                                                    <div className='w-full flex flex-col gap-2'>
-                                                        {accountBalanceList.map((account) => (
-                                                            <div key={account.currency} className='flex flex-row items-center justify-between gap-2'>
-                                                                <span className='text-sm font-semibold text-gray-500'>
-                                                                    {account.currency}
-                                                                </span>                                                                
-                                                                <span className='text-right text-lg font-semibold text-gray-500'>
-                                                                    {
-                                                                        Number(account.balance).toFixed(6)
-                                                                    }
-                                                                </span>
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                )}
-                                                
-                                            </div>
-
-                                            {/* input amount and button for transferToFundingAccount */}
-                                            {/*
-                                            <div className='w-full flex flex-col gap-2
-                                                border border-gray-300 p-4 rounded-lg
-                                            '>
-                                                <input
-                                                    type="number"
-                                                    className='p-2 rounded-lg border border-gray-300'
-                                                    placeholder="Amount"
-                                                    value={amountOfTransferToFuturesAccount}
-                                                    onChange={(e) => {
-                                                        setAmountOfTransferToFuturesAccount(Number(e.target.value));
-                                                    }}
-                                                />
-                                                <button
-                                                    disabled={
-                                                        amountOfTransferToFuturesAccount <= 0
-                                                        || transferringToFuturesAccount
-                                                    }
-                                                    className='bg-blue-500 text-zinc-100 p-2 rounded-lg text-lg font-semibold
-                                                        hover:bg-blue-700 hover:text-zinc-100
-                                                    '
-                                                    onClick={() => {
-                                                        transferToFuturesAccount(myAgent.apiAccessKey, myAgent.apiSecretKey, amountOfTransferToFuturesAccount);
-                                                    }}
-                                                >
-                                                    Transfer to Futures Account
-                                                </button>
-
-                                                {transferringToFuturesAccount && (
-                                                    <span className='text-sm font-semibold text-blue-500'>
-                                                        Transfering to Futures Account...
-                                                    </span>
-                                                )}
-
-                                            </div>
-                                            */}
-
-
-                                            {/* button for api call /api/agent/getRebateInfo */}
-                                            {/*
-                                            <div className='w-full flex flex-col gap-2
-                                                border border-gray-300 p-4 rounded-lg
-                                            '>
-                                                <button
-                                                    disabled={gettingRebateInfo}
-                                                    className={` ${gettingRebateInfo ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold
-                                                        hover:bg-blue-700 hover:text-zinc-100
-                                                    `}
-                                                    onClick={() => {
-                                                        getRebateInfo(myAgent.apiAccessKey, myAgent.apiSecretKey);
-                                                    }}
-                                                >
-                                                    HTX 리베이트 정보 확인하기
-                                                </button>
- 
-                                            </div>
-                                            */}
-
-
-
-                                            {/* button for api call /api/agent/getAssetValuation */}
-                                            <div className='w-full flex flex-col gap-2
-                                                border border-gray-300 p-4 rounded-lg
-                                            '>
-                                                <button
-                                                    disabled={checkingHtxAssetValuation}
-                                                    className={` ${checkingHtxAssetValuation ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold
-                                                        hover:bg-blue-700 hover:text-zinc-100
-                                                    `}
-                                                    onClick={() => {
-                                                        checkHtxAssetValuation(myAgent.apiAccessKey, myAgent.apiSecretKey);
-                                                    }}
-                                                >
-                                                    HTX 자산 가치 확인하기
-                                                </button>
-                                                {checkingHtxAssetValuation && (
-                                                    <span className='text-sm font-semibold text-blue-500'>
-                                                        HTX 자산 가치 확인중...
-                                                    </span>
-                                                )}
-                                            
-                                                {htxAssetValuation && (
-                                                    <span className='text-right text-2xl font-semibold text-red-500'>
-                                                        {
-                                                            htxAssetValuation.toLocaleString('en-US', {
-                                                                style: 'currency',
-                                                                currency: 'USD',
-                                                            })
-                                                        }
-                                                    </span>
-                                                )}
-                                            </div>
-
-                                            {/* button for searchMatchResults */}
-                                            <div className='w-full flex flex-col gap-2
-                                                border border-gray-300 p-4 rounded-lg
-                                            '>
-                                                <button
-                                                    disabled={searchingMatchResults}
-                                                    className={` ${searchingMatchResults ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold
-                                                        hover:bg-blue-700 hover:text-zinc-100
-                                                    `}
-                                                    onClick={() => {
-                                                        searchMatchResults(myAgent.apiAccessKey, myAgent.apiSecretKey);
-                                                    }}
-                                                >
-                                                    HTX 매치 결과 확인하기
-                                                </button>
-                                                {searchingMatchResults && (
-                                                    <span className='text-sm font-semibold text-blue-500'>
-                                                        HTX 매치 결과 확인중...
-                                                    </span>
-                                                )}
-
-                                                {/*
-                                                [{"symbol":"btcusdt","fee-currency":"usdt","source":"spot-android","updated-at":1730784059466,"price":"68378.06","order-id":1195719544670156,"role":"taker","created-at":1730784059466,"filled-amount":"0.000087","filled-fees":"0.01189778244","filled-points":"0.0","fee-deduct-currency":"","fee-deduct-state":"done","match-id":174384101920,"trade-id":103066447911,"id":1159862024172110,"type":"sell-limit"},{"symbol":"btcusdt","fee-currency":"usdt","source":"spot-android","updated-at":1730784059465,"price":"68378.06","order-id":1195719544670156,"role":"taker","created-at":1730784059465,"filled-amount":"0.00046","filled-fees":"0.0629078152","filled-points":"0.0","fee-deduct-currency":"","fee-deduct-state":"done","match-id":174384101920,"trade-id":103066447910,"id":1159862024172109,"type":"sell-limit"},{"symbol":"btcusdt","fee-currency":"btc","source":"spot-android","updated-at":1730783999096,"price":"68381.57","order-id":1195719536250386,"role":"taker","created-at":1730783999096,"filled-amount":"0.000189","filled-fees":"0.000000378","filled-points":"0.0","fee-deduct-currency":"","fee-deduct-state":"done","match-id":174384090807,"trade-id":103066447535,"id":1173744717713267,"type":"buy-limit"},{"symbol":"btcusdt","fee-currency":"btc","source":"spot-android","updated-at":1730783999095,"price":"68381.57","order-id":1195719536250386,"role":"taker","created-at":1730783999095,"filled-amount":"0.00036","filled-fees":"0.00000072","filled-points":"0.0","fee-deduct-currency":"","fee-deduct-state":"done","match-id":174384090807,"trade-id":103066447534,"id":1173744717713268,"type":"buy-limit"}]
-                                                */}
-
-                                            
-                                                {searchResults ? (
-                                                    <div className='w-full flex flex-col gap-2'>
-                                                        <table className='w-full
-                                                            border border-gray-300 rounded-lg
-                                                        '>
-                                                            <thead className='w-full'>
-                                                                <tr className='w-full bg-gray-200'>
-                                                                    <th className=' border border-gray-300'>
-                                                                        time
-                                                                    </th>
-                                                                    <th className=' border border-gray-300'>
-                                                                        symbol
-                                                                    </th>
-                                                                    <th className=' border border-gray-300'>
-                                                                        buy-sell / price / amount
-                                                                    </th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody className='w-full'>
-                                                                {searchResults.map((result) => (
-                                                                    <tr key={result.id}
-                                                                        className='w-full
-                                                                            border border-gray-300
-                                                                        '
-                                                                    >
-
-                                                                        <td className='
-                                                                            border border-gray-300 p-2
-                                                                        '>
-                                                                            {/* 34 minutes ago */}
-                                                                            {
-                                                                                //result['created-at']
-
-                                                                                // 34 minutes ago
-
-
-                                                                                new Date().getTime() - result['created-at'] > 1000 * 60 * 60 * 24 ? `${Math.floor((new Date().getTime() - result['created-at']) / 1000 / 60 / 60 / 24)} days ago`
-                                                                                    : new Date().getTime() - result['created-at'] > 1000 * 60 * 60 ? `${Math.floor((new Date().getTime() - result['created-at']) / 1000 / 60 / 60)} hours ago`
-                                                                                        : new Date().getTime() - result['created-at'] > 1000 * 60 ? `${Math.floor((new Date().getTime() - result['created-at']) / 1000 / 60)} minutes ago`
-                                                                                            : new Date().getTime() - result['created-at'] > 1000 ? `${Math.floor((new Date().getTime() - result['created-at']) / 1000)} seconds ago`
-                                                                                                : 'just now'
-                                                                                
-
-                                                                            }
-
-                                                                        </td>
-                                                                        <td className=' border border-gray-300 p-2'>
-                                                                            {result.symbol}
-                                                                        </td>
-                                                                        <td className='w-full border border-gray-300 p-2'>
-                                                                            <div className='flex flex-col gap-2'>
-
-                                                                                {result.type === 'buy-market' ? (
-                                                                                    <span className='text-sm font-semibold text-green-500'>
-                                                                                        Buy
-                                                                                    </span>
-                                                                                ) : (
-                                                                                    <span className='text-sm font-semibold text-red-500'>
-                                                                                        Sell
-                                                                                    </span>
-                                                                                )}
-
-                                                                                <span className='text-sm font-semibold text-gray-500'>
-                                                                                    {result.price}
-                                                                                </span>
-                                                                                <span className='text-sm font-semibold text-gray-500'>
-                                                                                    {Number(result['filled-amount']).toFixed(6)}
-                                                                                </span>
-                                                                            </div>
-                                                                        </td>
-
-                                                                    </tr>
-                                                                ))}
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                ) : (
-                                                    <span className='text-sm font-semibold text-gray-500'>
-                                                        HTX 매치 결과가 없습니다.
-                                                    </span>
-                                                )}
-
-                                            </div>
-
-
-
-
 
 
                                         </div>
@@ -3049,7 +2766,7 @@ export default function AIPage({ params }: any) {
                                                 'w-full bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold
                                                 hover:bg-blue-700 hover:text-zinc-100`}
                                         >
-                                            {applyingMintNFT ? "Master Bot NFT 민팅중..." : "Master Bot NFT 민팅하기"}
+                                            {applyingMintNFT ? "Master Bot 신청중..." : "Master Bot 신청하기"}
                                         </button>
                                         
 
