@@ -3442,7 +3442,7 @@ function Header(
             <button
               onClick={() => {
                 router.push(
-                    "/kr/polygon/tbot?agent=" + agent
+                    "/kr/polygon/tbot?agent=" + agent + "&tokenId=" + tokenId
                   );
               }}
               className="text-gray-600 hover:underline text-xs xl:text-lg"
@@ -3451,7 +3451,7 @@ function Header(
             </button>
             <button
               onClick={() => {
-                router.push('/kr/polygon/profile-settings?agent=' + agent);
+                router.push('/kr/polygon/profile-settings?agent=' + agent + '&tokenId=' + tokenId);
               }}
               className="text-gray-600 hover:underline text-xs xl:text-lg"
             >
