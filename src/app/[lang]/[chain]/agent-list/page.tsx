@@ -1196,6 +1196,7 @@ export default function AIPage({ params }: any) {
 
         try {
 
+            setAgentBotList([]);
 
             setLoadingAgentBotList(true);
 
@@ -1220,8 +1221,6 @@ export default function AIPage({ params }: any) {
 
             if (data.result) {
                 setAgentBotList(data.result.nfts);
-            } else {
-                setAgentBotList([]);
             }
             
 
@@ -1690,21 +1689,18 @@ export default function AIPage({ params }: any) {
                                 {!isValidReferralLoading && !isValidReferral && agents.length > 0 && (
                                 
 
-                                    <div className='w-full flex flex-col items-center gap-2
-                                        border border-gray-300 p-4 rounded-lg
-                                    '>
+                                    <>
 
                                         {!isValidReferralLoading && !isValidReferral
                                         && agents.length > 0 && (
                                             <div className=' w-full flex flex-col items-start gap-2
-                                                border border-gray-300 p-4 rounded-lg
                                             '>
 
                                                 <span className='text-lg font-semibold text-blue-500'>
                                                     지갑 홀더 닉네임을 선택하세요
                                                 </span>
 
-                                                <div className='w-full grid grid-cols-2 items-start justify-between gap-2'>
+                                                <div className='w-full grid grid-cols-1 xl:grid-cols-2 items-start justify-between gap-5'>
 
                                                     <div className='flex flex-col gap-2'>
 
@@ -1712,9 +1708,12 @@ export default function AIPage({ params }: any) {
                                                             지갑 홀더 닉네임(알파벳 순서)
                                                         </span>
 
+                                                        <div className='grid grid-cols-2 xl:grid-cols-3 gap-2'>
 
                                                         {agents.map((agent) => (
-                                                            <div key={agent.erc721ContractAddress} className='flex flex-row items-center gap-2'>
+                                                            <div
+                                                                key={agent.erc721ContractAddress}
+                                                                className='flex flex-row items-center gap-2'>
                                                 
                                                                 {/*
                                                                 <Image
@@ -1759,6 +1758,7 @@ export default function AIPage({ params }: any) {
                                                             </div>
 
                                                         ))}
+                                                        </div>
                                                     </div>
 
                                                     <div className='w-full flex flex-col gap-2 h-min-96'>
@@ -1785,99 +1785,103 @@ export default function AIPage({ params }: any) {
                                                             </span>
                                                         )}
 
-                                                        {!loadingAgentBotList && agentBotList.map((nft) => (
+                                                        <div className='grid grid-cols-1 xl:grid-cols-2 gap-2'>
+                                                            {!loadingAgentBotList && agentBotList.map((nft) => (
 
-                                                           
-                                                            <div
-                                                                key={nft.tokenId}
-                                                                className={`flex flex-col items-center gap-2
-                                                                    border border-gray-300 p-2 rounded-lg
-                                                                    hover:shadow-lg cursor-pointer
+                                                            
+                                                                <div
+                                                                    key={nft.tokenId}
+                                                                    className={`flex flex-col items-center gap-2
+                                                                        border border-gray-300 p-2 rounded-lg
+                                                                        hover:shadow-lg cursor-pointer
 
-                                                                    ${selectedBotNumber && selectedBotNumber === nft.tokenId ? 'bg-blue-500 text-zinc-100' : 'bg-white text-gray-500'}
-                                                                `}
-                                                                ///onClick={() => setSelectedBotNumber(nft.tokenId)}
-                                                            >
+                                                                        ${selectedBotNumber && selectedBotNumber === nft.tokenId ? 'bg-blue-500 text-zinc-100' : 'bg-white text-gray-500'}
+                                                                    `}
+                                                                    ///onClick={() => setSelectedBotNumber(nft.tokenId)}
+                                                                >
 
 
 
-                                                                <Image
-                                                                    src={nft.image.thumbnailUrl}
-                                                                    alt={nft.name}
-                                                                    width={200}
-                                                                    height={200}
-                                                                    className='rounded-lg w-full'
-                                                                />
-                                                                <div className='w-full flex flex-col items-start gap-2'>
-                                                                    <div className='flex flex-row items-center gap-2'>
-                                                                        <span className='text-2xl font-semibold text-red-500'>
-                                                                            #{nft.tokenId}
+                                                                    <Image
+                                                                        src={nft.image.thumbnailUrl}
+                                                                        alt={nft.name}
+                                                                        width={200}
+                                                                        height={200}
+                                                                        className='rounded-lg w-full'
+                                                                    />
+                                                                    <div className='w-full flex flex-col items-start gap-2'>
+                                                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
+
+                                                                            <div className='flex flex-col items-start gap-2'>
+                                                                                <span className='text-xs font-semibold text-red-500'>
+                                                                                    {nft.contract.address.substring(0, 15)}...
+                                                                                </span>
+                                                                                <span className='text-2xl font-semibold text-red-500'>
+                                                                                    #{nft.tokenId}
+                                                                                </span>
+                                                                            </div>
+                                                                            {/* opensea link */}
+                                                                            <button
+                                                                                className='p-2 rounded-lg hover:bg-gray-300'
+                                                                                onClick={() => {
+                                                                                    window.open(
+                                                                                        `https://opensea.io/assets/matic/${nft.contract.address}/${nft.tokenId}`,
+                                                                                        "_blank"
+                                                                                    );
+                                                                                }}
+                                                                            >
+                                                                                <Image
+                                                                                    src="/logo-opensea.png"
+                                                                                    alt="opensea"
+                                                                                    width={20}
+                                                                                    height={20}
+                                                                                />
+                                                                            </button>
+                                                                        </div>
+                                                                        <span className='text-sm font-semibold text-yellow-500'>
+                                                                            {nft.name}
                                                                         </span>
-                                                                        {/* opensea link */}
-                                                                        <button
-                                                                            className='p-2 rounded-lg hover:bg-gray-300'
-                                                                            onClick={() => {
-                                                                                window.open(
-                                                                                    `https://opensea.io/assets/matic/${nft.contract.address}/${nft.tokenId}`,
-                                                                                    "_blank"
-                                                                                );
-                                                                            }}
-                                                                        >
-                                                                            <Image
-                                                                                src="/logo-opensea.png"
-                                                                                alt="opensea"
-                                                                                width={20}
-                                                                                height={20}
-                                                                            />
-                                                                        </button>
+                                                                        <span className='text-sm font-semibold'>
+                                                                            {nft.description}
+                                                                        </span>
+                                                                        
+                                                                        <div className='flex flex-col items-start justify-center  gap-1'>
+                                                                            {/* // from now to mint in hours minutes seconds
+                                                                            // now - mint */}
+                                                                            <span className='text-xs xl:text-sm'>
+                                                                                Start{' '}{(new Date().getTime() - new Date(nft.mint.timestamp).getTime()) / 1000 / 60 / 60 / 24 > 1
+                                                                                    ? `${Math.floor((new Date().getTime() - new Date(nft.mint.timestamp).getTime()) / 1000 / 60 / 60 / 24)} days ago`
+                                                                                    : `${Math.floor((new Date().getTime() - new Date(nft.mint.timestamp).getTime()) / 1000 / 60 / 60)} hours ago`
+                                                                                }
+                                                                            </span>
+                                                                            {/* Accounts */}
+                                                                            <span className='text-xs xl:text-sm'>
+                                                                                Accounts: 0
+                                                                            </span>
+                                                                            {/* 수익률 */}
+                                                                            <span className='text-xs xl:text-sm'>
+                                                                                ROI: ??%
+                                                                            </span>
+                                                                            {/* Funds */}
+                                                                            <span className='text-xs xl:text-sm'>
+                                                                                Funds: 0 USDT
+                                                                            </span>
+                                                                        </div>
+
+
                                                                     </div>
-                                                                    <span className='text-sm font-semibold text-yellow-500'>
-                                                                        {nft.name}
-                                                                    </span>
-                                                                    <span className='text-sm font-semibold'>
-                                                                        {nft.description}
-                                                                    </span>
-                                                                    
-                                                                    <div className='flex flex-col items-start justify-center  gap-1'>
-                                                                        {/* // from now to mint in hours minutes seconds
-                                                                        // now - mint */}
-                                                                        <span className='text-xs xl:text-sm'>
-                                                                            Start{' '}{(new Date().getTime() - new Date(nft.mint.timestamp).getTime()) / 1000 / 60 / 60 / 24 > 1
-                                                                                ? `${Math.floor((new Date().getTime() - new Date(nft.mint.timestamp).getTime()) / 1000 / 60 / 60 / 24)} days ago`
-                                                                                : `${Math.floor((new Date().getTime() - new Date(nft.mint.timestamp).getTime()) / 1000 / 60 / 60)} hours ago`
-                                                                            }
-                                                                        </span>
-                                                                        {/* Accounts */}
-                                                                        <span className='text-xs xl:text-sm'>
-                                                                            Accounts: 0
-                                                                        </span>
-                                                                        {/* 수익률 */}
-                                                                        <span className='text-xs xl:text-sm'>
-                                                                            ROI: ??%
-                                                                        </span>
-                                                                        {/* Funds */}
-                                                                        <span className='text-xs xl:text-sm'>
-                                                                            Funds: 0 USDT
-                                                                        </span>
-                                                                    </div>
-
-
                                                                 </div>
-                                                            </div>
+                                                            ))}
 
-                                                     
-                                                        ))}
+                                                        </div>
                                                     </div>
-
-
-
-
                                                 </div>
+                                                
                                             </div>
                                         )}
   
 
-                                    </div>
+                                    </>
 
                                 )}
 
