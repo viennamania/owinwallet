@@ -814,102 +814,56 @@ export default function AgentPage({ params }: any) {
     };
 
     fetchData();
-}, [address]);
+  }, [address]);
+ 
 
 
 
-  // usdt balance
-  const [usdtBalance, setUsdtBalance] = useState(0);
+  // get all applications
+  const [applications, setApplications] = useState([] as any[]);
+  const [loadingApplications, setLoadingApplications] = useState(false);
   useEffect(() => {
-    if (tronWalletAddress && params.chain === "tron") {
-      const getUsdtBalance = async () => {
-        const response = await fetch('/api/tron/getUsdtBalance', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            lang: params.lang,
-            chain: params.chain,
-            tronWalletAddress: tronWalletAddress,
-          }),
-        });
+      const fetchData = async () => {
 
-        if (!response) return;
+          setLoadingApplications(true);
+          const response = await fetch("/api/agent/getReferApplications", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                  page: 1,
+                  limit: 10,
+                  agentBot: agentContractAddress,
+                  agentBotNumber: agentTokenId,
+              }),
+          });
 
-        const data = await response.json();
+          if (!response.ok) {
+              console.error("Error fetching agents");
+              setLoadingApplications(false);
+              return;
+          }
 
-        setUsdtBalance(data.result?.usdtBalance);
+          const data = await response.json();
+
+          ///console.log("getReferApplications data", data);
+
+
+
+          const total = data.result.totalCount;
+
+          setApplications(data.result.applications);
+
+          setLoadingApplications(false);
 
       };
 
-      getUsdtBalance();
+      if (agentContractAddress && agentTokenId) fetchData();
 
-    }
-
-  } , [tronWalletAddress, params.chain, params.lang]);
+  }, [agentContractAddress, agentTokenId]);
 
 
-
-  console.log("recipient", recipient);
-  console.log("address", address);
-  console.log("amount", amount);
-  console.log("verifiedOtp", verifiedOtp);
-  console.log("sending", sending);
-
-
-
-
-
-
-
-    // get all applications
-    const [applications, setApplications] = useState([] as any[]);
-    const [loadingApplications, setLoadingApplications] = useState(false);
-    useEffect(() => {
-        const fetchData = async () => {
-
-            setLoadingApplications(true);
-            const response = await fetch("/api/agent/getReferApplications", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    page: 1,
-                    limit: 10,
-                    agentBot: agentContractAddress,
-                    agentBotNumber: agentTokenId,
-                }),
-            });
-
-            if (!response.ok) {
-                console.error("Error fetching agents");
-                setLoadingApplications(false);
-                return;
-            }
-
-            const data = await response.json();
-
-            console.log("getReferApplications data", data);
-
-
-
-            const total = data.result.totalCount;
-
-            setApplications(data.result.applications);
-
-            setLoadingApplications(false);
-
-        };
-
-        if (agentContractAddress && agentTokenId) fetchData();
-
-    }, [agentContractAddress, agentTokenId]);
-
-
-
-    console.log("agent=========", agent);
 
 
   return (
