@@ -1097,20 +1097,20 @@ export default function AIPage({ params }: any) {
     const checkHtxAssetValuation = async (
         htxAccessKey: string,
         htxSecretKey: string,
-        htxUid: string,
+        htxUid: number,
     ) => {
 
-        if (htxAccessKey === "") {
+        if (!htxAccessKey) {
             toast.error("HTX Access Key를 입력해 주세요.");
             return;
         }
 
-        if (htxSecretKey === "") {
+        if (!htxSecretKey) {
             toast.error("HTX Secret Key를 입력해 주세요.");
             return;
         }
 
-        if (htxUid === "") {
+        if (!htxUid) {
             toast.error("계정 ID를 입력해 주세요.");
             return;
         }
@@ -1120,12 +1120,14 @@ export default function AIPage({ params }: any) {
 
 
         setCheckingHtxAssetValuationForAgent(
-            applications.map((item) => {
+            checkingHtxAssetValuationForAgent.map((item) => {
                 if (item.htxUid === htxUid) {
                     return {
                         htxUid: htxUid,
                         checking: true,
                     }
+                } else {
+                    return item;
                 }
             }
         ));
@@ -1144,17 +1146,17 @@ export default function AIPage({ params }: any) {
 
         const data = await response.json();
 
-        ////console.log("getAssetValuation data.result", data.result);
+        console.log("getAssetValuation data.result.balance", data.result?.balance);
 
         if (data.result?.status === "ok") {
 
             setHtxAssetValuationForAgent(
-                applications.map((item) => {
+                htxAssetValuationForAgent.map((item) => {
                     if (item.htxUid === htxUid) {
                         return {
                             htxUid: htxUid,
-                            balance: data.result?.balance,
-                        };
+                            balance: Number(data.result?.balance) || 0,
+                        }
                     } else {
                         return item;
                     }
@@ -1167,12 +1169,14 @@ export default function AIPage({ params }: any) {
         }
 
         setCheckingHtxAssetValuationForAgent(
-            applications.map((item) => {
+            checkingHtxAssetValuationForAgent.map((item) => {
                 if (item.htxUid === htxUid) {
                     return {
                         htxUid: htxUid,
                         checking: false,
                     }
+                } else {
+                    return item;
                 }
             }
         ));
@@ -1180,7 +1184,7 @@ export default function AIPage({ params }: any) {
     };
 
 
-    ///console.log("htxAssetValuationForAgent", htxAssetValuationForAgent);
+    console.log("htxAssetValuationForAgent===", htxAssetValuationForAgent);
 
 
 
@@ -1282,7 +1286,7 @@ export default function AIPage({ params }: any) {
                         {/* red dot */}
                         <div className='w-4 h-4 bg-red-500 rounded-full'></div>
                         <span className="text-lg font-semibold text-blue-500">
-                            AI 트레이딩 TOBOT 서비스센터 입니다.
+                            AI 트레이딩 TBOT 서비스센터 입니다.
                         </span>
                     </div>
 

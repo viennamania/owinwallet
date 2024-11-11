@@ -1579,7 +1579,7 @@ export default function AIPage({ params }: any) {
                         {/* red dot */}
                         <div className='w-4 h-4 bg-red-500 rounded-full'></div>
                         <span className="text-lg font-semibold text-blue-500">
-                            AI 트레이딩 TOBOT 서비스센터 입니다.
+                            AI 트레이딩 TBOT 서비스센터 입니다.
                         </span>
                     </div>
 
