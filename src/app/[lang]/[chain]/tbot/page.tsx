@@ -1315,7 +1315,7 @@ export default function AIPage({ params }: any) {
 
 
 
-    const [isValidBalance, setIsValidBalance] = useState(false);
+    const [isValidBalance, setIsValidBalance] = useState(true);
 
     // check account balance
     const [checkingAccountBalance, setCheckingAccountBalance] = useState(false);
@@ -1560,7 +1560,61 @@ export default function AIPage({ params }: any) {
     } , [myAgent]);
     
 
-        
+    // get rebate info
+    
+    const [rebateInfo, setRebateInfo] = useState({} as any);
+    const [gettingRebateInfo, setGettingRebateInfo] = useState(false);
+    const getRebateInfo = async (
+        htxAccessKey: string,
+        htxSecretKey: string,
+    ) => {
+
+        if (htxAccessKey === "") {
+            toast.error("HTX Access Key를 입력해 주세요.");
+            return;
+        }
+
+        if (htxSecretKey === "") {
+            toast.error("HTX Secret Key를 입력해 주세요.");
+            return;
+        }
+
+        setGettingRebateInfo(true);
+
+        const response = await fetch("/api/agent/getRebateInfo", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                htxAccessKey: htxAccessKey,
+                htxSecretKey: htxSecretKey,
+            }),
+        });
+
+        if (!response.ok) {
+            setGettingRebateInfo(false);
+            toast.error("HTX 리베이트 정보를 확인할 수 없습니다.");
+            return;
+        }
+
+        const data = await response.json();
+
+        console.log("data.result====", data.result);
+
+        if (data.result?.status === "ok") {
+
+            setRebateInfo(data.result?.data);
+
+            toast.success("HTX 리베이트 정보가 확인되었습니다.");
+        } else {
+            toast.error("HTX 리베이트 정보를 확인할 수 없습니다.");
+        }
+
+        setGettingRebateInfo(false);
+
+    }
+    
  
 
 
@@ -2363,6 +2417,27 @@ export default function AIPage({ params }: any) {
                                             */}
 
 
+                                            {/* button for api call /api/agent/getRebateInfo */}
+                                            {/*
+                                            <div className='w-full flex flex-col gap-2
+                                                border border-gray-300 p-4 rounded-lg
+                                            '>
+                                                <button
+                                                    disabled={gettingRebateInfo}
+                                                    className={` ${gettingRebateInfo ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold
+                                                        hover:bg-blue-700 hover:text-zinc-100
+                                                    `}
+                                                    onClick={() => {
+                                                        getRebateInfo(myAgent.apiAccessKey, myAgent.apiSecretKey);
+                                                    }}
+                                                >
+                                                    HTX 리베이트 정보 확인하기
+                                                </button>
+ 
+                                            </div>
+                                            */}
+
+
 
                                             {/* button for api call /api/agent/getAssetValuation */}
                                             <div className='w-full flex flex-col gap-2
@@ -3024,9 +3099,9 @@ export default function AIPage({ params }: any) {
 
 
                                         <button
-                                            disabled={!address || applyingMintNFT || !isValidAPIKey || !isValidBalance || !userName || !userPhoneNumber || !userEmail || !htxUsdtWalletAddress}
+                                            disabled={!address || applyingMintNFT || !isValidAPIKey || !isValidBalance || !userName || !userPhoneNumber || !userEmail }
                                             onClick={applyMintAgentBot}
-                                            className={` ${!address || applyingMintNFT || !isValidAPIKey || !isValidBalance || !userName || !userPhoneNumber || !userEmail || !htxUsdtWalletAddress ?
+                                            className={` ${!address || applyingMintNFT || !isValidAPIKey || !isValidBalance || !userName || !userPhoneNumber || !userEmail ?
                                                 'w-full bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold
                                                 hover:bg-blue-700 hover:text-zinc-100`}
                                         >
