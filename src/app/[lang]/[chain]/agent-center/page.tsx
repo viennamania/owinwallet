@@ -1064,9 +1064,6 @@ export default function AIPage({ params }: any) {
     const [htxAssetValuationForAgent, setHtxAssetValuationForAgent] = useState([] as any[]);
 
     useEffect(() => {
-
-        // set false for all applications
-
         setCheckingHtxAssetValuationForAgent(
             applications.map((item) => {
                 return {
@@ -1076,10 +1073,6 @@ export default function AIPage({ params }: any) {
             })
         );
 
-        
-
-        // set balance for all applications
-        
         setHtxAssetValuationForAgent(
             applications.map((item) => {
                 return {
@@ -1088,12 +1081,8 @@ export default function AIPage({ params }: any) {
                 };
             })
         );
-    
     } , [applications]);
 
-    ///console.log("checkingHtxAssetValuationForAgent", checkingHtxAssetValuationForAgent);
-
-    
     const checkHtxAssetValuation = async (
         htxAccessKey: string,
         htxSecretKey: string,
@@ -1114,10 +1103,6 @@ export default function AIPage({ params }: any) {
             toast.error("계정 ID를 입력해 주세요.");
             return;
         }
-
-        console.log("checkHtxAssetValuation htxUid", htxUid);
-
-
 
         setCheckingHtxAssetValuationForAgent(
             checkingHtxAssetValuationForAgent.map((item) => {
@@ -1184,9 +1169,6 @@ export default function AIPage({ params }: any) {
     };
 
 
-    console.log("htxAssetValuationForAgent===", htxAssetValuationForAgent);
-
-
 
 
 
@@ -1247,6 +1229,37 @@ export default function AIPage({ params }: any) {
         setSearchingMatchResults(false);
 
     };
+
+
+
+
+
+
+    // check user info from wallet address
+    const [checkingUserInfoList, setCheckingUserInfoList] = useState([] as any[]);
+    const [userInfoList, setUserInfoList] = useState([] as any[]);
+    useEffect(() => {
+        setCheckingUserInfoList(
+            applications.map((item) => {
+                return {
+                    walletAddress: item.walletAddress,
+                    checking: false,
+                }
+            })
+        );
+
+        setUserInfoList(
+            applications.map((item) => {
+                return {
+                    walletAddress: item.walletAddress,
+                    bankName: "",
+                    bankAccount: "",
+                    userHolder: "",
+                };
+            })
+        );
+    } , [applications]);
+
 
 
 
@@ -1701,6 +1714,9 @@ export default function AIPage({ params }: any) {
                                                     {checkingHtxAssetValuationForAgent.find((item) => item?.htxUid === application.htxUid)?.checking ? "Checking..." : "Check"}
                                                 </button>
                                             </div>
+
+                                      
+                                            
 
 
                                                     
