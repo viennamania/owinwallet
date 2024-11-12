@@ -1779,9 +1779,11 @@ export default function AIPage({ params }: any) {
                                                                 <span className='text-sm font-semibold text-blue-500'>
                                                                     {agents.find((agent) => agent.erc721ContractAddress === agentBot)?.nickname} 님의 AI 에이전트 NFT
                                                                 </span>
-                                                                <span className='text-sm font-semibold text-blue-500'>
-                                                                    {agentBotList.length} 개의 AI 에이전트 NFT
-                                                                </span>
+                                                                {!loadingAgentBotList && (
+                                                                    <span className='text-sm font-semibold text-blue-500'>
+                                                                        {agentBotList.length} 개의 AI 에이전트 NFT
+                                                                    </span>
+                                                                )}
                                                             </div>
                                                         )}
 
