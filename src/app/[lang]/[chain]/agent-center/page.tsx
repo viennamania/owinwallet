@@ -1165,8 +1165,22 @@ export default function AIPage({ params }: any) {
             }
         ));
 
+        /*
         // api getAccount
         const response = await fetch("/api/agent/getAccountAndUpdateApplication", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                applicationId: applicationId,
+                htxAccessKey: apiAccessKey,
+                htxSecretKey: apiSecretKey,
+            }),
+        });
+        */
+       // api updateHtxUID
+       const response = await fetch("/api/agent/updateHtxUID", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -1185,7 +1199,7 @@ export default function AIPage({ params }: any) {
 
         const data = await response.json();
 
-        console.log("data", data);
+        //console.log("updateHtxUID data", data);
 
         if (data.result?.status === "ok") {
             toast.success("API Access Key가 확인되었습니다.");

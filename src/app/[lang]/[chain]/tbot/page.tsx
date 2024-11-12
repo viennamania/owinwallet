@@ -984,7 +984,9 @@ export default function AIPage({ params }: any) {
     } , [phoneNumber]);
 
     const [userEmail, setUserEmail] = useState("");
-    const [htxUid, setHtxUid] = useState("");
+    
+    const [htxUserId, setHtxUserId] = useState("");
+
     const [htxUsdtWalletAddress, setHtxUsdtWalletAddress] = useState("");
     const [apiAccessKey, setApiAccessKey] = useState("");
     const [apiSecretKey, setApiSecretKey] = useState("");
@@ -1024,8 +1026,8 @@ export default function AIPage({ params }: any) {
             return;
         }
 
-        if (htxUid === "") {
-            toast.error("HTX UID를 입력해 주세요.");
+        if (htxUserId === "") {
+            toast.error("HTX UserId 입력해 주세요.");
             return;
         }
 
@@ -1063,7 +1065,7 @@ export default function AIPage({ params }: any) {
                 userName: userName,
                 userPhoneNumber: userPhoneNumber,
                 userEmail: userEmail,
-                htxUid: htxUid,
+                htxUserId: htxUserId,
                 htxUsdtWalletAddress: htxUsdtWalletAddress,
                 apiAccessKey: apiAccessKey,
                 apiSecretKey: apiSecretKey,
@@ -1309,7 +1311,7 @@ export default function AIPage({ params }: any) {
 
             setIsValidAPIKey(true);
 
-            setHtxUid(data.result?.data[0]?.id);
+            setHtxUserId(data.result?.data[0]?.id);
 
             toast.success("HTX API Key가 확인되었습니다.");
         } else {
@@ -2718,14 +2720,14 @@ export default function AIPage({ params }: any) {
 
                                         <div className='w-full hidden flex-col gap-2 border border-gray-300 p-4 rounded-lg'>
                                             <span className='text-sm font-semibold text-gray-500'>
-                                                HTX UID
+                                                HTX UserId
                                             </span>
                                             <input
                                                 disabled={true}
-                                                value={htxUid}
-                                                onChange={(e) => setHtxUid(e.target.value)}
+                                                value={htxUserId}
+                                                onChange={(e) => setHtxUserId(e.target.value)}
                                                 type="text"
-                                                placeholder="HTX UID"
+                                                placeholder="HTX UserId"
                                                 className="w-full p-2 rounded-lg border border-gray-300"
                                             />
                                         </div>

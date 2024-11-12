@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
   apiSecretKey: apiSecretKey,
   */
 
-  const { walletAddress, agentBot, agentBotNumber, userName, userPhoneNumber, userEmail, htxUid, htxUsdtWalletAddress, apiAccessKey, apiSecretKey } = body;
+  const { walletAddress, agentBot, agentBotNumber, userName, userPhoneNumber, userEmail, htxUserId, htxUsdtWalletAddress, apiAccessKey, apiSecretKey } = body;
 
 
 
@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
     userName: userName,
     userPhoneNumber: userPhoneNumber,
     userEmail: userEmail,
-    htxUid: htxUid,
+    htxUserId: htxUserId,
     htxUsdtWalletAddress: htxUsdtWalletAddress,
     apiAccessKey: apiAccessKey,
     apiSecretKey: apiSecretKey,

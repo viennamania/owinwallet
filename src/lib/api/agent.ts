@@ -56,7 +56,8 @@ export async function insertOne(data: any) {
     || !data.userName
     || !data.userPhoneNumber
     || !data.userEmail
-    || !data.htxUid
+
+    || !data.htxUserId
     
     //////|| !data.htxUsdtWalletAddress
 
@@ -92,7 +93,7 @@ export async function insertOne(data: any) {
       userName: data.userName,
       userPhoneNumber: data.userPhoneNumber,
       userEmail: data.userEmail,
-      htxUid: data.htxUid,
+      htxUserId: data.htxUserId,
       htxUsdtWalletAddress: data.htxUsdtWalletAddress,
       apiAccessKey: data.apiAccessKey,
       apiSecretKey: data.apiSecretKey,
@@ -110,7 +111,7 @@ export async function insertOne(data: any) {
       userName: data.userName,
       userPhoneNumber: data.userPhoneNumber,
       userEmail: data.userEmail,
-      htxUid: data.htxUid,
+      htxUserId: data.htxUserId,
       htxUsdtWalletAddress: data.htxUsdtWalletAddress,
       apiAccessKey: data.apiAccessKey,
       apiSecretKey: data.apiSecretKey,
