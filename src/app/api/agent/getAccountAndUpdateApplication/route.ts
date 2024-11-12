@@ -12,6 +12,11 @@ import {
 import CryptoJS from 'crypto-js';
 
 
+import {
+  updateHtxUid
+} from '@lib/api/agent';
+
+
 /*
 function sign_sha(method, baseurl, path, data) {
     var pars = [];
@@ -40,6 +45,7 @@ export async function POST(request: NextRequest) {
 
   
   const {
+    applicationId,
     htxAccessKey,
     htxSecretKey,
    } = body;
@@ -155,12 +161,18 @@ export async function POST(request: NextRequest) {
       */
 
       if (data.status === 'ok') {
+        const htxUid = data.data[0].id as number;
+
+        const result = await updateHtxUid({ applicationId, htxUid });
+
+        if (result) {
           return NextResponse.json({
-              result: {
-                  status: "ok",
-                  data: data.data
-              },
+            result: {
+              status: "ok",
+              htxUid,
+            },
           });
+        }
       }
       
       

@@ -1,6 +1,7 @@
 import { create } from 'domain';
 import clientPromise from '../mongodb';
 import { N } from 'ethers';
+import exp from 'constants';
 
 
 export interface AgentProps {
@@ -335,6 +336,47 @@ export async function updateAgentBotNft(
     return {
       applicationId: applicationId,
       agentBotNft: agentBotNft,
+    };
+  } else {
+    return null;
+  }
+
+}
+
+
+// update htxUid
+export async function updateHtxUid(
+  {
+    applicationId,
+    htxUid,
+  }
+  :
+  {
+    applicationId: number,
+    htxUid: number,
+  },
+) {
+
+  if (!applicationId || !htxUid) {
+    return null;
+  }
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('agents');
+
+  const result = await collection.updateOne(
+    { id: applicationId },
+    {
+      $set: {
+        htxUid: htxUid,
+      }
+    }
+  );
+
+  if (result) {
+    return {
+      applicationId: applicationId,
+      htxUid: htxUid,
     };
   } else {
     return null;

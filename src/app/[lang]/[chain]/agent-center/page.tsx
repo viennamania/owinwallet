@@ -1103,6 +1103,131 @@ export default function AIPage({ params }: any) {
 
 
 
+    // check api access key and secret key for each application
+    const [checkingApiAccessKeyList, setCheckingApiAccessKeyList] = useState([] as any[]);
+    const [apiAccessKeyList, setApiAccessKeyList] = useState([] as any[]);
+
+    useEffect(() => {
+        setCheckingApiAccessKeyList(
+            applications.map((item) => {
+                return {
+                    applicationId: item.id,
+                    checking: false,
+                }
+            })
+        );
+
+        setApiAccessKeyList(
+            applications.map((item) => {
+                return {
+                    applicationId: item.id,
+                    apiAccessKey: item.apiAccessKey,
+                    apiSecretKey: item.apiSecretKey,
+                };
+            })
+        );
+    }
+
+    , [applications]);
+
+
+    const checkApiAccessKey = async (
+        applicationId: number,
+        apiAccessKey: string,
+        apiSecretKey: string,
+    ) => {
+
+        if (!apiAccessKey) {
+            toast.error("API Access Key를 입력해 주세요.");
+            return;
+        }
+
+        if (!apiSecretKey) {
+            toast.error("API Secret Key를 입력해 주세요.");
+            return;
+        }
+
+        if (!applicationId) {
+            toast.error("신청 ID를 입력해 주세요.");
+            return;
+        }
+
+        setCheckingApiAccessKeyList(
+            checkingApiAccessKeyList.map((item) => {
+                if (item.applicationId === applicationId) {
+                    return {
+                        applicationId: applicationId,
+                        checking: true,
+                    }
+                } else {
+                    return item;
+                }
+            }
+        ));
+
+        // api getAccount
+        const response = await fetch("/api/agent/getAccountAndUpdateApplication", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                applicationId: applicationId,
+                htxAccessKey: apiAccessKey,
+                htxSecretKey: apiSecretKey,
+            }),
+        });
+
+        if (!response.ok) {
+            console.error("Error checking api access key");
+            return;
+        }
+
+        const data = await response.json();
+
+        console.log("data", data);
+
+        if (data.result?.status === "ok") {
+            toast.success("API Access Key가 확인되었습니다.");
+
+
+            // update application
+            setApplications(
+                applications.map((item) => {
+                    if (item.id === applicationId) {
+                        return {
+                            ...item,
+                            htxUid: data.result?.htxUid,
+                        }
+                    } else {
+                        return item;
+                    }
+                })
+            );
+
+
+        } else {
+            toast.error("API Access Key를 확인할 수 없습니다.");
+        }
+
+        setCheckingApiAccessKeyList(
+            checkingApiAccessKeyList.map((item) => {
+                if (item.applicationId === applicationId) {
+                    return {
+                        applicationId: applicationId,
+                        checking: false,
+                    }
+                } else {
+                    return item;
+                }
+            }
+        ));
+
+
+    }
+
+
+
 
 
     //console.log("applications=====", applications);
@@ -1737,9 +1862,29 @@ export default function AIPage({ params }: any) {
                                             </div>
 
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                                <span className='text-xl font-semibold text-gray-800'>
-                                                    HTX UID: {application.htxUid}
-                                                </span>
+                                                <div className='flex flex-col gap-2'>
+                                                    <span className='text-xs text-yellow-800'>
+                                                        HTX UID
+                                                    </span>
+                                                    <span className='text-sm text-gray-800'>
+                                                        {application.htxUid}
+                                                    </span>
+                                                </div>
+
+                                                {/* checkApiAccessKey */}
+                                                <button
+                                                    onClick={() => {
+                                                        checkApiAccessKey(application.id, application.apiAccessKey, application.apiSecretKey);
+                                                    }}
+                                                    disabled={checkingApiAccessKeyList.find((item) => item.applicationId === application.id)?.checking}
+                                                    className={`${checkingApiAccessKeyList.find((item) => item.applicationId === application.id)?.checking ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
+                                                        hover:bg-blue-600
+                                                    `}
+                                                >
+                                                    {checkingApiAccessKeyList.find((item) => item.applicationId === application.id)?.checking ? "Updating..." : "Update UID"}
+                                                </button>
+
+
                                                 {/* copy button */}
                                                 <button
                                                     onClick={() => {
