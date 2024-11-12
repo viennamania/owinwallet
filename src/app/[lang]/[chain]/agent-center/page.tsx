@@ -1823,7 +1823,28 @@ export default function AIPage({ params }: any) {
                                             <div className='w-full flex flex-row items-start justify-between gap-2
                                                 border-b border-gray-300 pb-2
                                             '>
+
                                                 <div className='flex flex-col gap-2'>
+
+                                                    {/* goto button for detail page */}
+                                                    <button
+                                                        onClick={() => {
+                                                            router.push('/' + params.lang + '/' + params.chain + '/agent/' + application.agentBot + '/' + application.agentBotNumber);
+
+                                                            // open new window
+
+                                                            //window.open('https://owinwallet.com/' + params.lang + '/' + params.chain + '/agent/' + nft.contract.address + '/' + nft.tokenId);
+
+
+                                                        }}
+                                                        className="p-2 bg-blue-500 text-zinc-100 rounded
+                                                        hover:bg-blue-600"
+                                                    >
+                                                        <span className='text-xs xl:text-lg font-semibold'>
+                                                            에이전트 상세보기
+                                                        </span>
+                                                    </button>
+
                                                     <div className='flex flex-col gap-2'>
                                                         <span className='text-xs text-yellow-800'>
                                                             AI Agent Bot Code
@@ -1841,6 +1862,7 @@ export default function AIPage({ params }: any) {
                                                             #{application.agentBotNumber}
                                                         </span>
                                                     </div>
+
                                                 </div>
 
                                                 {!agentBotNftList.find((item) => item.applicationId === application.id)?.agentBotNft ? (

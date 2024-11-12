@@ -1835,7 +1835,7 @@ export default function AIPage({ params }: any) {
                                                                         hover:bg-blue-600"
                                                                     >
                                                                         <span className='text-xs xl:text-lg font-semibold'>
-                                                                            상세보기
+                                                                            애이전트 상세보기
                                                                         </span>
                                                                     </button>
 

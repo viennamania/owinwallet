@@ -854,7 +854,7 @@ export default function AgentPage({ params }: any) {
 
 
             <Image
-              src="/logo-agent.png"
+              src={agent?.image?.thumbnailUrl}
               width={80}
               height={80}
               alt="Agent"
