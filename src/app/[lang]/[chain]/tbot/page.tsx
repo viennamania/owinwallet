@@ -1985,7 +1985,7 @@ export default function AIPage({ params }: any) {
                     <div className='mt-5 w-full flex flex-col gap-10 '> 
 
                         <div className='flex flex-col xl:flex-row gap-5 items-center xl:items-start justify-between border
-                         border-yellow-500 p-4 rounded-lg
+                         border-yellow-500 p-1 rounded-lg
                         '>
                             
                             <div className='flex flex-row items-center gap-2'>
@@ -2128,7 +2128,7 @@ export default function AIPage({ params }: any) {
                                 {address && !loadingMyAgent && myAgent?.id && (
                                     <div className='w-full flex flex-col gap-2
                                         items-center justify-center
-                                        border border-gray-300 p-4 rounded-lg
+                                        border border-gray-300 p-1 rounded-lg
                                     '>
 
                                         {isAgentTradingStarted ? (
@@ -2345,7 +2345,7 @@ export default function AIPage({ params }: any) {
                                 {amountNft100 > 0 && !loadingMyAgent && !myAgent?.id && (
 
                                     <div className='w-full flex flex-col items-center gap-2
-                                        border border-gray-300 p-4 rounded-lg
+                                        border border-gray-300 p-1 rounded-lg
                                     '>
                                         {/* HTX 가입 */}
                                         {/* new window
@@ -2496,11 +2496,13 @@ export default function AIPage({ params }: any) {
                                                     AI 에이전트를 선택하세요
                                                 </span>
 
-                                                <div className='w-full grid grid-cols-2 items-start justify-between gap-2'>
+                                                <div className='w-full flex flex-col gap-2'>
 
-                                                    <div className='flex flex-col gap-2'>
+                                                    <div className='w-full grid grid-cols-3 gap-2'>
                                                         {agents.map((agent) => (
-                                                            <div key={agent.erc721ContractAddress} className='flex flex-row items-center gap-2'>
+                                                            <div
+                                                                key={agent.erc721ContractAddress}
+                                                                className='flex flex-row items-center gap-2'>
                                                 
                                                                 {/*
                                                                 <Image
