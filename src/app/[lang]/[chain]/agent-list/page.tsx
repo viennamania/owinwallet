@@ -1565,7 +1565,7 @@ export default function AIPage({ params }: any) {
                     <div className='flex flex-row items-center gap-4'>
                         
                         <Image
-                            src="/tbot.png"
+                            src="/logo-agent-center.png"
                             alt="TBOT"
                             width={100}
                             height={40}
