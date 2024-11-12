@@ -963,7 +963,7 @@ export default function AgentPage({ params }: any) {
                 className='rounded-lg'
               />
               <span className='text-lg font-semibold text-gray-800'>
-                  에이전트 NFT 정보
+                  AI 에이전트 NFT 정보
               </span>
           </div>
 
