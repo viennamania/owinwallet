@@ -2168,6 +2168,7 @@ export default function SettingsPage({ params }: any) {
 
                                 {/* mint AI Agent NFT */}
                                 <div className='w-full flex flex-col gap-2 items-start justify-between border border-gray-300 p-4 rounded-lg'>
+                                    
                                     <span className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
                                         AI 에이전트 NFT 발행
                                     </span>
@@ -2218,10 +2219,10 @@ export default function SettingsPage({ params }: any) {
                                     </button>
 
                                     {messageMintingAgentNft && (
-                                    <span className='text-lg font-semibold text-red-500
-                                        border border-gray-300 p-4 rounded-lg'>
-                                        {messageMintingAgentNft}
-                                    </span>
+                                        <span className='text-lg font-semibold text-red-500
+                                            border border-gray-300 p-4 rounded-lg'>
+                                            {messageMintingAgentNft}
+                                        </span>
                                     )}
 
                                     {ganeratingAgentImage && (
@@ -2238,6 +2239,7 @@ export default function SettingsPage({ params }: any) {
                                             </span>
                                         </div>
                                     )}
+
                                     {agentImage && (
                                         <Image
                                             src={agentImage}
@@ -2256,7 +2258,7 @@ export default function SettingsPage({ params }: any) {
                                             My AI 에이전트 NFT
                                         </span>
                                     </div>
-                                    <div className='w-full grid grid-cols-1 xl:grid-cols-2 gap-2'>
+                                    <div className='w-full grid grid-cols-1 xl:grid-cols-3 gap-2'>
                                         {myNfts.map((nft, index) => (
                                             <div key={index} className='w-full flex flex-col gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
                                                 
@@ -2291,17 +2293,17 @@ export default function SettingsPage({ params }: any) {
                                                         <div className='text-2xl font-semibold text-blue-500'>
                                                             #{nft.tokenId}
                                                         </div>
-                                                        <div className='text-lg font-semibold text-green-500'>
+                                                        <div className='text-sm font-semibold text-green-500'>
                                                             {nft.name}
                                                         </div>
-                                                        <div className='text-sm font-semibold'>
+                                                        <div className='text-xs font-semibold'>
                                                             {nft.description}
                                                         </div>
 
                                                         <div className='flex flex-col gap-2 items-start justify-between'>
                                                             {/* // from now to mint in hours minutes seconds
                                                             // now - mint */}
-                                                            <span className='text-xs xl:text-lg font-semibold'>
+                                                            <span className='text-xs xl:text-sm font-semibold'>
                                                                 Start{' '}{(new Date().getTime() - new Date(nft.mint.timestamp).getTime()) / 1000 / 60 / 60 / 24 > 1
                                                                     ? `${Math.floor((new Date().getTime() - new Date(nft.mint.timestamp).getTime()) / 1000 / 60 / 60 / 24)} days ago`
                                                                     : `${Math.floor((new Date().getTime() - new Date(nft.mint.timestamp).getTime()) / 1000 / 60 / 60)} hours ago`
@@ -2309,17 +2311,17 @@ export default function SettingsPage({ params }: any) {
                                                             </span>
                                                             
                                                             {/* Accounts */}
-                                                            <span className='text-xs xl:text-lg font-semibold'>
+                                                            <span className='text-xs xl:text-sm font-semibold'>
                                                                 Accounts: 0
                                                             </span>
 
                                                             {/* Funds */}
-                                                            <span className='text-xs xl:text-lg font-semibold'>
+                                                            <span className='text-xs xl:text-sm font-semibold'>
                                                                 Funds: 0 USDT
                                                             </span>
 
                                                             {/* 수익률 */}
-                                                            <span className='text-xs xl:text-lg font-semibold'>
+                                                            <span className='text-xs xl:text-sm font-semibold'>
                                                                 ROI: ??%
                                                             </span>
 
