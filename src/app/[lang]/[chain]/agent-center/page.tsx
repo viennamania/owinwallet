@@ -1582,14 +1582,14 @@ export default function AIPage({ params }: any) {
                             height={40}
                         />
                         <span className="text-sm font-semibold text-gray-500">
-                            OWIN AI 로봇 트레이딩&아카데미 센터
+                            AI 트레이딩 TBOT 서비스센터 입니다.
                         </span>
                     </div>
                     <div className='flex flex-row items-center gap-4'>
                         {/* red dot */}
                         <div className='w-4 h-4 bg-red-500 rounded-full'></div>
                         <span className="text-lg font-semibold text-blue-500">
-                            AI 트레이딩 TBOT 서비스센터 입니다.
+                            마스터봇 NFT 목록
                         </span>
                     </div>
 
@@ -2192,7 +2192,7 @@ function Header(
                 }}
                 className="text-gray-600 hover:underline text-xs xl:text-lg"
                 >
-                    마스터봇 NFT
+                    마스터봇 NFT 목록
                 </button>
                 <button
                 onClick={() => {
@@ -2200,7 +2200,7 @@ function Header(
                 }}
                 className="text-gray-600 hover:underline text-xs xl:text-lg"
                 >
-                    AI 에이전트 NFT
+                    AI 에이전트 NFT 목록
                 </button>
             </div>
 

@@ -2270,6 +2270,12 @@ export default function SettingsPage({ params }: any) {
                                                         <button
                                                             onClick={() => {
                                                                 router.push('/' + params.lang + '/' + params.chain + '/agent/' + nft.contract.address + '/' + nft.tokenId);
+
+                                                                // open new window
+
+                                                                //window.open('https://owinwallet.com/' + params.lang + '/' + params.chain + '/agent/' + nft.contract.address + '/' + nft.tokenId);
+
+
                                                             }}
                                                             className="p-2 bg-blue-500 text-zinc-100 rounded
                                                             hover:bg-blue-600"
@@ -2278,6 +2284,24 @@ export default function SettingsPage({ params }: any) {
                                                                 상세보기
                                                             </span>
                                                         </button>
+
+
+                                                        <button
+                                                            onClick={() => {
+                                                                window.open('https://opensea.io/assets/matic/' + erc721ContractAddress + '/' + nft.tokenId);
+                                                            }}
+                                                            className="p-2 rounded hover:bg-gray-300"
+                                                        >
+                                                            <Image
+                                                                src="/logo-opensea.png"
+                                                                alt="OpenSea"
+                                                                width={30}
+                                                                height={30}
+                                                                className="rounded-lg"
+                                                            />
+                                                        </button>
+
+
 
                                                         <Image
                                                             src={nft.image.thumbnailUrl}
@@ -2353,6 +2377,7 @@ export default function SettingsPage({ params }: any) {
 
                                                 </div>
 
+                                                {/*
                                                 <div className='w-full flex flex-row gap-2 items-center justify-between'>
                                             
                                                     <button
@@ -2368,7 +2393,6 @@ export default function SettingsPage({ params }: any) {
                                                         레퍼럴 URL 복사
                                                     </button>
 
-                                                    {/* opensea */}
                                                     <button
                                                         onClick={() => {
                                                             window.open('https://opensea.io/assets/matic/' + erc721ContractAddress + '/' + nft.tokenId);
@@ -2385,6 +2409,7 @@ export default function SettingsPage({ params }: any) {
                                                     </button>
 
                                                 </div>
+                                                */}
 
                                             </div>
                                         ))}

@@ -930,9 +930,7 @@ export default function AgentPage({ params }: any) {
         {/* history back */}
         <div className='mt-5 flex flex-row items-center gap-2'>
           <button
-            onClick={() => router.push(
-              '/' + params.lang + '/' + params.chain + '/profile-settings'
-            )}
+            onClick={() => router.back()}
             className="flex flex-row items-center gap-2 bg-gray-500 text-white p-2 rounded-lg
               hover:bg-gray-600
             "
@@ -944,7 +942,7 @@ export default function AgentPage({ params }: any) {
               alt="Back"
             />
             <span className='text-sm text-white'>
-              Agent Home
+              뒤로가기
             </span>
           </button>
         </div>
