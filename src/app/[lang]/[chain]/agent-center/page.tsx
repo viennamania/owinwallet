@@ -1812,7 +1812,7 @@ export default function AIPage({ params }: any) {
                                                 <div className='flex flex-col gap-2'>
                                                     <div className='flex flex-col gap-2'>
                                                         <span className='text-xs text-yellow-800'>
-                                                            Agent Bot Code
+                                                            AI Agent Bot Code
                                                         </span>
                                                         <span className='text-xs text-gray-800'>
                                                             {application.agentBot.slice(0, 10)}...{application.agentBot.slice(-10)}
@@ -1821,7 +1821,7 @@ export default function AIPage({ params }: any) {
 
                                                     <div className='flex flex-col gap-2'>
                                                         <span className='text-xs text-yellow-800'>
-                                                            Agent Bot Number
+                                                            AI Agent Bot Number
                                                         </span>
                                                         <span className='text-lg text-gray-800'>
                                                             #{application.agentBotNumber}
@@ -1842,7 +1842,10 @@ export default function AIPage({ params }: any) {
                                                         {checkingAgentBotNftList.find((item) => item.applicationId === application.id)?.checking ? "Checking..." : "Check NFT"}
                                                     </button>
                                                 ) : (
-                                                    <div className='flex flex-col gap-2'>
+                                                    <div className='flex flex-col gap-2
+                                                        items-center justify-center
+                                                        bg-gray-200 p-2 rounded-lg border border-gray-300
+                                                    '>
                                                         <span className='text-xs text-gray-800'>
                                                             {agentBotNftList.find((item) => item.applicationId === application.id)?.agentBotNft?.name || ""}
                                                         </span>
