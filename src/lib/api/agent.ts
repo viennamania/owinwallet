@@ -312,12 +312,12 @@ export async function updateAgentBotNft(
   },
 ) {
 
-  console.log('updateApplicationNft applicationId: ' + applicationId);
-  console.log('updateApplicationNft agentBotNft: ' + agentBotNft);
 
   if (!applicationId || !agentBotNft) {
     return null;
   }
+
+
 
   const client = await clientPromise;
   const collection = client.db('vienna').collection('agents');

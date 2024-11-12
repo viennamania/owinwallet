@@ -1027,6 +1027,7 @@ export default function AIPage({ params }: any) {
             }
         ));
 
+        /*
         const contract = getContract({
             client,
             chain: polygon,
@@ -1038,51 +1039,52 @@ export default function AIPage({ params }: any) {
             tokenId: BigInt(agentBotNumber),
         });
 
-        console.log("nft721", nft721);
+        ///console.log("nft721", nft721);
+        */
         
         
 
-        if (nft721) {
-            toast.success("NFT가 확인되었습니다.");
+        // updateApplicationAgentBotNft
+        const response = await fetch("/api/agent/updateApplicationAgentBotNft", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                applicationId: applicationId,
 
-            // updateApplicationAgentBotNft
-            const response = await fetch("/api/agent/updateApplicationAgentBotNft", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    applicationId: applicationId,
-                    agentBotNft: nft721?.metadata
-                }),
-            });
+                agentBot: agentBot,
+                agentBotNumber: agentBotNumber,
 
-            if (!response.ok) {
-                console.error("Error updating agent bot NFT");
-                return;
-            }
+                //agentBotNft: nft721?.metadata
+            }),
+        });
 
-            const data = await response.json();
-
-            setAgentBotNftList(
-                agentBotNftList.map((item) => {
-                    if (item.applicationId === applicationId) {
-                        return {
-                            applicationId: applicationId,
-                            agentBotNft: nft721,
-                        }
-                    } else {
-                        return item;
-                    }
-                })
-            );
-
-
-
-
-        } else {
-            toast.error("NFT를 확인할 수 없습니다.");
+        if (!response.ok) {
+            console.error("Error updating agent bot NFT");
+            return;
         }
+
+        const data = await response.json();
+
+        console.log("data", data);
+
+        setAgentBotNftList(
+            agentBotNftList.map((item) => {
+                if (item.applicationId === applicationId) {
+                    return {
+                        applicationId: applicationId,
+                        agentBotNft: data.result,
+                    }
+                } else {
+                    return item;
+                }
+            })
+        );
+
+
+
+
 
         setCheckingAgentBotNftList(
             checkingAgentBotNftList.map((item) => {
@@ -1702,18 +1704,34 @@ export default function AIPage({ params }: any) {
                                                     </div>
                                                 </div>
 
-                                        
-                                                <button
-                                                    onClick={() => {
-                                                        checkAgentBotNft(application.id, application.agentBot, application.agentBotNumber);
-                                                    }}
-                                                    disabled={checkingAgentBotNftList.find((item) => item.applicationId === application.id)?.checking}
-                                                    className={`${checkingAgentBotNftList.find((item) => item.applicationId === application.id)?.checking ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
-                                                        hover:bg-blue-600
-                                                    `}
-                                                >
-                                                    {checkingAgentBotNftList.find((item) => item.applicationId === application.id)?.checking ? "Checking..." : "Check NFT"}
-                                                </button>
+                                                {!agentBotNftList.find((item) => item.applicationId === application.id)?.agentBotNft ? (
+                                                    <button
+                                                        onClick={() => {
+                                                            checkAgentBotNft(application.id, application.agentBot, application.agentBotNumber);
+                                                        }}
+                                                        disabled={checkingAgentBotNftList.find((item) => item.applicationId === application.id)?.checking}
+                                                        className={`${checkingAgentBotNftList.find((item) => item.applicationId === application.id)?.checking ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
+                                                            hover:bg-blue-600
+                                                        `}
+                                                    >
+                                                        {checkingAgentBotNftList.find((item) => item.applicationId === application.id)?.checking ? "Checking..." : "Check NFT"}
+                                                    </button>
+                                                ) : (
+                                                    <div className='flex flex-col gap-2'>
+                                                        <span className='text-xs text-gray-800'>
+                                                            {agentBotNftList.find((item) => item.applicationId === application.id)?.agentBotNft?.name || ""}
+                                                        </span>
+                                                        <span className='text-xs text-gray-800'>
+                                                            {agentBotNftList.find((item) => item.applicationId === application.id)?.agentBotNft?.description || ""}
+                                                        </span>
+                                                        <Image
+                                                            src={agentBotNftList.find((item) => item.applicationId === application.id)?.agentBotNft?.image?.thumbnailUrl || ""}
+                                                            alt="NFT"
+                                                            width={50}
+                                                            height={50}
+                                                        />
+                                                    </div>
+                                                )}
 
 
                                             </div>

@@ -2197,7 +2197,7 @@ export default function AIPage({ params }: any) {
                                                     </span>
                                                     {/* accounts */}
                                                     <span className='text-sm font-semibold text-gray-500'>
-                                                        Accounts: 23
+                                                        Accounts: 0
                                                     </span>
 
                                                     {/* goto opensea */}
