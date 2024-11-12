@@ -2322,7 +2322,7 @@ export default function AIPage({ params }: any) {
                                                 </div>
 
                                                 <span className='text-sm font-semibold text-gray-500'>
-                                                    낵네임: {myAgent.userName}
+                                                    닉네임: {myAgent.userName}
                                                 </span>
                                                 <span className='text-sm font-semibold text-gray-500'>
                                                     핸드폰번호: {myAgent.userPhoneNumber}
