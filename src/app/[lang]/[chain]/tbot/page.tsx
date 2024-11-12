@@ -2095,10 +2095,22 @@ export default function AIPage({ params }: any) {
                                 </div>
 
                                 {address && loadingMyAgent && (
-                                    <div className='flex flex-col gap-2'>
+                                    <div className='flex flex-row items-center gap-2'>
                                         <span className='text-lg font-semibold text-blue-500'>
                                             AI 에이전트 로딩중...
                                         </span>
+                                        {/* refresh */}
+                                        <button
+                                            onClick={() =>
+                                                router.refresh()
+                                            }
+                                            className='bg-blue-500 text-zinc-100 p-2 rounded-lg text-lg font-semibold
+                                                hover:bg-gray-300 hover:text-gray-500 hover:shadow-lg
+                                            '
+                                        >
+                                            Refresh
+                                        </button>
+
                                     </div>
                                 )}
 
@@ -2299,7 +2311,7 @@ export default function AIPage({ params }: any) {
                                                 </div>
 
                                                 <span className='text-sm font-semibold text-gray-500'>
-                                                    이름: {myAgent.userName}
+                                                    낵네임: {myAgent.userName}
                                                 </span>
                                                 <span className='text-sm font-semibold text-gray-500'>
                                                     핸드폰번호: {myAgent.userPhoneNumber}
@@ -2740,7 +2752,7 @@ export default function AIPage({ params }: any) {
                                                 value={userName}
                                                 onChange={(e) => setUserName(e.target.value)}
                                                 type="text"
-                                                placeholder="이름"
+                                                placeholder="닉네임"
                                                 className="w-full p-2 rounded-lg border border-gray-300"
                                             />
                                             <input
