@@ -845,7 +845,7 @@ export default function Index({ params }: any) {
 
 
     // check input krw amount at sell order
-    const [checkInputKrwAmount, setCheckInputKrwAmount] = useState(true);
+    const [checkInputKrwAmount, setCheckInputKrwAmount] = useState(false);
 
 
 
