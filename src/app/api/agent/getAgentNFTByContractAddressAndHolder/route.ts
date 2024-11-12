@@ -20,39 +20,46 @@ export async function POST(request: NextRequest) {
 
   const {
     erc721ContractAddress,
-    tokenId
+    holderAddress
   } = body;
 
-
-  if (!erc721ContractAddress) {
-
-    return NextResponse.error();
-  }
-
   console.log("erc721ContractAddress: ", erc721ContractAddress);
-  console.log("tokenId: ", tokenId);
+  console.log("holderAddress: ", holderAddress);
 
+  const  owner  = holderAddress;
+  //Define the optional `options` parameters
+  const options = {
+    //excludeFilters: "SPAM"
+    contractAddresses: [erc721ContractAddress],
 
+  };
+  
+  //Call the method to get the nfts owned by this address
+  let response = await alchemy.nft.getNftsForOwner(owner, options);
 
+  
   /*
   const response = await alchemy.nft.getNftsForOwner(
-    walletAddress, {
+    holderAddress,{
     omitMetadata: false, // // Flag to omit metadata
     contractAddresses: [erc721ContractAddress],
   });
   */
+
+  console.log("response: ", response);
+  
+ 
   /*
   const response = await alchemy.nft.getNftsForContract(
     erc721ContractAddress, {
     omitMetadata: false, // // Flag to omit metadata
   });
   */
-  const response = await alchemy.nft.getNftMetadata(
-    erc721ContractAddress,
-    tokenId
-  );
 
 
+
+
+  
 
   if (!response) {
     return NextResponse.json({

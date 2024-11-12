@@ -1159,8 +1159,15 @@ export default function AIPage({ params }: any) {
                     }),
                 });
 
+                if (!fetchedNFT.ok) {
+                    console.error("Error fetching NFT");
+                    setLoadingMyAgent(false);
+                    return;
+                }
+
 
                 const nftData = await fetchedNFT.json();
+
                 setMyAgentNFT(nftData.result);
 
             }
@@ -2095,6 +2102,7 @@ export default function AIPage({ params }: any) {
                                 </div>
 
                                 {address && loadingMyAgent && (
+
                                     <div className='flex flex-row items-center gap-2'>
                                         <span className='text-lg font-semibold text-blue-500'>
                                             AI 에이전트 로딩중...
@@ -2112,6 +2120,7 @@ export default function AIPage({ params }: any) {
                                         </button>
 
                                     </div>
+
                                 )}
 
                                 {address && !loadingMyAgent && myAgent?.id && (

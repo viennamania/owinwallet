@@ -30,10 +30,15 @@ export async function POST(request: NextRequest) {
     contractAddresses: [erc721ContractAddress],
   });
   */
+ 
   const response = await alchemy.nft.getNftsForContract(
     erc721ContractAddress, {
     omitMetadata: false, // // Flag to omit metadata
   });
+
+
+
+
   
 
   if (!response) {
