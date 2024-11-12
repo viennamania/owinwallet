@@ -171,8 +171,8 @@ export async function getMyReferAgents(
     return null;
   }
 
-  console.log('getMyReferAgents agentBot: ' + agentBot);
-  console.log('getMyReferAgents agentBotNumber: ' + agentBotNumber);
+  //console.log('getMyReferAgents agentBot: ' + agentBot);
+  //console.log('getMyReferAgents agentBotNumber: ' + agentBotNumber);
 
 
   const client = await clientPromise;
@@ -204,7 +204,7 @@ export async function getMyReferAgents(
   ]).toArray();
 
 
-  ///////console.log('getMyReferAgents result: ' + JSON.stringify(result));
+  ////console.log('getMyReferAgents result: ' + JSON.stringify(result));
 
 
 
@@ -218,6 +218,9 @@ export async function getMyReferAgents(
   }
 
 }
+
+
+
 
 
 // getOneByWalletAddress

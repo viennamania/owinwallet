@@ -610,29 +610,6 @@ export default function AgentPage({ params }: any) {
   };
 
 
-  // get user by wallet address
-  const getUserByTronWalletAddress = async (tronWalletAddress: string) => {
-
-    const response = await fetch('/api/user/getUserByTronWalletAddress', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        tronWalletAddress: tronWalletAddress,
-      }),
-    });
-
-    const data = await response.json();
-
-    //console.log("getUserByWalletAddress", data);
-
-    return data.result;
-
-  };
-
-
-
 
 
   
@@ -689,55 +666,6 @@ export default function AgentPage({ params }: any) {
 
 
 
-  useEffect(() => {
-
-    if (!recipient?.tronWalletAddress) {
-      return;
-    }
-
-    // check recipient.walletAddress is in the user list
-    getUserByTronWalletAddress(recipient?.tronWalletAddress)
-
-    .then((data) => {
-        
-        //console.log("data============", data);
-  
-        const checkUser = data
-
-        if (checkUser) {
-          setIsWhateListedUser(true);
-
-          setRecipient(checkUser as any);
-
-        } else {
-          setIsWhateListedUser(false);
-
-          setRecipient({
-
-
-            _id: '',
-            id: 0,
-            email: '',
-            nickname: '',
-            avatar: '',
-            mobile: '',
-            walletAddress: '',
-            tronWalletAddress: recipient?.tronWalletAddress,
-            createdAt: '',
-            settlementAmountOfFee: '',
-
-          });
-
-
-        }
-
-    });
-
-  } , [recipient?.tronWalletAddress]);
-  
-
-
-  
 
 
 
