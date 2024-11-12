@@ -1840,12 +1840,13 @@ export default function AIPage({ params }: any) {
                                                         className="p-2 bg-blue-500 text-zinc-100 rounded
                                                         hover:bg-blue-600"
                                                     >
-                                                        <span className='text-xs xl:text-lg font-semibold'>
+                                                        <span className='text-xs xl:text-sm font-semibold'>
                                                             에이전트 상세보기
                                                         </span>
                                                     </button>
 
                                                     <div className='flex flex-col gap-2'>
+
                                                         <span className='text-xs text-yellow-800'>
                                                             AI Agent Bot Code
                                                         </span>
@@ -1882,7 +1883,24 @@ export default function AIPage({ params }: any) {
                                                         items-center justify-center
                                                         bg-gray-200 p-2 rounded-lg border border-gray-300
                                                     '>
-                                                        <span className='text-xs text-gray-800'>
+
+                                                        {/* opensea */}
+                                                        <button
+                                                            onClick={() => {
+                                                                window.open('https://opensea.io/assets/matic/' + application.agentBot + '/' + application.agentBotNumber);
+                                                            }}
+                                                            className="p-2 rounded hover:bg-gray-300"
+                                                        >
+                                                            <Image
+                                                                src="/logo-opensea.png"
+                                                                alt="OpenSea"
+                                                                width={30}
+                                                                height={30}
+                                                                className="rounded-lg"
+                                                            />
+                                                        </button>
+
+                                                        <span className='text-sm text-yellow-800'>
                                                             {agentBotNftList.find((item) => item.applicationId === application.id)?.agentBotNft?.name || ""}
                                                         </span>
                                                         <span className='text-xs text-gray-800'>
