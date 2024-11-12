@@ -1796,7 +1796,7 @@ export default function AIPage({ params }: any) {
                                                 border-b border-gray-300 pb-2
                                             '>
                                                 <span className='text-lg font-semibold text-gray-800'>
-                                                    신청번호: {application.id}
+                                                    신청번호: #{application.id}
                                                 </span>
                                                 <span className='text-sm text-gray-800'>
                                                     신청일자: {
