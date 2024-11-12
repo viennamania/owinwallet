@@ -20,9 +20,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.error();
   }
 
-  if (walletAddress === "0x7bfF3359841D26C8046364b93E7dA01886ae1c22"
+  if (walletAddress === "0x7bfF3359841D26C8046364b93E7dA01886ae1c22" // wayne
 
       || walletAddress === "0x5Cb2D01Cd138D9aB7a7435A85e8B12b0B2852A7a" // center
+
+      || walletAddress === "0xFb580c68794A963632FF272ab5A7233ee6114fef" // 곽준규
     
     ) {
 
