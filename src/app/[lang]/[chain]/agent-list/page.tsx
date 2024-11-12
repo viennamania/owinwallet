@@ -1572,7 +1572,7 @@ export default function AIPage({ params }: any) {
                             height={40}
                         />
                         <span className="text-sm font-semibold text-gray-500">
-                            OWIN AI 로봇 트레이딩&아카데미 센터
+                            AI 에이전트 NFT 목록
                         </span>
                     </div>
                     <div className='flex flex-row items-center gap-4'>

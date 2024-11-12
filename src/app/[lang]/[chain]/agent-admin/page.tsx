@@ -1345,7 +1345,7 @@ export default function AIPage({ params }: any) {
     console.log("gettingPositionList====", gettingPositionList);
 
 
-    
+    /*
     useEffect(() => {
 
         if (applications.length === 0) {
@@ -1411,6 +1411,7 @@ export default function AIPage({ params }: any) {
 
     
     } , [applications]);
+     */
     
 
 
@@ -1888,9 +1889,10 @@ export default function AIPage({ params }: any) {
                                         </div>
 
 
-                                        {/* HTX UID */}
+                                        {/* HTX UserId */}
                                         {/* checkHtxApiKey */}
 
+                                        {/*
                                         <div className='w-full flex flex-row items-center justify-start gap-2'>
                                             <button
                                                 onClick={() => {
@@ -1914,6 +1916,7 @@ export default function AIPage({ params }: any) {
                                                 HTX UID: {htxUidList[index]}
                                             </span>
                                         </div>
+                                        */}
 
 
 
