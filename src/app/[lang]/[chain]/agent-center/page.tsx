@@ -1857,6 +1857,7 @@ export default function AIPage({ params }: any) {
                                                             alt="NFT"
                                                             width={50}
                                                             height={50}
+                                                            className='rounded-lg'
                                                         />
                                                     </div>
                                                 )}
