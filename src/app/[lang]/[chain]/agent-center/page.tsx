@@ -1286,7 +1286,7 @@ export default function AIPage({ params }: any) {
                     <div className='flex flex-row items-center gap-4'>
                         
                         <Image
-                            src="/tbot.png"
+                            src="/logo-agent-center.png"
                             alt="TBOT"
                             width={100}
                             height={40}
@@ -1803,7 +1803,7 @@ function Header(
                     className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
                     />
                     <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
-                    OWIN Center
+                    AI Agent Center
                     </span>
                 </div>
                 

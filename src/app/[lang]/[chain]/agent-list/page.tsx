@@ -1693,7 +1693,7 @@ export default function AIPage({ params }: any) {
 
                                         {!isValidReferralLoading && !isValidReferral
                                         && agents.length > 0 && (
-                                            <div className=' w-full flex flex-col items-start gap-2
+                                            <div className=' w-full flex flex-col items-start gap-5
                                             '>
 
                                                 <span className='text-lg font-semibold text-blue-500'>
@@ -1704,9 +1704,15 @@ export default function AIPage({ params }: any) {
 
                                                     <div className='flex flex-col gap-2'>
 
-                                                        <span className='text-sm font-semibold text-gray-500'>
-                                                            지갑 홀더 닉네임(알파벳 순서)
-                                                        </span>
+                                                        <div className='flex flex-row items-center gap-2'>
+                                                            <span className='text-sm font-semibold text-gray-500'>
+                                                                NFT 홀더 닉네임(알파벳 순서)
+                                                            </span>
+                                                            {/* agents count */}
+                                                            <span className='text-sm font-semibold text-gray-500'>
+                                                                {agents.length} 명
+                                                            </span>
+                                                        </div>
 
                                                         <div className='grid grid-cols-2 xl:grid-cols-3 gap-2'>
 
@@ -1743,7 +1749,7 @@ export default function AIPage({ params }: any) {
                                                                     alt={agent.nickname}
                                                                     width={50}
                                                                     height={50}
-                                                                    className='rounded-full h-4 w-4'
+                                                                    className='rounded-full h-8 w-8'
                                                                 />
 
                                                                 <span className='text-xs font-semibold text-gray-500'>
@@ -1761,7 +1767,7 @@ export default function AIPage({ params }: any) {
                                                         </div>
                                                     </div>
 
-                                                    <div className='w-full flex flex-col gap-2 h-min-96'>
+                                                    <div className=' w-full flex flex-col gap-2 h-min-96'>
 
                                                         {loadingAgentBotList && (
                                                             <div className='flex flex-col items-center gap-2'>
@@ -1963,7 +1969,7 @@ function Header(
                     className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
                     />
                     <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
-                    OWIN Center
+                    AI Agent Center
                     </span>
                 </div>
                 
