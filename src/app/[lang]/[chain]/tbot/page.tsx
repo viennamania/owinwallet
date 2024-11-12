@@ -2235,9 +2235,16 @@ export default function AIPage({ params }: any) {
                                             border border-gray-300 p-4 rounded-lg
                                         '>
 
-                                            <span className='text-lg font-semibold text-blue-500'>
+                                            <span className='text-lg font-semibold text-blue-500 '>
                                                 Master Bot 정보
                                             </span>
+
+                                            {/* 신청번호 */}
+                                            <span className='text-xl font-semibold text-red-500'>
+                                                #신청번호: {myAgent?.id}
+                                            </span>
+
+
 
                                             <div className='flex flex-col gap-2'>
                                                 

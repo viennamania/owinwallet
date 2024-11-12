@@ -967,6 +967,266 @@ export default function AIPage({ params }: any) {
 
 
 
+    // get agentBot NFT for application
+    const [checkingAgentBotNftList, setCheckingAgentBotNftList] = useState([] as any[]);
+    const [agentBotNftList, setAgentBotNftList] = useState([] as any[]);
+
+    useEffect(() => {
+        setCheckingAgentBotNftList(
+            applications.map((item) => {
+                return {
+                    applicationId: item.id,
+                    checking: false,
+                }
+            })
+        );
+
+        setAgentBotNftList(
+            applications.map((item) => {
+                return {
+                    applicationId: item.id,
+                    agentBotNft: item.agentBotNft,
+                };
+            })
+        );
+    } , [applications]);
+
+    const checkAgentBotNft = async (
+        applicationId: number,
+        agentBot: string,
+        agentBotNumber: number,
+    ) => {
+
+        if (!agentBot) {
+            toast.error("Agent Bot을 선택해 주세요.");
+            return;
+        }
+
+        /*
+        if (!agentBotNumber) {
+            toast.error("Agent Bot Number를 입력해 주세요.");
+            return;
+        }
+        */
+
+        if (!applicationId) {
+            toast.error("신청 ID를 입력해 주세요.");
+            return;
+        }
+
+        setCheckingAgentBotNftList(
+            checkingAgentBotNftList.map((item) => {
+                if (item.applicationId === applicationId) {
+                    return {
+                        applicationId: applicationId,
+                        checking: true,
+                    }
+                } else {
+                    return item;
+                }
+            }
+        ));
+
+        const contract = getContract({
+            client,
+            chain: polygon,
+            address: agentBot,
+        });
+
+        const nft721 = await getNFT721({
+            contract: contract,
+            tokenId: BigInt(agentBotNumber),
+        });
+
+        console.log("nft721", nft721);
+        
+        
+
+        if (nft721) {
+            toast.success("NFT가 확인되었습니다.");
+
+            // updateApplicationAgentBotNft
+            const response = await fetch("/api/agent/updateApplicationAgentBotNft", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    applicationId: applicationId,
+                    agentBotNft: nft721?.metadata
+                }),
+            });
+
+            if (!response.ok) {
+                console.error("Error updating agent bot NFT");
+                return;
+            }
+
+            const data = await response.json();
+
+            setAgentBotNftList(
+                agentBotNftList.map((item) => {
+                    if (item.applicationId === applicationId) {
+                        return {
+                            applicationId: applicationId,
+                            agentBotNft: nft721,
+                        }
+                    } else {
+                        return item;
+                    }
+                })
+            );
+
+
+
+
+        } else {
+            toast.error("NFT를 확인할 수 없습니다.");
+        }
+
+        setCheckingAgentBotNftList(
+            checkingAgentBotNftList.map((item) => {
+                if (item.applicationId === applicationId) {
+                    return {
+                        applicationId: applicationId,
+                        checking: false,
+                    }
+                } else {
+                    return item;
+                }
+            }
+        ));
+
+    };
+
+
+
+
+
+    //console.log("applications=====", applications);
+
+
+    // check htx asset valuation for each htxUid
+    const [checkingHtxAssetValuationForAgent, setCheckingHtxAssetValuationForAgent] = useState([] as any[]);
+    const [htxAssetValuationForAgent, setHtxAssetValuationForAgent] = useState([] as any[]);
+
+    useEffect(() => {
+        setCheckingHtxAssetValuationForAgent(
+            applications.map((item) => {
+                return {
+                    applicationId: item.id,
+                    checking: false,
+                }
+            })
+        );
+
+        setHtxAssetValuationForAgent(
+            applications.map((item) => {
+                return {
+                    applicationId: item.id,
+                    assetValuation: item.assetValuation,
+                };
+            })
+        );
+    } , [applications]);
+
+    const checkHtxAssetValuation = async (
+        applicationId: number,
+
+        htxAccessKey: string,
+        htxSecretKey: string,
+    ) => {
+
+        if (!htxAccessKey) {
+            toast.error("HTX Access Key를 입력해 주세요.");
+            return;
+        }
+
+        if (!htxSecretKey) {
+            toast.error("HTX Secret Key를 입력해 주세요.");
+            return;
+        }
+
+        if (!applicationId) {
+            toast.error("신청 ID를 입력해 주세요.");
+            return;
+        }
+
+        setCheckingHtxAssetValuationForAgent(
+            checkingHtxAssetValuationForAgent.map((item) => {
+                if (item.applicationId === applicationId) {
+                    return {
+                        applicationId: applicationId,
+                        checking: true,
+                    }
+                } else {
+                    return item;
+                }
+            }
+        ));
+
+
+        const response = await fetch("/api/agent/getAssetValuation", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                htxAccessKey: htxAccessKey,
+                htxSecretKey: htxSecretKey,
+                applicationId: applicationId,
+            }),
+        });
+
+        const data = await response.json();
+
+        
+
+        ///console.log("getAssetValuation data.result", data.result);
+
+
+        if (data.result?.status === "ok") {
+
+            setHtxAssetValuationForAgent(
+                htxAssetValuationForAgent.map((item) => {
+                    if (item.applicationId === applicationId) {
+                        return {
+                            applicationId: applicationId,
+                            assetValuation: data.result?.assetValuation,
+                        }
+                    } else {
+                        return item;
+                    }
+                })
+            );
+
+            toast.success("HTX 자산 가치가 확인되었습니다.");
+        } else {
+            toast.error("HTX 자산 가치를 확인할 수 없습니다.");
+        }
+
+        setCheckingHtxAssetValuationForAgent(
+            checkingHtxAssetValuationForAgent.map((item) => {
+                if (item.applicationId === applicationId) {
+                    return {
+                        applicationId: applicationId,
+                        checking: false,
+                    }
+                } else {
+                    return item;
+                }
+            }
+        ));
+
+    };
+
+
+
+
+
+
+
+
     // check account balance for each accountId
 
     //const [accountBalanceList, setAccountBalanceList] = useState([] as any[]);
@@ -1056,123 +1316,6 @@ export default function AIPage({ params }: any) {
 
     };
 
-
-
-    //console.log("applications=====", applications);
-
-
-    // check htx asset valuation for each htxUid
-    const [checkingHtxAssetValuationForAgent, setCheckingHtxAssetValuationForAgent] = useState([] as any[]);
-    const [htxAssetValuationForAgent, setHtxAssetValuationForAgent] = useState([] as any[]);
-
-    useEffect(() => {
-        setCheckingHtxAssetValuationForAgent(
-            applications.map((item) => {
-                return {
-                    applicationId: item.id,
-                    checking: false,
-                }
-            })
-        );
-
-        setHtxAssetValuationForAgent(
-            applications.map((item) => {
-                return {
-                    applicationId: item.id,
-                    assetValuation: item.assetValuation,
-                };
-            })
-        );
-    } , [applications]);
-
-    const checkHtxAssetValuation = async (
-        htxAccessKey: string,
-        htxSecretKey: string,
-        applicationId: number,
-    ) => {
-
-        if (!htxAccessKey) {
-            toast.error("HTX Access Key를 입력해 주세요.");
-            return;
-        }
-
-        if (!htxSecretKey) {
-            toast.error("HTX Secret Key를 입력해 주세요.");
-            return;
-        }
-
-        if (!applicationId) {
-            toast.error("신청 ID를 입력해 주세요.");
-            return;
-        }
-
-        setCheckingHtxAssetValuationForAgent(
-            checkingHtxAssetValuationForAgent.map((item) => {
-                if (item.applicationId === applicationId) {
-                    return {
-                        applicationId: applicationId,
-                        checking: true,
-                    }
-                } else {
-                    return item;
-                }
-            }
-        ));
-
-
-        const response = await fetch("/api/agent/getAssetValuation", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                htxAccessKey: htxAccessKey,
-                htxSecretKey: htxSecretKey,
-                applicationId: applicationId,
-            }),
-        });
-
-        const data = await response.json();
-
-        
-
-        ///console.log("getAssetValuation data.result", data.result);
-
-
-        if (data.result?.status === "ok") {
-
-            setHtxAssetValuationForAgent(
-                htxAssetValuationForAgent.map((item) => {
-                    if (item.applicationId === applicationId) {
-                        return {
-                            applicationId: applicationId,
-                            assetValuation: data.result?.assetValuation,
-                        }
-                    } else {
-                        return item;
-                    }
-                })
-            );
-
-            toast.success("HTX 자산 가치가 확인되었습니다.");
-        } else {
-            toast.error("HTX 자산 가치를 확인할 수 없습니다.");
-        }
-
-        setCheckingHtxAssetValuationForAgent(
-            checkingHtxAssetValuationForAgent.map((item) => {
-                if (item.applicationId === applicationId) {
-                    return {
-                        applicationId: applicationId,
-                        checking: false,
-                    }
-                } else {
-                    return item;
-                }
-            }
-        ));
-
-    };
 
 
 
@@ -1536,26 +1679,43 @@ export default function AIPage({ params }: any) {
                                             </div>
 
                                             {/* agentBot and agentBotNumber */}
-                                            <div className='w-full flex flex-col items-start justify-between gap-2
+                                            <div className='w-full flex flex-row items-start justify-between gap-2
                                                 border-b border-gray-300 pb-2
                                             '>
                                                 <div className='flex flex-col gap-2'>
-                                                    <span className='text-xs text-yellow-800'>
-                                                        Agent Bot Code
-                                                    </span>
-                                                    <span className='text-lg text-gray-800'>
-                                                        {application.agentBot.slice(0, 10)}...{application.agentBot.slice(-10)}
-                                                    </span>
+                                                    <div className='flex flex-col gap-2'>
+                                                        <span className='text-xs text-yellow-800'>
+                                                            Agent Bot Code
+                                                        </span>
+                                                        <span className='text-xs text-gray-800'>
+                                                            {application.agentBot.slice(0, 10)}...{application.agentBot.slice(-10)}
+                                                        </span>
+                                                    </div>
+
+                                                    <div className='flex flex-col gap-2'>
+                                                        <span className='text-xs text-yellow-800'>
+                                                            Agent Bot Number
+                                                        </span>
+                                                        <span className='text-lg text-gray-800'>
+                                                            #{application.agentBotNumber}
+                                                        </span>
+                                                    </div>
                                                 </div>
 
-                                                <div className='flex flex-col gap-2'>
-                                                    <span className='text-xs text-yellow-800'>
-                                                        Agent Bot Number
-                                                    </span>
-                                                    <span className='text-lg text-gray-800'>
-                                                        #{application.agentBotNumber}
-                                                    </span>
-                                                </div>
+                                        
+                                                <button
+                                                    onClick={() => {
+                                                        checkAgentBotNft(application.id, application.agentBot, application.agentBotNumber);
+                                                    }}
+                                                    disabled={checkingAgentBotNftList.find((item) => item.applicationId === application.id)?.checking}
+                                                    className={`${checkingAgentBotNftList.find((item) => item.applicationId === application.id)?.checking ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
+                                                        hover:bg-blue-600
+                                                    `}
+                                                >
+                                                    {checkingAgentBotNftList.find((item) => item.applicationId === application.id)?.checking ? "Checking..." : "Check NFT"}
+                                                </button>
+
+
                                             </div>
 
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
@@ -1732,9 +1892,9 @@ export default function AIPage({ params }: any) {
                                                 <button
                                                     onClick={() => {
                                                         checkHtxAssetValuation(
+                                                            application.id,
                                                             application.apiAccessKey,
                                                             application.apiSecretKey,
-                                                            application.id,
                                                         );
                                                     }}
                                                     disabled={

@@ -263,14 +263,14 @@ export async function updateAssetValuation(
   }
   :
   {
-    applicationId: string,
+    applicationId: number,
     assetValuation: object,
   },
 ) {
 
   
-  console.log('updateAssetValuation applicationId: ' + applicationId);
-  console.log('updateAgentAssetValuation assetValuation: ' + assetValuation);
+  //console.log('updateAssetValuation applicationId: ' + applicationId);
+  //console.log('updateAgentAssetValuation assetValuation: ' + assetValuation);
 
   if (!applicationId || !assetValuation) {
     return null;
@@ -296,5 +296,48 @@ export async function updateAssetValuation(
   } else {
     return null;
   }
-  
+
+}
+
+// update agent bot nft
+export async function updateAgentBotNft(
+  {
+    applicationId,
+    agentBotNft,
+  }
+  :
+  {
+    applicationId: number,
+    agentBotNft: object,
+  },
+) {
+
+  console.log('updateApplicationNft applicationId: ' + applicationId);
+  console.log('updateApplicationNft agentBotNft: ' + agentBotNft);
+
+  if (!applicationId || !agentBotNft) {
+    return null;
+  }
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('agents');
+
+  const result = await collection.updateOne(
+    { id: applicationId },
+    {
+      $set: {
+        agentBotNft: agentBotNft,
+      }
+    }
+  );
+
+  if (result) {
+    return {
+      applicationId: applicationId,
+      agentBotNft: agentBotNft,
+    };
+  } else {
+    return null;
+  }
+
 }
