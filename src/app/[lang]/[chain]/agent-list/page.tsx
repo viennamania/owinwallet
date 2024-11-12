@@ -1698,7 +1698,7 @@ export default function AIPage({ params }: any) {
                                             '>
 
                                                 <span className='text-lg font-semibold text-blue-500'>
-                                                    지갑 홀더 닉네임을 선택하세요
+                                                    NFT 홀더 닉네임을 선택하세요
                                                 </span>
 
                                                 <div className='w-full grid grid-cols-1 xl:grid-cols-2 items-start justify-between gap-5'>
@@ -1768,7 +1768,23 @@ export default function AIPage({ params }: any) {
                                                         </div>
                                                     </div>
 
-                                                    <div className=' w-full flex flex-col gap-2 h-min-96'>
+                                                    <div className=' w-full flex flex-col gap-2 h-min-96
+                                                        border border-gray-300 p-4 rounded-lg
+                                                    '>
+
+
+                                                        {agentBot && (
+                                                            <div className='flex flex-col items-start gap-2'>
+                                                                {/* agent nickname */}
+                                                                <span className='text-sm font-semibold text-blue-500'>
+                                                                    {agents.find((agent) => agent.erc721ContractAddress === agentBot)?.nickname} 님의 AI 에이전트 NFT
+                                                                </span>
+                                                                <span className='text-sm font-semibold text-blue-500'>
+                                                                    {agentBotList.length} 개의 AI 에이전트 NFT
+                                                                </span>
+                                                            </div>
+                                                        )}
+
 
                                                         {loadingAgentBotList && (
                                                             <div className='flex flex-col items-center gap-2'>
