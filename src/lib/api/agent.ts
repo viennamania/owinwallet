@@ -253,3 +253,48 @@ export async function getOneByWalletAddress(walletAddress: string) {
   }
 
 }
+
+
+// update agent asset valuation
+export async function updateAssetValuation(
+  {
+    applicationId,
+    assetValuation,
+  }
+  :
+  {
+    applicationId: string,
+    assetValuation: object,
+  },
+) {
+
+  
+  console.log('updateAssetValuation applicationId: ' + applicationId);
+  console.log('updateAgentAssetValuation assetValuation: ' + assetValuation);
+
+  if (!applicationId || !assetValuation) {
+    return null;
+  }
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('agents');
+
+  const result = await collection.updateOne(
+    { id: applicationId },
+    {
+      $set: {
+        assetValuation: assetValuation,
+      }
+    }
+  );
+
+  if (result) {
+    return {
+      applicationId: applicationId,
+      assetValuation: assetValuation,
+    };
+  } else {
+    return null;
+  }
+  
+}

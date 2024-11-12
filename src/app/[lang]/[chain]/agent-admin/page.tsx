@@ -1938,7 +1938,7 @@ export default function AIPage({ params }: any) {
 
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                                             <span className='text-sm text-gray-800'>
-                                                이름: {application.userName}
+                                                닉네임: {application.userName}
                                             </span>
                                             {/* copy button */}
                                             <button

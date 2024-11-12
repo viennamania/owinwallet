@@ -91,6 +91,7 @@ import { Alert, useForkRef } from '@mui/material';
 
 
 import thirdwebIcon from "@public/thirdweb.svg";
+import { time } from 'console';
 
 
 const wallets = [
@@ -1057,6 +1058,7 @@ export default function AIPage({ params }: any) {
 
 
 
+    //console.log("applications=====", applications);
 
 
     // check htx asset valuation for each htxUid
@@ -1067,7 +1069,7 @@ export default function AIPage({ params }: any) {
         setCheckingHtxAssetValuationForAgent(
             applications.map((item) => {
                 return {
-                    htxUid: item.htxUid,
+                    applicationId: item.id,
                     checking: false,
                 }
             })
@@ -1076,8 +1078,8 @@ export default function AIPage({ params }: any) {
         setHtxAssetValuationForAgent(
             applications.map((item) => {
                 return {
-                    htxUid: item.htxUid,
-                    balance: 0,
+                    applicationId: item.id,
+                    assetValuation: item.assetValuation,
                 };
             })
         );
@@ -1086,7 +1088,7 @@ export default function AIPage({ params }: any) {
     const checkHtxAssetValuation = async (
         htxAccessKey: string,
         htxSecretKey: string,
-        htxUid: number,
+        applicationId: number,
     ) => {
 
         if (!htxAccessKey) {
@@ -1099,16 +1101,16 @@ export default function AIPage({ params }: any) {
             return;
         }
 
-        if (!htxUid) {
-            toast.error("계정 ID를 입력해 주세요.");
+        if (!applicationId) {
+            toast.error("신청 ID를 입력해 주세요.");
             return;
         }
 
         setCheckingHtxAssetValuationForAgent(
             checkingHtxAssetValuationForAgent.map((item) => {
-                if (item.htxUid === htxUid) {
+                if (item.applicationId === applicationId) {
                     return {
-                        htxUid: htxUid,
+                        applicationId: applicationId,
                         checking: true,
                     }
                 } else {
@@ -1126,21 +1128,25 @@ export default function AIPage({ params }: any) {
             body: JSON.stringify({
                 htxAccessKey: htxAccessKey,
                 htxSecretKey: htxSecretKey,
+                applicationId: applicationId,
             }),
         });
 
         const data = await response.json();
 
-        console.log("getAssetValuation data.result.balance", data.result?.balance);
+        
+
+        ///console.log("getAssetValuation data.result", data.result);
+
 
         if (data.result?.status === "ok") {
 
             setHtxAssetValuationForAgent(
                 htxAssetValuationForAgent.map((item) => {
-                    if (item.htxUid === htxUid) {
+                    if (item.applicationId === applicationId) {
                         return {
-                            htxUid: htxUid,
-                            balance: Number(data.result?.balance) || 0,
+                            applicationId: applicationId,
+                            assetValuation: data.result?.assetValuation,
                         }
                     } else {
                         return item;
@@ -1155,9 +1161,9 @@ export default function AIPage({ params }: any) {
 
         setCheckingHtxAssetValuationForAgent(
             checkingHtxAssetValuationForAgent.map((item) => {
-                if (item.htxUid === htxUid) {
+                if (item.applicationId === applicationId) {
                     return {
-                        htxUid: htxUid,
+                        applicationId: applicationId,
                         checking: false,
                     }
                 } else {
@@ -1571,9 +1577,14 @@ export default function AIPage({ params }: any) {
                                             </div>
 
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                                <span className='text-sm text-gray-800'>
-                                                    이름: {application.userName}
-                                                </span>
+                                                <div className='flex flex-col gap-2'>
+                                                    <span className='text-xs text-yellow-800'>
+                                                        닉네임
+                                                    </span>
+                                                    <span className='text-sm text-gray-800'>
+                                                        {application.userName}
+                                                    </span>
+                                                </div>
                                                 {/* copy button */}
                                                 <button
                                                     onClick={() => {
@@ -1589,9 +1600,14 @@ export default function AIPage({ params }: any) {
                                             </div>
 
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                                <span className='text-sm text-gray-800'>
-                                                    핸드폰번호: {application.userPhoneNumber}
-                                                </span>
+                                                <div className='flex flex-col gap-2'>
+                                                    <span className='text-xs text-yellow-800'>
+                                                        핸드폰번호
+                                                    </span>
+                                                    <span className='text-sm text-gray-800'>
+                                                        {application.userPhoneNumber}
+                                                    </span>
+                                                </div>
                                                 {/* copy button */}
                                                 <button
                                                     onClick={() => {
@@ -1608,9 +1624,14 @@ export default function AIPage({ params }: any) {
 
                                             
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                                <span className='text-sm text-gray-800'>
-                                                    이메일주소: {application.userEmail}
-                                                </span>
+                                                <div className='flex flex-col gap-2'>
+                                                    <span className='text-xs text-yellow-800'>
+                                                        이메일주소
+                                                    </span>
+                                                    <span className='text-sm text-gray-800'>
+                                                        {application.userEmail}
+                                                    </span>
+                                                </div>
                                                 <button
                                                     onClick={() => {
                                                         navigator.clipboard.writeText(application.userEmail);
@@ -1693,25 +1714,37 @@ export default function AIPage({ params }: any) {
                                             {/* asset valuation */}
 
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                                <span className='text-sm text-gray-800'>
-                                                    HTX 자산 가치(SPOT): {htxAssetValuationForAgent.find((item) => item.htxUid === application.htxUid)?.balance || 0} $(USD)
-                                                </span>
+                                                <div className='flex flex-col gap-2'>
+                                                    <span className='text-xs text-yellow-800'>
+                                                        HTX 자산 가치(SPOT)
+                                                    </span>
+                                                    <span className='text-sm text-gray-800'>
+                                                        {htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.balance || 0} $(USD)
+                                                    </span>
+                                                    {/* convert timestamp to date */}
+                                                    <span className='text-xs text-gray-800'>
+                                                        {htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.timestamp
+                                                        ? new Date(htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.timestamp).toLocaleString()
+                                                        : ""
+                                                        }
+                                                    </span>
+                                                </div>
                                                 <button
                                                     onClick={() => {
                                                         checkHtxAssetValuation(
                                                             application.apiAccessKey,
                                                             application.apiSecretKey,
-                                                            application.htxUid,
+                                                            application.id,
                                                         );
                                                     }}
                                                     disabled={
-                                                        checkingHtxAssetValuationForAgent.find((item) => item?.htxUid === application.htxUid)?.checking
+                                                        checkingHtxAssetValuationForAgent.find((item) => item?.applicationId === application.id)?.checking
                                                     }
-                                                    className={`${checkingHtxAssetValuationForAgent.find((item) => item?.htxUid === application.htxUid)?.checking ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
+                                                    className={`${checkingHtxAssetValuationForAgent.find((item) => item?.applicationId === application.id)?.checking ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
                                                         hover:bg-blue-600
                                                     `}
                                                 >
-                                                    {checkingHtxAssetValuationForAgent.find((item) => item?.htxUid === application.htxUid)?.checking ? "Checking..." : "Check"}
+                                                    {checkingHtxAssetValuationForAgent.find((item) => item?.applicationId === application.id)?.checking ? "Checking..." : "Check"}
                                                 </button>
                                             </div>
 

@@ -3,6 +3,11 @@ import { NextResponse, type NextRequest } from "next/server";
 import moment from 'moment';
 
 
+import {
+	updateAssetValuation,
+} from '@lib/api/agent';
+
+
 // var HmacSHA256 = require('crypto-js/hmac-sha256')
 
 import {
@@ -41,8 +46,7 @@ export async function POST(request: NextRequest) {
   const {
     htxAccessKey,
     htxSecretKey,
-    accountId,
-    currency,
+    applicationId,
    } = body;
   
 
@@ -154,24 +158,27 @@ export async function POST(request: NextRequest) {
       //console.log(JSON.stringify(data.data).substring(0, 1000));
 
 
-      // balance for currency is usdt
-      const balance = data.data.balance;
-
-     
-      console.log(JSON.stringify(balance));
-
-
-      /*
-      {
-        status: 'ok',
-        data: [ { id: 63912897, type: 'spot', subtype: '', state: 'working' } ]
+      if (data?.code !== 200) {
+        return NextResponse.json({
+            result: {
+                status: "error",
+            },
+        });
       }
-      */
+
+
+      // call updateAssetValuation
+      await updateAssetValuation({
+        applicationId,
+        assetValuation: data.data,
+      });
+
+
 
       return NextResponse.json({
           result: {
               status: "ok",
-              balance: balance,
+              assetValuation: data.data,
           }
       });
       
