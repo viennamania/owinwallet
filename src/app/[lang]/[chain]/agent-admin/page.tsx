@@ -1944,16 +1944,19 @@ export default function AIPage({ params }: any) {
                                                 <span className='text-xs font-semibold text-yellow-500'>
                                                     AI Agent NFT
                                                 </span>
-                                                <span className='text-sm text-gray-800'>
-                                                    {application?.agentBotNft?.name}
-                                                </span>
-                                                <Image
-                                                    src={application?.agentBotNft?.image?.thumbnailUrl || "/logo-masterbot100.png"}
-                                                    alt="Agent Bot"
-                                                    width={50}
-                                                    height={50}
-                                                    className='rounded-lg'
-                                                />
+                                                <div className='flex flex-col gap-2 items-center justify-center'>
+                                                    <span className='text-sm text-gray-800'>
+                                                        {application?.agentBotNft?.name}
+                                                    </span>
+                                                    <Image
+                                                        src={application?.agentBotNft?.image?.thumbnailUrl || "/logo-masterbot100.png"}
+                                                        alt="Agent Bot"
+                                                        width={80}
+                                                        height={80}
+                                                        className={`rounded-lg
+                                                            ${application?.startTrading?.status ? "animate-pulse" : ""}`}
+                                                    />
+                                                </div>
                                             </div>
 
                                         </div>
@@ -2261,19 +2264,21 @@ export default function AIPage({ params }: any) {
                                                     상태
                                                 </span>
                                                 <span className='text-sm text-gray-800'>
-                                                    {application?.startTrading?.status &&
+
+                                                    {application?.startTrading?.status ? (
                                                         //application?.startTrading?.timestamp
                                                         (
 
                                                             <div className='flex flex-col gap-2'>
-                                                                <div className='flex flex-row items-center gap-2'>
-                                                                    <span className='text-xs text-gray-800'>
-                                                                        승인완료
-                                                                    </span>
-                                                                    <span className=' text-sm text-red-500'>
-                                                                        승인자: {application?.startTrading?.approvedByWalletAddress?.slice(0, 5)}...{application?.startTrading?.approvedByWalletAddress?.slice(-5)}
-                                                                    </span>
-                                                                </div>
+                                                                <span className='text-sm text-green-500
+                                                                border border-green-500 p-2 rounded-lg
+                                                                '>
+                                                                
+                                                                    승인완료
+                                                                </span>
+                                                                <span className=' text-xs text-gray-800'>
+                                                                    승인자: {application?.startTrading?.approvedByWalletAddress?.slice(0, 5)}...{application?.startTrading?.approvedByWalletAddress?.slice(-5)}
+                                                                </span>
                                                                 <span className='text-xs text-gray-800'>
                                                                     승인일자: {
                                                                         new Date(application?.startTrading?.timestamp).toLocaleString()
@@ -2295,7 +2300,11 @@ export default function AIPage({ params }: any) {
                                                             </div>
 
                                                         )
-                                                    }
+                                                    ) : (
+                                                        <span className='text-sm text-red-500'>
+                                                            승인대기
+                                                        </span>
+                                                    )}
                                                 </span>
                                             </div>
 
