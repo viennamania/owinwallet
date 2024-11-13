@@ -1985,7 +1985,7 @@ export default function AIPage({ params }: any) {
                     <div className='mt-5 w-full flex flex-col gap-10 '> 
 
                         <div className='flex flex-col xl:flex-row gap-5 items-center xl:items-start justify-between border
-                         border-yellow-500 p-1 rounded-lg
+                         border-yellow-500 p-4 rounded-lg
                         '>
                             
                             <div className='flex flex-row items-center gap-2'>
