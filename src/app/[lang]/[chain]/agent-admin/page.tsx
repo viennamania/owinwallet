@@ -1896,8 +1896,8 @@ export default function AIPage({ params }: any) {
 
                                             {/* 신청일자 */}
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                                <span className='text-sm text-gray-800'>
-                                                    일자: {
+                                                <span className='text-xs text-gray-800'>
+                                                    신청일자: {
                                                         new Date(application.createdAt).toLocaleString()
                                                     }
                                                 </span>
@@ -2095,7 +2095,7 @@ export default function AIPage({ params }: any) {
                                                     API Access Key
                                                 </span>
                                                 <span className='text-sm text-gray-800'>
-                                                    {application.apiAccessKey}
+                                                    {application.apiAccessKey.substring(0, 5)}...{application.apiAccessKey.substring(application.apiAccessKey.length - 5)}
                                                 </span>
                                             </div>
                                             {/* copy button */}
@@ -2118,7 +2118,7 @@ export default function AIPage({ params }: any) {
                                                     API Secret Key
                                                 </span>
                                                 <span className='text-sm text-gray-800'>
-                                                    {application.apiSecretKey}
+                                                    {application.apiSecretKey.substring(0, 5)}...{application.apiSecretKey.substring(application.apiSecretKey.length - 5)}
                                                 </span>
                                             </div>
                                             {/* copy button */}
@@ -2221,7 +2221,9 @@ export default function AIPage({ params }: any) {
 
                                             ) : (
                                                 <span className='text-sm text-red-500'>
+                                                    {/*
                                                     카피 트레이딩을 위한 포지션 리스트를 확인할 수 없습니다.
+                                                    */}
                                                 </span>
                                             )}
 
@@ -2250,9 +2252,22 @@ export default function AIPage({ params }: any) {
                                                                     </span>
                                                                 </div>
                                                                 <span className='text-xs text-gray-800'>
-                                                                    {
+                                                                    승인일자: {
                                                                         new Date(application?.startTrading?.timestamp).toLocaleString()
                                                                     }
+                                                                </span>
+                                                                {/* time ago */}
+                                                                <span className='text-xs text-gray-800'>
+                                                                {
+                                                                    new Date().getTime() - new Date(application?.startTrading?.timestamp).getTime() < 1000 * 60 ? (
+                                                                    ' ' + Math.floor((new Date().getTime() - new Date(application?.startTrading?.timestamp).getTime()) / 1000) + ' ' + '초 전'
+                                                                    ) :
+                                                                    new Date().getTime() - new Date(application?.startTrading?.timestamp).getTime() < 1000 * 60 * 60 ? (
+                                                                    ' ' + Math.floor((new Date().getTime() - new Date(application?.startTrading?.timestamp).getTime()) / 1000 / 60) + ' ' + '분 전'
+                                                                    ) : (
+                                                                    ' ' + Math.floor((new Date().getTime() - new Date(application?.startTrading?.timestamp).getTime()) / 1000 / 60 / 60) + ' ' + '시간 전'
+                                                                    )
+                                                                }
                                                                 </span>
                                                             </div>
 
