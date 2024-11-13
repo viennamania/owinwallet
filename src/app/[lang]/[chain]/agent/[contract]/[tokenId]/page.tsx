@@ -420,288 +420,18 @@ export default function AgentPage({ params }: any) {
 
 
 
-  // get list of user wallets from api
-  const [users, setUsers] = useState([
-    {
-      _id: '',
-      id: 0,
-      email: '',
-      avatar: '',
-      nickname: '',
-      mobile: '',
-      walletAddress: '',
-      createdAt: '',
-      settlementAmountOfFee: '',
-    }
-  ]);
-
-  const [totalCountOfUsers, setTotalCountOfUsers] = useState(0);
-
-  useEffect(() => {
-
-    if (!address) return;
-
-    const getUsers = async () => {
-
-      const response = await fetch('/api/user/getAllUsers', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-
-        }),
-      });
-
-      const data = await response.json();
-
-      ///setUsers(data.result.users);
-      // set users except the current user
-
-      setUsers(data.result.users.filter((user: any) => user.walletAddress !== address));
+ 
 
 
-
-      setTotalCountOfUsers(data.result.totalCount);
-
-    };
-
-    getUsers();
-
-
-  }, [address]);
-
-
-
-
-
-
-  const [recipient, setRecipient] = useState({
-    _id: '',
-    id: 0,
-    email: '',
-    nickname: '',
-    avatar: '',
-    mobile: '',
-    walletAddress: '',
-    tronWalletAddress: '',
-    createdAt: '',
-    settlementAmountOfFee: '',
-  });
-
-
-
-  ///console.log("recipient", recipient);
-
-  //console.log("recipient.walletAddress", recipient.walletAddress);
-  //console.log("amount", amount);
-
-
-
-  const [otp, setOtp] = useState('');
-
-  
-  
-  /////const [verifiedOtp, setVerifiedOtp] = useState(false);
-  const [verifiedOtp, setVerifiedOtp] = useState(true); // for testing
-
-
-  const [isSendedOtp, setIsSendedOtp] = useState(false);
-
-
-
-  const [isSendingOtp, setIsSendingOtp] = useState(false);
-
-  const [isVerifingOtp, setIsVerifingOtp] = useState(false);
-
-  
-
-  const sendOtp = async () => {
-
-    setIsSendingOtp(true);
-      
-    const response = await fetch('/api/transaction/setOtp', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        lang: params.lang,
-        chain: params.chain,
-        walletAddress: address,
-        mobile: user.mobile,
-      }),
-    });
-
-    const data = await response.json();
-
-    //console.log("data", data);
-
-    if (data.result) {
-      setIsSendedOtp(true);
-      toast.success('OTP sent successfully');
-    } else {
-      toast.error('Failed to send OTP');
-    }
-
-    setIsSendingOtp(false);
-
-  };
-
-  const verifyOtp = async () => {
-
-    setIsVerifingOtp(true);
-      
-    const response = await fetch('/api/transaction/verifyOtp', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        lang: params.lang,
-        chain: params.chain,
-        walletAddress: address,
-        otp: otp,
-      }),
-    });
-
-    const data = await response.json();
-
-    //console.log("data", data);
-
-    if (data.status === 'success') {
-      setVerifiedOtp(true);
-      toast.success('OTP verified successfully');
-    } else {
-      toast.error('Failed to verify OTP');
-    }
-
-    setIsVerifingOtp(false);
-  
-  }
-
-
-
-
-  const [sending, setSending] = useState(false);
-
-
-
-
-  // get user by wallet address
-  const getUserByWalletAddress = async (walletAddress: string) => {
-
-    const response = await fetch('/api/user/getUserByWalletAddress', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        walletAddress: walletAddress,
-      }),
-    });
-
-    const data = await response.json();
-
-    //console.log("getUserByWalletAddress", data);
-
-    return data.result;
-
-  };
 
 
 
 
   
-  const [wantToReceiveWalletAddress, setWantToReceiveWalletAddress] = useState(false);
-
-
-  const [isWhateListedUser, setIsWhateListedUser] = useState(false);
-
-  
-  useEffect(() => {
-
-    if (!recipient?.walletAddress) {
-      return;
-    }
-
-    // check recipient.walletAddress is in the user list
-    getUserByWalletAddress(recipient?.walletAddress)
-    .then((data) => {
-        
-        //console.log("data============", data);
-  
-        const checkUser = data
-
-        if (checkUser) {
-          setIsWhateListedUser(true);
-
-          setRecipient(checkUser as any);
-
-        } else {
-          setIsWhateListedUser(false);
-
-          setRecipient({
-
-
-            _id: '',
-            id: 0,
-            email: '',
-            nickname: '',
-            avatar: '',
-            mobile: '',
-            walletAddress: recipient?.walletAddress,
-            tronWalletAddress: tronWalletAddress,
-            createdAt: '',
-            settlementAmountOfFee: '',
-
-          });
-
-
-        }
-
-    });
-
-  } , [recipient?.walletAddress, tronWalletAddress]);
 
 
 
 
-
-
-
-  // getTronBalance
-  /*
-  const [tronBalance, setTronBalance] = useState(0);
-  useEffect(() => {
-    if (tronWalletAddress && params.chain === "tron") {
-      const getTronBalance = async () => {
-        const response = await fetch('/api/tron/getTronBalance', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            lang: params.lang,
-            chain: params.chain,
-            tronWalletAddress: tronWalletAddress,
-          }),
-        });
-
-        if (!response) return;
-
-        const data = await response.json();
-
-        setTronBalance(data.result.tronBalance);
-
-      };
-
-      getTronBalance();
-
-    }
-
-  } , [tronWalletAddress, params.chain, params.lang]);
-  */
 
 
   const [nickname, setNickname] = useState("");
@@ -722,8 +452,6 @@ export default function AgentPage({ params }: any) {
 
         const data = await response.json();
 
-        console.log("data", data);
-
         if (data.result) {
             setNickname(data.result.nickname);
             
@@ -741,7 +469,8 @@ export default function AgentPage({ params }: any) {
 
     };
 
-    fetchData();
+    if (address) fetchData();
+    
   }, [address]);
  
 
@@ -775,7 +504,7 @@ export default function AgentPage({ params }: any) {
 
           const data = await response.json();
 
-          ///console.log("getReferApplications data", data);
+          console.log("getReferApplications data", data);
 
 
 

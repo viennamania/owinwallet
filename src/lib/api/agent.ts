@@ -3,6 +3,7 @@ import clientPromise from '../mongodb';
 import { N } from 'ethers';
 import exp from 'constants';
 import { approve } from 'thirdweb/extensions/erc20';
+import { parse } from 'path';
 
 
 export interface AgentProps {
@@ -90,7 +91,10 @@ export async function insertOne(data: any) {
       id: id,
       walletAddress: data.walletAddress,
       agentBot: data.agentBot,
-      agentBotNumber: data.agentBotNumber,
+      
+      ///agentBotNumber: data.agentBotNumber,
+      agentBotNumber: parseInt(data.agentBotNumber),
+
       userName: data.userName,
       userPhoneNumber: data.userPhoneNumber,
       userEmail: data.userEmail,
@@ -164,7 +168,7 @@ export async function getMyReferAgents(
     page: number,
     limit: number,
     agentBot: string,
-    agentBotNumber: string,
+    agentBotNumber: number,
   },
  ) {
 
@@ -188,7 +192,7 @@ export async function getMyReferAgents(
     {
       $match: {
         agentBot: agentBot,
-        agentBotNumber: parseInt(agentBotNumber),
+        agentBotNumber: agentBotNumber,
       }
     },
     {
