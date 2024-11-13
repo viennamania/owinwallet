@@ -119,6 +119,7 @@ export default function AgentPage({ params }: any) {
 
   
   const [agent, setAgent] = useState({} as any);
+  const [ownerInfo, setOwnerInfo] = useState({} as any);
 
   const [loadingAgent, setLoadingAgent] = useState(false);
   useEffect(() => {
@@ -146,6 +147,7 @@ export default function AgentPage({ params }: any) {
         const data = await response.json();
   
         setAgent(data.result);
+        setOwnerInfo(data.ownerInfo);
 
         ////console.log("agent======", data.result);
 
@@ -182,10 +184,6 @@ export default function AgentPage({ params }: any) {
     // OPTIONAL: the contract's abi
     //abi: [...],
   });
-
-
-
-  const { Canvas } = useQRCode();
 
 
 
@@ -300,138 +298,6 @@ export default function AgentPage({ params }: any) {
 
 
 
-  const [amount, setAmount] = useState(0);
-
-
-
-
-  const [nativeBalance, setNativeBalance] = useState(0);
-  const [balance, setBalance] = useState(0);
-  useEffect(() => {
-
-    // get the balance
-    const getBalance = async () => {
-
-      ///console.log('getBalance address', address);
-
-      
-      const result = await balanceOf({
-        contract,
-        address: address || "",
-      });
-
-  
-      //console.log(result);
-
-      if (!result) return;
-  
-      setBalance( Number(result) / 10 ** 6 );
-
-
-      await fetch('/api/user/getBalanceByWalletAddress', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          chain: params.chain,
-          walletAddress: address,
-        }),
-      })
-
-      .then(response => response.json())
-
-      .then(data => {
-          setNativeBalance(data.result?.displayValue);
-      });
-
-
-
-    };
-
-    if (address) getBalance();
-
-    const interval = setInterval(() => {
-      if (address) getBalance();
-    } , 1000);
-
-    return () => clearInterval(interval);
-
-  } , [address, contract, params.chain]);
-
-
-
-
-
-
-
-
-
-
-
-  const [user, setUser] = useState(
-    {
-      _id: '',
-      id: 0,
-      email: '',
-      nickname: '',
-      avatar: '',
-      mobile: '',
-      walletAddress: '',
-      createdAt: '',
-      settlementAmountOfFee: '',
-      tronWalletAddress: '',
-      tronWalletPrivateKey: '',
-    }
-  );
-
-  useEffect(() => {
-
-    if (!address) return;
-
-    const getUser = async () => {
-
-      const response = await fetch('/api/user/getUserByWalletAddress', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          walletAddress: address,
-        }),
-      });
-
-      if (!response) return;
-
-      const data = await response.json();
-
-
-      setUser(data.result);
-
-    };
-
-    getUser();
-
-  }, [address]);
-
-
-
-  const [tronWalletAddress, setTronWalletAddress] = useState('');
-
-
-
- 
-
-
-
-
-
-
-  
-
-
-
-
 
 
   const [nickname, setNickname] = useState("");
@@ -504,7 +370,7 @@ export default function AgentPage({ params }: any) {
 
           const data = await response.json();
 
-          console.log("getReferApplications data", data);
+          ////console.log("getReferApplications data", data);
 
 
 
@@ -582,13 +448,15 @@ export default function AgentPage({ params }: any) {
             )}
 
 
-            <Image
-              src={agent?.image?.thumbnailUrl}
-              width={80}
-              height={80}
-              alt="Agent"
-              className="rounded-lg"
-            />
+            {agent?.image?.thumbnailUrl && (
+              <Image
+                src={agent?.image?.thumbnailUrl}
+                width={80}
+                height={80}
+                alt="Agent"
+                className="rounded-lg"
+              />
+            )}
 
             <div className='flex flex-col items-start justify-center'>
               <span className="text-lg font-semibold text-gray-800">
@@ -743,10 +611,21 @@ export default function AgentPage({ params }: any) {
                 </div>
 
 
-                <div className='w-full flex flex-row items-center justify-between gap-2'>
+                <div className='w-full flex flex-col items-start justify-center gap-2
+                  border-b border-gray-300 pb-2
+                '>
                     <span className='text-lg font-semibold text-gray-800'>
                         에이전트 NFT ID: #{agentTokenId}
                     </span>
+                    <div className='flex flex-col items-start justify-between gap-2'>
+                        <span className='text-sm text-yellow-500'>
+                          에이전트 NFT 계약주소
+                        </span>
+                        <span className='text-sm text-gray-800'>
+                            {agentContractAddress.slice(0, 10) + '...' + agentContractAddress.slice(-10)}
+                        </span>
+                      </div>
+
                 </div>
 
 
@@ -754,20 +633,11 @@ export default function AgentPage({ params }: any) {
 
 
                   <div className='w-full flex flex-col items-start justify-start gap-2'>
-                    <div className='w-full flex flex-row items-center justify-between gap-2'>
 
-                      <div className='flex flex-col items-start justify-between gap-2'>
-                        <span className='text-sm text-yellow-500'>
-                            에이전트 NFT 계약주소
-                        </span>
-                        <span className='text-xs text-gray-800'>
-                            {agentContractAddress.slice(0, 10) + '...' + agentContractAddress.slice(-10)}
-                        </span>
-                      </div>
+                    <div className='w-full flex flex-col items-start justify-between gap-2
+                      border-b border-gray-300 pb-2
+                    '>
 
-                    </div>
-
-                    <div className='w-full flex flex-row items-center justify-between gap-2'>
                       <div className='flex flex-col items-start justify-between gap-2'>
                         <span className='text-sm text-yellow-500'>
                             에이전트 NFT 이름
@@ -776,9 +646,7 @@ export default function AgentPage({ params }: any) {
                             {agent.name}
                         </span>
                       </div>
-                    </div>
-
-                    <div className='w-full flex flex-row items-center justify-between gap-2'>
+            
                       <div className='flex flex-col items-start justify-between gap-2'>
                         <span className='text-sm text-yellow-500'>
                             에이전트 NFT 설명
@@ -787,7 +655,55 @@ export default function AgentPage({ params }: any) {
                             {agent.description}
                         </span>
                       </div>
+
                     </div>
+
+                    <div className='mt-5 w-full flex flex-col items-start justify-between gap-2
+                      border-b border-gray-300 pb-2
+                    '>
+                      {/* owner info */}
+                      <div className='flex flex-col items-start justify-between gap-2'>
+                        
+                        <span className='text-sm text-yellow-500'>
+                            에이전트 소유자 정보
+                        </span>
+                        <div className='flex flex-row items-center justify-between gap-2'>
+                          <Image
+                            src={ownerInfo?.avatar || '/profile-default.png'}
+                            width={60}
+                            height={60}
+                            alt={ownerInfo?.nickname}
+                            className='rounded-lg object-cover w-10 h-10'
+                          />
+                          <div className='flex flex-col items-start justify-between gap-2'>
+                            <span className='text-xs text-gray-800'>
+                                {ownerInfo?.nickname}
+                            </span>
+                            <span className='text-xs text-gray-800'>
+                                {ownerInfo?.mobile && ownerInfo?.mobile?.slice(0, 3) + '****' + ownerInfo?.mobile?.slice(-4)}
+                            </span>
+                            <span className='text-xs text-gray-800'>
+                                {ownerInfo?.walletAddress && ownerInfo?.walletAddress.slice(0, 10) + '...' + ownerInfo?.walletAddress.slice(-10)}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* button for transfer owner */}
+                        <div className='w-full flex flex-row items-center justify-between gap-2'>
+                          <button
+                            onClick={() => {
+                              alert('준비중입니다.');
+                            }}
+                            className='p-2 bg-blue-500 text-zinc-100 rounded hover:bg-blue-600'
+                          >
+                            소유권 이전 신청
+                          </button>
+                        </div>
+
+                      </div>
+
+                    </div>
+                    
                   </div>
 
 
@@ -797,7 +713,8 @@ export default function AgentPage({ params }: any) {
                     </span>
                     {agent.image && (
                       <Image
-                        src={agent?.image?.thumbnailUrl}
+                        //src={agent?.image?.thumbnailUrl}
+                        src={agent?.image?.pngUrl}
                         width={200}
                         height={200}
                         alt={agent.name}
@@ -825,10 +742,10 @@ export default function AgentPage({ params }: any) {
 
             <div className='flex flex-row items-center gap-2'>
                 <Image
-                    src='/icon-application.png'
-                    width={30}
-                    height={30}
-                    alt='Application'
+                    src='/logo-exchange-htx.png'
+                    width={50}
+                    height={50}
+                    alt='htx'
                     className='rounded-lg'
                 />
                 <span className='text-lg font-semibold text-gray-800'>

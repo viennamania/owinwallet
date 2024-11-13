@@ -3,6 +3,9 @@ import { NextResponse, type NextRequest } from "next/server";
 import { Network, Alchemy } from 'alchemy-sdk';
 
 
+import {
+  getOneByWalletAddress
+} from "@/lib/api/user";
 
 
 const settings = {
@@ -49,10 +52,10 @@ export async function POST(request: NextRequest) {
   */
   const response = await alchemy.nft.getNftMetadata(
     erc721ContractAddress,
-    tokenId
+    parseInt(tokenId)
   );
 
-
+  ///console.log("response: ", response);
 
   if (!response) {
     return NextResponse.json({
@@ -62,9 +65,30 @@ export async function POST(request: NextRequest) {
   }
 
  
+  // Get owner of NFT
+  const owner = await alchemy.nft.getOwnersForNft(
+    erc721ContractAddress,
+    parseInt(tokenId)
+  );
+
+  //console.log("owner: ", owner);
+  /*
+  {
+    owners: [ '0xAcDb8a6c00718597106F8cDa389Aac68973558B3' ],
+    pageKey: null
+  }
+  */
+
+
+  const user = await getOneByWalletAddress(owner?.owners?.[0]);
+
+
+
+
   return NextResponse.json({
 
     result: response,
+    ownerInfo: user,
     
   });
   
