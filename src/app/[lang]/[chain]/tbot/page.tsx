@@ -971,7 +971,7 @@ export default function AIPage({ params }: any) {
     const [myAgentNFT, setMyAgentNFT] = useState({} as any);
 
     // apply to mint NFT
-    // 이름, 핸드폰번호, 이메일주소, HTX UID, HTX USDT(TRON) 지갑주소, API Access Key, API Secret Key
+    // 닉네임, 핸드폰번호, 이메일주소, HTX UID, HTX USDT(TRON) 지갑주소, API Access Key, API Secret Key
 
     const [userName, setUserName] = useState("");
     useEffect(() => {
@@ -1012,7 +1012,7 @@ export default function AIPage({ params }: any) {
         }
 
         if (userName === "") {
-            toast.error("이름을 입력해 주세요.");
+            toast.error("닉네임을 입력해 주세요.");
             return;
         }
 
@@ -2264,7 +2264,7 @@ export default function AIPage({ params }: any) {
 
                                             {/* 신청번호 */}
                                             <span className='text-xl font-semibold text-red-500'>
-                                                #신청번호: {myAgent?.id}
+                                                신청번호: #{myAgent?.id}
                                             </span>
 
 
@@ -2665,7 +2665,7 @@ export default function AIPage({ params }: any) {
 
 
                                         {/* input for apply */}
-                                        {/* 이름, 핸드폰번호, 이메일주소, HTX UID, HTX USDT(TRON) 지갑주소 */}
+                                        {/* 닉네임, 핸드폰번호, 이메일주소, HTX UID, HTX USDT(TRON) 지갑주소 */}
                                         {/* API Access Key, API Secret Key */}
 
 
@@ -2707,15 +2707,32 @@ export default function AIPage({ params }: any) {
                                                 HTX API 정보 확인하기
                                             </button>
 
+
+
                                             {checkingHtxApiKey && (
                                                 <span className='text-sm font-semibold text-blue-500'>
                                                     HTX API Key 확인중...
                                                 </span>
                                             )}
 
-                                            {isValidAPIKey && (
-                                                <span className='text-sm font-semibold text-green-500'>
-                                                    HTX API Key가 확인되었습니다.
+                                            {!checkingHtxApiKey && isValidAPIKey && (
+                                                <div className='flex flex-row items-center gap-2'>
+                                                    <Image
+                                                        src="/verified.png"
+                                                        alt="verified"
+                                                        width={20}
+                                                        height={20}
+                                                    />
+                                                    <span className='text-sm font-semibold text-green-500'>
+                                                        HTX API Key가 확인되었습니다.
+                                                    </span>
+                                                </div>
+
+                                            )}
+
+                                            {!checkingHtxApiKey && !isValidAPIKey && (
+                                                <span className='text-sm font-semibold text-red-500'>
+                                                    HTX API Key가 확인되지 않았습니다. 다시 확인해서 입력해주세요.
                                                 </span>
                                             )}
 
@@ -2758,7 +2775,7 @@ export default function AIPage({ params }: any) {
 
                                         <div className='mt-5 w-full flex flex-col gap-2 border border-gray-300 p-4 rounded-lg'>
                                             <span className='text-sm font-semibold text-gray-500'>
-                                                이름, 핸드폰번호, 이메일주소
+                                                닉네임, 핸드폰번호, 이메일주소
                                             </span>
 
                                             <input
@@ -2796,7 +2813,7 @@ export default function AIPage({ params }: any) {
                                             disabled={!address || applyingMintNFT || !isValidAPIKey || !isValidBalance || !userName || !userPhoneNumber || !userEmail }
                                             onClick={applyMintAgentBot}
                                             className={` ${!address || applyingMintNFT || !isValidAPIKey || !isValidBalance || !userName || !userPhoneNumber || !userEmail ?
-                                                'w-full bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold
+                                                'w-full bg-gray-300 text-gray-500' : 'w-full bg-blue-500 text-zinc-100'} p-2 mt-5 mb-5 rounded text-lg font-semibold
                                                 hover:bg-blue-700 hover:text-zinc-100`}
                                         >
                                             {applyingMintNFT ? "Master Bot 신청중..." : "Master Bot 신청하기"}
