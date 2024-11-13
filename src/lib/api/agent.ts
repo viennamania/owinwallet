@@ -387,3 +387,45 @@ export async function updateHtxUid(
   }
 
 }
+
+// updateApplicationStartTrading
+export async function updateApplicationStartTrading(
+  {
+    applicationId,
+  }
+  :
+  {
+    applicationId: number,
+  },
+) {
+
+  if (!applicationId) {
+    return null;
+  }
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('agents');
+
+  const result = await collection.updateOne(
+    { id: applicationId },
+    {
+      $set: {
+        startTrading: {
+          status: true,
+          timestamp: new Date().toISOString(),
+          
+        }
+      }
+    }
+  );
+
+  if (result) {
+    return {
+      applicationId: applicationId,
+      startTrading: true,
+    };
+  } else {
+    return null;
+  }
+
+}

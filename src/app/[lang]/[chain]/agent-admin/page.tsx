@@ -1415,6 +1415,115 @@ export default function AIPage({ params }: any) {
      */
     
 
+    // startTrading
+    const [loadingStartTradingList, setLoadingStartTradingList] = useState([] as any[]);
+    const [startTradingList, setStartTradingList] = useState([] as any[]);
+
+    useEffect(() => {
+
+        if (applications.length === 0) {
+            return;
+        }
+
+        // application.id is key, and value
+        setLoadingStartTradingList(
+            applications.map((item) => {
+                return {
+                    applicationId: item.id,
+                    loading: false,
+                }
+            })
+        );
+
+        setStartTradingList(
+            applications.map((item) => {
+                return {
+                    applicationId: item.id,
+                    startTrading: {},
+                }
+            })
+        );
+
+    } , [applications]);
+
+
+
+    const startTrading = async (
+        applicationId: number,
+    ) => {
+
+        if (address === "") {
+            toast.error("먼저 지갑을 연결해 주세요.");
+            return;
+        }
+
+        const application = applications.find((item) => item.id === applicationId);
+
+        if (!application) {
+            toast.error("Application을 찾을 수 없습니다.");
+            return;
+        }
+
+        // loading start
+        setLoadingStartTradingList(
+            loadingStartTradingList.map((item) => {
+                if (item.applicationId === applicationId) {
+                    return {
+                        applicationId: applicationId,
+                        loading: true,
+                    };
+                } else {
+                    return item;
+                }
+            })
+        );
+
+        // update application status to "startTrading"
+        const response = await fetch("/api/agent/startTrading", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                applicationId: applicationId,
+            }),
+        });
+
+        if (!response.ok) {
+            console.error("Error starting trading");
+            return;
+        }
+
+        const data = await response.json();
+
+        console.log("data", data);
+
+        if (data.result) {
+            toast.success("트레이딩이 시작되었습니다.");
+        }
+
+        // loading end
+        setLoadingStartTradingList(
+            loadingStartTradingList.map((item) => {
+                if (item.applicationId === applicationId) {
+                    return {
+                        applicationId: applicationId,
+                        loading: false,
+                    };
+                } else {
+                    return item;
+                }
+            })
+        );
+
+    };
+
+
+
+
+
+
+
 
 
 
