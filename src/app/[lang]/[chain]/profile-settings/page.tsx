@@ -327,7 +327,7 @@ export default function SettingsPage({ params }: any) {
     const activeAccount = useActiveAccount();
 
 
-    console.log("activeAccount===", activeAccount);
+    ///console.log("activeAccount===", activeAccount);
 
 
     const address = activeAccount?.address;
@@ -366,7 +366,7 @@ export default function SettingsPage({ params }: any) {
 
 
       
-    console.log("address", address);
+    ////console.log("address", address);
  
 
     const [phoneNumber, setPhoneNumber] = useState("");
@@ -433,7 +433,7 @@ export default function SettingsPage({ params }: any) {
     } , [address, contract]);
 
 
-    console.log("balance", balance);
+    ///console.log("balance", balance);
 
 
 
@@ -534,7 +534,7 @@ export default function SettingsPage({ params }: any) {
 
             const data = await response.json();
 
-            console.log("data", data);
+            ///console.log("data", data);
 
             if (data.result) {
                 setNickname(data.result.nickname);
@@ -574,8 +574,41 @@ export default function SettingsPage({ params }: any) {
 
 
 
+    // check user nickname duplicate
 
 
+    const [isNicknameDuplicate, setIsNicknameDuplicate] = useState(false);
+
+    const checkNicknameIsDuplicate = async ( nickname: string ) => {
+
+        const response = await fetch("/api/user/checkUserByNickname", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                nickname: nickname,
+            }),
+        });
+
+
+        const data = await response?.json();
+
+
+        console.log("checkNicknameIsDuplicate data", data);
+
+        if (data.result) {
+            setIsNicknameDuplicate(true);
+        } else {
+            setIsNicknameDuplicate(false);
+        }
+
+    }
+
+
+
+
+    const [loadingSetUserData, setLoadingSetUserData] = useState(false);
 
     const setUserData = async () => {
 
@@ -594,6 +627,9 @@ export default function SettingsPage({ params }: any) {
             toast.error(Nickname_should_be_alphanumeric_lowercase);
             return;
         }
+
+
+        setLoadingSetUserData(true);
 
         if (nicknameEdit) {
 
@@ -668,8 +704,7 @@ export default function SettingsPage({ params }: any) {
             }
         }
 
-
-        
+        setLoadingSetUserData(false);
 
         
     }
@@ -1062,7 +1097,7 @@ export default function SettingsPage({ params }: any) {
 
                 const data = await response.json();
 
-                console.log("myOwnedNfts====", data.result);
+                /////console.log("myOwnedNfts====", data.result);
 
                 if (data.result) {
                     setMyNfts(data.result.ownedNfts);
@@ -1092,7 +1127,7 @@ export default function SettingsPage({ params }: any) {
 
 
 
-   console.log("myNfts", myNfts);
+   //////console.log("myNfts", myNfts);
 
 
     const [agentName, setAgentName] = useState("");
@@ -1592,7 +1627,7 @@ export default function SettingsPage({ params }: any) {
 
 
 
-                        {userCode && (
+                        {address && userCode && (
                             <div className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
 
                                 <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
@@ -1635,52 +1670,94 @@ export default function SettingsPage({ params }: any) {
                                 <div
                                     className="bg-green-500 text-sm text-zinc-100 p-2 rounded"
                                 >
-                                    {My_Nickname}
+                                    {!userCode ? Enter_your_nickname :
+                                        nicknameEdit ? "수정할 내 닉네임" : Enter_your_nickname
+                                    }
                                 </div>
 
-                                <input
-                                    disabled={!address}
-                                    className="p-2 w-64 text-zinc-100 bg-zinc-800 rounded text-2xl font-semibold"
-                                    placeholder={Enter_your_nickname}
-                                    
-                                    //value={nickname}
-                                    value={editedNickname}
+                                <div className='flex flex-col gap-2 items-start justify-between'>
+                                    <input
+                                        disabled={!address}
+                                        className="p-2 w-64 text-zinc-100 bg-zinc-800 rounded text-2xl font-semibold"
+                                        placeholder={Enter_your_nickname}
+                                        
+                                        //value={nickname}
+                                        value={editedNickname}
 
-                                    type='text'
-                                    onChange={(e) => {
-                                        // check if the value is a number
-                                        // check if the value is alphanumeric and lowercase
+                                        type='text'
+                                        onChange={(e) => {
+                                            // check if the value is a number
+                                            // check if the value is alphanumeric and lowercase
 
-                                        if (!/^[a-z0-9]*$/.test(e.target.value)) {
-                                            toast.error(Nickname_should_be_alphanumeric_lowercase);
-                                            return;
-                                        }
-                                        if ( e.target.value.length > 10) {
-                                            toast.error(Nickname_should_be_at_least_5_characters_and_at_most_10_characters);
-                                            return;
-                                        }
+                                            if (!/^[a-z0-9]*$/.test(e.target.value)) {
+                                                toast.error(Nickname_should_be_alphanumeric_lowercase);
+                                                return;
+                                            }
+                                            if ( e.target.value.length > 10) {
+                                                toast.error(Nickname_should_be_at_least_5_characters_and_at_most_10_characters);
+                                                return;
+                                            }
 
-                                        //setNickname(e.target.value);
+                                            //setNickname(e.target.value);
 
-                                        setEditedNickname(e.target.value);
+                                            setEditedNickname(e.target.value);
 
-                                    } }
+                                            checkNicknameIsDuplicate(e.target.value);
+
+                                        } }
+                                    />
+
+                                    {editedNickname && isNicknameDuplicate && (
+                                        <div className='flex flex-row gap-2 items-center justify-between'>
+                                            <span className='text-xs font-semibold text-red-500'>
+                                                이미 사용중인 닉네임입니다.
+                                            </span>
+                                        </div>
+                                    )}
+
+                                    {editedNickname
+                                    && !isNicknameDuplicate
+                                    && editedNickname.length >= 5
+                                    && (
+                                        <div className='flex flex-row gap-2 items-center justify-between'>
+                                            <span className='text-xs font-semibold text-green-500'>
+                                                사용가능한 닉네임입니다.
+                                            </span>
+                                        </div>
+                                    )}
+                                </div>
 
 
-                                />
                                 <div className='flex flex-row gap-2 items-center justify-between'>
                                     <span className='text-xs font-semibold'>
                                         {Nickname_should_be_5_10_characters}
                                     </span>
                                 </div>
                                 <button
-                                    disabled={!address}
-                                    className="p-2 bg-blue-500 text-zinc-100 rounded"
+                                    disabled={
+                                        !address
+                                        || !editedNickname
+                                        || editedNickname.length < 5
+                                        || isNicknameDuplicate
+                                        || loadingSetUserData
+                                    }
+                                    className={`
+                                        ${!address
+                                        || !editedNickname
+                                        || editedNickname.length < 5
+                                        || isNicknameDuplicate
+                                        || loadingSetUserData
+                                        ? 'bg-gray-300 text-gray-400'
+                                        : 'bg-blue-500 text-zinc-100'}
+
+                                        p-2 rounded-lg text-sm font-semibold
+                                    `}
                                     onClick={() => {
                                         setUserData();
                                     }}
                                 >
-                                    {Save}
+                                    {loadingSetUserData ? "저장중..." : Save}
+                                    
                                 </button>
 
                                 

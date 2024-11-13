@@ -356,6 +356,25 @@ export async function getOneByWalletAddress(
 
 
 
+export async function getOneByNickname(
+  nickname: string,
+): Promise<UserProps | null> {
+
+  const client = await clientPromise;
+
+  const collection = client.db('vienna').collection('users');
+
+  const results = await collection.findOne<UserProps>(
+    { nickname: nickname },
+  );
+
+  return results;
+
+}
+
+
+
+
 export async function getOneByContractAddress(
   erc721ContractAddress: string,
 ): Promise<UserProps | null> {
