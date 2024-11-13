@@ -1537,7 +1537,8 @@ export default function AIPage({ params }: any) {
     };
 
 
-        
+ 
+    //console.log("agents==============", agents);
  
 
 
@@ -1566,7 +1567,7 @@ export default function AIPage({ params }: any) {
                     <div className='flex flex-row items-center gap-4'>
                         
                         <Image
-                            src="/logo-agent-center.png"
+                            src="/icon-pnkpartners.png"
                             alt="TBOT"
                             width={100}
                             height={40}
@@ -1774,13 +1775,48 @@ export default function AIPage({ params }: any) {
 
 
                                                         {agentBot && (
-                                                            <div className='flex flex-col items-start gap-2'>
+                                                            <div className='flex flex-col items-start gap-5'>
+
+                                                                <div className='flex flex-row items-center gap-2
+                                                                    border-b border-gray-300 pb-2
+                                                                '>
+                                                                
+
+                                                                    {/* agent avatar */}
+                                                                    <Image
+                                                                        src={agents.find((agent) => agent.erc721ContractAddress === agentBot)?.avatar || "/icon-anonymous.png"}
+                                                                        alt="TBOT"
+                                                                        width={80}
+                                                                        height={80}
+                                                                        className='rounded-full w-28 h-28'
+                                                                    />
+
+                                                                    <div className='flex flex-col items-start gap-2'>
+                                                                        {/* agent nickname */}
+                                                                        <span className='text-sm font-semibold text-yellow-500'>
+                                                                            닉네임: {agents.find((agent) => agent.erc721ContractAddress === agentBot)?.nickname}
+                                                                        </span>
+                                                                        {/* agent phone number */}
+                                                                        <span className='text-sm font-semibold text-yellow-500'>
+                                                                            연락처: {agents.find((agent) => agent.erc721ContractAddress === agentBot)?.mobile.slice(0, 3) + '****' + agents.find((agent) => agent.erc721ContractAddress === agentBot)?.mobile.slice(-4)}
+                                                                        </span>
+
+                                                                        {!loadingAgentBotList && (
+                                                                            <span className='text-sm font-semibold text-yellow-500'>
+                                                                                AI Agent NFT: {agentBotList.length} 개
+                                                                            </span>
+                                                                        )}
+
+
+                                                                    </div>
+                                                                </div>
+
                                                                 {/* agent nickname */}
                                                                 <span className='text-sm font-semibold text-blue-500'>
                                                                     {agents.find((agent) => agent.erc721ContractAddress === agentBot)?.nickname} 님의 AI 에이전트 NFT
                                                                 </span>
                                                                 {!loadingAgentBotList && (
-                                                                    <span className='text-sm font-semibold text-blue-500'>
+                                                                    <span className='text-sm font-semibold text-gray-500'>
                                                                         {agentBotList.length} 개의 AI 에이전트 NFT
                                                                     </span>
                                                                 )}
@@ -1831,7 +1867,7 @@ export default function AIPage({ params }: any) {
                                                                         onClick={() => {
                                                                             router.push('/' + params.lang + '/' + params.chain + '/agent/' + nft.contract.address + '/' + nft.tokenId);
                                                                         }}
-                                                                        className="p-2 bg-blue-500 text-zinc-100 rounded
+                                                                        className="w-full p-2 bg-blue-500 text-zinc-100 rounded
                                                                         hover:bg-blue-600"
                                                                     >
                                                                         <span className='text-xs xl:text-lg font-semibold'>
@@ -2002,7 +2038,7 @@ function Header(
                     className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
                     />
                     <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
-                        PNK Partners
+                        PNK Partners since 2024
                     </span>
                 </div>
                 
