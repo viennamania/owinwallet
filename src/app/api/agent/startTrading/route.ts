@@ -11,13 +11,14 @@ export async function POST(request: NextRequest) {
   const body = await request.json();
 
 
-  const { applicationId, } = body;
+  const { applicationId, walletAddress} = body;
 
 
 
   
   const result = await updateApplicationStartTrading({
     applicationId: applicationId,
+    walletAddress: walletAddress,
   });
   
   if (!result) {

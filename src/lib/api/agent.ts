@@ -2,6 +2,7 @@ import { create } from 'domain';
 import clientPromise from '../mongodb';
 import { N } from 'ethers';
 import exp from 'constants';
+import { approve } from 'thirdweb/extensions/erc20';
 
 
 export interface AgentProps {
@@ -392,10 +393,12 @@ export async function updateHtxUid(
 export async function updateApplicationStartTrading(
   {
     applicationId,
+    walletAddress,
   }
   :
   {
     applicationId: number,
+    walletAddress: string,
   },
 ) {
 
@@ -413,6 +416,7 @@ export async function updateApplicationStartTrading(
         startTrading: {
           status: true,
           timestamp: new Date().toISOString(),
+          approvedByWalletAddress: walletAddress,
           
         }
       }

@@ -94,6 +94,7 @@ import thirdwebIcon from "@public/thirdweb.svg";
 import { verify } from 'crypto';
 import { tree } from 'next/dist/build/templates/app-page';
 import { add } from 'thirdweb/extensions/farcaster/keyGateway';
+import { start } from 'repl';
 
 
 const wallets = [
@@ -1448,6 +1449,7 @@ export default function AIPage({ params }: any) {
 
 
 
+
     const startTrading = async (
         applicationId: number,
     ) => {
@@ -1486,6 +1488,7 @@ export default function AIPage({ params }: any) {
             },
             body: JSON.stringify({
                 applicationId: applicationId,
+                walletAddress: address,
             }),
         });
 
@@ -1498,8 +1501,28 @@ export default function AIPage({ params }: any) {
 
         console.log("data", data);
 
-        if (data.result) {
+        if (data?.result) {
             toast.success("트레이딩이 시작되었습니다.");
+
+            // reload applications
+            const response = await fetch("/api/agent/getApplications", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    walletAddress: address,
+                }),
+            });
+            if (!response.ok) {
+                console.error("Error fetching agents");
+                return;
+            }
+            const data = await response.json();
+            setApplications(data.result.applications);
+
+
+
         }
 
         // loading end
@@ -2207,17 +2230,56 @@ export default function AIPage({ params }: any) {
 
 
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                            <span className='text-sm text-gray-800'>
-                                                상태: 준비중
-                                            </span>
-                                            <button
-                                                className="bg-blue-500 text-white p-2 rounded-lg
-                                                    hover:bg-blue-600
-                                                "
-                                            >
-                                                승인하기
-                                            </button>
+
+                                            <div className='flex flex-col gap-2'>
+                                                <span className='text-lg font-semibold text-yellow-500'>
+                                                    상태
+                                                </span>
+                                                <span className='text-sm text-gray-800'>
+                                                    {application?.startTrading?.status &&
+                                                        //application?.startTrading?.timestamp
+                                                        (
+
+                                                            <div className='flex flex-col gap-2'>
+                                                                <div className='flex flex-row items-center gap-2'>
+                                                                    <span className='text-xs text-gray-800'>
+                                                                        승인완료
+                                                                    </span>
+                                                                    <span className=' text-sm text-red-500'>
+                                                                        승인자: {application?.startTrading?.approvedByWalletAddress?.slice(0, 5)}...{application?.startTrading?.approvedByWalletAddress?.slice(-5)}
+                                                                    </span>
+                                                                </div>
+                                                                <span className='text-xs text-gray-800'>
+                                                                    {
+                                                                        new Date(application?.startTrading?.timestamp).toLocaleString()
+                                                                    }
+                                                                </span>
+                                                            </div>
+
+                                                        )
+                                                    }
+                                                </span>
+                                            </div>
+
+
+                                            {/* startTrading */}
+                                            {!application?.startTrading?.status && (
+                                                <button
+                                                    onClick={() => {
+                                                        startTrading(application.id);
+                                                    }}
+                                                    disabled={
+                                                        loadingStartTradingList.find((item) => item.applicationId === application.id)?.loading
+                                                    }
+                                                    className={`${loadingStartTradingList.find((item) => item.applicationId === application.id)?.loading ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
+                                                        hover:bg-blue-600
+                                                    `}
+                                                >
+                                                    {loadingStartTradingList.find((item) => item.applicationId === application.id)?.loading ? "승인중..." : "승인하기"}
+                                                </button>
+                                            )}
                                         </div>
+
             
                                     </div>
                                 ))}
