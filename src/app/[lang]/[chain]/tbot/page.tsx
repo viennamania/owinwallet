@@ -2572,7 +2572,7 @@ export default function AIPage({ params }: any) {
                                                            
                                                             <div
                                                                 key={nft.tokenId}
-                                                                className={`flex flex-col items-center gap-2
+                                                                className={`flex flex-row items-center gap-2
                                                                     border border-gray-300 p-2 rounded-lg
                                                                     hover:shadow-lg cursor-pointer
 
@@ -2590,6 +2590,7 @@ export default function AIPage({ params }: any) {
                                                                     height={200}
                                                                     className='rounded-lg w-32'
                                                                 />
+
                                                                 <div className='w-full flex flex-col items-start gap-2'>
                                                                     <div className='flex flex-row items-center gap-2'>
                                                                         <span className='text-2xl font-semibold text-red-500'>
