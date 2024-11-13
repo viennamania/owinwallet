@@ -1758,7 +1758,7 @@ export default function AIPage({ params }: any) {
                                                 {/* dot */}
                                                 <div className='w-4 h-4 bg-red-500 rounded-full'></div>
                                                 <span className='text-lg font-semibold text-gray-800'>
-                                                    신청번호: {application.id}
+                                                    신청번호: #{application.id}
                                                 </span>
                                             </div>
 
