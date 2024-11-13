@@ -1721,9 +1721,17 @@ export default function AIPage({ params }: any) {
                         <div className='w-full flex flex-col gap-5'>
 
                             <div className='flex flex-row items-center gap-2'>
+                                
+                                <Image
+                                    src="/logo-exchange-htx.png"
+                                    alt="HTX"
+                                    width={50}
+                                    height={50}
+                                />
                                 <span className='text-lg font-semibold text-gray-800'>
                                     HTX 신청목록
                                 </span>
+
                                 {/* reload button */}
                                 <button
                                     onClick={() => {
@@ -1809,6 +1817,7 @@ export default function AIPage({ params }: any) {
                                             <div className='w-full flex flex-col items-start justify-between gap-2
                                                 border-b border-gray-300 pb-2
                                             '>
+                                                
                                                 <span className='text-lg font-semibold text-gray-800'>
                                                     신청번호: #{application.id}
                                                 </span>
@@ -1816,8 +1825,26 @@ export default function AIPage({ params }: any) {
                                                     신청일자: {
                                                         new Date(application.createdAt).toLocaleString()
                                                     }
-                                                </span>
+                                                </span>  
+
+                                                {/* time ago */}
+                                                <span className='text-xs text-gray-800'>
+                                                {
+                                                    new Date().getTime() - new Date(application.createdAt).getTime() < 1000 * 60 ? (
+                                                    ' ' + Math.floor((new Date().getTime() - new Date(application.createdAt).getTime()) / 1000) + ' ' + '초 전'
+                                                    ) :
+                                                    new Date().getTime() - new Date(application.createdAt).getTime() < 1000 * 60 * 60 ? (
+                                                    ' ' + Math.floor((new Date().getTime() - new Date(application.createdAt).getTime()) / 1000 / 60) + ' ' + '분 전'
+                                                    ) : (
+                                                    ' ' + Math.floor((new Date().getTime() - new Date(application.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + '시간 전'
+                                                    )
+                                                }
+                                                </span>                                              
+
                                             </div>
+
+
+
 
                                             {/* agentBot and agentBotNumber */}
                                             <div className='w-full flex flex-row items-start justify-between gap-2

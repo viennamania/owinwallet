@@ -168,7 +168,7 @@ export async function getMyReferAgents(
     page: number,
     limit: number,
     agentBot: string,
-    agentBotNumber: number,
+    agentBotNumber: string,
   },
  ) {
 
@@ -192,7 +192,8 @@ export async function getMyReferAgents(
     {
       $match: {
         agentBot: agentBot,
-        agentBotNumber: agentBotNumber,
+        //agentBotNumber: agentBotNumber,
+        agentBotNumber: parseInt(agentBotNumber),
       }
     },
     {
