@@ -1679,8 +1679,8 @@ export default function AIPage({ params }: any) {
                             {/* AI 트레이딩 TBOT 서비스센터 입니다. */}
                             <span className="text-xs font-semibold text-gray-800">
                                 
-                                TBOT 센터는 본인 계좌로 운영자금이 디파짓하여 AI트레이딩을 제공합니다. <br />
-                                TBOT을 민팅을 하면 Master bot이 지원을 합니다. <br />
+                                TBOT 센터는 본인 계좌로 운영자금을 디파짓하여 AI트레이딩을 제공합니다. <br />
+                                TBOT을 민팅하면 Master bot이 지원을 합니다. <br />
                                 코인선물투자 개념과 트레이딩에 대한 교육을 제공합니다.
                             </span>
                         </div>

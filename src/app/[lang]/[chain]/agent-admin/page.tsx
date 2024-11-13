@@ -1465,8 +1465,8 @@ export default function AIPage({ params }: any) {
                             {/* AI 트레이딩 TBOT 서비스센터 입니다. */}
                             <span className="text-xs font-semibold text-gray-800">
                                 
-                                TBOT 센터는 본인 계좌로 운영자금이 디파짓하여 AI트레이딩을 제공합니다. <br />
-                                TBOT을 민팅을 하면 Master bot이 지원을 합니다. <br />
+                                TBOT 센터는 본인 계좌로 운영자금을 디파짓하여 AI트레이딩을 제공합니다. <br />
+                                TBOT을 민팅하면 Master bot이 지원을 합니다. <br />
                                 코인선물투자 개념과 트레이딩에 대한 교육을 제공합니다.
                             </span>
                         </div>
@@ -1666,9 +1666,17 @@ export default function AIPage({ params }: any) {
                         <div className='w-full flex flex-col gap-5'>
 
                             <div className='flex flex-row items-center gap-2'>
+                                <Image
+                                    src="/logo-exchange-htx.png"
+                                    alt="HTX"
+                                    width={50}
+                                    height={50}
+                                    className='rounded-lg'
+                                />
                                 <span className='text-lg font-semibold text-gray-800'>
                                     HTX 신청목록
                                 </span>
+
                                 {/* reload button */}
                                 <button
                                     onClick={() => {
@@ -1726,14 +1734,14 @@ export default function AIPage({ params }: any) {
                             )}
 
 
-                                <span className='text-lg text-gray-800'>
-                                    총 {applications.length}개의 신청이 있습니다.
-                                </span>
+                            <span className='text-lg text-gray-800'>
+                                총 {applications.length}개의 신청이 있습니다.
+                            </span>
 
                             
 
 
-                            <div className='w-full grid grid-cols-1 xl:grid-cols-2 gap-5'>
+                            <div className='w-full grid grid-cols-1 xl:grid-cols-4 gap-5'>
 
                                 {!loadingApplications && applications.map((application, index) => (
                                     <div
@@ -1742,14 +1750,63 @@ export default function AIPage({ params }: any) {
                                         border border-gray-300 p-4 rounded-lg bg-gray-100
                                     '>
 
-                                        {/* 신청일자 */}
-                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                            <span className='text-sm text-gray-800'>
-                                                신청일자: {
-                                                    new Date(application.createdAt).toLocaleString()
-                                                }
-                                            </span>
+                                        <div className='w-full flex flex-col gap-2
+                                            border-b border-gray-300 pb-2
+                                        '>
+                                            {/* 신청번호 */}
+                                            <div className='w-full flex flex-row items-center justify-start gap-2'>
+                                                {/* dot */}
+                                                <div className='w-4 h-4 bg-red-500 rounded-full'></div>
+                                                <span className='text-lg font-semibold text-gray-800'>
+                                                    신청번호: {application.id}
+                                                </span>
+                                            </div>
+
+                                            {/* 신청일자 */}
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <span className='text-sm text-gray-800'>
+                                                    일자: {
+                                                        new Date(application.createdAt).toLocaleString()
+                                                    }
+                                                </span>
+                                            </div>
+                                            {/* time ago */}
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                            {
+                                                new Date().getTime() - new Date(application.createdAt).getTime() < 1000 * 60 ? (
+                                                ' ' + Math.floor((new Date().getTime() - new Date(application.createdAt).getTime()) / 1000) + ' ' + '초 전'
+                                                ) :
+                                                new Date().getTime() - new Date(application.createdAt).getTime() < 1000 * 60 * 60 ? (
+                                                ' ' + Math.floor((new Date().getTime() - new Date(application.createdAt).getTime()) / 1000 / 60) + ' ' + '분 전'
+                                                ) : (
+                                                ' ' + Math.floor((new Date().getTime() - new Date(application.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + '시간 전'
+                                                )
+                                            }
+                                            </div>
+
+                                            {/* agentBotNft name */}
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <span className='text-xs font-semibold text-yellow-500'>
+                                                    AI Agent NFT
+                                                </span>
+                                                <span className='text-sm text-gray-800'>
+                                                    {application?.agentBotNft?.name}
+                                                </span>
+                                                <Image
+                                                    src={application?.agentBotNft?.image?.thumbnailUrl || "/logo-masterbot100.png"}
+                                                    alt="Agent Bot"
+                                                    width={50}
+                                                    height={50}
+                                                    className='rounded-lg'
+                                                />
+                                            </div>
+
                                         </div>
+
+
+
+
+
 
 
                                         {/* HTX UserId */}
@@ -1785,9 +1842,14 @@ export default function AIPage({ params }: any) {
 
 
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                            <span className='text-xl font-semibold text-gray-800'>
-                                                HTX UID: {application.htxUid}
-                                            </span>
+                                            <div className='flex flex-col gap-2'>
+                                                <span className='text-xl font-semibold text-yellow-500'>
+                                                    UID
+                                                </span>
+                                                <span className='text-sm text-gray-800'>
+                                                    {application.htxUid}
+                                                </span>
+                                            </div>
                                             {/* copy button */}
                                             <button
                                                 onClick={() => {
@@ -1798,14 +1860,19 @@ export default function AIPage({ params }: any) {
                                                     hover:bg-gray-600
                                                 "
                                             >
-                                                Copy
+                                                {Copy}
                                             </button>
                                         </div>
 
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                            <span className='text-sm text-gray-800'>
-                                                닉네임: {application.userName}
-                                            </span>
+                                            <div className='flex flex-col gap-2'>
+                                                <span className='text-lg font-semibold text-yellow-500'>
+                                                    닉네임
+                                                </span>
+                                                <span className='text-sm text-gray-800'>
+                                                    {application.userName}
+                                                </span>
+                                            </div>
                                             {/* copy button */}
                                             <button
                                                 onClick={() => {
@@ -1816,13 +1883,18 @@ export default function AIPage({ params }: any) {
                                                     hover:bg-gray-600
                                                 "
                                             >  
-                                                Copy
+                                                {Copy}
                                             </button>
                                         </div>
                                         <div className='w-full hidden flex-row items-center justify-between gap-2'>
-                                            <span className='text-sm text-gray-800'>
-                                                핸드폰번호: {application.userPhoneNumber}
-                                            </span>
+                                            <div className='flex flex-col gap-2'>
+                                                <span className='text-lg font-semibold text-yellow-500'>
+                                                    핸드폰번호
+                                                </span>
+                                                <span className='text-sm text-gray-800'>
+                                                    {application.userPhoneNumber}
+                                                </span>
+                                            </div>
                                             {/* copy button */}
                                             <button
                                                 onClick={() => {
@@ -1833,14 +1905,19 @@ export default function AIPage({ params }: any) {
                                                     hover:bg-gray-600
                                                 "
                                             >
-                                                Copy
+                                                {Copy}
                                             </button>
                                         </div>
 
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                            <span className='text-sm text-gray-800'>
-                                                이메일주소: {application.userEmail}
-                                            </span>
+                                            <div className='flex flex-col gap-2'>
+                                                <span className='text-lg font-semibold text-yellow-500'>
+                                                    이메일
+                                                </span>
+                                                <span className='text-xs text-gray-800'>
+                                                    {application.userEmail}
+                                                </span>
+                                            </div>
                                             {/* copy button */}
                                             <button
                                                 onClick={() => {
@@ -1851,16 +1928,21 @@ export default function AIPage({ params }: any) {
                                                     hover:bg-gray-600
                                                 "
                                             >
-                                                Copy
+                                                {Copy}
                                             </button>
                                         </div>
 
 
 
                                         <div className='w-full hidden flex-row items-center justify-between gap-2'>
-                                            <span className='text-xs text-gray-800'>
-                                                HTX USDT(TRON) 지갑주소: {application.htxUsdtWalletAddress}
-                                            </span>
+                                            <div className='flex flex-col gap-2'>
+                                                <span className='text-lg font-semibold text-yellow-500'>
+                                                    지갑주소
+                                                </span>
+                                                <span className='text-sm text-gray-800'>
+                                                    {application.htxUsdtWalletAddress}
+                                                </span>
+                                            </div>
                                             {/* copy button */}
                                             <button
                                                 onClick={() => {
@@ -1871,14 +1953,19 @@ export default function AIPage({ params }: any) {
                                                     hover:bg-gray-600
                                                 "
                                             >
-                                                Copy
+                                                {Copy}
                                             </button>
                                         </div>
 
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                            <span className='text-sm text-gray-800'>
-                                                API Access Key: {application.apiAccessKey}
-                                            </span>
+                                            <div className='flex flex-col gap-2'>
+                                                <span className='text-lg font-semibold text-yellow-500'>
+                                                    API Access Key
+                                                </span>
+                                                <span className='text-sm text-gray-800'>
+                                                    {application.apiAccessKey}
+                                                </span>
+                                            </div>
                                             {/* copy button */}
                                             <button
                                                 onClick={() => {
@@ -1889,14 +1976,19 @@ export default function AIPage({ params }: any) {
                                                     hover:bg-gray-600
                                                 "
                                             >
-                                                Copy
+                                                {Copy}
                                             </button>
                                         </div>
 
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                            <span className='text-sm text-gray-800'>
-                                                API Secret Key: {application.apiSecretKey}
-                                            </span>
+                                            <div className='flex flex-col gap-2'>
+                                                <span className='text-lg font-semibold text-yellow-500'>
+                                                    API Secret Key
+                                                </span>
+                                                <span className='text-sm text-gray-800'>
+                                                    {application.apiSecretKey}
+                                                </span>
+                                            </div>
                                             {/* copy button */}
                                             <button
                                                 onClick={() => {
@@ -1907,7 +1999,7 @@ export default function AIPage({ params }: any) {
                                                     hover:bg-gray-600
                                                 "
                                             >
-                                                Copy
+                                                {Copy}
                                             </button>
                                         </div>
 
