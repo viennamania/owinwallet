@@ -1466,6 +1466,10 @@ export default function AIPage({ params }: any) {
             return;
         }
 
+        if (!confirm("승인하시겠습니까?")) {
+            return;
+        }
+
         // loading start
         setLoadingStartTradingList(
             loadingStartTradingList.map((item) => {
@@ -1865,10 +1869,29 @@ export default function AIPage({ params }: any) {
                                 </div>
                             )}
 
+                            
+                            <div className='w-full flex flex-col xl:flex-row items-start justify-between gap-5'>
+                                <span className='text-lg text-gray-800'>
+                                    총 {applications.length}개의 신청이 있습니다.
+                                </span>
+                                <div className='flex flex-row items-center'>
+                                    {/* start trading status is true count and false count */}
+                                    <span className='text-lg text-green-500'>
+                                        {applications.filter((item) => item?.startTrading?.status === true).length}
+                                    </span>
+                                    <span className='text-sm text-gray-800'>
+                                        개의 트레이딩 중
+                                    </span>
+                                    <div className='w-4 h-4'></div>
+                                    <span className='text-lg text-red-500'>
+                                        {applications.filter((item) => !item?.startTrading).length}
+                                    </span>
+                                    <span className='text-sm text-gray-800'>
+                                        개의 트레이딩 대기중
+                                    </span>
 
-                            <span className='text-lg text-gray-800'>
-                                총 {applications.length}개의 신청이 있습니다.
-                            </span>
+                                </div>
+                            </div>
 
                             
 
