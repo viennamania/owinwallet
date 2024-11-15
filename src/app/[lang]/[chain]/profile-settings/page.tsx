@@ -1447,55 +1447,27 @@ export default function SettingsPage({ params }: any) {
                     <div className='w-full flex flex-col gap-4 items-start justify-center'>
 
                         <div className='w-full flex flex-row gap-2'>
-                            <ConnectButton
-                                client={client}
 
-                                //wallets={wallets}
-
-                                wallets={[
-                                    inAppWallet({
-                                    auth: {
-                                        options: ["phone"],
-                                    },
-                                    }),
-                                ]}
-
-                                
-                                accountAbstraction={{   
-                                    
-                                    chain: polygon,
-
-                                    factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                                    gasless: true,
-                                }}
-                                
-                                
-                                theme={"light"}
-
-                                
-
-                                connectButton={{
-                                    label: "Sign in with OWIN Magic Wallet",
-                                }}
-
-                                connectModal={{
-                                size: "wide",                            
+                        <ConnectButton
+                            client={client}
+                            wallets={wallets}
+                            accountAbstraction={{
+                                chain: polygon,
+                                factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum, ethereum
+                                sponsorGas: true
+                            }}
+                            theme={"light"}
+                            connectButton={{
+                                label: "Sign in with OWIN Magic Wallet",
+                            }}
+                            connectModal={{
+                                size: "wide", 
+                                titleIcon: "https://owinwallet.com/icon-tbot.png",                           
                                 showThirdwebBranding: false,
 
-                                }}
-
-                                appMetadata={
-                                {
-                                    logoUrl: "https://gold.goodtether.com/logo.png",
-                                    name: "Next App",
-                                    url: "https://gold.goodtether.com",
-                                    description: "This is a Next App.",
-
-                                }
-                                }
-
-                                //locale={"ko_KR"}
-                                locale={"en_US"}
+                            }}
+                            locale={"ko_KR"}
+                            //locale={"en_US"}
                             />
 
                             {/* button for connect smart wallet */}

@@ -476,7 +476,7 @@ export default function AIPage({ params }: any) {
         accountAbstraction: {
             chain: params.chain === "arbitrum" ? arbitrum : polygon,
             factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-            gasless: true,
+            sponsorGas: true
         },
 
   

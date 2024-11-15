@@ -580,18 +580,6 @@ export default function Index({ params }: any) {
         <div className="mt-4 flex flex-col justify-center gap-5 mb-10">
 
 
-
-
-          {/*
-          <ConnectButton
-            client={client}
-            appMetadata={{
-              name: "Next App",
-              url: "https://gold.goodtether.com",
-            }}
-          />
-          */}
-
           {/*
           <button
             onClick={() =>
@@ -1076,53 +1064,29 @@ export default function Index({ params }: any) {
  
 
           {!address && (
+
             <ConnectButton
+            client={client}
+            wallets={wallets}
+            accountAbstraction={{
+              chain: polygon,
+              factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum, ethereum
+              sponsorGas: true
+            }}
+            theme={"light"}
+            connectButton={{
+              label: "Sign in with OWIN Magic Wallet",
+            }}
+            connectModal={{
+              size: "wide", 
+              titleIcon: "https://owinwallet.com/icon-tbot.png",                           
+              showThirdwebBranding: false,
 
-              client={client}
-
-              // Connect Wallet button text change
-              
-
-
-              // inAppWallet
-
-              //wallets={wallets}
-
-              wallets={wallets}
-              
-              accountAbstraction={{        
-                chain: polygon,
-                //chain: arbitrum,
-                factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                gasless: true,
-              }}
-              
-              theme={"light"}
-              connectModal={{
-                size: "wide",
-                
-                //title: "Connect",
-
-
-
-              }}
-
-
-              
-              appMetadata={
-                {
-                  logoUrl: "https://gold.goodtether.com/logo.png",
-                  name: "Next App",
-                  url: "https://gold.goodtether.com",
-                  description: "This is a Next App.",
-
-                }
-              }
-
-              // custom
-
-              
+            }}
+            locale={"ko_KR"}
+            //locale={"en_US"}
             />
+
 
           )}
 

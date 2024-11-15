@@ -503,15 +503,6 @@ export default function Home() {
 
 
 
-          {/*
-          <ConnectButton
-            client={client}
-            appMetadata={{
-              name: "Next App",
-              url: "https://gold.goodtether.com",
-            }}
-          />
-          */}
 
           {/*
           <button
@@ -986,52 +977,27 @@ export default function Home() {
  
 
           {!address && (
+            
             <ConnectButton
-
               client={client}
-
-              // Connect Wallet button text change
-              
-
-
-              // inAppWallet
-
-              //wallets={wallets}
-
               wallets={wallets}
-              
-              accountAbstraction={{        
+              accountAbstraction={{
                 chain: polygon,
-                //chain: arbitrum,
-                factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                gasless: true,
+                factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum, ethereum
+                sponsorGas: true
               }}
-              
               theme={"light"}
+              connectButton={{
+                label: "Sign in with OWIN Magic Wallet",
+              }}
               connectModal={{
-                size: "wide",
-                
-                //title: "Connect",
-
-
+                size: "wide", 
+                titleIcon: "https://owinwallet.com/icon-tbot.png",                           
+                showThirdwebBranding: false,
 
               }}
-
-
-              
-              appMetadata={
-                {
-                  logoUrl: "https://gold.goodtether.com/logo.png",
-                  name: "Next App",
-                  url: "https://gold.goodtether.com",
-                  description: "This is a Next App.",
-
-                }
-              }
-
-              // custom
-
-              
+              locale={"ko_KR"}
+              //locale={"en_US"}
             />
 
           )}

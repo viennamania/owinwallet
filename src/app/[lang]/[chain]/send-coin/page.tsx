@@ -862,43 +862,27 @@ export default function SendUsdt({ params }: any) {
 
           {!address && (
 
-
-
             <ConnectButton
-              client={client}
-              wallets={wallets}
+            client={client}
+            wallets={wallets}
+            accountAbstraction={{
+              chain: polygon,
+              factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum, ethereum
+              sponsorGas: true
+            }}
+            theme={"light"}
+            connectButton={{
+              label: "Sign in with OWIN Magic Wallet",
+            }}
+            connectModal={{
+              size: "wide", 
+              titleIcon: "https://owinwallet.com/icon-tbot.png",                           
+              showThirdwebBranding: false,
 
-              
-              accountAbstraction={{   
-                chain: params.chain === "arbitrum" ? arbitrum : polygon,
-                //
-                //chain: polygon,
-
-                //chain: arbitrum,
-                factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                gasless: true,
-              }}
-              
-            
-              
-              theme={"light"}
-              connectModal={{
-                size: "wide",                            
-                //title: "Connect",
-
-              }}
-
-              appMetadata={
-                {
-                  logoUrl: "https://gold.goodtether.com/logo.png",
-                  name: "Next App",
-                  url: "https://gold.goodtether.com",
-                  description: "This is a Next App.",
-
-                }
-              }
+            }}
+            locale={"ko_KR"}
+            //locale={"en_US"}
             />
-
 
           )}
 
@@ -996,32 +980,6 @@ export default function SendUsdt({ params }: any) {
                       </span>
                     </div>
                   </div>
-
-                  {/*}
-                  {!address && (
-                    <ConnectButton
-                      client={client}
-                      wallets={wallets}
-                      
-                      theme={"light"}
-                      connectModal={{
-                        size: "wide",                            
-                        //title: "Connect",
-
-                      }}
-
-                      appMetadata={
-                        {
-                          logoUrl: "https://gold.goodtether.com/logo.png",
-                          name: "Next App",
-                          url: "https://gold.goodtether.com",
-                          description: "This is a Next App.",
-
-                        }
-                      }
-                    />
-                  )}
-                  */}
 
                   {address &&
                   params.chain !== "tron" &&

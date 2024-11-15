@@ -415,41 +415,6 @@ export default function SettingsPage({ params }: any) {
                             {Wallet_Settings}
                         </div>
 
-                        {/*
-                        {!address && (
-
-
-                            <ConnectButton
-
-                                client={client}
-
-                                wallets={wallets}
-
-                                theme={"light"}
-                                connectModal={{
-                                size: "wide",
-
-
-                                }}
-
-
-                                
-                                appMetadata={
-                                {
-                                    logoUrl: "https://gold.goodtether.com/logo.png",
-                                    name: "Next App",
-                                    url: "https://gold.goodtether.com",
-                                    description: "This is a Next App.",
-
-                                }
-
-                                }
-
-                            />
-
-
-                            )}
-                        */}
 
                         {!address && (
                             <button

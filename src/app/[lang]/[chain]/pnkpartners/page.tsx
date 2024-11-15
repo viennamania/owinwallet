@@ -594,7 +594,7 @@ export default function AIPage({ params }: any) {
         accountAbstraction: {
             chain: params.chain === "arbitrum" ? arbitrum : polygon,
             factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-            gasless: true,
+            sponsorGas: true
         },
 
   
@@ -1610,40 +1610,24 @@ export default function AIPage({ params }: any) {
                                 <ConnectButton
                                     client={client}
                                     wallets={wallets}
-
-                                    
-                                    accountAbstraction={{   
-                                    chain: params.chain === "arbitrum" ? arbitrum : polygon,
-                                    factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                                    gasless: true,
+                                    accountAbstraction={{
+                                        chain: polygon,
+                                        factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum, ethereum
+                                        sponsorGas: true
                                     }}
-  
                                     theme={"light"}
-
-
                                     connectButton={{
                                         label: "Sign in with OWIN Magic Wallet",
                                     }}
-
                                     connectModal={{
-                                    size: "wide",                            
-                                    showThirdwebBranding: false,
+                                        size: "wide", 
+                                        titleIcon: "https://owinwallet.com/icon-tbot.png",                           
+                                        showThirdwebBranding: false,
 
                                     }}
-
-                                    appMetadata={
-                                    {
-                                        logoUrl: "https://gold.goodtether.com/logo.png",
-                                        name: "Next App",
-                                        url: "https://gold.goodtether.com",
-                                        description: "This is a Next App.",
-
-                                    }
-                                    }
-
-                                    //locale={"ko_KR"}
-                                    locale={"en_US"}
-                                />
+                                    locale={"ko_KR"}
+                                    //locale={"en_US"}
+                                    />
 
 
                                 <span className='text-xs font-semibold text-red-500'>

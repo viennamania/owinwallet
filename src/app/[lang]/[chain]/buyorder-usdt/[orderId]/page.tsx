@@ -1339,95 +1339,27 @@ export default function Index({ params }: any) {
             <div className="flex flex-col items-center space-y-4 mb-4">
 
 
-                {params.chain === "polygon" && (
+                <ConnectButton
+                  client={client}
+                  wallets={wallets}
+                  accountAbstraction={{
+                    chain: polygon,
+                    factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum, ethereum
+                    sponsorGas: true
+                  }}
+                  theme={"light"}
+                  connectButton={{
+                    label: "Sign in with OWIN Magic Wallet",
+                  }}
+                  connectModal={{
+                    size: "wide", 
+                    titleIcon: "https://owinwallet.com/icon-tbot.png",                           
+                    showThirdwebBranding: false,
 
-
-                  <ConnectButton
-
-                    client={client}
-
-                    wallets={wallets}
-                    
-                    accountAbstraction={{   
-                      
-                      chain: polygon,
-                      //
-                      //chain: polygon,
-
-                      //chain: arbitrum,
-                      factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                      gasless: true,
-                    }}
-                    
-                    theme={"light"}
-                    connectModal={{
-                      size: "wide",
-                      
-                      //title: "Connect",
-
-
-
-                    }}
-
-
-                    
-                    appMetadata={
-                      {
-                        logoUrl: "https://gold.goodtether.com/logo.png",
-                        name: "Next App",
-                        url: "https://gold.goodtether.com",
-                        description: "This is a Next App.",
-
-                      }
-                    }
-
-                  />
-
-                )}
-
-
-
-                {params.chain === "arbitrum" && (
-                    
-                    <ConnectButton
-    
-                      client={client}
-    
-                      wallets={wallets}
-                      
-                      accountAbstraction={{   
-                        
-                        chain: arbitrum,
-                        //
-                        //chain: polygon,
-    
-                        //chain: arbitrum,
-                        factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                        gasless: true,
-                      }}
-                      
-                      theme={"light"}
-                      connectModal={{
-                        size: "wide",
-                        
-                        //title: "Connect",
-
-                      }}
-
-                      appMetadata={
-                        {
-                          logoUrl: "https://gold.goodtether.com/logo.png",
-                          name: "Next App",
-                          url: "https://gold.goodtether.com",
-                          description: "This is a Next App.",
-    
-                        }
-                      }
-
-                    />
-
-                )}
-
+                  }}
+                  locale={"ko_KR"}
+                  //locale={"en_US"}
+                />
 
 
                 <span className="text-lg text-zinc-400 xl:w-1/2 text-center">

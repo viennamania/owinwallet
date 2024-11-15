@@ -460,7 +460,7 @@ export default function AIPage({ params }: any) {
         accountAbstraction: {
             chain: params.chain === "arbitrum" ? arbitrum : polygon,
             factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-            gasless: true,
+            sponsorGas: true
         },
 
   
@@ -1625,48 +1625,6 @@ export default function AIPage({ params }: any) {
                         */}
 
 
-                        {/*
-                        {!address && (
-
-                        <ConnectButton
-                        client={client}
-                        wallets={wallets}
-
-                        
-                        accountAbstraction={{   
-                            chain: params.chain === "arbitrum" ? arbitrum : polygon,
-                            //
-                            //chain: polygon,
-
-                            //chain: arbitrum,
-                            factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                            gasless: true,
-                        }}
-                        
-
-                        
-                        theme={"light"}
-                        connectModal={{
-                            size: "wide",                            
-                            //title: "Connect",
-
-                        }}
-
-                        appMetadata={
-                            {
-                            logoUrl: "https://gold.goodtether.com/logo.png",
-                            name: "Next App",
-                            url: "https://gold.goodtether.com",
-                            description: "This is a Next App.",
-
-                            }
-                        }
-                        />
-
-
-                        )}
-                        */}
-
                     </div>
 
 
@@ -1704,41 +1662,23 @@ export default function AIPage({ params }: any) {
                                 <ConnectButton
                                 client={client}
                                 wallets={wallets}
-
-                                
-                                accountAbstraction={{   
-                                    chain: params.chain === "arbitrum" ? arbitrum : polygon,
-                                    factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                                    gasless: true,
+                                accountAbstraction={{
+                                    chain: polygon,
+                                    factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum, ethereum
+                                    sponsorGas: true
                                 }}
-                                
-                                
                                 theme={"light"}
-
-                                
-
                                 connectButton={{
                                     label: "Sign in with OWIN Magic Wallet",
                                 }}
-
                                 connectModal={{
-                                    size: "wide",                            
+                                    size: "wide", 
+                                    titleIcon: "https://owinwallet.com/icon-tbot.png",                           
                                     showThirdwebBranding: false,
 
                                 }}
-
-                                appMetadata={
-                                    {
-                                    logoUrl: "https://gold.goodtether.com/logo.png",
-                                    name: "Next App",
-                                    url: "https://gold.goodtether.com",
-                                    description: "This is a Next App.",
-
-                                    }
-                                }
-
-                                //locale={"ko_KR"}
-                                locale={"en_US"}
+                                locale={"ko_KR"}
+                                //locale={"en_US"}
                                 />
 
 

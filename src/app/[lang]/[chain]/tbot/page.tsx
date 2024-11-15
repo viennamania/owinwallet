@@ -594,7 +594,7 @@ export default function AIPage({ params }: any) {
         accountAbstraction: {
             chain: params.chain === "arbitrum" ? arbitrum : polygon,
             factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-            gasless: true,
+            sponsorGas: true
         },
 
   
@@ -1696,86 +1696,9 @@ export default function AIPage({ params }: any) {
                             className='bg-zinc-100 p-2 rounded'
                         />
 
-                        {/* balance */}
-                        {/*
-                        {address && (
-                            <div className="text-5xl font-semibold text-blue-500">
-                                {Number(balance).toFixed(2)} <span className="text-lg">USDT</span>
-                            </div>
-                        )}
-                        */}
-
-
-                        {/*
-                        {!address && (
-
-                        <ConnectButton
-                        client={client}
-                        wallets={wallets}
-
-                        
-                        accountAbstraction={{   
-                            chain: params.chain === "arbitrum" ? arbitrum : polygon,
-                            //
-                            //chain: polygon,
-
-                            //chain: arbitrum,
-                            factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                            gasless: true,
-                        }}
-                        
-
-                        
-                        theme={"light"}
-                        connectModal={{
-                            size: "wide",                            
-                            //title: "Connect",
-
-                        }}
-
-                        appMetadata={
-                            {
-                            logoUrl: "https://gold.goodtether.com/logo.png",
-                            name: "Next App",
-                            url: "https://gold.goodtether.com",
-                            description: "This is a Next App.",
-
-                            }
-                        }
-                        />
-
-
-                        )}
-                        */}
 
                     </div>
 
-
-                    {/* 서비스 설명 */}
-                    {/*
-                    TBOT 특징
-                        1. 자금관리.
-                        본인의 거래소 계정에서 직접 관리, 입출금 자류롭게 가능, 계좌 잔고 50% 이상 출금 시 서비스 중지
-                        2. 계정제한.
-                        - 개인당 최대 10개 TBOT 운영가능,
-                        - 거래소별 최대 3개의 계정 생성 가능 (신분증 종류별 1개, 여권,주민,운전면서) .
-                        3. TBOT 아카테미를 통해서 트레이딩 투자 개념을 교육시켜 드립니다.
-                        - AI트레이딩 로봇이 어떻게 작동하고, 실적을 보고 관리하는 등 트레이딩 개념을 이해하고 AI트레이딩 서
-                        비스를 사용 할 수 있도록 교육제공.
-                        - 유저별 사용을 위한 플랫폼의 설치와 세팅도 지원.
-
-                    리스크 고지
-                        1. 투자원금 손실 가능성 있음
-                        2. 과거 수익률이 미래 수익을 보장하지 않음
-                        3. 높은 레버리지 거래의 위험성 인지 필요
-
-                    FAQ
-                        1. 수익 반영 주기 .
-                        TBOT의 수익반영은 매일매일입니다.
-                        MASTER BOT의 수익반영은 주 단위 입니다.
-                        2. 본인 계좌에 인출과 마스터봇의 작동
-                        거래소의 본인 계좌를 인출을 하면, Master bot의 작동은 중지합니다 .
-                    */}
 
                     <div className='w-full  flex flex-col gap-5 '>
 
@@ -1927,7 +1850,7 @@ export default function AIPage({ params }: any) {
                                     accountAbstraction={{   
                                         chain: polygon,
                                         factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                                        gasless: true,
+                                        sponsorGas: true
                                     }}
                                     theme={"light"}
                                         connectButton={{

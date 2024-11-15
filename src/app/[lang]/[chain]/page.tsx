@@ -144,7 +144,7 @@ export default function Index({ params }: any) {
       accountAbstraction: {
         chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
         factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-        gasless: true,
+        sponsorGas: true
       },
 
 
@@ -1070,53 +1070,32 @@ export default function Index({ params }: any) {
               </button>
             */}
 
+
+
+
             
-              <ConnectButton
-                client={client}
-                wallets={wallets}
+          
+            <ConnectButton
+              client={client}
+              wallets={wallets}
+              accountAbstraction={{
+                chain: polygon,
+                factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum, ethereum
+                sponsorGas: true
+              }}
+              theme={"light"}
+              connectButton={{
+                label: "Sign in with OWIN Magic Wallet",
+              }}
+              connectModal={{
+                size: "wide", 
+                titleIcon: "https://owinwallet.com/icon-tbot.png",                           
+                showThirdwebBranding: false,
 
-                
-                accountAbstraction={{   
-                  
-                  //chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-                  
-                  chain: polygon,
-
-                  factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum, ethereum
-                  gasless: true,
-
-                  ////sponsorGas: true,
-
-                }}
-                
-                
-                theme={"light"}
-
-                
-
-                connectButton={{
-                  label: "Sign in with OWIN Magic Wallet",
-                }}
-
-                connectModal={{
-                  size: "wide",                            
-                  showThirdwebBranding: false,
-
-                }}
-
-                appMetadata={
-                  {
-                    logoUrl: "https://gold.goodtether.com/logo.png",
-                    name: "Next App",
-                    url: "https://gold.goodtether.com",
-                    description: "This is a Next App.",
-
-                  }
-                }
-
-                //locale={"ko_KR"}
-                locale={"en_US"}
-              />
+              }}
+              locale={"ko_KR"}
+              //locale={"en_US"}
+            />
             
           
 
@@ -1829,64 +1808,6 @@ export default function Index({ params }: any) {
 
 
               </div>
-
-
-              {/*
-              {!address && (
-
-              
-                    <ConnectButton
-
-                      client={client}
-
-                      wallets={wallets}
-                    
-                      
-                      theme={"light"}
-
-
-
-
-                      connectModal={{
-                        size: "wide",
-                        
-                        //title: "Connect",
-
-                        welcomeScreen: {
-                          title: "Custom Title",
-                          subtitle: "Custom Subtitle",
-                          img: {
-                            src: "https://example.com/image.png",
-                            width: 100,
-                            height: 100,
-                          },
-                        },
-
-                      }}
-
-
-                      
-                      appMetadata={
-                        {
-                          logoUrl: "https://gold.goodtether.com/logo.png",
-                          name: "Next App",
-                          url: "https://gold.goodtether.com",
-                          description: "This is a Next App.",
-
-                        }
-                      }
-
-                    />
-
-
-              )}
-              */}
-              
-
-              
-
-              
-
 
 
 
