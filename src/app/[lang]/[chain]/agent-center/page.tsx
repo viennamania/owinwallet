@@ -1683,11 +1683,12 @@ export default function AIPage({ params }: any) {
                                         {/* disconnect button */}
                                         <button
                                         onClick={() => {
+                                            confirm("Disconnect wallet?") &&
                                             activeWallet?.disconnect();
                                         }}
                                         className="bg-zinc-800 text-white p-2 rounded-lg"
                                         >
-                                        Disconnect
+                                            Disconnect
                                         </button>
                                     </div>
 
@@ -1699,7 +1700,7 @@ export default function AIPage({ params }: any) {
                                                 alt="Avatar"
                                                 width={38}
                                                 height={38}
-                                                className="rounded-full border border-gray-300"
+                                                className="rounded-full border border-gray-300 w-10 h-10"
                                             />
                                             <span className='text-lg font-semibold text-gray-800'>
                                                 {nickname}
@@ -1822,9 +1823,18 @@ export default function AIPage({ params }: any) {
                                         </span>
                                     </div>
                                 ) : (
-                                    <span className='text-lg text-gray-800'>
-                                        총 {applications.length}개의 신청이 있습니다.
-                                    </span>
+                                    <div className='flex flex-row items-center gap-2'>
+                                        <span className='text-lg text-gray-800'>
+                                            총 {applications.length}개의 신청이 있습니다.
+                                        </span>
+
+                                        {/* startTrading is exist count */}
+                                        <span className='text-lg text-gray-800'>
+                                            시작된 Bot: {applications.filter((item) => item.startTrading).length}개
+                                        </span>
+
+
+                                    </div>
 
                                 )}
 
