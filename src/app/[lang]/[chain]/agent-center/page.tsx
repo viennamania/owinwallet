@@ -505,7 +505,7 @@ export default function AIPage({ params }: any) {
 
     const [userCode, setUserCode] = useState("");
 
-
+    const [userAvatar, setUserAvatar] = useState("");
 
 
 
@@ -536,6 +536,7 @@ export default function AIPage({ params }: any) {
             if (data.result) {
                 setNickname(data.result.nickname);
                 setUserCode(data.result.id);
+                setUserAvatar(data.result.avatar);
 
             }
         };
@@ -1690,6 +1691,27 @@ export default function AIPage({ params }: any) {
                                         </button>
                                     </div>
 
+                                    {/* avatar and nickname */}
+                                    {userCode ? (
+                                        <div className='flex flex-row items-center gap-2'>
+                                            <Image
+                                                src={userAvatar || "/profile-default.png"}
+                                                alt="Avatar"
+                                                width={38}
+                                                height={38}
+                                                className="rounded-full border border-gray-300"
+                                            />
+                                            <span className='text-lg font-semibold text-gray-800'>
+                                                {nickname}
+                                            </span>
+                                        </div>
+                                    ) : (
+                                        <div className='flex flex-row items-center gap-2'>
+
+                                        </div>
+                                    )}
+                                    
+
                                 </div>
 
                                 <div className='flex flex-row items-center gap-2'>
@@ -1709,6 +1731,9 @@ export default function AIPage({ params }: any) {
                                         {Copy}
                                     </button>
                                 </div>
+
+
+
 
                             </div>
                         )}
@@ -2162,6 +2187,9 @@ export default function AIPage({ params }: any) {
 
                                                     
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                
+                                                
+                                                
                                                 <span className='text-sm text-gray-800'>
                                                     상태: 준비중
                                                 </span>
@@ -2244,7 +2272,7 @@ function Header(
                     className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
                     />
                     <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
-                    AI Agent Center
+                    OWIN AI Agent Center
                     </span>
                 </div>
                 

@@ -1142,6 +1142,8 @@ export default function AIPage({ params }: any) {
 
             const data = await response.json();
 
+            ///console.log("getMyAgent data====", data);
+
             if (data.result) {
 
                 setMyAgent(data.result);
