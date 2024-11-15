@@ -1923,39 +1923,20 @@ export default function AIPage({ params }: any) {
                                 <ConnectButton
                                     client={client}
                                     wallets={wallets}
-
-                                    
                                     accountAbstraction={{   
-                                    chain: params.chain === "arbitrum" ? arbitrum : polygon,
-                                    factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                                    gasless: true,
+                                        chain: polygon,
+                                        factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+                                        gasless: true,
                                     }}
-  
                                     theme={"light"}
-
-
-                                    connectButton={{
-                                        label: "Sign in with OWIN Magic Wallet",
+                                        connectButton={{
+                                            label: "Sign in with OWIN Magic Wallet",
                                     }}
-
                                     connectModal={{
-                                    size: "wide",                            
-                                    showThirdwebBranding: false,
-
+                                        size: "wide",                            
+                                        showThirdwebBranding: false,
                                     }}
-
-                                    appMetadata={
-                                    {
-                                        logoUrl: "https://gold.goodtether.com/logo.png",
-                                        name: "Next App",
-                                        url: "https://gold.goodtether.com",
-                                        description: "This is a Next App.",
-
-                                    }
-                                    }
-
-                                    //locale={"ko_KR"}
-                                    locale={"en_US"}
+                                    locale={"ko_KR"}
                                 />
 
 
