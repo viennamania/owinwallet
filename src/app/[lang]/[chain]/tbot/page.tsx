@@ -2328,19 +2328,18 @@ export default function AIPage({ params }: any) {
                                                 border border-gray-300 p-4 rounded-lg
                                             '>
                                                 <span className='text-lg font-semibold text-blue-500'>
-                                                    Master Bot 정보
+                                                    Master Bot NFT
                                                 </span>
 
                                                 <div className='flex flex-row items-center gap-2'>
                                                     <Image
                                                         src={myAgent?.masterBotInfo?.imageUrl || "/logo-masterbot100.png"}
                                                         alt="Master Bot"
-                                                        width={50}
-                                                        height={50}
+                                                        width={200}
+                                                        height={200}
+                                                        className='animate-pulse w-full rounded-lg'
                                                     />
-                                                    <span className='text-lg font-semibold text-gray-500'>
-                                                        Master Bot 민팅 준비중...
-                                                    </span>
+
                                                 </div>
                                             </div>
                                         )}
