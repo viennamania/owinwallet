@@ -2173,7 +2173,7 @@ export default function AIPage({ params }: any) {
                                                         {/* dot */}
                                                         <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
                                                         <span className='text-lg font-semibold'>
-                                                            Agent Code
+                                                            계약주소
                                                         </span>
                                                     </div>
                                                     <span className='text-2xl font-semibold text-gray-500'>
@@ -2186,7 +2186,7 @@ export default function AIPage({ params }: any) {
                                                         {/* dot */}
                                                         <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
                                                         <span className='text-lg font-semibold'>
-                                                            Agent Number
+                                                            계약번호
                                                         </span>
                                                     </div>
                                                     <span className='text-2xl font-semibold text-gray-500'>
