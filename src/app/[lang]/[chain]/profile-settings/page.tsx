@@ -2214,6 +2214,7 @@ export default function SettingsPage({ params }: any) {
 
                                     {/* https://opensea.io/assets/matic/0xC1F501331E5d471230189E4A57E5268f10d0072A */}
                                     {/* open new window */}
+                                    
                                     <button
                                         onClick={() => {
                                             window.open('https://opensea.io/assets/matic/' + erc721ContractAddress);
@@ -2228,6 +2229,8 @@ export default function SettingsPage({ params }: any) {
                                             className="rounded-lg"
                                         />
                                     </button>
+                                    
+
 
                                     {/* verified icon */}
 
@@ -2340,36 +2343,51 @@ export default function SettingsPage({ params }: any) {
                                         {myNfts?.map((nft, index) => (
                                             <div key={index} className='w-full flex flex-col gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
 
-                                                {/* goto button for detail page */}
-                                                <button
-                                                    onClick={() => {
-                                                        router.push('/' + params.lang + '/' + params.chain + '/agent/' + nft.contract.address + '/' + nft.tokenId);
+                                                <div className='w-full flex flex-row gap-2 items-center justify-between'>
+                                                    {/* goto button for detail page */}
+                                                    <button
+                                                        onClick={() => {
+                                                            router.push('/' + params.lang + '/' + params.chain + '/agent/' + nft.contract.address + '/' + nft.tokenId);
 
-                                                        // open new window
+                                                            // open new window
 
-                                                        //window.open('https://owinwallet.com/' + params.lang + '/' + params.chain + '/agent/' + nft.contract.address + '/' + nft.tokenId);
+                                                            //window.open('https://owinwallet.com/' + params.lang + '/' + params.chain + '/agent/' + nft.contract.address + '/' + nft.tokenId);
 
 
-                                                    }}
-                                                    className="w-full p-2 bg-blue-500 text-zinc-100 rounded
-                                                    hover:bg-blue-600"
-                                                >
-                                                    <span className='text-xs xl:text-lg font-semibold'>
-                                                        상세보기
-                                                    </span>
-                                                </button>
+                                                        }}
+                                                        className="p-2 bg-blue-500 text-zinc-100 rounded
+                                                        hover:bg-blue-600 text-xs xl:text-lg font-semibold"
+                                                    >
+                                                        <span className='text-xs xl:text-lg font-semibold'>
+                                                            상세보기
+                                                        </span>
+                                                    </button>
+
+                                                    {/* referral link button */}
+                                                    <button
+                                                        onClick={() => {
+                                                            navigator.clipboard.writeText(
+                                                                'https://owinwallet.com/kr/polygon/tbot/?agent=' +
+                                                                nft.contract.address + '&tokenId=' + nft.tokenId
+                                                            );
+                                                            toast.success('레퍼럴 URL 복사 완료');
+                                                        }}
+                                                        className="p-2 bg-blue-500 text-zinc-100 rounded
+                                                        hover:bg-blue-600 text-xs xl:text-lg font-semibold"
+                                                    >
+                                                        레퍼럴 URL 복사
+                                                    </button>
+
+                                                </div>
 
 
                                                 <div className='w-full grid grid-cols-2 gap-2 items-center justify-between'>
 
 
-
-
-
                                                     <div className="flex flex-col gap-2 items-center justify-center">
 
 
-
+                                                        {/*}
                                                         <button
                                                             onClick={() => {
                                                                 window.open('https://opensea.io/assets/matic/' + erc721ContractAddress + '/' + nft.tokenId);
@@ -2384,6 +2402,7 @@ export default function SettingsPage({ params }: any) {
                                                                 className="rounded-lg"
                                                             />
                                                         </button>
+                                                        */}
 
                                                         <Image
                                                             src={nft.image.thumbnailUrl}
