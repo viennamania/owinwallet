@@ -2186,13 +2186,56 @@ export default function AIPage({ params }: any) {
 
 
                                                     
-                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                                
-                                                
-                                                
-                                                <span className='text-sm text-gray-800'>
-                                                    상태: 준비중
-                                                </span>
+                                            <div className='w-full flex flex-row items-center justify-between gap-2
+                                                border-t border-gray-300 pt-2
+                                            '>
+                                                {application?.startTrading?.status ? (
+                                                    <div className='flex flex-col gap-2'>
+                                                        <span className='text-xs text-yellow-800'>
+                                                            AI 트레이딩 상태
+                                                        </span>
+
+                                                        <div className='flex flex-row items-center gap-2'>
+                                                            <span className='text-sm text-gray-800'>
+                                                                러닝타임:
+                                                            </span>                                            
+                                                            <span className='text-sm text-gray-800'>
+                                                                {
+                                                                    new Date().getTime() - new Date(application?.startTrading?.timestamp).getTime() < 1000 * 60 ? (
+                                                                    ' ' + Math.floor((new Date().getTime() - new Date(application?.startTrading?.timestamp).getTime()) / 1000) + ' ' + '초'
+                                                                    ) :
+                                                                    new Date().getTime() - new Date(application?.startTrading?.timestamp).getTime() < 1000 * 60 * 60 ? (
+                                                                    ' ' + Math.floor((new Date().getTime() - new Date(application?.startTrading?.timestamp).getTime()) / 1000 / 60) + ' ' + '분'
+                                                                    ) : (
+                                                                    ' ' + Math.floor((new Date().getTime() - new Date(application?.startTrading?.timestamp).getTime()) / 1000 / 60 / 60) + ' ' + '시간'
+                                                                    )
+                                                                }
+                                                            </span>
+                                                        </div>
+                                                        <div className='flex flex-row items-center gap-2'>
+                                                            <span className='text-sm text-gray-800'>
+                                                                시작시간:
+                                                            </span>
+                                                            <span className='text-sm text-gray-800'>
+                                                                {application?.startTrading?.timestamp
+                                                                ? new Date(application?.startTrading?.timestamp).toLocaleString()
+                                                                : ""
+                                                                }
+                                                            </span>
+                                                        </div>
+
+                                                    </div>
+                                                ) : (
+                                                    <div className='flex flex-col gap-2'>
+                                                        <span className='text-xs text-yellow-800'>
+                                                            AI 트레이딩 상태
+                                                        </span>
+                                                        <span className='text-sm text-gray-800'>
+                                                            준비중...
+                                                        </span>
+                                                    </div>
+                                                )}
+    
                                                 {/*
                                                 <button
                                                     className="bg-blue-500 text-white p-2 rounded-lg
