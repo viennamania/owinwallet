@@ -615,7 +615,7 @@ export default function AgentPage({ params }: any) {
                   border-b border-gray-300 pb-2
                 '>
                     <span className='text-lg font-semibold text-gray-800'>
-                        에이전트 NFT ID: #{agentTokenId}
+                        에이전트 NFT 계약번호: #{agentTokenId}
                     </span>
                     <div className='flex flex-col items-start justify-between gap-2'>
                         <span className='text-sm text-yellow-500'>
@@ -746,7 +746,7 @@ export default function AgentPage({ params }: any) {
                     width={50}
                     height={50}
                     alt='htx'
-                    className='rounded-lg'
+                    className='rounded-lg animate-pulse'
                 />
                 <span className='text-lg font-semibold text-gray-800'>
                     HTX 신청목록
@@ -772,16 +772,24 @@ export default function AgentPage({ params }: any) {
                   </span>
               </div>
 
-              <div className='w-full grid grid-cols-1 xl:grid-cols-2 gap-5'>
+              <div className='w-full grid grid-cols-1 xl:grid-cols-3 gap-5'>
 
                 {applications.map((application) => (
                     <div
                         key={application._id}
-                        className='w-full flex flex-col gap-5
+                        className='w-full flex flex-col gap-2
                         border border-gray-300 p-4 rounded-lg bg-gray-100
                     '>
-                        {/* 신청일 */}
+                        {/* 신청번호 */}
                         <div className='w-full flex flex-row items-center justify-between gap-2'>
+                            <span className='text-xl font-semibold text-gray-800'>
+                                신청번호: #{application.id}
+                            </span>
+                        </div>
+                        {/* 신청일 */}
+                        <div className='w-full flex flex-row items-center justify-between gap-2
+                          border-b border-gray-300 pb-2
+                        '>
                             <span className='text-sm text-gray-800'>
                                 신청일: {
                                 application.createdAt
@@ -790,15 +798,45 @@ export default function AgentPage({ params }: any) {
                             </span>
                         </div>
 
+                        {/* is startTrading exist, if exist, show startTrading */}
+                        {application.startTrading ? (
+                            <div className='w-full flex flex-col items-start justify-between gap-2
+                              border-b border-gray-300 pb-2
+                            '>
+                                <span className='text-lg text-green-500'>
+                                  거래시작
+                                </span>
+                                <span className='text-sm text-gray-800'>
+                                    거래시작일: {
+                                    application.startTrading
+                                    ? new Date(application.startTrading.timestamp).toLocaleString()
+                                    : ''}
+                                </span>
+                            </div>
+                        ) : (
+                            <div className='w-full flex flex-col items-start justify-between gap-2
+                              border-b border-gray-300 pb-2
+                            '>
+                                <span className='text-lg text-red-500'>
+                                  거래준비중...
+                                </span>
+                                <span className='text-sm text-gray-800'>
+                                    거래시작일: N/A
+                                </span>
+                            </div>
+                        )}
+
+                        {/* is endTrading exist, if exist, show endTrading */}
+
                         <div className='w-full flex flex-row items-center justify-between gap-2'>
-                            <span className='text-xl font-semibold text-gray-800'>
+                            <span className='text-sm text-gray-800'>
                                 HTX UID: {application.htxUid}
                             </span>
                         </div>
 
                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                             <span className='text-sm text-gray-800'>
-                                이름: {application.userName}
+                                닉네임: {application.userName}
                             </span>
                         </div>
                         <div className='w-full flex flex-row items-center justify-between gap-2'>
@@ -833,6 +871,8 @@ export default function AgentPage({ params }: any) {
                                 API Secret Key: {application.apiSecretKey.slice(0, 3) + '****' + application.apiSecretKey.slice(-4)}
                             </span>
                         </div>
+
+
 
 
                     </div>
