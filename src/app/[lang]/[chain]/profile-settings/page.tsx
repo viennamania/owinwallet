@@ -1087,7 +1087,7 @@ export default function SettingsPage({ params }: any) {
                     },
                     body: JSON.stringify({
                         walletAddress: address,
-                        erc721ContractAddress: erc721ContractAddress,
+                        //erc721ContractAddress: erc721ContractAddress,
                     }),
                 });
 
@@ -1097,7 +1097,7 @@ export default function SettingsPage({ params }: any) {
 
                 const data = await response.json();
 
-                /////console.log("myOwnedNfts====", data.result);
+                ///console.log("myOwnedNfts====", data.result);
 
                 if (data.result) {
                     setMyNfts(data.result.ownedNfts);
@@ -1125,9 +1125,9 @@ export default function SettingsPage({ params }: any) {
    
 
 
+   console.log("myNfts", myNfts);
 
 
-   //////console.log("myNfts", myNfts);
 
 
     const [agentName, setAgentName] = useState("");
@@ -1277,7 +1277,7 @@ export default function SettingsPage({ params }: any) {
                 },
                 body: JSON.stringify({
                     walletAddress: address,
-                    erc721ContractAddress: erc721ContractAddress,
+                    //erc721ContractAddress: erc721ContractAddress,
                 }),
             });
 
@@ -2336,31 +2336,37 @@ export default function SettingsPage({ params }: any) {
                                         </span>
                                     </div>
                                     <div className='w-full grid grid-cols-1 xl:grid-cols-3 gap-2'>
-                                        {myNfts.map((nft, index) => (
+                                        {myNfts?.map((nft, index) => (
                                             <div key={index} className='w-full flex flex-col gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
-                                                
+
+                                                {/* goto button for detail page */}
+                                                <button
+                                                    onClick={() => {
+                                                        router.push('/' + params.lang + '/' + params.chain + '/agent/' + nft.contract.address + '/' + nft.tokenId);
+
+                                                        // open new window
+
+                                                        //window.open('https://owinwallet.com/' + params.lang + '/' + params.chain + '/agent/' + nft.contract.address + '/' + nft.tokenId);
+
+
+                                                    }}
+                                                    className="w-full p-2 bg-blue-500 text-zinc-100 rounded
+                                                    hover:bg-blue-600"
+                                                >
+                                                    <span className='text-xs xl:text-lg font-semibold'>
+                                                        상세보기
+                                                    </span>
+                                                </button>
+
+
                                                 <div className='w-full grid grid-cols-2 gap-2 items-center justify-between'>
-                                                    
+
+
+
+
+
                                                     <div className="flex flex-col gap-2 items-center justify-center">
 
-                                                        {/* goto button for detail page */}
-                                                        <button
-                                                            onClick={() => {
-                                                                router.push('/' + params.lang + '/' + params.chain + '/agent/' + nft.contract.address + '/' + nft.tokenId);
-
-                                                                // open new window
-
-                                                                //window.open('https://owinwallet.com/' + params.lang + '/' + params.chain + '/agent/' + nft.contract.address + '/' + nft.tokenId);
-
-
-                                                            }}
-                                                            className="p-2 bg-blue-500 text-zinc-100 rounded
-                                                            hover:bg-blue-600"
-                                                        >
-                                                            <span className='text-xs xl:text-lg font-semibold'>
-                                                                상세보기
-                                                            </span>
-                                                        </button>
 
 
                                                         <button
@@ -2378,8 +2384,6 @@ export default function SettingsPage({ params }: any) {
                                                             />
                                                         </button>
 
-
-
                                                         <Image
                                                             src={nft.image.thumbnailUrl}
                                                             alt="NFT"
@@ -2388,11 +2392,37 @@ export default function SettingsPage({ params }: any) {
                                                             className="rounded-lg w-32 xl:w-40 border border-gray-300"
                                                             
                                                         />
+
+                                                        {/* 누적 배당수익 */}
+                                                        <div className='flex flex-col gap-2 items-start justify-between
+                                                            border border-gray-300 p-4 rounded-lg'>
+                                                            <span className='text-xs xl:text-lg font-semibold'>
+                                                                Total Dividend
+                                                            </span>
+                                                            <span className='text-xl xl:text-2xl font-semibold text-green-500'>
+                                                                0.00 USDT
+                                                            </span>
+                                                            {/* 배당 수령 */}
+                                                            {/*
+                                                            <button
+                                                                className="p-2 bg-blue-500 text-zinc-100 rounded
+                                                                hover:bg-blue-600"
+                                                            >
+                                                                Claim Dividend
+                                                            </button>
+                                                            */}
+                                                        </div>
+
+
                                                     </div>
 
                                                     <div className='flex flex-col gap-2 items-start justify-between'>
+                                                        {/* contract address */}
+                                                        <div className='text-xs font-semibold'>
+                                                            계약주소: {nft.contract.address.substring(0, 6) + '...' + nft.contract.address.substring(nft.contract.address.length - 4)}
+                                                        </div>
                                                         <div className='text-2xl font-semibold text-blue-500'>
-                                                            #{nft.tokenId}
+                                                            계약번호: #{nft.tokenId}
                                                         </div>
                                                         <div className='text-sm font-semibold text-green-500'>
                                                             {nft.name}
@@ -2426,25 +2456,7 @@ export default function SettingsPage({ params }: any) {
                                                                 ROI: ??%
                                                             </span>
 
-                                                            {/* 누적 배당수익 */}
-                                                            <div className='flex flex-col gap-2 items-start justify-between
-                                                            border border-gray-300 p-4 rounded-lg'>
-                                                                <span className='text-xs xl:text-lg font-semibold'>
-                                                                    Total Dividend
-                                                                </span>
-                                                                <span className='text-xl xl:text-2xl font-semibold text-green-500'>
-                                                                    0.00 USDT
-                                                                </span>
-                                                                {/* 배당 수령 */}
-                                                                {/*
-                                                                <button
-                                                                    className="p-2 bg-blue-500 text-zinc-100 rounded
-                                                                    hover:bg-blue-600"
-                                                                >
-                                                                    Claim Dividend
-                                                                </button>
-                                                                */}
-                                                            </div>
+ 
 
                                                         </div>
 

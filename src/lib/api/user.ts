@@ -506,6 +506,7 @@ export async function getAllUsers(
 
 
 
+
 export async function getBestSellers(
   {
     limit,
@@ -1172,4 +1173,17 @@ export async function getAllAgents(
   };
 
   
+}
+
+
+// get all ercy721ContractAddress from users collection
+export async function getAllErc721ContractAddresses(): Promise<string[]> {
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('users');
+
+  const results = await collection.distinct('erc721ContractAddress');
+
+  return results;
+
 }
