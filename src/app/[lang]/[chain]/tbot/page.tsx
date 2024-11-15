@@ -1629,6 +1629,7 @@ export default function AIPage({ params }: any) {
     }
     
  
+    console.log("myAgent", myAgent);
 
 
     return (
@@ -2114,7 +2115,7 @@ export default function AIPage({ params }: any) {
                                         border border-gray-300 p-1 rounded-lg
                                     '>
 
-                                        {isAgentTradingStarted ? (
+                                        {myAgent?.startTrading?.status ? (
                                             <div className='w-full flex flex-row items-center justify-start gap-2'>
                                                 <Image
                                                     src="/icon-agent-live.gif"
@@ -2127,6 +2128,7 @@ export default function AIPage({ params }: any) {
                                                 </span>
                                             </div>
                                         ) : (
+
                                             <div className='flex flex-row items-center gap-2'>
                                                 <Image
                                                     src="/loading.png"
@@ -2139,6 +2141,7 @@ export default function AIPage({ params }: any) {
                                                     AI 트레이딩 & Master Bot 민팅 준비중...
                                                 </span>
                                             </div>
+
                                         )}
 
 
@@ -2318,6 +2321,29 @@ export default function AIPage({ params }: any) {
 
 
                                         </div>
+
+                                        {/* masterBot */}
+                                        {myAgent?.masterBotInfo && (
+                                            <div className='w-full flex flex-col gap-2
+                                                border border-gray-300 p-4 rounded-lg
+                                            '>
+                                                <span className='text-lg font-semibold text-blue-500'>
+                                                    Master Bot 정보
+                                                </span>
+
+                                                <div className='flex flex-row items-center gap-2'>
+                                                    <Image
+                                                        src={myAgent?.masterBotInfo?.imageUrl || "/logo-masterbot100.png"}
+                                                        alt="Master Bot"
+                                                        width={50}
+                                                        height={50}
+                                                    />
+                                                    <span className='text-lg font-semibold text-gray-500'>
+                                                        Master Bot 민팅 준비중...
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        )}
                                         
 
 

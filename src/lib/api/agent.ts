@@ -4,6 +4,7 @@ import { N } from 'ethers';
 import exp from 'constants';
 import { approve } from 'thirdweb/extensions/erc20';
 import { parse } from 'path';
+import { start } from 'repl';
 
 
 export interface AgentProps {
@@ -258,6 +259,8 @@ export async function getOneByWalletAddress(walletAddress: string) {
       apiAccessKey: result.apiAccessKey,
       apiSecretKey: result.apiSecretKey,
       createdAt: result.createdAt,
+      startTrading: result.startTrading,
+      masterBotInfo: result.masterBotInfo,
     };
   } else {
     return null;
@@ -438,3 +441,46 @@ export async function updateApplicationStartTrading(
   }
 
 }
+
+
+
+// updateApplicationMasterBotNFT
+export async function updateApplicationMasterBotInfo(
+  {
+    applicationId,
+    masterBotInfo,
+  }
+  :
+  {
+    applicationId: number,
+    masterBotInfo: object,
+  },
+) {
+
+  if (!applicationId || !masterBotInfo) {
+    return null;
+  }
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('agents');
+
+  const result = await collection.updateOne(
+    { id: applicationId },
+    {
+      $set: {
+        masterBotInfo: masterBotInfo,
+      }
+    }
+  );
+
+  if (result) {
+    return {
+      applicationId: applicationId,
+      masterBotInfo: masterBotInfo,
+    };
+  } else {
+    return null;
+  }
+
+}
+

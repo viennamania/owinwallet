@@ -83,6 +83,7 @@ import { Alert, useForkRef } from '@mui/material';
 
 import thirdwebIcon from "@public/thirdweb.svg";
 import { time } from 'console';
+import { min } from 'moment';
 
 
 const wallets = [
@@ -573,7 +574,8 @@ export default function AIPage({ params }: any) {
 
             const data = await response.json();
 
-            const total = data.result.totalCount;
+            ///const total = data.result.totalCount;
+
 
             setApplications(data.result.applications);
 
@@ -589,7 +591,10 @@ export default function AIPage({ params }: any) {
     }, [address]);
 
 
-    ///console.log("applications", applications);
+    //console.log("applications", applications);
+
+
+
 
 
     // agentBot
@@ -1274,6 +1279,8 @@ export default function AIPage({ params }: any) {
 
 
     const [loadingDeployErc721Contract, setLoadingDeployErc721Contract] = useState(false);
+
+    
     const deployErc721ContractForMasterBot = async () => {
 
         console.log("deployErc721Contract=====================");
@@ -1400,7 +1407,7 @@ export default function AIPage({ params }: any) {
 
 
 
-
+    /*
     const [agentName, setAgentName] = useState("");
     const [agentDescription, setAgentDescription] = useState("");
 
@@ -1411,22 +1418,80 @@ export default function AIPage({ params }: any) {
 
     const [mintingAgentNft, setMintingAgentNft] = useState(false);
     const [messageMintingAgentNft, setMessageMintingAgentNft] = useState("");
-    const mintAgentNft = async () => {
+    */
+
+
+    const [masterBotImageUrl, setMasterBotImageUrl] = useState([] as any[]);
+
+    const [mintingMasterBotNft, setMintingMasterBotNft] = useState([] as any[]);
+
+    useEffect(() => {
+
+        setMintingMasterBotNft(
+            applications.map((item) => {
+                return {
+                    applicationId: item.id,
+                    minting: false,
+                }
+            })
+        );
+
+        setMasterBotImageUrl(
+            applications.map((item) => {
+                return {
+                    applicationId: item.id,
+                    masterBotImageUrl: item.masterBotImageUrl,
+                }
+            })
+        );
+
+    } , [applications]);
+    
 
 
 
-        setMessageMintingAgentNft('AI 에이전트 NFT 발행중입니다');
+    const mintMasterBotNft = async ( applicationId: number ) => {
+
+        if (!address) {
+            toast.error('지갑을 먼저 연결해주세요');
+            return;
+        }
+
+        console.log("mintMasterBotNft applicationId", applicationId);
 
 
-        setMintingAgentNft(true);
+        const application = applications.find((item) => item.id === applicationId);
 
+
+        if (!application) {
+            toast.error('Application not found');
+            return;
+        }
+
+        if (application.masterBotImageUrl) {
+            toast.error('이미 NFT가 발행되었습니다');
+            return;
+        }
+
+        setMintingMasterBotNft(
+            mintingMasterBotNft.map((item) => {
+                if (item.applicationId === applicationId) {
+                    return {
+                        applicationId: applicationId,
+                        minting: true,
+                    }
+                } else {
+                    return item;
+                }
+            })
+        );
+
+
+
+
+        
         try {
 
-
-            setGeneratingAgentImage(true);
-
-
-            setMessageMintingAgentNft('AI 에이전트 이미지 생성중입니다');
 
             // genrate image from api
             // /api/ai/generateImage
@@ -1446,20 +1511,18 @@ export default function AIPage({ params }: any) {
 
             const imageUrl = dataGenerateImage?.result?.imageUrl;
 
+            ///console.log("imageUrl", imageUrl);
+
         
             if (!imageUrl) {
-
-                setGeneratingAgentImage(false);
 
                 throw new Error('Failed to generate image');
             }
 
-
-            setGeneratingAgentImage(false);
-            setAgentImage(imageUrl);
+            //setAgentImage(imageUrl);
 
 
-            setMessageMintingAgentNft('AI 에이전트 NFT 발행중입니다');
+            ///setMessageMintingAgentNft('AI 에이전트 NFT 발행중입니다');
 
             const contract = getContract({
                 client,
@@ -1471,10 +1534,10 @@ export default function AIPage({ params }: any) {
 
             const transaction = mintTo({
                 contract: contract,
-                to: address as string,
+                to: application.walletAddress,
                 nft: {
-                    name: agentName,
-                    description: agentDescription,
+                    name: application.agentBot,
+                    description: application.agentBotNumber,
 
                     ////image: agentImage,
                     image: imageUrl,
@@ -1502,32 +1565,60 @@ export default function AIPage({ params }: any) {
                 throw new Error('AI 에이전트 NFT 발행 실패. 관리자에게 문의해주세요');
             }
 
-            setMessageMintingAgentNft('AI 에이전트 NFT 발행 완료');
 
 
-            // fetch the NFTs again
-            const response = await fetch("/api/agent/getAgentNFTByWalletAddress", {
+            // update user MasterBot NFT
+            const response = await fetch('/api/agent/updateApplicationMasterBotInfo', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    applicationId: applicationId,
+                    masterBotInfo: {
+                        contractAddress: userMasterBotContractAddress,
+                        imageUrl: imageUrl,
+                    }
+
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to save MasterBot NFT');
+            }
+
+
+            /*
+            applications.map((item) => {
+                if (item.id === applicationId) {
+                    return {
+                        ...item,
+                        masterBotInfo: {
+                            contractAddress: userMasterBotContractAddress,
+                            imageUrl: imageUrl,
+                        }
+                    }
+                }
+            });
+            */
+           // reload applications
+              const responseApplications = await fetch("/api/agent/getApplicationsCenter", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
                     walletAddress: address,
-                    //erc721ContractAddress: erc721ContractAddress,
                 }),
             });
 
-            if (response.ok) {
-                const data = await response.json();
-                if (data.result) {
-                    //setMyNfts(data.result.ownedNfts);
-                } else {
-                    //setMyNfts([]);
-                }
+            if (responseApplications.ok) {
+                const dataApplications = await responseApplications.json();
+                setApplications(dataApplications.result.applications);
             }
 
-            setAgentName("");
-            setAgentDescription("");
+
+            
 
             toast.success('AI 에이전트 NFT 발행 완료');
 
@@ -1539,12 +1630,22 @@ export default function AIPage({ params }: any) {
 
             toast.error('AI 에이전트 NFT 발행 실패');
 
-            setMessageMintingAgentNft('AI 에이전트 NFT 발행 실패');
+            //setMessageMintingAgentNft('AI 에이전트 NFT 발행 실패');
         }
+        
 
-        setMintingAgentNft(false);
-
-        setAgentImage("https://owinwallet.com/logo-aiagent.png");
+        setMintingMasterBotNft(
+            mintingMasterBotNft.map((item) => {
+                if (item.applicationId === applicationId) {
+                    return {
+                        applicationId: applicationId,
+                        minting: false,
+                    }
+                } else {
+                    return item;
+                }
+            })
+        );
 
     }
 
@@ -2275,6 +2376,46 @@ export default function AIPage({ params }: any) {
                                                                 }
                                                             </span>
                                                         </div>
+
+                                                        {/* mintMasterBotNft */}
+
+                                                        {application?.masterBotInfo ? (
+
+                                                            <div className='flex flex-col gap-2'>
+                                                                <span className='text-xs text-yellow-800'>
+                                                                    MasterBot NFT
+                                                                </span>
+                                                                <Image
+                                                                    src={application?.masterBotInfo?.imageUrl}
+                                                                    alt="MasterBot NFT"
+                                                                    width={200}
+                                                                    height={200}
+                                                                    className='rounded-lg'
+                                                                />
+                                                            </div>
+
+                                                        ) : (
+
+                                                            <>
+
+                                                            {userMasterBotContractAddress && (
+                                                                
+                                                                <button
+                                                                    onClick={() => {
+                                                                        mintMasterBotNft(application?.id);
+                                                                    }}
+                                                                    disabled={mintingMasterBotNft.find((item) => item.applicationId === application.id)?.minting}
+                                                                    className={`${mintingMasterBotNft.find((item) => item.applicationId === application.id)?.minting ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
+                                                                        hover:bg-blue-600
+                                                                    `}
+                                                                >
+                                                                    {mintingMasterBotNft.find((item) => item.applicationId === application.id)?.minting ? "Minting..." : "Mint MasterBot NFT"}
+                                                                </button>
+                                                                
+                                                            )}  
+
+                                                            </>
+                                                        )}
 
                                                     </div>
                                                 ) : (
