@@ -922,7 +922,7 @@ export default function SettingsPage({ params }: any) {
         
         //if (confirm("Are you sure you want to deploy ERC721 contract?")) {
         // chinese confirm
-        if (confirm("AI 에이전트 코드를 생성하시겠습니까?")) {
+        if (confirm("AI 에이전트 계약주소를 생성하시겠습니까?")) {
 
             setLoadingDeployErc721Contract(true);
 

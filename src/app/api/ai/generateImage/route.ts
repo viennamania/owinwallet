@@ -58,6 +58,8 @@ export async function POST(request: NextRequest) {
  
     const randomModel = Math.floor(Math.random() * 5);
 
+  
+
     if (randomModel == 0) {
         hosting = "replicate";
         model = "bytedance/sdxl-lightning-4step:5f24084160c9089501c1b3545d9be3c27883ae2239b6f412990e82d4a6210f8f";
@@ -69,7 +71,7 @@ export async function POST(request: NextRequest) {
         model = "playgroundai/playground-v2.5-1024px-aesthetic:a45f82a1382bed5c7aeb861dac7c7d191b0fdf74d8d57c4a0e6ed7d4d0bf7d24";
     } else {
         hosting = "fal";
-        model = "fal-ai/flux-realism";
+        model = "fal-ai/flux/dev";
     }
 
 
@@ -87,29 +89,30 @@ export async function POST(request: NextRequest) {
 
         } else if (hosting === "fal") {
 
-            const data = await fal.subscribe("fal-ai/flux-realism", {
+            const data = await fal.subscribe(model, {
+
                 input: {
-                    ///seed: 4072637067,
-                    prompt: englishPrompt,
-                    num_images: 1,
-                    enable_safety_checker: false,
-    
+                  ///seed: 4072637067,
+                  prompt: englishPrompt,
+                  num_images: 1,
+                  enable_safety_checker: false,
+          
                 },
                 logs: true,
                 onQueueUpdate: (update) => {
-                    if (update.status === "IN_PROGRESS") {
+                  if (update.status === "IN_PROGRESS") {
                     update.logs.map((log) => log.message).forEach(console.log);
-                    }
+                  }
                 },
-            }) as any;
-    
-            ///console.log(data);
-    
-            //const output = data.images[0]?.url;
-            // output is array of images
-            output = [
+              }) as any;
+          
+              ///console.log(data);
+          
+              //const output = data.images[0]?.url;
+              // output is array of images
+              output = [
                 data.images[0]?.url,
-            ];
+              ];
 
         }
 

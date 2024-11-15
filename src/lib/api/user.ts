@@ -1092,6 +1092,28 @@ export async function setErc721ContractAddressByWalletAddress(
 
 
 
+export async function setMasterBotContractAddressByWalletAddress(
+  walletAddress: string,
+  masterBotContractAddress: string,
+) {
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('users');
+
+  return await collection.updateOne(
+    { walletAddress },
+    {
+      $set: {
+        walletAddress: walletAddress,
+        masterBotContractAddress: masterBotContractAddress,
+      }
+    }
+  );
+  
+}
+
+
+
 
 
 

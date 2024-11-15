@@ -31,7 +31,9 @@ import {
     useActiveWallet,
     useConnectModal,
 } from "thirdweb/react";
+
 import { inAppWallet } from "thirdweb/wallets";
+
 
 
 import { getUserPhoneNumber } from "thirdweb/wallets/in-app";
@@ -61,26 +63,15 @@ import axios from 'axios';
 
 import { deployERC721Contract } from 'thirdweb/deploys';
 
+
+
+
+
 import {
-    lazyMint,
-    claimTo,
-    mintTo,
- 
-    totalSupply,
-    nextTokenIdToMint,
-  
-    //nextTokenIdToClaim,
-
-    getOwnedNFTs,
-
+    
     getNFT,
-  
-} from "thirdweb/extensions/erc1155";
-
-
-
-import {
-    getNFT as getNFT721,
+    getOwnedNFTs,
+    mintTo
 } from "thirdweb/extensions/erc721";
 
 
@@ -344,9 +335,12 @@ export default function AIPage({ params }: any) {
 
 
 
-    const smartAccount = useActiveAccount();
+    const activeAccount = useActiveAccount();
 
-    const address = smartAccount?.address || "";
+    const address = activeAccount?.address || "";
+
+
+
 
 
 
@@ -427,7 +421,7 @@ export default function AIPage({ params }: any) {
     useEffect(() => {
   
   
-      if (smartAccount) {
+      if (activeAccount) {
   
         //const phoneNumber = await getUserPhoneNumber({ client });
         //setPhoneNumber(phoneNumber);
@@ -441,7 +435,7 @@ export default function AIPage({ params }: any) {
   
       }
   
-    } , [smartAccount]);
+    } , [activeAccount]);
 
 
     const { connect, isConnecting } = useConnectModal();
@@ -508,6 +502,9 @@ export default function AIPage({ params }: any) {
     const [userAvatar, setUserAvatar] = useState("");
 
 
+    const [userMasterBotContractAddress, setUserMasterBotContractAddress] = useState("");
+
+
 
     console.log("address", address);
 
@@ -537,6 +534,7 @@ export default function AIPage({ params }: any) {
                 setNickname(data.result.nickname);
                 setUserCode(data.result.id);
                 setUserAvatar(data.result.avatar);
+                setUserMasterBotContractAddress(data.result.masterBotContractAddress);
 
             }
         };
@@ -546,192 +544,6 @@ export default function AIPage({ params }: any) {
 
 
 
-
-
-    console.log("nickname", nickname);
-    console.log("userCode", userCode);
-
-
-  
-
-
-
-
-
-
-
-
-
-    /* my NFTs */
-    const [myNfts, setMyNfts] = useState([] as any[]);
-
-    const [amountNft100, setAmountNft100] = useState(0);
-    const [amountNft1000, setAmountNft1000] = useState(0);
-    const [amountNft10000, setAmountNft10000] = useState(0);
-
-
-    
-    useEffect(() => {
-
-
-        const getMyNFTs = async () => {
-
-            try {
-
-
-                const nfts = await getOwnedNFTs({
-                    contract: contractErc1155,
-                    start: 0,
-                    count: 10,
-                    address: address,
-                });
-
-                setMyNfts( nfts );
-
-                // if id is 0n, then it is 100 TBOT
-                // if id is 1n, then it is 1000 TBOT
-                // if id is 2n, then it is 10000 TBOT
-
-
-                nfts.forEach((nft) => {
-                    if (Number(nft.id) === 0) {
-                        setAmountNft100( Number(nft.quantityOwned) );
-                    } else if (Number(nft.id) === 1) {
-                        setAmountNft1000( Number(nft.quantityOwned) );
-                    } else if (Number(nft.id) === 2) {
-                        setAmountNft10000( Number(nft.quantityOwned) );
-                    }
-                } );
-
-
-            } catch (error) {
-                console.error("Error getting NFTs", error);
-            }
-
-        };
-
-        if (address) {
-            getMyNFTs();
-        }
-
-    }
-    , [ address ]);
-    
-
-
-    console.log("myNfts", myNfts);
-
-    console.log("amountNft100", amountNft100);
-
-
-    // claim NFT (ERC1155) for the user
-    const [claimingNFT, setClaimingNFT] = useState(false);
-    const claimNFT = async () => {
-
-        if (claimingNFT) {
-            return;
-        }
-
-        if (address === "") {
-            toast.error(Please_connect_your_wallet_first);
-            return;
-        }
-
-        if (confirm("TBOT NFT를 구매하시겠습니까?")) {
-
-
-            setClaimingNFT(true);
-
-            const transaction = claimTo({
-                contract: contractErc1155,
-                to: address,
-                tokenId: 0n,
-                quantity: 1n,
-            });
-
-            try {
-                const result = await sendAndConfirmTransaction({
-                    account: smartAccount as any,
-                    transaction: transaction,
-                });
-
-                console.log("result", result);
-
-                toast.success(Alert_NFT_minted);
-
-
-                // get NFTs again
-                const nfts = await getOwnedNFTs({
-                    contract: contractErc1155,
-                    start: 0,
-                    count: 10,
-                    address: address,
-                });
-
-                setMyNfts( nfts );
-
-                nfts.forEach((nft) => {
-                    if (Number(nft.id) === 0) {
-                        setAmountNft100( Number(nft.quantityOwned) );
-                    } else if (Number(nft.id) === 1) {
-                        setAmountNft1000( Number(nft.quantityOwned) );
-                    } else if (Number(nft.id) === 2) {
-                        setAmountNft10000( Number(nft.quantityOwned) );
-                    }
-                } );
-
-
-
-
-            } catch (error) {
-                console.error("Error claiming NFT", error);
-            }
-
-            setClaimingNFT(false);
-            
-
-        }
-
-    }
-
-
-
-
-
-
-
-    /*
-          erc721ContractAddress = await deployERC721Contract({
-        chain,
-        client,
-        account,
-
-        //  type ERC721ContractType =
-        //  | "DropERC721"
-        //  | "TokenERC721"
-        //  | "OpenEditionERC721";
-        
-
-        //type: "DropERC721",
-
-        type: "TokenERC721",
-        
-        
-        params: {
-          name: "My NFT",
-          description: "My NFT",
-          symbol: "MYNFT",
-        },
-
-      });
-      */
-
-
-
-
-    console.log("address", address);
-    console.log("agent", agent);
-    
 
 
 
@@ -807,7 +619,7 @@ export default function AIPage({ params }: any) {
                 address: agentBot,
             });
 
-            const nft721 = await getNFT721({
+            const nft721 = await getNFT({
                 contract: contract,
                 tokenId: 0n,
             });
@@ -1557,6 +1369,283 @@ export default function AIPage({ params }: any) {
   
 
 
+    const [loadingDeployErc721Contract, setLoadingDeployErc721Contract] = useState(false);
+    const deployErc721ContractForMasterBot = async () => {
+
+        console.log("deployErc721Contract=====================");
+
+  
+        if (!address) {
+            toast.error('지갑을 먼저 연결해주세요');
+            return;
+        }
+
+        if (!userCode) {
+            //console.log("userCode=====", userCode);
+            toast.error('닉네임을 먼저 설정해주세요');
+            return;
+        }
+
+        if (loadingDeployErc721Contract) {
+            toast.error('이미 실행중입니다');
+            return;
+        }
+        
+        //if (confirm("Are you sure you want to deploy ERC721 contract?")) {
+        // chinese confirm
+        if (confirm("MasterBot 계약주소를 생성하시겠습니까?")) {
+
+            setLoadingDeployErc721Contract(true);
+
+
+            try {
+
+
+
+                /*
+                // send USDT
+                // Call the extension function to prepare the transaction
+                const transaction = transfer({
+                    contract: contract,
+                    to: "0xe38A3D8786924E2c1C427a4CA5269e6C9D37BC9C",
+                    amount: 0.1,
+                });
+                
+                const { transactionHash } = await sendTransaction({
+                    account: activeAccount as any,
+                    transaction,
+                });
+
+
+                console.log("transactionHash", transactionHash);
+
+                if (!transactionHash) {
+                    throw new Error('Failed to send USDT');
+                }
+
+                //toast.success('USDT sent successfully');
+                */
+
+                const masterBotContractAddress = await deployERC721Contract({
+                    chain: polygon,
+                    client: client,
+                    account: activeAccount as any,
+            
+                    /*  type ERC721ContractType =
+                    | "DropERC721"
+                    | "TokenERC721"
+                    | "OpenEditionERC721";
+                    */
+            
+                    ///type: "DropERC721",
+            
+                    type: "TokenERC721",
+                    
+                    
+                    params: {
+                        name: "MasterBot",
+                        description: "This is MasterBot",
+                        symbol: "MBOT",
+                    },
+            
+                });
+
+                console.log("masterBotContractAddress", masterBotContractAddress);
+
+                // save the contract address to the database
+                // /api/user/updateUser
+                // walletAddress, erc721ContractAddress
+
+                if (!masterBotContractAddress) {
+                    throw new Error('Failed to deploy ERC721 contract');
+                }
+
+
+                const response = await fetch('/api/user/updateUserMasterBotContractAddress', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        walletAddress: address,
+                        masterBotContractAddress: masterBotContractAddress,
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to save ERC721 contract address');
+                }
+
+                setUserMasterBotContractAddress(masterBotContractAddress);
+
+
+                toast.success('MasterBot ERC721 contract deployed successfully');
+
+            } catch (error) {
+                console.error("deployErc721Contract error", error);
+            }
+
+            setLoadingDeployErc721Contract(false);
+
+      
+        }
+  
+    };
+
+
+
+
+
+
+    const [agentName, setAgentName] = useState("");
+    const [agentDescription, setAgentDescription] = useState("");
+
+
+    const [agentImage, setAgentImage] = useState("https://owinwallet.com/logo-aiagent.png");
+    const [ganeratingAgentImage, setGeneratingAgentImage] = useState(false);
+
+
+    const [mintingAgentNft, setMintingAgentNft] = useState(false);
+    const [messageMintingAgentNft, setMessageMintingAgentNft] = useState("");
+    const mintAgentNft = async () => {
+
+
+
+        setMessageMintingAgentNft('AI 에이전트 NFT 발행중입니다');
+
+
+        setMintingAgentNft(true);
+
+        try {
+
+
+            setGeneratingAgentImage(true);
+
+
+            setMessageMintingAgentNft('AI 에이전트 이미지 생성중입니다');
+
+            // genrate image from api
+            // /api/ai/generateImage
+
+            const responseGenerateImage = await fetch("/api/ai/generateImageForMasterBot", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    englishPrompt: "",
+                }),
+            });
+
+            const dataGenerateImage = await responseGenerateImage.json();
+
+
+            const imageUrl = dataGenerateImage?.result?.imageUrl;
+
+        
+            if (!imageUrl) {
+
+                setGeneratingAgentImage(false);
+
+                throw new Error('Failed to generate image');
+            }
+
+
+            setGeneratingAgentImage(false);
+            setAgentImage(imageUrl);
+
+
+            setMessageMintingAgentNft('AI 에이전트 NFT 발행중입니다');
+
+            const contract = getContract({
+                client,
+                chain: polygon,
+                address: userMasterBotContractAddress,
+
+              });
+
+
+            const transaction = mintTo({
+                contract: contract,
+                to: address as string,
+                nft: {
+                    name: agentName,
+                    description: agentDescription,
+
+                    ////image: agentImage,
+                    image: imageUrl,
+
+                },
+            });
+
+            //await sendTransaction({ transaction, account: activeAccount as any });
+
+
+
+            //setActiveAccount(smartConnectWallet);
+
+            const transactionResult = await sendAndConfirmTransaction({
+                transaction: transaction,
+                account: activeAccount as any,
+
+                ///////account: smartConnectWallet as any,
+            });
+
+            //console.log("transactionResult", transactionResult);
+
+
+            if (!transactionResult) {
+                throw new Error('AI 에이전트 NFT 발행 실패. 관리자에게 문의해주세요');
+            }
+
+            setMessageMintingAgentNft('AI 에이전트 NFT 발행 완료');
+
+
+            // fetch the NFTs again
+            const response = await fetch("/api/agent/getAgentNFTByWalletAddress", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    walletAddress: address,
+                    //erc721ContractAddress: erc721ContractAddress,
+                }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                if (data.result) {
+                    //setMyNfts(data.result.ownedNfts);
+                } else {
+                    //setMyNfts([]);
+                }
+            }
+
+            setAgentName("");
+            setAgentDescription("");
+
+            toast.success('AI 에이전트 NFT 발행 완료');
+
+
+
+
+        } catch (error) {
+            console.error("mintAgentNft error", error);
+
+            toast.error('AI 에이전트 NFT 발행 실패');
+
+            setMessageMintingAgentNft('AI 에이전트 NFT 발행 실패');
+        }
+
+        setMintingAgentNft(false);
+
+        setAgentImage("https://owinwallet.com/logo-aiagent.png");
+
+    }
+
+
+
 
 
 
@@ -1747,10 +1836,53 @@ export default function AIPage({ params }: any) {
 
                     </div>
 
+                    {/* deploy ERC721 contract for MasterBot */}
+                    {address && isAdmin && (
+                        <div className='w-full flex flex-col gap-5'>
+
+                            {!userMasterBotContractAddress ? (
+                                    
+                                <div className='flex flex-row items-center gap-2'>
+                                    <span className='text-lg font-semibold text-gray-800'>
+                                        MasterBot 계약주소 생성
+                                    </span>
+
+                                    {/* deploy button */}
+                                    <button
+                                        onClick={() => {
+                                            deployErc721ContractForMasterBot();
+                                        }}
+                                        disabled={loadingDeployErc721Contract}
+                                        className={`${loadingDeployErc721Contract ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
+                                            hover:bg-blue-600
+                                        `}
+                                    >
+                                        {loadingDeployErc721Contract ? "Loading..." : "Deploy"}
+                                    </button>
+                                </div>
+
+                            ) : (
+                                <div className='w-full flex flex-col items-start gap-2'>
+                                    <span className='text-lg font-semibold text-gray-800'>
+                                        MasterBot 계약주소
+                                    </span>
+                                    <span className='text-sm text-gray-800'>
+                                        {userMasterBotContractAddress.slice(0, 10)}...{userMasterBotContractAddress.slice(-10)}
+                                    </span>
+                                </div>
+                            )}
+
+                        </div>
+                    )}
+
+               
+
  
                     {/* applications table */}
 
-                        <div className='w-full flex flex-col gap-5'>
+                        <div className='mt-10 w-full flex flex-col gap-5
+                            border border-gray-300 p-4 rounded-lg bg-gray-100
+                        '>
 
                             <div className='flex flex-row items-center gap-2'>
                                 

@@ -140,6 +140,8 @@ export default function SettingsPage({ params }: any) {
 
     const agent = searchParams.get('agent');
 
+    const agentNumber = searchParams.get('agentNumber');
+
 
 
     const wallets = [
@@ -1420,6 +1422,7 @@ export default function SettingsPage({ params }: any) {
 
                 <Header
                     agent={agent || ""}
+                    tokenId={agentNumber || ""}
                 />
         
 
