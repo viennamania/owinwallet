@@ -56,8 +56,11 @@ export async function POST(request: NextRequest) {
     let model = "" as any;
 
  
+    /*
     const randomModel = Math.floor(Math.random() * 5);
 
+
+  
   
 
     if (randomModel == 0) {
@@ -73,8 +76,10 @@ export async function POST(request: NextRequest) {
         hosting = "fal";
         model = "fal-ai/flux/dev";
     }
+    */
 
-
+    hosting = "fal";
+    model = "fal-ai/flux-realism";
 
 
     try {
@@ -86,6 +91,8 @@ export async function POST(request: NextRequest) {
         if (hosting === "replicate") {
 
             output = await replicate.run(model, { input }) as any;
+
+            
 
         } else if (hosting === "fal") {
 
@@ -104,15 +111,19 @@ export async function POST(request: NextRequest) {
                     update.logs.map((log) => log.message).forEach(console.log);
                   }
                 },
-              }) as any;
+            }) as any;
+
+
           
-              ///console.log(data);
-          
-              //const output = data.images[0]?.url;
-              // output is array of images
-              output = [
-                data.images[0]?.url,
-              ];
+            ////console.log(data);
+
+            
+        
+            //const output = data.images[0]?.url;
+            // output is array of images
+            output = [
+                data?.images[0]?.url,
+            ];
 
         }
 
