@@ -84,6 +84,7 @@ export async function GET(request: NextRequest) {
   }
 
   /*
+
   const walletPrivateKey = "";
 
   const factoryAddress = "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97";
@@ -125,9 +126,9 @@ export async function GET(request: NextRequest) {
       address: contractAddressUSDT,
     }
   );
-  */
 
-  /*
+
+  
   let transactions = [] as any;
 
   result.users.map((user: any) => {
@@ -164,14 +165,11 @@ export async function GET(request: NextRequest) {
     result: batchResponse,
   });
 
-  
   */
 
   return NextResponse.json({
     result,
   });
-
-
-
+  
   
 }
