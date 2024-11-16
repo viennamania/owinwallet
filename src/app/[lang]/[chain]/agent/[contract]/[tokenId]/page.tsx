@@ -803,49 +803,88 @@ export default function AgentPage({ params }: any) {
 
                         {/* is endTrading exist, if exist, show endTrading */}
 
-                        <div className='w-full flex flex-row items-center justify-between gap-2'>
-                            <span className='text-sm text-gray-800'>
-                                HTX UID: {application.htxUid}
-                            </span>
+                        <div className='w-full flex flex-col items-start justify-between gap-2
+                          border-b border-gray-300 pb-2
+                        '>
+                          <div className='w-full flex flex-row items-center justify-between gap-2'>
+                              <span className='text-sm text-gray-800'>
+                                  HTX UID: {application.htxUid}
+                              </span>
+                          </div>
+
+                          <div className='w-full flex flex-row items-center justify-between gap-2'>
+                              <span className='text-sm text-gray-800'>
+                                  닉네임: {application.userName}
+                              </span>
+                          </div>
+                          <div className='w-full flex flex-row items-center justify-between gap-2'>
+                              <span className='text-sm text-gray-800'>
+                                  핸드폰번호: {application.userPhoneNumber.slice(0, 3) + '****' + application.userPhoneNumber.slice(-4)}
+                              </span>
+
+                          </div>
+
+                          <div className='w-full flex flex-row items-center justify-between gap-2'>
+                              <span className='text-sm text-gray-800'>
+                                  이메일주소: {application.userEmail.slice(0, 3) + '****' + application.userEmail.slice(-4)}
+                              </span>
+                          </div>
+
+
+
+                          <div className='w-full hidden flex-row items-center justify-between gap-2'>
+                              <span className='text-xs text-gray-800'>
+                                  HTX USDT(TRON) 지갑주소: {application.htxUsdtWalletAddress}
+                              </span>
+                          </div>
+
+                          <div className='w-full flex flex-row items-center justify-between gap-2'>
+                              <span className='text-sm text-gray-800'>
+                                  API Access Key: {application.apiAccessKey.slice(0, 3) + '****' + application.apiAccessKey.slice(-4)}
+                              </span>
+                          </div>
+
+                          <div className='w-full flex flex-row items-center justify-between gap-2'>
+                              <span className='text-sm text-gray-800'>
+                                  API Secret Key: {application.apiSecretKey.slice(0, 3) + '****' + application.apiSecretKey.slice(-4)}
+                              </span>
+                          </div>
                         </div>
 
-                        <div className='w-full flex flex-row items-center justify-between gap-2'>
-                            <span className='text-sm text-gray-800'>
-                                닉네임: {application.userName}
-                            </span>
-                        </div>
-                        <div className='w-full flex flex-row items-center justify-between gap-2'>
-                            <span className='text-sm text-gray-800'>
-                                핸드폰번호: {application.userPhoneNumber.slice(0, 3) + '****' + application.userPhoneNumber.slice(-4)}
-                            </span>
+                        {/* masterBot */}
+                        {application?.masterBotInfo ? (
+                          <div className='w-full flex flex-row items-center justify-between gap-2
+                          '>
+                              <span className='text-sm text-gray-800'>
+                                Master Bot
+                              </span>
+                              <Image
+                                src={application?.masterBotInfo?.imageUrl}
+                                width={100}
+                                height={100}
+                                alt="MasterBot"
+                                className="rounded-lg animate-pulse object-cover
+                                  w-full h-full"
+                              />
+                          </div>
+                        ) : (
+                          <div className='w-full flex flex-row items-center justify-between gap-2
+                          '>
+                              <span className='text-sm text-blue-500'>
+                                Master Bot 민팅중...
+                              </span>
+                              <Image
+                                src='/loading.png'
+                                width={50}
+                                height={50}
+                                alt='MasterBot'
+                                className='rounded-lg animate-spin object-cover
+                                  w-10 h-10'
+                              />
+                          </div>
+                        )}
 
-                        </div>
-
-                        <div className='w-full flex flex-row items-center justify-between gap-2'>
-                            <span className='text-sm text-gray-800'>
-                                이메일주소: {application.userEmail.slice(0, 3) + '****' + application.userEmail.slice(-4)}
-                            </span>
-                        </div>
-
-
-
-                        <div className='w-full hidden flex-row items-center justify-between gap-2'>
-                            <span className='text-xs text-gray-800'>
-                                HTX USDT(TRON) 지갑주소: {application.htxUsdtWalletAddress}
-                            </span>
-                        </div>
-
-                        <div className='w-full flex flex-row items-center justify-between gap-2'>
-                            <span className='text-sm text-gray-800'>
-                                API Access Key: {application.apiAccessKey.slice(0, 3) + '****' + application.apiAccessKey.slice(-4)}
-                            </span>
-                        </div>
-
-                        <div className='w-full flex flex-row items-center justify-between gap-2'>
-                            <span className='text-sm text-gray-800'>
-                                API Secret Key: {application.apiSecretKey.slice(0, 3) + '****' + application.apiSecretKey.slice(-4)}
-                            </span>
-                        </div>
+                        {/* agentBot */}
 
 
 
