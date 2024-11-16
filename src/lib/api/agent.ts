@@ -136,8 +136,23 @@ export async function getAllAgents({ page = 1, limit = 100 }) {
   const client = await clientPromise;
   const collection = client.db('vienna').collection('agents');
 
+
+  // exclude
+  // agentBot is 0x6E890AfDd68af974702dF44ed1ff67D0Eab41473
+  // and agentBotNumber is 0
+
+
+
+
   const result = await collection.find(
-    {},
+    
+    
+    {
+      agentBot: { $ne: '0x6E890AfDd68af974702dF44ed1ff67D0Eab41473' }
+    },
+    
+
+
     {
       sort: { createdAt: -1 },
       skip: (page - 1) * limit,

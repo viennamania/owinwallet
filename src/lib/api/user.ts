@@ -1122,8 +1122,8 @@ export async function setMasterBotContractAddressByWalletAddress(
 
 export async function getAllAgents(
   {
-    limit,
-    page,
+    limit = 100,
+    page = 1,
   }: {
     limit: number;
     page: number;
@@ -1143,6 +1143,11 @@ export async function getAllAgents(
 
   // where erc721ContractAddress is not empty and not null
 
+
+    // exclude nickname is 'solongos'
+
+
+
   const users = await collection
     .find<UserProps>(
       {
@@ -1154,6 +1159,8 @@ export async function getAllAgents(
         
         erc721ContractAddress: { $exists: true, $ne: null },
         
+        // exclude nickname is 'solongos'
+        nickname: { $ne: 'solongos' },
 
       },
       {
