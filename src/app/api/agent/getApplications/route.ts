@@ -5,6 +5,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import {
 	getAllAgentsForAILabs,
 } from '@lib/api/agent';
+import { stat } from "fs";
 
 
 
@@ -19,6 +20,7 @@ export async function POST(request: NextRequest) {
   if (!walletAddress) {
 
     return NextResponse.error();
+
   }
   
   //console.log("walletAddress", walletAddress);
@@ -47,15 +49,15 @@ export async function POST(request: NextRequest) {
 
  
       return NextResponse.json({
-    
-        result,
-        
+        status: "success",
+        result: result,
       });
 
 
   } else {
 
     return NextResponse.error();
+    
 
   }
 

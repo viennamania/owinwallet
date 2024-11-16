@@ -775,11 +775,12 @@ export default function AIPage({ params }: any) {
 
         };
 
-        //if (address) {
+        if (address) {
             fetchData();
-        //}
-   // }, [address]);
-    }, []);
+        }
+
+    }, [address]);
+
 
 
     ///console.log("applications", applications);
