@@ -2013,7 +2013,7 @@ export default function AIPage({ params }: any) {
                                                     이메일
                                                 </span>
                                                 <span className='text-xs text-gray-800'>
-                                                    {application.userEmail}
+                                                    {application.userEmail.substring(0, 5)}...{application.userEmail.substring(application.userEmail.length - 5)}
                                                 </span>
                                             </div>
                                             {/* copy button */}

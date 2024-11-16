@@ -129,6 +129,8 @@ export async function insertOne(data: any) {
 
 }
 
+
+
 // getAllAgents
 // sort by createdAt desc
 export async function getAllAgents({ page = 1, limit = 100 }) {
@@ -145,7 +147,7 @@ export async function getAllAgents({ page = 1, limit = 100 }) {
 
 
   const result = await collection.find(
-    
+
     
     {
       agentBot: { $ne: '0x6E890AfDd68af974702dF44ed1ff67D0Eab41473' }
@@ -170,6 +172,59 @@ export async function getAllAgents({ page = 1, limit = 100 }) {
   }
 
 }
+
+
+
+
+
+
+
+// getAllAgents
+// sort by createdAt desc
+export async function getAllAgentsForAILabs({ page = 1, limit = 100 }) {
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('agents');
+
+
+  try {
+    const result = await collection.aggregate([
+      {
+        $sort: {
+          createdAt: -1,
+        }
+      },
+      {
+        $skip: (page - 1) * limit,
+      },
+      {
+        $limit: limit,
+      },
+    
+    ]).toArray();
+
+    if (result) {
+      return {
+        totalCount: result.length,
+        applications: result,
+      };
+    } else {
+      return null;
+    }
+
+  } catch (e) {
+    console.log('getAllAgentsForAILabs error: ' + e);
+    return null;
+  }
+
+}
+
+
+
+
+
+
+
 
 // getMyReferAgents
 export async function getMyReferAgents(
