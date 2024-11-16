@@ -186,7 +186,6 @@ export async function getAllAgentsForAILabs({ page = 1, limit = 100 }) {
   const client = await clientPromise;
   const collection = client.db('vienna').collection('agents');
 
-
   try {
     const result = await collection.aggregate([
       {

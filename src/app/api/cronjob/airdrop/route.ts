@@ -83,8 +83,8 @@ export async function GET(request: NextRequest) {
     
   }
 
-
-  const walletPrivateKey = "a8a0ba0d7c7c188505e5c5e66d1df296ae12a373b2c75743a3ca9a606db1dcd7";
+  /*
+  const walletPrivateKey = "";
 
   const factoryAddress = "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97";
 
@@ -125,22 +125,9 @@ export async function GET(request: NextRequest) {
       address: contractAddressUSDT,
     }
   );
+  */
 
   /*
-  const transactions = [
-    transfer({
-      contract: contractUSDT,
-      to: "0x7bfF3359841D26C8046364b93E7dA01886ae1c22",
-      amount: 0.1,
-    }),
-    transfer({
-      contract: contractUSDT,
-      to: "0x7bfF3359841D26C8046364b93E7dA01886ae1c22",
-      amount: 0.2,
-    }),
-  ];
-  */
- 
   let transactions = [] as any;
 
   result.users.map((user: any) => {
@@ -178,34 +165,11 @@ export async function GET(request: NextRequest) {
   });
 
   
-  /*
-  try {
-    const response = await sendAndConfirmTransaction({
-      transaction,
-      account,
-    });
-
-    console.log("response", response);
-
-    return NextResponse.json({
-
-      result: response,
-      
-    });
-
-  } catch (error) {
-
-    console.error("error", error);
-
-    return NextResponse.json({
-
-      result: error,
-      
-    });
-
-  }
   */
-  
+
+  return NextResponse.json({
+    result,
+  });
 
 
 
