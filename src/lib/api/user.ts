@@ -1159,9 +1159,6 @@ export async function getAllAgents(
         
         erc721ContractAddress: { $exists: true, $ne: null },
         
-        // exclude nickname is 'solongos'
-        nickname: { $ne: 'solongos' },
-
       },
       {
         limit: limit,

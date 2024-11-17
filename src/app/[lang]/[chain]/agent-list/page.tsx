@@ -1178,13 +1178,25 @@ export default function AIPage({ params }: any) {
    const [agentBotList, setAgentBotList] = useState([] as any[]);
    const [loadingAgentBotList, setLoadingAgentBotList] = useState(false);
 
-   const changeAgentBot = async (agentBot: string) => {
+   const [selectedHolderWalletAddress, setSelectedHolderWalletAddress] = useState("");
 
+   //const changeAgentBot = async (agentBot: string) => {
+   const changeHolder = async (holderWalletAddress: string) => {
+
+
+        /*
         console.log("changeAgentBot agentBot", agentBot);
 
         if (agentBot === "") {
             return;
         }
+        */
+
+        if (holderWalletAddress === "") {
+            return;
+        }
+
+        setSelectedHolderWalletAddress(holderWalletAddress);
 
 
         setAgentBot(agentBot);
@@ -1199,6 +1211,7 @@ export default function AIPage({ params }: any) {
 
             // api /api/agent/getAgentNFTByWalletAddress
 
+            /*
             const response = await fetch("/api/agent/getAgentNFTByContractAddress", {
                 method: "POST",
                 headers: {
@@ -1207,8 +1220,24 @@ export default function AIPage({ params }: any) {
                 body: JSON.stringify({
                     erc721ContractAddress: agentBot,
                     //holderAddress: address,
+
+
                 }),
             });
+            */
+
+            // get agent NFT By holder address
+            const response = await fetch("/api/agent/getAgentNFTByWalletAddress", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    walletAddress: holderWalletAddress,
+                }),
+            });
+
+
 
             if (!response.ok) {
                 throw new Error('Failed to get NFTs');
@@ -1216,10 +1245,18 @@ export default function AIPage({ params }: any) {
 
             const data = await response.json();
 
-
+            /*
             if (data.result) {
                 setAgentBotList(data.result.nfts);
             }
+            */
+            if (data.result) {
+                setAgentBotList(data.result.ownedNfts);
+            } else {
+                setAgentBotList([]);
+            }
+
+
             
 
         } catch (error) {
@@ -1231,12 +1268,14 @@ export default function AIPage({ params }: any) {
     };
 
 
+    /*
     // if agentBot then get the list of NFTs
     useEffect(() => {
         if (agentBot) {
             changeAgentBot(agentBot);
         }
     } , [agentBot]);
+    */
 
     // if agentNumber then set the selectedBotNumber
     useEffect(() => {
@@ -1712,16 +1751,21 @@ export default function AIPage({ params }: any) {
                                                                 />
                                                                 */}
 
-                                                                <input
+<input
                                                                     type="radio"
-                                                                    value={agent.erc721ContractAddress}
+                                                                    value={agent.walletAddress}
                                                                     name="agent"
-                                                                    checked={agent.erc721ContractAddress === agentBot}
+                                                                    checked={agent.walletAddress === selectedHolderWalletAddress}
                                                                     onChange={(e) => {
                                                                         console.log(e.target.value);
 
                                                                         //setAgentBot(e.target.value);
-                                                                        changeAgentBot(e.target.value);
+                                                                        
+                                                                        //changeAgentBot(e.target.value);
+
+                                                                        changeHolder(e.target.value);
+
+
 
                                                                     }}
                                                                 />
@@ -1734,12 +1778,17 @@ export default function AIPage({ params }: any) {
                                                                     className='rounded-full h-8 w-8'
                                                                 />
 
-                                                                <span className='text-xs font-semibold text-gray-500'>
-                                                                    {
-                                                                        //agent.erc721ContractAddress.substring(0, 15) + "..."
-                                                                        agent.nickname
-                                                                    }
-                                                                </span>
+                                                                <div className='flex flex-col items-start gap-2'>
+                                                                    <span className='text-xs font-semibold text-gray-500'>
+                                                                        {
+                                                                            //agent.erc721ContractAddress.substring(0, 15) + "..."
+                                                                            agent.nickname
+                                                                        }
+                                                                    </span>
+                                                                    <span className='text-xs font-semibold text-gray-500'>
+                                                                        {agent?.mobile.substring(0, 6) + "..." + agent?.mobile.substring(8, 11)}
+                                                                    </span>
+                                                                </div>
                                                                 
 
 
@@ -1754,19 +1803,21 @@ export default function AIPage({ params }: any) {
                                                     '>
 
 
-                                                        {agentBot && (
+                                                        {selectedHolderWalletAddress && (
+                                                            
                                                             <div className='flex flex-col items-start gap-2'>
                                                                 {/* agent nickname */}
                                                                 <span className='text-sm font-semibold text-blue-500'>
-                                                                    {agents.find((agent) => agent.erc721ContractAddress === agentBot)?.nickname} 님의 AI 에이전트 NFT
+                                                                    {agents.find((agent) => agent.walletAddress === selectedHolderWalletAddress)?.nickname} 님의 AI 에이전트 NFT
                                                                 </span>
                                                                 {!loadingAgentBotList && (
-                                                                    <span className='text-sm font-semibold text-blue-500'>
-                                                                        {agentBotList.length} 개의 AI 에이전트 NFT
+                                                                    <span className='text-lg font-semibold text-gray-500'>
+                                                                        {agentBotList.length} 개
                                                                     </span>
                                                                 )}
                                                             </div>
                                                         )}
+
 
 
                                                         {loadingAgentBotList && (
@@ -1782,14 +1833,17 @@ export default function AIPage({ params }: any) {
                                                                     AI 에이전트 NFT를 불러오는 중...
                                                                 </span>
                                                             </div>
+                                                            
                                                         )}
 
 
-                                                        {!loadingAgentBotList && agentBotList.length === 0 && (
+                                                        {selectedHolderWalletAddress && !loadingAgentBotList && agentBotList.length === 0 && (
                                                             <span className='text-sm font-semibold text-red-500'>
                                                                 AI 에이전트 NFT가 없습니다.
                                                             </span>
                                                         )}
+
+
 
                                                         <div className='grid grid-cols-1 xl:grid-cols-2 gap-2'>
                                                             {!loadingAgentBotList && agentBotList.map((nft) => (
