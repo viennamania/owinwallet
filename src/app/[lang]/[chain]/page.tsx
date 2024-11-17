@@ -1331,6 +1331,8 @@ export default function Index({ params }: any) {
                     onClick={() => {
                       router.push(
                         "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=USDT"
+                        + "&agent=" + agent + "&tokenId=" + agentNumber
+                        
                       );
 
                     }}
@@ -1911,30 +1913,8 @@ function Header(
           </span>
         </div>
         {/* menu */}
-        {/* COIN, NFT, DEFI */}
         <div className="flex flex-row gap-2 items-center">
-          <button
-              onClick={() => {
-
-                /*
-                router.push(
-                  "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=CAMT"
-                );
-                */
-
-              }}
-            className="text-gray-600 hover:underline text-xs xl:text-lg"
-          >
-            WALLET
-          </button>
-          <button
-            onClick={() => {
-              //console.log("chat");
-            }}
-            className="text-gray-600 hover:underline text-xs xl:text-lg"
-          >
-            TRADE
-          </button>
+          
           <button
             onClick={() => {
               router.push(
@@ -1953,6 +1933,7 @@ function Header(
           >
             SETTINGS
           </button>
+
         </div>
       </div>
       
@@ -1999,6 +1980,8 @@ function Header(
     </header>
   );
 }
+
+
 
 function ThirdwebResources() {
   return (
