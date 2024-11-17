@@ -27,11 +27,12 @@ export async function POST(request: NextRequest) {
   apiSecretKey: apiSecretKey,
   */
 
-  const { walletAddress, agentBot, agentBotNumber, userName, userPhoneNumber, userEmail, htxUserId, htxUsdtWalletAddress, apiAccessKey, apiSecretKey } = body;
+  const { center, walletAddress, agentBot, agentBotNumber, userName, userPhoneNumber, userEmail, htxUserId, htxUsdtWalletAddress, apiAccessKey, apiSecretKey } = body;
 
 
 
   const result = await insertOne({
+    center: center,
     walletAddress: walletAddress,
     agentBot: agentBot,
     agentBotNumber: agentBotNumber,

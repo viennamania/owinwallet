@@ -1057,6 +1057,7 @@ export default function AIPage({ params }: any) {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
+                center: "",
                 walletAddress: address,
                 agentBot: agentBot,
                 agentBotNumber: selectedBotNumber,
