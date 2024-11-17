@@ -924,7 +924,7 @@ export default function SettingsPage({ params }: any) {
         
         //if (confirm("Are you sure you want to deploy ERC721 contract?")) {
         // chinese confirm
-        if (confirm("AI 에이전트 코드를 생성하시겠습니까?")) {
+        if (confirm("AI 에이전트 계약주소를 생성하시겠습니까?")) {
 
             setLoadingDeployErc721Contract(true);
 
@@ -1018,7 +1018,7 @@ export default function SettingsPage({ params }: any) {
                 
 
 
-                toast.success('AI 에이전트 코드 생성 완료');
+                toast.success('AI 에이전트 계약주소 생성 완료');
 
 
                 
@@ -1157,8 +1157,8 @@ export default function SettingsPage({ params }: any) {
         }
 
         if (!erc721ContractAddress) {
-            toast.error('AI 에이전트 코드를 먼저 생성해주세요');
-            setMessageMintingAgentNft('AI 에이전트 코드를 먼저 생성해주세요');
+            toast.error('AI 에이전트 계약주소를 먼저 생성해주세요');
+            setMessageMintingAgentNft('AI 에이전트 계약주소를 먼저 생성해주세요');
             return;
         }
 
@@ -1531,8 +1531,8 @@ export default function SettingsPage({ params }: any) {
                                         className='animate-spin'
                                     />
                                 )}
-                                {address && loadingDeployErc721Contract && 'AI 에이전트 코드 생성중...'}
-                                {address && !erc721ContractAddress && !loadingDeployErc721Contract && 'AI 에이전트 코드 생성하기'}
+                                {address && loadingDeployErc721Contract && 'AI 에이전트 계약주소 생성중...'}
+                                {address && !erc721ContractAddress && !loadingDeployErc721Contract && 'AI 에이전트 계약주소 생성하기'}
  
                             </div>
 
@@ -1548,7 +1548,7 @@ export default function SettingsPage({ params }: any) {
 
                                 <div className='w-full flex flex-row gap-2 items-center justify-between'>
                                     <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
-                                        AI 에이전트 코드
+                                        AI 에이전트 계약주소
                                     </div>
 
                                     <span className='text-xs xl:text-lg font-semibold'>
