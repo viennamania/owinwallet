@@ -58,9 +58,6 @@ import AppBarComponent from "@/components/Appbar/AppBar";
 import { getDictionary } from "../../../dictionaries";
 
 
-
-import axios from 'axios';
-
 import { deployERC721Contract } from 'thirdweb/deploys';
 
 
