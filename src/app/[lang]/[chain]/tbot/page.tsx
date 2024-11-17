@@ -2038,36 +2038,6 @@ export default function AIPage({ params }: any) {
                                         border border-gray-300 p-1 rounded-lg
                                     '>
 
-                                        {myAgent?.startTrading?.status ? (
-                                            <div className='w-full flex flex-row items-center justify-start gap-2'>
-                                                <Image
-                                                    src="/icon-agent-live.gif"
-                                                    alt="Live"
-                                                    width={60}
-                                                    height={40}
-                                                />
-                                                <span className='text-sm font-semibold text-blue-500'>
-                                                    트레이딩을 시작했습니다.
-                                                </span>
-                                            </div>
-                                        ) : (
-
-                                            <div className='flex flex-row items-center gap-2'>
-                                                <Image
-                                                    src="/loading.png"
-                                                    alt="loading"
-                                                    width={30}
-                                                    height={30}
-                                                    className='animate-spin'
-                                                />
-                                                <span className='text-sm font-semibold text-blue-500'>
-                                                    AI 트레이딩 & Master Bot 민팅 준비중...
-                                                </span>
-                                            </div>
-
-                                        )}
-
-
                                         <div className='flex flex-col gap-2
                                             border border-yellow-500 p-4 rounded-lg
                                             bg-yellow-100
@@ -2075,28 +2045,28 @@ export default function AIPage({ params }: any) {
 
                                             <div className='flex flex-col xl:flex-row gap-2'>
                                                 
-                                                <div className='flex flex-col gap-2'>
+                                                <div className='flex flex-row gap-2'>
                                                     <div className='flex flex-row items-center gap-2'>
                                                         {/* dot */}
-                                                        <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
-                                                        <span className='text-lg font-semibold'>
-                                                            계약주소
+                                                        <div className='w-2 h-2 bg-blue-500 rounded-full'></div>
+                                                        <span className='text-xs font-semibold'>
+                                                            AI Agent 계약주소
                                                         </span>
                                                     </div>
-                                                    <span className='text-2xl font-semibold text-gray-500'>
-                                                        {myAgent?.agentBot.substring(0, 15) + "..."}
+                                                    <span className='text-xs font-semibold text-gray-500'>
+                                                        {myAgent?.agentBot.substring(0, 5) + "..." + myAgent?.agentBot.substring(myAgent?.agentBot.length - 5)}
                                                     </span>
                                                 </div>
                                                 
-                                                <div className='flex flex-col gap-2'>
+                                                <div className='flex flex-row gap-2'>
                                                     <div className='flex flex-row items-center gap-2'>
                                                         {/* dot */}
-                                                        <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
-                                                        <span className='text-lg font-semibold'>
-                                                            계약번호
+                                                        <div className='w-2 h-2 bg-blue-500 rounded-full'></div>
+                                                        <span className='text-xs font-semibold'>
+                                                            AI Agent 계약번호
                                                         </span>
                                                     </div>
-                                                    <span className='text-2xl font-semibold text-gray-500'>
+                                                    <span className='text-xs font-semibold text-gray-500'>
                                                         #{myAgent?.agentBotNumber}
                                                     </span>
                                                 </div>
@@ -2104,20 +2074,25 @@ export default function AIPage({ params }: any) {
 
                                             {myAgentNFT && myAgentNFT.image ? (
                                                 <div className='flex flex-col gap-2'>
-                                                    {/* masterbot image */}
-                                                    <Image
-                                                        src={myAgentNFT?.image?.pngUrl || "/logo-masterbot100.png"}
-                                                        alt="masterbot"
-                                                        width={400}
-                                                        height={400}
-                                                        className='animate-pulse'
-                                                    />
-                                                    <span className='text-2xl font-semibold text-blue-500'>
-                                                        {myAgentNFT?.name}
-                                                    </span>
-                                                    <span className='text-lg font-semibold text-yellow-500'>
-                                                        {myAgentNFT?.description}
-                                                    </span>
+
+                                                    <div className='grid grid-cols-2 gap-2'>
+                                                        {/* masterbot image */}
+                                                        <Image
+                                                            src={myAgentNFT?.image?.pngUrl || "/logo-masterbot100.png"}
+                                                            alt="masterbot"
+                                                            width={200}
+                                                            height={200}
+                                                            className='rounded-lg animate-bounce mt-10'
+                                                        />
+                                                        <div className='flex flex-col gap-2'>
+                                                            <span className='text-lg font-semibold text-blue-500'>
+                                                                {myAgentNFT?.name}
+                                                            </span>
+                                                            <span className='text-sm font-semibold text-yellow-500'>
+                                                                {myAgentNFT?.description}
+                                                            </span>
+                                                        </div>
+                                                    </div>
 
                                                     {/* running 2 hours */}
                                                     {/* runngin 2 days */}
@@ -2165,7 +2140,39 @@ export default function AIPage({ params }: any) {
 
                                         <div className='w-full flex flex-col gap-2
                                             border border-gray-300 p-4 rounded-lg
+                                            bg-green-100
                                         '>
+
+                                            {myAgent?.startTrading?.status ? (
+                                                <div className='w-full flex flex-row items-center justify-start gap-2'>
+                                                    <Image
+                                                        src="/icon-agent-live.gif"
+                                                        alt="Live"
+                                                        width={60}
+                                                        height={40}
+                                                    />
+                                                    <span className='text-sm font-semibold text-blue-500'>
+                                                        트레이딩을 시작했습니다.
+                                                    </span>
+                                                </div>
+                                            ) : (
+
+                                                <div className='flex flex-row items-center gap-2'>
+                                                    <Image
+                                                        src="/loading.png"
+                                                        alt="loading"
+                                                        width={30}
+                                                        height={30}
+                                                        className='animate-spin'
+                                                    />
+                                                    <span className='text-sm font-semibold text-blue-500'>
+                                                        AI 트레이딩 & Master Bot 민팅 준비중...
+                                                    </span>
+                                                </div>
+
+                                            )}
+
+
 
                                             <span className='text-lg font-semibold text-blue-500 '>
                                                 Master Bot 정보
@@ -2180,13 +2187,10 @@ export default function AIPage({ params }: any) {
 
                                             <div className='flex flex-col gap-2'>
                                                 
-                                                <div className=' hidden
-                                                    flex-row items-center justify-between gap-2
-                                                '>
+                                                <div className='flex flex-row items-center justify-between gap-2'>
                                                     <span className='text-sm font-semibold text-gray-500'>
                                                         HTX UID: {myAgent.htxUid}
                                                     </span>
-                                                    {/* verified */}
                                                     <Image
                                                         src="/verified.png"
                                                         alt="verified"
@@ -2206,6 +2210,7 @@ export default function AIPage({ params }: any) {
                                                         height={20}
                                                     />
                                                 </div>
+
                                                 <div className='flex flex-row items-center justify-between gap-2'>
                                                     <span className='text-sm font-semibold text-gray-500'>
                                                         API Secret Key: {myAgent.apiSecretKey.substring(0, 10) + "..."}
