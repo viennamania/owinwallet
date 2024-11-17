@@ -1195,7 +1195,7 @@ export default function SettingsPage({ params }: any) {
             // genrate image from api
             // /api/ai/generateImage
 
-            const responseGenerateImage = await fetch("/api/ai/generateImage", {
+            const responseGenerateImage = await fetch("/api/ai/generateImageAgent", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
