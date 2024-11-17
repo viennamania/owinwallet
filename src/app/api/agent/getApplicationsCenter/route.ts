@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
 
   const body = await request.json();
 
-  const { walletAddress } = body;
+  const { walletAddress, center } = body;
 
 
   if (!walletAddress) {
@@ -30,7 +30,9 @@ export async function POST(request: NextRequest) {
     
     ) {
 
-      const result = await getAllAgents({});
+      const result = await getAllAgents({
+        center: center,
+      });
  
       return NextResponse.json({
     

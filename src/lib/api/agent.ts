@@ -133,44 +133,63 @@ export async function insertOne(data: any) {
 
 // getAllAgents
 // sort by createdAt desc
-export async function getAllAgents({ page = 1, limit = 100 }) {
+export async function getAllAgents({
+  center = '',
+  page = 1,
+  limit = 100,
+}) {
 
   const client = await clientPromise;
   const collection = client.db('vienna').collection('agents');
 
 
-  // exclude
-  // agentBot is 0x6E890AfDd68af974702dF44ed1ff67D0Eab41473
-  // and agentBotNumber is 0
+  if (!center) {
+    // get agents which center is not defined
+    const result = await collection.find(
+      {
+        center: { $exists: false }
+      },
+      {
+        sort: { createdAt: -1 },
+        skip: (page - 1) * limit,
+        limit: limit,
+      },
+    ).toArray();
 
-
-
-
-  const result = await collection.find(
-
-    
-    {
-      agentBot: { $ne: '0x6E890AfDd68af974702dF44ed1ff67D0Eab41473' }
-    },
-    
-
-
-    {
-      sort: { createdAt: -1 },
-      skip: (page - 1) * limit,
-      limit: limit,
+    if (result) {
+      return {
+        totalCount: result.length,
+        applications: result,
+      };
+    } else {
+      return null;
     }
-  ).toArray();
 
-  if (result) {
-    return {
-      totalCount: result.length,
-      applications: result,
-    };
   } else {
-    return null;
-  }
+ 
+    // get agents which center is defined
+    const result = await collection.find(
+      {
+        center: center
+      },
+      {
+        sort: { createdAt: -1 },
+        skip: (page - 1) * limit,
+        limit: limit,
+      },
+    ).toArray();
 
+    if (result) {
+      return {
+        totalCount: result.length,
+        applications: result,
+      };
+    } else {
+      return null;
+    }
+
+  }
+  
 }
 
 
