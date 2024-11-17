@@ -1036,7 +1036,7 @@ export default function SettingsPage({ params }: any) {
 
 
    /* my NFTs */
-   const [myNfts, setMyNfts] = useState([] as any[]);
+   /////const [myNfts, setMyNfts] = useState([] as any[]);
 
 
    
