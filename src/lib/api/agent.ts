@@ -147,7 +147,18 @@ export async function getAllAgents({
     // get agents which center is not defined
     const result = await collection.find(
       {
-        center: { $exists: false }
+        /*
+        $or: [
+          center: { $exists: false }
+        ]
+        */
+
+        $or: [
+          { center: { $exists: false } },
+          { center: '' },
+        ]
+
+
       },
       {
         sort: { createdAt: -1 },
