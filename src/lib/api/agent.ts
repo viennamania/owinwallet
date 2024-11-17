@@ -330,6 +330,7 @@ export async function getOneByWalletAddress(walletAddress: string) {
       createdAt: result.createdAt,
       startTrading: result.startTrading,
       masterBotInfo: result.masterBotInfo,
+      assetValuation: result.assetValuation,
     };
   } else {
     return null;

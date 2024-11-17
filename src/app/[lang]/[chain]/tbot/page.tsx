@@ -95,6 +95,7 @@ import { Alert, useForkRef } from '@mui/material';
 
 import thirdwebIcon from "@public/thirdweb.svg";
 import { add } from 'thirdweb/extensions/farcaster/keyGateway';
+import { time } from 'console';
 
 
 const wallets = [
@@ -1120,6 +1121,11 @@ export default function AIPage({ params }: any) {
     }
 
 
+
+    const [htxAssetValuation, setHtxAssetValuation] = useState({} as any);
+
+
+ 
     const [loadingMyAgent, setLoadingMyAgent] = useState(false);
     useEffect(() => {
         const fetchData = async () => {
@@ -1142,11 +1148,13 @@ export default function AIPage({ params }: any) {
 
             const data = await response.json();
 
-            ///console.log("getMyAgent data====", data);
+            //////console.log("getMyAgent data=========", data);
 
             if (data.result) {
 
                 setMyAgent(data.result);
+
+                setHtxAssetValuation(data.result?.assetValuation);
 
 
                 const erc721ContractAddress = data.result.agentBot;
@@ -1174,6 +1182,7 @@ export default function AIPage({ params }: any) {
 
                 setMyAgentNFT(nftData.result);
 
+                
             }
 
             setLoadingMyAgent(false);
@@ -1442,7 +1451,8 @@ export default function AIPage({ params }: any) {
 
     // check htx asset valuation
     const [checkingHtxAssetValuation, setCheckingHtxAssetValuation] = useState(false);
-    const [htxAssetValuation, setHtxAssetValuation] = useState(0);
+
+
     const checkHtxAssetValuation = async (
         htxAccessKey: string,
         htxSecretKey: string,
@@ -1473,11 +1483,13 @@ export default function AIPage({ params }: any) {
 
         const data = await response.json();
 
-        console.log("data.result", data.result);
+        console.log("data.result========", data.result);
 
         if (data.result?.status === "ok") {
 
-            setHtxAssetValuation(Number(data.result?.balance));
+            setHtxAssetValuation(
+                data.result?.assetValuation
+            );
 
             toast.success("HTX 자산 가치가 확인되었습니다.");
         } else {
@@ -1488,6 +1500,7 @@ export default function AIPage({ params }: any) {
 
     };
 
+ 
 
 
     const [isAgentTradingStarted, setIsAgentTradingStarted] = useState(false);
@@ -1629,7 +1642,7 @@ export default function AIPage({ params }: any) {
     }
     
  
-    console.log("myAgent", myAgent);
+    ////console.log("myAgent", myAgent);
 
 
     return (
@@ -2244,6 +2257,45 @@ export default function AIPage({ params }: any) {
                                                 <span className='text-sm font-semibold text-gray-500'>
                                                     이메일주소: {myAgent.userEmail}
                                                 </span>
+
+                                            </div>
+
+
+                                            {/* checkHtxAssetValuation */}
+                                            <div className='flex flex-col gap-2'>
+                                                
+                                                <div className='flex flex-row items-center gap-2'>
+                                                    <button
+                                                        disabled={
+                                                            !myAgent?.apiAccessKey || !myAgent?.apiSecretKey || checkingHtxAssetValuation
+                                                        }
+                                                        className={`
+                                                            ${!myAgent?.apiAccessKey || !myAgent?.apiSecretKey || checkingHtxAssetValuation ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold
+                                                        `}
+                                                        onClick={() => {
+                                                            checkHtxAssetValuation(myAgent.apiAccessKey, myAgent.apiSecretKey);
+                                                        }}
+                                                    >
+                                                        HTX 자산 가치 확인
+                                                    </button>
+                                                    {checkingHtxAssetValuation && (
+                                                        <span className='text-sm font-semibold text-blue-500'>
+                                                            HTX 자산 가치 확인중...
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                {htxAssetValuation?.balance && (
+                                                    <div className='flex flex-col gap-2'>
+                                                        <span className='text-sm font-semibold text-gray-500'>
+                                                            HTX 자산 가치: {htxAssetValuation?.balance} USDT
+                                                        </span>
+                                                        {/* timestamp */}
+                                                        <span className='text-sm font-semibold text-gray-500'>
+                                                            {new Date(htxAssetValuation?.timestamp).toLocaleString()}
+                                                        </span>
+                                                    </div>
+                                                )}
+                                            
 
                                             </div>
 
