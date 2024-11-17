@@ -104,6 +104,8 @@ export async function insertOne(data: any) {
       apiAccessKey: data.apiAccessKey,
       apiSecretKey: data.apiSecretKey,
 
+      center: data.center,
+
       createdAt: new Date().toISOString(),
     }
   );
@@ -121,6 +123,8 @@ export async function insertOne(data: any) {
       htxUsdtWalletAddress: data.htxUsdtWalletAddress,
       apiAccessKey: data.apiAccessKey,
       apiSecretKey: data.apiSecretKey,
+
+      center: data.center,
 
     };
   } else {
