@@ -40,6 +40,10 @@ import {
 
 import { balanceOf, transfer } from "thirdweb/extensions/erc20";
  
+import {
+  getOwnedNFTs,
+  transferFrom,
+} from "thirdweb/extensions/erc721";
 
 
 import {
@@ -95,6 +99,7 @@ import { Router } from 'next/router';
 import path from 'path';
 
 import { TronWeb, utils as TronWebUtils, Trx, TransactionBuilder, Contract, Event, Plugin } from 'tronweb';
+import { add } from 'thirdweb/extensions/farcaster/keyGateway';
 
 
 
@@ -387,6 +392,59 @@ export default function AgentPage({ params }: any) {
   }, [agentContractAddress, agentTokenId]);
 
 
+  // transferFrom
+
+  const [transferToAddress, setTransferToAddress] = useState("");
+
+  const [loadingTransfer, setLoadingTransfer] = useState(false);
+
+  const nftTransfer = async (to: string) => {
+
+    if (!address) {
+      toast.error("Please connect your wallet first");
+      return
+    }
+    if (!to) {
+      toast.error("Please enter the recipient's wallet address");
+      return
+    }
+
+    setLoadingTransfer(true);
+
+    const contract = getContract({
+      client,
+      chain: polygon,
+      address: agentContractAddress,
+    });
+
+    const transaction = transferFrom({
+      contract,
+      from: address,
+      to: to,
+      tokenId: agentTokenId,
+    });
+
+    const { transactionHash } = await sendTransaction({
+      account: activeAccount as any,
+      transaction,
+    });
+
+    
+    if (transactionHash) {
+
+      setTransferToAddress("");
+
+      toast.success("NFT transferred successfully");
+
+    } else {
+        
+      toast.error("Failed to transfer NFT");
+
+    }
+
+    setLoadingTransfer(false);
+
+  }
 
 
   return (
@@ -637,7 +695,7 @@ export default function AgentPage({ params }: any) {
                       border-b border-gray-300 pb-2
                     '>
                       {/* owner info */}
-                      <div className='flex flex-col items-start justify-between gap-2'>
+                      <div className='w-full flex flex-col items-start justify-between gap-2'>
                         
                         <span className='text-sm text-yellow-500'>
                             에이전트 소유자 정보
@@ -663,17 +721,37 @@ export default function AgentPage({ params }: any) {
                           </div>
                         </div>
 
+
+
                         {/* button for transfer owner */}
-                        <div className='w-full flex flex-row items-center justify-between gap-2'>
-                          <button
-                            onClick={() => {
-                              alert('준비중입니다.');
-                            }}
-                            className='p-2 bg-blue-500 text-zinc-100 rounded hover:bg-blue-600'
-                          >
-                            소유권 이전 신청
-                          </button>
-                        </div>
+                        {address && address === ownerInfo?.walletAddress && (
+                          <div className='w-full flex flex-col items-center justify-between gap-2'>
+                            <input
+                              value={transferToAddress}
+                              onChange={(e) => setTransferToAddress(e.target.value)}
+                              type='text'
+                              placeholder='이전할 지갑주소를 입력하세요.'
+                              className={`w-full p-2 rounded border border-gray-300
+                                ${loadingTransfer ? 'bg-gray-100' : 'bg-white'}
+                              `}
+                              
+                              disabled={loadingTransfer}
+                            />
+                            <button
+                              onClick={() => {
+                                //alert('준비중입니다.');
+                                nftTransfer(transferToAddress);
+                              }}
+                              className={`
+                                ${loadingTransfer ? 'bg-gray-300' : 'bg-blue-500 hover:bg-blue-600'}
+                                text-white p-2 rounded
+                              `}
+                              disabled={loadingTransfer}
+                            >
+                              {loadingTransfer ? '소유권 이전중...' : '소유권 이전하기'}
+                            </button>
+                          </div>
+                        )}
 
                       </div>
 
