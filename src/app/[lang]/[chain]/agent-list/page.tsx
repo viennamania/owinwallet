@@ -1740,7 +1740,10 @@ export default function AIPage({ params }: any) {
                                                         {agents.map((agent) => (
                                                             <div
                                                                 key={agent.erc721ContractAddress}
-                                                                className='flex flex-row items-center gap-2'>
+                                                                className='flex flex-row items-center gap-2
+                                                                    border border-gray-300 p-2 rounded-lg
+                                                                    hover:shadow-lg cursor-pointer
+                                                                '>
                                                 
                                                                 {/*
                                                                 <Image
@@ -1786,7 +1789,7 @@ export default function AIPage({ params }: any) {
                                                                         }
                                                                     </span>
                                                                     <span className='text-xs font-semibold text-gray-500'>
-                                                                        {agent?.mobile.substring(0, 6) + "..." + agent?.mobile.substring(8, 11)}
+                                                                        {agent?.mobile.substring(0, 5) + "..." + agent?.mobile.substring(8, 11)}
                                                                     </span>
                                                                 </div>
                                                                 
@@ -1929,7 +1932,7 @@ export default function AIPage({ params }: any) {
 
 
                                                                         <span className='text-sm font-semibold text-yellow-500'>
-                                                                            {nft.name}
+                                                                            {nft.name.substring(0, 15)}...
                                                                         </span>
                                                                         <span className='text-sm font-semibold'>
                                                                             {nft.description}
