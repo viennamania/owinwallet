@@ -2020,7 +2020,7 @@ export default function AIPage({ params }: any) {
                                         const fetchData = async () => {
 
                                             setLoadingApplications(true);
-                                            const response = await fetch("/api/agent/getApplications", {
+                                            const response = await fetch("/api/agent/getApplicationsCenter", {
                                                 method: "POST",
                                                 headers: {
                                                     "Content-Type": "application/json",
