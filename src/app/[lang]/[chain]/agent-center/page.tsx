@@ -1710,7 +1710,10 @@ export default function AIPage({ params }: any) {
         );
 
         ////const response = await fetch("/api/htx/queryUnifiedAccountAssets", {
+        
         const response = await fetch("/api/htx/copyTradingPositionList", {
+
+        //const response = await fetch("/api/htx/totalProfitHistory", {
 
 
 

@@ -120,7 +120,7 @@ export async function POST(request: NextRequest) {
 
     //finalResult.push(nft);
 
-    if (nft.contract.tokenType === 'ERC721') {
+    if (nft.tokenType === 'ERC721') {
       finalResult.push(nft);
     }
 
