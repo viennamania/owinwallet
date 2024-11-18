@@ -509,17 +509,15 @@ export default function AgentPage({ params }: any) {
             {agent?.image?.thumbnailUrl && (
               <Image
                 src={agent?.image?.thumbnailUrl}
-                width={80}
-                height={80}
+                width={50}
+                height={50}
                 alt="Agent"
                 className="rounded-lg"
               />
             )}
 
             <div className='flex flex-col items-start justify-center'>
-              <span className="text-lg font-semibold text-gray-800">
-                에이전트 NFT 상세정보
-              </span>
+
 
               {!address && (
 
@@ -648,11 +646,11 @@ export default function AgentPage({ params }: any) {
                   border-b border-gray-300 pb-2
                 '>
                     <span className='text-lg font-semibold text-gray-800'>
-                        에이전트 NFT 계약번호: #{agentTokenId}
+                        AI 에이전트 NFT 계약번호: #{agentTokenId}
                     </span>
                     <div className='flex flex-col items-start justify-between gap-2'>
                         <span className='text-sm text-yellow-500'>
-                          에이전트 NFT 계약주소
+                          AI 에이전트 NFT 계약주소
                         </span>
                         <span className='text-sm text-gray-800'>
                             {agentContractAddress.slice(0, 10) + '...' + agentContractAddress.slice(-10)}
@@ -673,16 +671,16 @@ export default function AgentPage({ params }: any) {
 
                       <div className='flex flex-col items-start justify-between gap-2'>
                         <span className='text-sm text-yellow-500'>
-                            에이전트 NFT 이름
+                            AI 에이전트 NFT 이름
                         </span>
-                        <span className='text-xs text-gray-800'>
+                        <span className='text-lg text-gray-800'>
                             {agent.name}
                         </span>
                       </div>
             
                       <div className='flex flex-col items-start justify-between gap-2'>
                         <span className='text-sm text-yellow-500'>
-                            에이전트 NFT 설명
+                            AI 에이전트 NFT 설명
                         </span>
                         <span className='text-xs text-gray-800'>
                             {agent.description}
@@ -698,7 +696,7 @@ export default function AgentPage({ params }: any) {
                       <div className='w-full flex flex-col items-start justify-between gap-2'>
                         
                         <span className='text-sm text-yellow-500'>
-                            에이전트 소유자 정보
+                            AI 에이전트 NFT 소유자 정보
                         </span>
                         <div className='flex flex-row items-center justify-between gap-2'>
                           <Image
@@ -723,9 +721,23 @@ export default function AgentPage({ params }: any) {
 
 
 
+
                         {/* button for transfer owner */}
-                        {address && address === ownerInfo?.walletAddress && (
+                        {address && ownerInfo?.walletAddress && address === ownerInfo?.walletAddress && (
                           <div className='w-full flex flex-col items-center justify-between gap-2'>
+                            
+                            <div className='w-full flex flex-col items-start justify-between gap-2'>
+                              <span className='text-sm text-yellow-500'>
+                                  소유권 이전하기
+                              </span>
+                              <div className='flex flex-row items-center justify-start gap-2'>
+                                <div className='w-3 h-3 bg-red-500 rounded-full'></div>
+                                <span className='text-xs text-gray-800'>
+                                    소유권을 이전하면 소유자 권리를 모두 이전하는 것에 동의하는 것입니다.
+                                </span>
+                              </div>
+                            </div>
+
                             <input
                               value={transferToAddress}
                               onChange={(e) => setTransferToAddress(e.target.value)}
@@ -740,20 +752,29 @@ export default function AgentPage({ params }: any) {
                             <button
                               onClick={() => {
                                 //alert('준비중입니다.');
+                                confirm('소유권을 이전하시겠습니까?') &&
                                 nftTransfer(transferToAddress);
                               }}
                               className={`
-                                ${loadingTransfer ? 'bg-gray-300' : 'bg-blue-500 hover:bg-blue-600'}
+                                ${!transferToAddress || loadingTransfer ? 'bg-gray-300' : 'bg-blue-500 hover:bg-blue-600'}
                                 text-white p-2 rounded
                               `}
-                              disabled={loadingTransfer}
+                              disabled={
+                                !transferToAddress ||
+                                loadingTransfer
+                              }
                             >
                               {loadingTransfer ? '소유권 이전중...' : '소유권 이전하기'}
                             </button>
                           </div>
                         )}
 
+
+
+
                       </div>
+
+                      
 
                     </div>
                     
@@ -771,7 +792,7 @@ export default function AgentPage({ params }: any) {
                         width={200}
                         height={200}
                         alt={agent.name}
-                        className='rounded-lg object-cover w-full'
+                        className='rounded-lg object-cover w-full animate-pulse'
                       />
                     )}
                   </div>
