@@ -169,6 +169,14 @@ export async function POST(request: NextRequest) {
       });
       */
 
+      if (data.data.success === false) {
+        return NextResponse.json({
+            result: {
+                status: "error",
+            },
+        });
+      }
+
 
       return NextResponse.json({
           result: {
