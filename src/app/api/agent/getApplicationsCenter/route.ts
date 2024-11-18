@@ -24,6 +24,10 @@ export async function POST(request: NextRequest) {
 
       || walletAddress === "0x030549f3E1644008c920d0046caE758317Dab8CE" // ppump wayne
 
+      || walletAddress === "0x79bA77332cE549cA99a2851b8D7e9c0229432417" // ppump orry
+
+      
+
       || walletAddress === "0x5Cb2D01Cd138D9aB7a7435A85e8B12b0B2852A7a" // center
 
       || walletAddress === "0xFb580c68794A963632FF272ab5A7233ee6114fef" // 곽준규
