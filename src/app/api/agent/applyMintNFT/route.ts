@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
     const { mobile } = user;
 
 
-    const msgBody = `[NOVA] [TID:#${applicationId}] You have a new agent application from [${userName}]`;
+    const msgBody = `[OWIN] [TID:#${applicationId}] You have a new agent application from [${userName}]`;
 
     const message = await client.messages.create({
       body: msgBody,
@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
 
 
   // send sms to userPhoneNumber
-  const msgBody = `[NOVA] [TID:#${applicationId}] Your master bot application has been submitted successfully!`;
+  const msgBody = `[OWIN] [TID:#${applicationId}] Your master bot application has been submitted successfully!`;
 
   const message = await client.messages.create({
     body: msgBody,
