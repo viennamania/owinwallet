@@ -2316,7 +2316,7 @@ export default function SettingsPage({ params }: any) {
                                             <div
                                                 key={index}
                                                 className='w-full flex flex-col gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg
-                                                bg-zinc-800'
+                                                bg-yellow-50'
                                             >
 
                                                 <div className='w-full flex flex-row gap-2 items-center justify-between'>
@@ -2414,17 +2414,19 @@ export default function SettingsPage({ params }: any) {
 
                                                     <div className='flex flex-col gap-2 items-start justify-between'>
                                                         {/* contract address */}
-                                                        <div className='text-xs font-semibold'>
+                                                        <div className='text-sm font-semibold text-blue-500'>
                                                             계약주소: {nft.contract.address.substring(0, 6) + '...' + nft.contract.address.substring(nft.contract.address.length - 4)}
                                                         </div>
-                                                        <div className='text-2xl font-semibold text-blue-500'>
+                                                        <div className='text-sm font-semibold text-blue-500'>
                                                             계약번호: #{nft.tokenId}
                                                         </div>
                                                         <div className='text-sm font-semibold text-green-500'>
-                                                            {nft.name}
+                                                            {
+                                                                nft?.name?.substring(0, 10) + '...'
+                                                            }
                                                         </div>
                                                         <div className='text-xs font-semibold'>
-                                                            {nft.description}
+                                                            {nft?.description?.substring(0, 10) + '...'}
                                                         </div>
 
                                                         <div className='flex flex-col gap-2 items-start justify-between'>

@@ -1652,6 +1652,140 @@ export default function AIPage({ params }: any) {
 
 
 
+    // queryUnifiedAccountAssets
+    const [checkingUnifiedAccountAssets, setCheckingUnifiedAccountAssets] = useState([] as any[]);
+    const [unifiedAccountAssets, setUnifiedAccountAssets] = useState([] as any[]);
+    useEffect(() => {
+        setCheckingUnifiedAccountAssets(
+            applications.map((item) => {
+                return {
+                    applicationId: item.id,
+                    checking: false,
+                }
+            })
+        );
+
+        setUnifiedAccountAssets(
+            applications.map((item) => {
+                return {
+                    applicationId: item.id,
+                    assets: [],
+                };
+            })
+        );
+    } , [applications]);
+
+    const queryUnifiedAccountAssets = async (
+        applicationId: number,
+        htxAccessKey: string,
+        htxSecretKey: string,
+    ) => {
+
+        if (!htxAccessKey) {
+            toast.error("HTX Access Key를 입력해 주세요.");
+            return;
+        }
+
+        if (!htxSecretKey) {
+            toast.error("HTX Secret Key를 입력해 주세요.");
+            return;
+        }
+
+        if (!applicationId) {
+            toast.error("신청 ID를 입력해 주세요.");
+            return;
+        }
+
+        setCheckingUnifiedAccountAssets(
+            checkingUnifiedAccountAssets.map((item) => {
+                if (item.applicationId === applicationId) {
+                    return {
+                        applicationId: applicationId,
+                        checking: true,
+                    }
+                } else {
+                    return item;
+                }
+            })
+        );
+
+        ////const response = await fetch("/api/htx/queryUnifiedAccountAssets", {
+        const response = await fetch("/api/htx/copyTradingPositionList", {
+
+
+
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                htxAccessKey: htxAccessKey,
+                htxSecretKey: htxSecretKey,
+                applicationId: applicationId,
+            }),
+        });
+
+        const data = await response.json();
+
+        ///console.log("data.result", data.result);
+
+        if (data.result?.status === "ok") {
+
+            setUnifiedAccountAssets(
+                unifiedAccountAssets.map((item) => {
+                    if (item.applicationId === applicationId) {
+                        return {
+                            applicationId: applicationId,
+                            assets: data.result?.data,
+                        }
+                    } else {
+                        return item;
+                    }
+                })
+            );
+
+            toast.success("HTX 통합 계정 자산이 확인되었습니다.");
+        } else {
+            toast.error("HTX 통합 계정 자산을 확인할 수 없습니다.");
+        }
+
+        setCheckingUnifiedAccountAssets(
+            checkingUnifiedAccountAssets.map((item) => {
+                if (item.applicationId === applicationId) {
+                    return {
+                        applicationId: applicationId,
+                        checking: false,
+                    }
+                } else {
+                    return item;
+                }
+            })
+        );
+
+    }
+
+
+    // copyTradingPositionList
+    /*
+            "data": {
+          "positions": [
+            {
+              "lever": "5",
+              "position_side": "long",
+              "contract_code": "ETH-USDT",
+              "open_avg_price": "3224.31",
+              "volume": "7",
+              "margin_mode": "cross",
+              "position_margin": "43.52558",
+              "margin_rate": "0.011323183353133195",
+              "unreal_profit": "-8.0738",
+              "profit": "-8.0738",
+              "profit_rate": "-0.178859973141540365",
+              "liquidation_price": "1744.86"
+            }
+          ]
+        },
+        */
 
 
 
@@ -2314,6 +2448,34 @@ export default function AIPage({ params }: any) {
                                             </div>
 
                                       
+                                            {/* queryUnifiedAccountAssets */}
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <div className='flex flex-col gap-2'>
+                                                    <span className='text-xs text-yellow-800'>
+                                                        HTX 통합계정 자산
+                                                    </span>
+                                                    <span className='text-sm text-gray-800'>
+                                                        {unifiedAccountAssets.find((item) => item.applicationId === application.id)?.assets?.length || 0}
+                                                    </span>
+                                                </div>
+                                                <button
+                                                    onClick={() => {
+                                                        queryUnifiedAccountAssets(
+                                                            application.id,
+                                                            application.apiAccessKey,
+                                                            application.apiSecretKey,
+                                                        );
+                                                    }}
+                                                    disabled={
+                                                        checkingUnifiedAccountAssets.find((item) => item.applicationId === application.id)?.checking
+                                                    }
+                                                    className={`${checkingUnifiedAccountAssets.find((item) => item.applicationId === application.id)?.checking ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
+                                                        hover:bg-blue-600
+                                                    `}
+                                                >
+                                                    {checkingUnifiedAccountAssets.find((item) => item.applicationId === application.id)?.checking ? "Checking..." : "Check"}
+                                                </button>
+                                            </div>
                                             
 
 
