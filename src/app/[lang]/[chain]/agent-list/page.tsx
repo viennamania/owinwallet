@@ -1180,6 +1180,11 @@ export default function AIPage({ params }: any) {
 
    const [selectedHolderWalletAddress, setSelectedHolderWalletAddress] = useState("");
 
+   const [selectedHolderAgentBotMakerContractAddress, setSelectedHolderAgentBotMakerContractAddress] = useState("");
+
+   console.log("selectedHolderWalletAddress", selectedHolderWalletAddress);
+
+
    //const changeAgentBot = async (agentBot: string) => {
    const changeHolder = async (holderWalletAddress: string) => {
 
@@ -1197,6 +1202,11 @@ export default function AIPage({ params }: any) {
         }
 
         setSelectedHolderWalletAddress(holderWalletAddress);
+
+        // if agents erc721ContractAddress is exist, then set it to selectedHolderAgentBotMakerContractAddress
+        setSelectedHolderAgentBotMakerContractAddress(
+            agents.find((agent) => agent.walletAddress === holderWalletAddress)?.erc721ContractAddress || ""
+        );
 
 
         setAgentBot(agentBot);
@@ -1754,7 +1764,7 @@ export default function AIPage({ params }: any) {
                                                                 />
                                                                 */}
 
-<input
+                                                                <input
                                                                     type="radio"
                                                                     value={agent.walletAddress}
                                                                     name="agent"
@@ -1809,6 +1819,18 @@ export default function AIPage({ params }: any) {
                                                         {selectedHolderWalletAddress && (
                                                             
                                                             <div className='flex flex-col items-start gap-2'>
+
+                                                                {selectedHolderAgentBotMakerContractAddress ? (
+                                                                    <span className='text-sm font-semibold text-green-500'>
+                                                                        에이전트 NFT 생성 기능이 활성화 되었습니다.
+                                                                    </span>
+                                                                ) : (
+                                                                    <span className='text-sm font-semibold text-green-500'>
+                                                                        에이전트 NFT 생성 기능이 비활성화 되었습니다.
+                                                                    </span>
+                                                                )}
+
+
                                                                 {/* agent nickname */}
                                                                 <span className='text-sm font-semibold text-blue-500'>
                                                                     {agents.find((agent) => agent.walletAddress === selectedHolderWalletAddress)?.nickname} 님의 AI 에이전트 NFT
@@ -1932,10 +1954,10 @@ export default function AIPage({ params }: any) {
 
 
                                                                         <span className='text-sm font-semibold text-yellow-500'>
-                                                                            {nft.name.substring(0, 15)}...
+                                                                            {nft?.name?.substring(0, 15)}...
                                                                         </span>
                                                                         <span className='text-sm font-semibold'>
-                                                                            {nft.description}
+                                                                            {nft?.description?.substring(0, 15)}...
                                                                         </span>
                                                                         
                                                                         <div className='flex flex-col items-start justify-center  gap-1'>
