@@ -118,7 +118,12 @@ export async function POST(request: NextRequest) {
 
     // api call to get application count for the agent
 
-    finalResult.push(nft);
+    //finalResult.push(nft);
+
+    if (nft.contract.tokenType === 'ERC721') {
+      finalResult.push(nft);
+    }
+
   });
 
 
