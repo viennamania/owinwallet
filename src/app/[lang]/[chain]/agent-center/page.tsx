@@ -2015,7 +2015,7 @@ export default function AIPage({ params }: any) {
                                 alt="HTX"
                                 width={20}
                                 height={20}
-                                className='rounded-full bg-white p-1'
+                                className='rounded-full bg-white p-1 w-10 h-10'
                             />
                             <span className='text-sm font-semibold'>
                                 트레이더 퍼포먼스 보러가기

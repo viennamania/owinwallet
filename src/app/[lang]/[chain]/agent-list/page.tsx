@@ -1647,6 +1647,8 @@ export default function AIPage({ params }: any) {
                         </div>
                         
                     </div>
+
+                    
                     <div className='flex flex-row items-center gap-4'>
                         {/* red dot */}
                         <div className='w-4 h-4 bg-red-500 rounded-full'></div>

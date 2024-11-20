@@ -1590,11 +1590,13 @@ export default function AIPage({ params }: any) {
                         </span>
                     </div>
 
+
+
+
+
                     <div className='flex flex-row items-center gap-2'>
 
                         <div className='flex flex-col gap-2'>
-
-
 
                             {/* AI 트레이딩 TBOT 서비스센터 입니다. */}
                             <span className="text-xs font-semibold text-gray-800">
@@ -1626,7 +1628,25 @@ export default function AIPage({ params }: any) {
                     </div>
 
 
-
+                    <button
+                        onClick={() => {
+                        window.open('https://futures.htx.com.pk/futures/copy_trading/following/trader/NTA1MDk1Njk');
+                        }}
+                        className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                    >
+                        <div className='flex flex-row items-center gap-2'>
+                            <Image
+                                src="/logo-exchange-htx.png"
+                                alt="HTX"
+                                width={20}
+                                height={20}
+                                className='rounded-full bg-white p-1'
+                            />
+                            <span className='text-sm font-semibold'>
+                                트레이더 퍼포먼스 보러가기
+                            </span>
+                        </div>
+                    </button>
 
 
 
