@@ -248,6 +248,16 @@ export default function AIPage({ params }: any) {
         Minting_NFT: "",
 
         Loading_my_images: "",
+
+        Enter_your_nickname: "",
+
+        Nickname_should_be_alphanumeric_lowercase: "",
+
+        Nickname_should_be_at_least_5_characters_and_at_most_10_characters: "",
+
+        Nickname_should_be_5_10_characters: "",
+
+        Save: "",
     
     } );
     
@@ -331,6 +341,16 @@ export default function AIPage({ params }: any) {
         Minting_NFT,
 
         Loading_my_images,
+
+        Enter_your_nickname,
+
+        Nickname_should_be_alphanumeric_lowercase,
+
+        Nickname_should_be_at_least_5_characters_and_at_most_10_characters,
+
+        Nickname_should_be_5_10_characters,
+
+        Save,
 
     } = data;
     
@@ -1643,6 +1663,143 @@ export default function AIPage({ params }: any) {
     ////console.log("myAgent", myAgent);
 
 
+
+    // check user nickname duplicate
+
+
+    const [isNicknameDuplicate, setIsNicknameDuplicate] = useState(false);
+
+    const checkNicknameIsDuplicate = async ( nickname: string ) => {
+
+        const response = await fetch("/api/user/checkUserByNickname", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                nickname: nickname,
+            }),
+        });
+
+
+        const data = await response?.json();
+
+
+        console.log("checkNicknameIsDuplicate data", data);
+
+        if (data.result) {
+            setIsNicknameDuplicate(true);
+        } else {
+            setIsNicknameDuplicate(false);
+        }
+
+    }
+
+
+
+    const [loadingSetUserData, setLoadingSetUserData] = useState(false);
+
+    const setUserData = async () => {
+
+
+        // check nickname length and alphanumeric
+        //if (nickname.length < 5 || nickname.length > 10) {
+
+        if (editedNickname.length < 5 || editedNickname.length > 10) {
+
+            toast.error(Nickname_should_be_5_10_characters);
+            return;
+        }
+        
+        ///if (!/^[a-z0-9]*$/.test(nickname)) {
+        if (!/^[a-z0-9]*$/.test(editedNickname)) {
+            toast.error(Nickname_should_be_alphanumeric_lowercase);
+            return;
+        }
+
+
+        setLoadingSetUserData(true);
+
+        if (nicknameEdit) {
+
+
+            const response = await fetch("/api/user/updateUser", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    walletAddress: address,
+                    
+                    //nickname: nickname,
+                    nickname: editedNickname,
+
+                }),
+            });
+
+            const data = await response.json();
+
+            ///console.log("updateUser data", data);
+
+            if (data.result) {
+
+                setUserCode(data.result.id);
+                setNickname(data.result.nickname);
+
+                setNicknameEdit(false);
+                setEditedNickname('');
+
+                toast.success('Nickname saved');
+
+            } else {
+
+                toast.error('You must enter different nickname');
+            }
+
+
+        } else {
+
+            const response = await fetch("/api/user/setUserVerified", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    walletAddress: address,
+                    
+                    //nickname: nickname,
+                    nickname: editedNickname,
+
+                    mobile: phoneNumber,
+                }),
+            });
+
+            const data = await response.json();
+
+            //console.log("data", data);
+
+            if (data.result) {
+
+                setUserCode(data.result.id);
+                setNickname(data.result.nickname);
+
+                setNicknameEdit(false);
+                setEditedNickname('');
+
+                toast.success('Nickname saved');
+
+            } else {
+                toast.error('Error saving nickname');
+            }
+        }
+
+        setLoadingSetUserData(false);
+
+        
+    }
+
+
+
     return (
 
         <main className="p-4 pb-10 min-h-[100vh] flex items-start justify-center container max-w-screen-lg mx-auto">
@@ -1836,9 +1993,11 @@ export default function AIPage({ params }: any) {
                                     width={50}
                                     height={50}
                                 />
+
                                 <span className='text-lg font-semibold text-blue-500'>
-                                    {My_Nickname}: {nickname}
+                                    {address.slice(0, 6)}...{address.slice(-4)}
                                 </span>
+
                                 <div className="flex flex-col gap-2">
                                     {/* disconnect button */}
                                     <button
@@ -1850,6 +2009,8 @@ export default function AIPage({ params }: any) {
                                         지갑 연결 해제
                                     </button>
                                 </div>
+
+
 
                             </div>
                         ) : (
@@ -1875,12 +2036,137 @@ export default function AIPage({ params }: any) {
                                 />
 
 
-                                <span className='text-xs font-semibold text-red-500'>
+                                <span className='text-sm font-semibold text-red-500'>
                                     {Please_connect_your_wallet_first}
                                 </span>
                             </div>
                         )}
                     </div>
+
+
+
+                    {address && userCode && nickname && (
+                        <div className='flex flex-row items-center gap-2'>
+                            {/* dot */}
+                            <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
+                            <span className='text-sm font-semibold text-zinc-800'>
+                                {My_Nickname}
+                            </span>
+                            <span className='text-2xl font-semibold text-blue-500'>
+                                {nickname}
+                            </span>
+                        </div>
+                    ) }
+
+                    {address && !userCode && !nickname && (
+                        <div className='w-full flex flex-col gap-2 items-start justify-between'>
+                            <span className='text-lg font-semibold text-red-500'>
+                                닉네임이 없습니다. 닉네임을 만들어 주세요.
+                            </span>
+
+                            <div className='w-full flex flex-col xl:flex-row gap-2 items-start justify-between border border-gray-300 p-4 rounded-lg'>
+
+                                <div
+                                    className="bg-green-500 text-sm text-zinc-100 p-2 rounded"
+                                >
+                                    {Enter_your_nickname}
+                                </div>
+
+                                <div className='flex flex-col gap-2 items-start justify-between'>
+                                    <input
+                                        disabled={!address}
+                                        className="p-2 w-64 text-zinc-100 bg-zinc-800 rounded text-2xl font-semibold"
+                                        placeholder={Enter_your_nickname}
+                                        
+                                        //value={nickname}
+                                        value={editedNickname}
+
+                                        type='text'
+                                        onChange={(e) => {
+                                            // check if the value is a number
+                                            // check if the value is alphanumeric and lowercase
+
+                                            if (!/^[a-z0-9]*$/.test(e.target.value)) {
+                                                toast.error(Nickname_should_be_alphanumeric_lowercase);
+                                                return;
+                                            }
+                                            if ( e.target.value.length > 10) {
+                                                toast.error(Nickname_should_be_at_least_5_characters_and_at_most_10_characters);
+                                                return;
+                                            }
+
+                                            //setNickname(e.target.value);
+
+                                            setEditedNickname(e.target.value);
+
+                                            checkNicknameIsDuplicate(e.target.value);
+
+                                        } }
+                                    />
+
+                                    {editedNickname && isNicknameDuplicate && (
+                                        <div className='flex flex-row gap-2 items-center justify-between'>
+                                            <span className='text-xs font-semibold text-red-500'>
+                                                이미 사용중인 닉네임입니다.
+                                            </span>
+                                        </div>
+                                    )}
+
+                                    {editedNickname
+                                    && !isNicknameDuplicate
+                                    && editedNickname.length >= 5
+                                    && (
+                                        <div className='flex flex-row gap-2 items-center justify-between'>
+                                            <span className='text-xs font-semibold text-green-500'>
+                                                사용가능한 닉네임입니다.
+                                            </span>
+                                        </div>
+                                    )}
+                                </div>
+
+
+                                <div className='flex flex-row gap-2 items-center justify-between'>
+                                    <span className='text-xs font-semibold'>
+                                        {Nickname_should_be_5_10_characters}
+                                    </span>
+                                </div>
+                                <button
+                                    disabled={
+                                        !address
+                                        || !editedNickname
+                                        || editedNickname.length < 5
+                                        || isNicknameDuplicate
+                                        || loadingSetUserData
+                                    }
+                                    className={`
+                                        ${!address
+                                        || !editedNickname
+                                        || editedNickname.length < 5
+                                        || isNicknameDuplicate
+                                        || loadingSetUserData
+                                        ? 'bg-gray-300 text-gray-400'
+                                        : 'bg-blue-500 text-zinc-100'}
+
+                                        p-2 rounded-lg text-sm font-semibold
+                                    `}
+                                    onClick={() => {
+                                        setUserData();
+                                    }}
+                                >
+                                    {loadingSetUserData ? "저장중..." : Save}
+                                    
+                                </button>
+
+                                
+
+                            </div>
+      
+
+
+                        </div>
+                    )}
+
+
      
 
 
@@ -2358,7 +2644,7 @@ export default function AIPage({ params }: any) {
                                                     window.open("https://www.htx.com.pk/invite/en-us/1h?invite_code=z73y9223", "_blank");
                                                 }}
                                             >
-                                                HTX 가입
+                                                HTX 가입하러 가기
                                             </button>
                                             {/* HTX 가입 메뉴얼 */}
                                             {/* https://drive.google.com/file/d/1eK_1jIc1PmZxJ-JYnxJKYJohoVqe1Dw9/view */}
@@ -2369,7 +2655,7 @@ export default function AIPage({ params }: any) {
                                                     window.open("https://drive.google.com/file/d/1eK_1jIc1PmZxJ-JYnxJKYJohoVqe1Dw9/view", "_blank");
                                                 }}
                                             >
-                                                HTX 가입 메뉴얼
+                                                HTX 가입 메뉴얼 보기
                                             </button>
                                         </div>
 
@@ -2479,10 +2765,10 @@ export default function AIPage({ params }: any) {
                                             '>
 
                                                 <span className='text-lg font-semibold text-blue-500'>
-                                                    AI 에이전트를 선택하세요
+                                                    AI 에이전트를 소유한 회원를 선택하세요
                                                 </span>
 
-                                                <div className='w-full flex flex-col gap-2'>
+                                                <div className='w-full flex flex-col gap-5'>
 
                                                     <div className='w-full grid grid-cols-3 gap-2'>
                                                         {agents.map((agent) => (
@@ -2536,6 +2822,10 @@ export default function AIPage({ params }: any) {
                                                     </div>
 
                                                     <div className='w-full flex flex-col gap-2 h-min-96'>
+
+                                                        <span className='text-lg font-semibold text-blue-500'>
+                                                            AI 에이전트 NFT를 선택하세요
+                                                        </span>
 
                                                         {loadingAgentBotList && (
                                                             <div className='flex flex-col items-center gap-2'>
@@ -2659,6 +2949,9 @@ export default function AIPage({ params }: any) {
                                         <div className='w-full flex flex-col gap-2
                                             border border-gray-300 p-4 rounded-lg
                                         '>
+                                            <span className='text-lg font-semibold text-blue-500'>
+                                                HTX API 정보를 입력하세요.
+                                            </span>
 
                                             <span className='text-sm font-semibold text-gray-500'>
                                                 HTX API Access Key
@@ -2746,9 +3039,11 @@ export default function AIPage({ params }: any) {
                                         {/* HTX USDT(TRON) 지갑주소 */}
 
                                         <div className='mt-5 w-full flex-col gap-2 hidden'>
+                                            
                                             <span className='text-sm font-semibold text-gray-500'>
                                                 HTX USDT(TRON) 입금용 지갑주소
                                             </span>
+
                                             <input
                                                 disabled={!address || applyingMintNFT}
                                                 onChange={(e) => setHtxUsdtWalletAddress(e.target.value)}
@@ -2760,8 +3055,9 @@ export default function AIPage({ params }: any) {
 
 
                                         <div className='mt-5 w-full flex flex-col gap-2 border border-gray-300 p-4 rounded-lg'>
-                                            <span className='text-sm font-semibold text-gray-500'>
-                                                닉네임, 핸드폰번호, 이메일주소
+                                            
+                                            <span className='text-lg font-semibold text-blue-500'>
+                                                닉네임, 핸드폰번호, 이메일주소를 입력하세요.
                                             </span>
 
                                             <input
