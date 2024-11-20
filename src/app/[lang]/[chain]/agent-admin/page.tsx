@@ -1955,17 +1955,30 @@ export default function AIPage({ params }: any) {
                                         */}
 
 
-
-
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                                             <div className='flex flex-col gap-2'>
-                                                <span className='text-xl font-semibold text-yellow-500'>
-                                                    UID
+                                                <span className='text-xs text-yellow-800'>
+                                                    HTX UID
                                                 </span>
                                                 <span className='text-sm text-gray-800'>
                                                     {application.htxUid}
                                                 </span>
                                             </div>
+
+                                            {/* checkApiAccessKey */}
+                                            <button
+                                                onClick={() => {
+                                                    checkApiAccessKey(application.id, application.apiAccessKey, application.apiSecretKey);
+                                                }}
+                                                disabled={checkingApiAccessKeyList.find((item) => item.applicationId === application.id)?.checking}
+                                                className={`${checkingApiAccessKeyList.find((item) => item.applicationId === application.id)?.checking ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
+                                                    hover:bg-blue-600
+                                                `}
+                                            >
+                                                {checkingApiAccessKeyList.find((item) => item.applicationId === application.id)?.checking ? "Updating..." : "Update UID"}
+                                            </button>
+
+
                                             {/* copy button */}
                                             <button
                                                 onClick={() => {
@@ -1976,9 +1989,10 @@ export default function AIPage({ params }: any) {
                                                     hover:bg-gray-600
                                                 "
                                             >
-                                                {Copy}
+                                                Copy
                                             </button>
                                         </div>
+
 
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                                             <div className='flex flex-col gap-2'>
