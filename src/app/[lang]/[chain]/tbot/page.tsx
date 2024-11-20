@@ -2813,29 +2813,30 @@ export default function AIPage({ params }: any) {
 
                             </div>
 
-                            {/*
-                            AI 트레이딩 100 TBOT
-                                • AI 자동매매 트레이딩 서비스 이용권 NFT 입니다.
-                                • HTX 거래소 전용
 
-                            계정 운영 방식
-                                • 본인 거래소 계정에서 직접 자금 관리
-                                • 최소 운영자금: 100 USDT
-                                • 자유로운 입출금 가능
-                                • 계좌 잔고 50% 이상 출금 시 서비스 일시 중지
-
-                            리스크 고지
-                                - 디지털자산 투자에는 원금 손실 위험이 있습니다
-                                - 과거 수익률이 미래 수익을 보장하지 않 습니다
-                                - 높은 레버리지 거래는 큰 손실을 초래할 수 있습니다
-
-                            Master BOT 혜택
-                                • 거래소 리베이트 프로그램 참여 자격 부여
-                                • 거래 실적에 따른 변동 리워드 제공
-                                • 주 단위 리워드 정산
-                                • 추가 지원AI 트레이딩 시스템 운영 교육
-                            */}
                             <div className='flex flex-col gap-2'>
+
+                                <button
+                                    onClick={() => {
+                                    window.open('https://futures.htx.com.pk/futures/copy_trading/following/trader/NTA1MDk1Njk');
+                                    }}
+                                    className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                                >
+                                    <div className='flex flex-row items-center gap-2'>
+                                        <Image
+                                            src="/logo-exchange-htx.png"
+                                            alt="HTX"
+                                            width={20}
+                                            height={20}
+                                            className='rounded-full bg-white p-1'
+                                        />
+                                        <span className='text-lg font-semibold'>
+                                            트레이더 퍼포먼스 보러가기
+                                        </span>
+                                    </div>
+                                </button>
+
+
 
                                 <span className='text-lg font-semibold text-blue-500'>
                                     AI 트레이딩 100 TBOT

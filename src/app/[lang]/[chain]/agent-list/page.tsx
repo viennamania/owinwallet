@@ -1617,9 +1617,35 @@ export default function AIPage({ params }: any) {
                             width={100}
                             height={40}
                         />
-                        <span className="text-sm font-semibold text-gray-500">
-                            AI 트레이딩 TBOT 서비스센터 입니다.
-                        </span>
+
+                        <div className='flex flex-col items-start gap-2'>
+
+                            <span className="text-sm font-semibold text-gray-500">
+                                AI 트레이딩 TBOT 서비스센터 입니다.
+                            </span>
+
+                            <button
+                                onClick={() => {
+                                window.open('https://futures.htx.com.pk/futures/copy_trading/following/trader/NTA1MDk1Njk');
+                                }}
+                                className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                            >
+                                <div className='flex flex-row items-center gap-2'>
+                                    <Image
+                                        src="/logo-exchange-htx.png"
+                                        alt="HTX"
+                                        width={20}
+                                        height={20}
+                                        className='rounded-full bg-white p-1'
+                                    />
+                                    <span className='text-sm font-semibold'>
+                                        트레이더 퍼포먼스 보러가기
+                                    </span>
+                                </div>
+                            </button>
+
+                        </div>
+                        
                     </div>
                     <div className='flex flex-row items-center gap-4'>
                         {/* red dot */}
@@ -1690,6 +1716,58 @@ export default function AIPage({ params }: any) {
                         )}
                     </div>
      
+
+                    <div className='w-full flex flex-col xl:flex-row gap-5 items-start justify-start'>
+                        {/* 에이전트 등록 => goto profile-settings */}
+                        <button
+                            onClick={() => {
+                                router.push(
+                                    "profile-settings",
+                                );
+                            }}
+                            className="bg-blue-500 text-white p-2 rounded-lg"
+                        >
+                            <div className='flex flex-row items-center gap-2'>
+                                <Image
+                                    src="/logo-opensea.png"
+                                    alt="Settings"
+                                    width={50}
+                                    height={50}
+                                    className='rounded-full bg-white p-1 w-8 h-8'
+                                />
+                                <span className='text-sm font-semibold'>
+                                    AI 에이전트 NFT 등록하러 가기
+                                </span>
+                            </div>
+                        </button>
+
+                        {/* TBOT 구매 => goto tbot */}
+                        <button
+                            onClick={() => {
+                                router.push(
+                                    "tbot",
+                                );
+                            }}
+                            className="bg-blue-500 text-white p-2 rounded-lg"
+                        >
+                            <div className='flex flex-row items-center gap-2'>
+                                <Image
+                                    src="/logo-tbot-100.png"
+                                    alt="TBOT"
+                                    width={50}
+                                    height={50}
+                                    className='rounded-full bg-white p-1 w-8 h-8'
+                                />
+                                <span className='text-sm font-semibold'>
+                                    TBOT 구매하러 가기
+                                </span>
+                            </div>
+                        </button>
+
+
+                    </div>
+
+
 
 
                     {/* TBOT Image */}

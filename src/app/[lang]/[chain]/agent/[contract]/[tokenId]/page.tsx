@@ -577,7 +577,7 @@ export default function AgentPage({ params }: any) {
 
 
 
-        <div className="mt-10 flex flex-col items-start justify-center space-y-4">
+        <div className="mt-10 flex flex-col items-start justify-center gap-5">
 
 
           <div className='flex flex-row items-center gap-2'>
@@ -812,19 +812,31 @@ export default function AgentPage({ params }: any) {
 
 
           {/* application list */}
-          <div className='mt-10 w-full flex flex-col gap-5'>
+          <div className='mt-5  w-full flex flex-col gap-5'>
 
             <div className='flex flex-row items-center gap-2'>
                 <Image
                     src='/logo-exchange-htx.png'
-                    width={50}
-                    height={50}
+                    width={60}
+                    height={60}
                     alt='htx'
                     className='rounded-lg animate-pulse'
                 />
-                <span className='text-lg font-semibold text-gray-800'>
-                    HTX 신청목록
-                </span>
+                
+                <div className='flex flex-col items-start justify-center gap-2'>
+                  <button
+                    onClick={() => {
+                      window.open('https://futures.htx.com.pk/futures/copy_trading/following/trader/NTA1MDk1Njk');
+                    }}
+                    className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                  >
+                    트레이더 퍼포먼스 보러가기
+                  </button>
+                  <span className='text-lg font-semibold text-gray-800'>
+                      HTX 신청목록
+                  </span>
+                </div>
+
             </div>
 
             {loadingApplications && (
