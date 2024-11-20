@@ -1831,7 +1831,7 @@ export default function AIPage({ params }: any) {
                             height={40}
                         />
                         <span className="text-sm font-semibold text-gray-500">
-                            OWIN AI 로봇 트레이딩&아카데미 센터
+                            AI 로봇 트레이딩&아카데미 센터
                         </span>
                     </div>
                     <div className='flex flex-row items-center gap-4'>
@@ -2026,7 +2026,7 @@ export default function AIPage({ params }: any) {
                                     }}
                                     theme={"light"}
                                         connectButton={{
-                                            label: "Sign in with OWIN Magic Wallet",
+                                            label: "Sign in with Magic Wallet",
                                     }}
                                     connectModal={{
                                         size: "wide",                            
@@ -3483,31 +3483,8 @@ function Header(
                 </div>
             </button>
 
-          {/* menu */}
-          {/* COIN, NFT, DEFI */}
           <div className="flex flex-row gap-2 items-center">
-            <button
-                onClick={() => {
-  
-                  /*
-                  router.push(
-                    "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=CAMT"
-                  );
-                  */
-  
-                }}
-              className="text-gray-600 hover:underline text-xs xl:text-lg"
-            >
-              WALLET
-            </button>
-            <button
-              onClick={() => {
-                //console.log("chat");
-              }}
-              className="text-gray-600 hover:underline text-xs xl:text-lg"
-            >
-              TRADE
-            </button>
+
             <button
               onClick={() => {
                 router.push(
