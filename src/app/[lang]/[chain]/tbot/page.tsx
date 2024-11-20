@@ -2043,8 +2043,6 @@ export default function AIPage({ params }: any) {
                         )}
                     </div>
 
-
-
                     {address && userCode && nickname && (
                         <div className='flex flex-row items-center gap-2'>
                             {/* dot */}
@@ -2639,7 +2637,7 @@ export default function AIPage({ params }: any) {
 
                                         <div className='w-full flex flex-col xl:flex-row items-center justify-between gap-2'>
                                             <button
-                                                className='w-full bg-blue-500 text-zinc-100 p-2 rounded-lg text-lg font-semibold'
+                                                className='w-full bg-blue-500 text-zinc-100 p-2 rounded-lg text-sm font-semibold'
                                                 onClick={() => {
                                                     window.open("https://www.htx.com.pk/invite/en-us/1h?invite_code=z73y9223", "_blank");
                                                 }}
@@ -2650,7 +2648,7 @@ export default function AIPage({ params }: any) {
                                             {/* https://drive.google.com/file/d/1eK_1jIc1PmZxJ-JYnxJKYJohoVqe1Dw9/view */}
 
                                             <button
-                                                className='w-full bg-blue-500 text-zinc-100 p-2 rounded-lg text-lg font-semibold'
+                                                className='w-full bg-blue-500 text-zinc-100 p-2 rounded-lg text-sm font-semibold'
                                                 onClick={() => {
                                                     window.open("https://drive.google.com/file/d/1eK_1jIc1PmZxJ-JYnxJKYJohoVqe1Dw9/view", "_blank");
                                                 }}
@@ -3131,7 +3129,6 @@ export default function AIPage({ params }: any) {
                                         </span>
                                     </div>
                                 </button>
-
 
 
                                 <span className='text-lg font-semibold text-blue-500'>
