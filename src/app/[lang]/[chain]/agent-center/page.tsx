@@ -136,7 +136,7 @@ const contractErc1155 = getContract({
 export default function AIPage({ params }: any) {
 
 
-    console.log("SettingsPage params", params);
+    ////console.log("SettingsPage params", params);
     
     
     // get params from the URL
@@ -2257,7 +2257,9 @@ export default function AIPage({ params }: any) {
                                                             {agentBotNftList.find((item) => item.applicationId === application.id)?.agentBotNft?.description || ""}
                                                         </span>
                                                         <Image
-                                                            src={agentBotNftList.find((item) => item.applicationId === application.id)?.agentBotNft?.image?.thumbnailUrl || ""}
+                                                            src={agentBotNftList.find((item) => item.applicationId === application.id)?.agentBotNft?.image?.thumbnailUrl
+                                                                || "/logo-aiagent.png"
+                                                            }
                                                             alt="NFT"
                                                             width={50}
                                                             height={50}
