@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
 
   const result = await getOneSellOrder({
     orderId: body.orderId,
-    limit: 100,
+    limit: 200,
     page: 1,
   });
 

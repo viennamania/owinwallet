@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
 
 
   const result = await getAllAgents({
-      limit: 1000,
+      limit: 200,
       page: 1,
   });
 

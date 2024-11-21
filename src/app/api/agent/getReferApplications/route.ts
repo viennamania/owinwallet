@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
 
   const result = await getMyReferAgents({
     page: 1,
-    limit: 100,
+    limit: 200,
     agentBot: agentBot,
     agentBotNumber: agentBotNumber,
   });

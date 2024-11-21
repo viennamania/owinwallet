@@ -1122,7 +1122,7 @@ export async function setMasterBotContractAddressByWalletAddress(
 
 export async function getAllAgents(
   {
-    limit = 100,
+    limit = 200,
     page = 1,
   }: {
     limit: number;
