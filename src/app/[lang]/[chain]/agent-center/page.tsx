@@ -2261,7 +2261,7 @@ export default function AIPage({ params }: any) {
                                                             alt="NFT"
                                                             width={50}
                                                             height={50}
-                                                            className='rounded-lg'
+                                                            className='rounded-lg object-cover w-10 h-10'
                                                         />
                                                     </div>
                                                 )}
@@ -2563,7 +2563,9 @@ export default function AIPage({ params }: any) {
                                                                     alt="MasterBot NFT"
                                                                     width={200}
                                                                     height={200}
-                                                                    className='rounded-lg border border-gray-300 object-cover animate-pulse'
+                                                                    className='rounded-lg border border-gray-300 object-cover animate-pulse
+                                                                    w-40 h-40
+                                                                    '
                                                                 />
                                                             </div>
 
