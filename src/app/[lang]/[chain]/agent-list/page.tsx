@@ -1961,23 +1961,39 @@ export default function AIPage({ params }: any) {
                                                                         hover:shadow-lg cursor-pointer
 
                                                                         ${selectedBotNumber && selectedBotNumber === nft.tokenId ? 'bg-blue-500 text-zinc-100' : 'bg-white text-gray-500'}
+
                                                                     `}
                                                                     ///onClick={() => setSelectedBotNumber(nft.tokenId)}
                                                                 >
+                                                                    {/* check master bot contract address */}
 
+                                                                    {(nft.contract.address === "0x69C194cE9d6d51aE6691c11F140D01a3393bBEB9"
+                                                                    || nft.contract.address === "0x705C119e7b89c5718ad7A251611322AB1B7343e7")
+                                                                    && (
+
+                                                                        <div className='flex flex-col items-start gap-2'>
+                                                                            <span className='text-lg font-semibold text-red-500'>
+                                                                                Master Bot
+                                                                            </span>
+                                                                        </div>
+                                                                    )}
 
                                                                     {/* goto button for detail page */}
-                                                                    <button
-                                                                        onClick={() => {
-                                                                            router.push('/' + params.lang + '/' + params.chain + '/agent/' + nft.contract.address + '/' + nft.tokenId);
-                                                                        }}
-                                                                        className="p-2 bg-blue-500 text-zinc-100 rounded
-                                                                        hover:bg-blue-600"
-                                                                    >
-                                                                        <span className='text-xs xl:text-lg font-semibold'>
-                                                                            에이전트 상세보기
-                                                                        </span>
-                                                                    </button>
+                                                                    {nft.contract.address !== "0x69C194cE9d6d51aE6691c11F140D01a3393bBEB9"
+                                                                    && nft.contract.address !== "0x705C119e7b89c5718ad7A251611322AB1B7343e7"
+                                                                    && (
+                                                                        <button
+                                                                            onClick={() => {
+                                                                                router.push('/' + params.lang + '/' + params.chain + '/agent/' + nft.contract.address + '/' + nft.tokenId);
+                                                                            }}
+                                                                            className="p-2 bg-blue-500 text-zinc-100 rounded
+                                                                            hover:bg-blue-600"
+                                                                        >
+                                                                            <span className='text-xs xl:text-lg font-semibold'>
+                                                                                에이전트 상세보기
+                                                                            </span>
+                                                                        </button>
+                                                                    )}
 
 
 
@@ -1988,83 +2004,93 @@ export default function AIPage({ params }: any) {
                                                                         height={200}
                                                                         className='rounded-lg w-full'
                                                                     />
-                                                                    <div className='w-full flex flex-col items-start gap-2'>
-                                                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
 
-                                                                            <div className='flex flex-col items-start gap-2'>
-                                                                                <span className='text-xs font-semibold text-red-500'>
-                                                                                    {nft.contract.address.substring(0, 15)}...
+
+                                                                    <div className='w-full flex flex-row items-center justify-between gap-2'>
+
+                                                                        <div className='flex flex-col items-start gap-2'>
+                                                                            <span className='text-xs font-semibold text-red-500'>
+                                                                                {nft.contract.address.substring(0, 15)}...
+                                                                            </span>
+                                                                            <span className='text-2xl font-semibold text-red-500'>
+                                                                                #{nft.tokenId}
+                                                                            </span>
+                                                                        </div>
+                                                                        {/* opensea link */}
+                                                                        <button
+                                                                            className='p-2 rounded-lg hover:bg-gray-300'
+                                                                            onClick={() => {
+                                                                                window.open(
+                                                                                    `https://opensea.io/assets/matic/${nft.contract.address}/${nft.tokenId}`,
+                                                                                    "_blank"
+                                                                                );
+                                                                            }}
+                                                                        >
+                                                                            <Image
+                                                                                src="/logo-opensea.png"
+                                                                                alt="opensea"
+                                                                                width={20}
+                                                                                height={20}
+                                                                            />
+                                                                        </button>
+                                                                    </div>
+
+
+
+                                                                    {nft.contract.address !== "0x69C194cE9d6d51aE6691c11F140D01a3393bBEB9"
+                                                                    && nft.contract.address !== "0x705C119e7b89c5718ad7A251611322AB1B7343e7"
+                                                                    && (
+                                                                        <div className='w-full flex flex-col items-start gap-2'>
+
+
+                                                                            <button
+                                                                                onClick={() => {
+                                                                                    navigator.clipboard.writeText(
+                                                                                        'https://owinwallet.com/kr/polygon/tbot/?agent=' +
+                                                                                        nft.contract.address + '&tokenId=' + nft.tokenId
+                                                                                    );
+                                                                                    toast.success('레퍼럴 URL 복사 완료');
+                                                                                }}
+                                                                                className="w-full p-2 bg-blue-500 text-zinc-100 rounded hover:bg-blue-600"
+                                                                            >
+                                                                                레퍼럴 URL 복사
+                                                                            </button>
+
+
+
+                                                                            <span className='text-sm font-semibold text-yellow-500'>
+                                                                                {nft?.name?.substring(0, 15)}...
+                                                                            </span>
+                                                                            <span className='text-sm font-semibold'>
+                                                                                {nft?.description?.substring(0, 15)}...
+                                                                            </span>
+                                                                            
+                                                                            <div className='flex flex-col items-start justify-center  gap-1'>
+                                                                                {/* // from now to mint in hours minutes seconds
+                                                                                // now - mint */}
+                                                                                <span className='text-xs xl:text-sm'>
+                                                                                    Start{' '}{(new Date().getTime() - new Date(nft.mint.timestamp).getTime()) / 1000 / 60 / 60 / 24 > 1
+                                                                                        ? `${Math.floor((new Date().getTime() - new Date(nft.mint.timestamp).getTime()) / 1000 / 60 / 60 / 24)} days ago`
+                                                                                        : `${Math.floor((new Date().getTime() - new Date(nft.mint.timestamp).getTime()) / 1000 / 60 / 60)} hours ago`
+                                                                                    }
                                                                                 </span>
-                                                                                <span className='text-2xl font-semibold text-red-500'>
-                                                                                    #{nft.tokenId}
+                                                                                {/* Accounts */}
+                                                                                <span className='text-xs xl:text-sm'>
+                                                                                    Accounts: 0
+                                                                                </span>
+                                                                                {/* 수익률 */}
+                                                                                <span className='text-xs xl:text-sm'>
+                                                                                    ROI: ??%
+                                                                                </span>
+                                                                                {/* Funds */}
+                                                                                <span className='text-xs xl:text-sm'>
+                                                                                    Funds: 0 USDT
                                                                                 </span>
                                                                             </div>
-                                                                            {/* opensea link */}
-                                                                            <button
-                                                                                className='p-2 rounded-lg hover:bg-gray-300'
-                                                                                onClick={() => {
-                                                                                    window.open(
-                                                                                        `https://opensea.io/assets/matic/${nft.contract.address}/${nft.tokenId}`,
-                                                                                        "_blank"
-                                                                                    );
-                                                                                }}
-                                                                            >
-                                                                                <Image
-                                                                                    src="/logo-opensea.png"
-                                                                                    alt="opensea"
-                                                                                    width={20}
-                                                                                    height={20}
-                                                                                />
-                                                                            </button>
+
+
                                                                         </div>
-
-                                                                        <button
-                                                                            onClick={() => {
-                                                                                navigator.clipboard.writeText(
-                                                                                    'https://owinwallet.com/kr/polygon/tbot/?agent=' +
-                                                                                    nft.contract.address + '&tokenId=' + nft.tokenId
-                                                                                );
-                                                                                toast.success('레퍼럴 URL 복사 완료');
-                                                                            }}
-                                                                            className="w-full p-2 bg-blue-500 text-zinc-100 rounded hover:bg-blue-600"
-                                                                        >
-                                                                            레퍼럴 URL 복사
-                                                                        </button>
-
-
-
-                                                                        <span className='text-sm font-semibold text-yellow-500'>
-                                                                            {nft?.name?.substring(0, 15)}...
-                                                                        </span>
-                                                                        <span className='text-sm font-semibold'>
-                                                                            {nft?.description?.substring(0, 15)}...
-                                                                        </span>
-                                                                        
-                                                                        <div className='flex flex-col items-start justify-center  gap-1'>
-                                                                            {/* // from now to mint in hours minutes seconds
-                                                                            // now - mint */}
-                                                                            <span className='text-xs xl:text-sm'>
-                                                                                Start{' '}{(new Date().getTime() - new Date(nft.mint.timestamp).getTime()) / 1000 / 60 / 60 / 24 > 1
-                                                                                    ? `${Math.floor((new Date().getTime() - new Date(nft.mint.timestamp).getTime()) / 1000 / 60 / 60 / 24)} days ago`
-                                                                                    : `${Math.floor((new Date().getTime() - new Date(nft.mint.timestamp).getTime()) / 1000 / 60 / 60)} hours ago`
-                                                                                }
-                                                                            </span>
-                                                                            {/* Accounts */}
-                                                                            <span className='text-xs xl:text-sm'>
-                                                                                Accounts: 0
-                                                                            </span>
-                                                                            {/* 수익률 */}
-                                                                            <span className='text-xs xl:text-sm'>
-                                                                                ROI: ??%
-                                                                            </span>
-                                                                            {/* Funds */}
-                                                                            <span className='text-xs xl:text-sm'>
-                                                                                Funds: 0 USDT
-                                                                            </span>
-                                                                        </div>
-
-
-                                                                    </div>
+                                                                    )}
                                                                 </div>
                                                             ))}
 
