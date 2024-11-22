@@ -1863,6 +1863,7 @@ export default function AIPage({ params }: any) {
                                         {/* disconnect button */}
                                         <button
                                         onClick={() => {
+                                            confirm("Disconnect wallet?") &&
                                             activeWallet?.disconnect();
                                         }}
                                         className="bg-zinc-800 text-white p-2 rounded-lg"
