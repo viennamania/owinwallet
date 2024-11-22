@@ -100,6 +100,7 @@ import path from 'path';
 
 import { TronWeb, utils as TronWebUtils, Trx, TransactionBuilder, Contract, Event, Plugin } from 'tronweb';
 import { add } from 'thirdweb/extensions/farcaster/keyGateway';
+import { stat } from 'fs';
 
 
 
@@ -480,6 +481,7 @@ export default function AgentPage({ params }: any) {
                   applicationId: item.id,
                   positions: item?.positionList?.positions || [],
                   timestamp: item?.positionList?.timestamp || 0,
+                  status: item?.positionList?.status || false,
               };
           })
         );
@@ -539,6 +541,7 @@ export default function AgentPage({ params }: any) {
 
           const positions = data.result?.data?.positions || [];
           const timestamp = data.result?.timestamp || 0;
+          const status = data.result?.status || false;
 
             setPositionList(
                 positionList.map((item) => {
@@ -547,6 +550,7 @@ export default function AgentPage({ params }: any) {
                             applicationId: applicationId,
                             positions: positions,
                             timestamp: timestamp,
+                            status: status,
                         }
                     } else {
                         return item;
@@ -1162,91 +1166,102 @@ export default function AgentPage({ params }: any) {
                                   }
                               </span>
 
+                              {/* check status */}
+                              {positionList.find((item) => item.applicationId === application.id)?.status
+                              ? (
 
-                              <table className='w-full text-xs text-gray-800
-                                  border border-gray-300 rounded-lg p-2 shadow-md bg-white divide-y divide-gray-300
-                              '>
-                                  <thead
-                                      className='bg-gray-200 text-xs
-                                      w-full rounded-lg
-                                      '
-                                  >
+                                  <table className='w-full text-xs text-gray-800
+                                      border border-gray-300 rounded-lg p-2 shadow-md bg-white divide-y divide-gray-300
+                                  '>
+                                      <thead
+                                          className='bg-gray-200 text-xs
+                                          w-full rounded-lg
+                                          '
+                                      >
 
-                                      <tr className='bg-gray-200 
-                                          border border-gray-300
-                                      '>
-                                          <th className='text-center
+                                          <tr className='bg-gray-200 
                                               border border-gray-300
                                           '>
-                                              Contract<br/>Side
-                                          </th>
-                                          <th className='text-center
-                                              border border-gray-300
-                                          '>
-                                              Volumn<br/>Margin<br/>Profit<br/>Rate
-                                          </th>
-                                          <th className='text-center
-                                              border border-gray-300
-                                          '>
-                                              Price
-                                          </th>
-                                      </tr>
-                                  </thead>
-
-                                  <tbody
-                                      className='divide-y divide-gray-300'
-                                  >
-                                      {positionList.find((item) => item.applicationId === application.id)?.positions.map((position : any) => (
-                                          <tr key={position.contract_code}
-                                              className='border border-gray-300 bg-white
-                                              hover:bg-gray-100
-                                              '
-                                          >
-                                              <td className='text-right
+                                              <th className='text-center
                                                   border border-gray-300
-                                                  p-2
                                               '>
-                                                  <span className='text-xs text-gray-800 font-semibold'>
-                                                  {/// ETH-USDT  delete -USDT
-                                                      position.contract_code.replace("-USDT", "")
-                                                  }
-                                                  </span><br/>
-
-                                                  {
-                                                      position.position_side === "long" ? (
-                                                          <span className='text-green-500 font-semibold'>
-                                                              Long
-                                                          </span>
-                                                      ) : (
-                                                          <span className='text-red-500 font-semibold'>
-                                                              Short
-                                                          </span>
-                                                      )
-                                                  }
-                                                  
-                                              </td>
-                                              <td className='text-right
+                                                  Contract<br/>Side
+                                              </th>
+                                              <th className='text-center
                                                   border border-gray-300
-                                                  p-2
                                               '>
-                                                  {position.volume}<br/>
-
-                                                  {Number(position.position_margin).toFixed(2)}<br/>
-                                              
-                                                  {Number(position.profit).toFixed(2)}<br/>
-
-                                                  {Number(position.profit_rate).toFixed(2)}%
-                                              </td>
-                                              <td className='text-right
+                                                  Volumn<br/>Margin<br/>Profit<br/>Rate
+                                              </th>
+                                              <th className='text-center
                                                   border border-gray-300
-                                                  p-2
                                               '>
-                                                  {position.liquidation_price}
-                                              </td>
+                                                  Price
+                                              </th>
                                           </tr>
-                                      ))}
-                                  </tbody>
-                              </table>
+                                      </thead>
+
+                                      <tbody
+                                          className='divide-y divide-gray-300'
+                                      >
+                                          {positionList.find((item) => item.applicationId === application.id)?.positions.map((position : any) => (
+                                              <tr key={position.contract_code}
+                                                  className='border border-gray-300 bg-white
+                                                  hover:bg-gray-100
+                                                  '
+                                              >
+                                                  <td className='text-right
+                                                      border border-gray-300
+                                                      p-2
+                                                  '>
+                                                      <span className='text-xs text-gray-800 font-semibold'>
+                                                      {/// ETH-USDT  delete -USDT
+                                                          position.contract_code.replace("-USDT", "")
+                                                      }
+                                                      </span><br/>
+
+                                                      {
+                                                          position.position_side === "long" ? (
+                                                              <span className='text-green-500 font-semibold'>
+                                                                  Long
+                                                              </span>
+                                                          ) : (
+                                                              <span className='text-red-500 font-semibold'>
+                                                                  Short
+                                                              </span>
+                                                          )
+                                                      }
+                                                      
+                                                  </td>
+                                                  <td className='text-right
+                                                      border border-gray-300
+                                                      p-2
+                                                  '>
+                                                      {position.volume}<br/>
+
+                                                      {Number(position.position_margin).toFixed(2)}<br/>
+                                              
+                                                      {Number(position.profit).toFixed(2)}<br/>
+
+                                                      {Number(position.profit_rate).toFixed(2)}%
+                                                  </td>
+                                                  <td className='text-right
+                                                      border border-gray-300
+                                                      p-2
+                                                  '>
+                                                      {position.liquidation_price}
+                                                  </td>
+                                              </tr>
+                                          ))}
+                                      </tbody>
+                                  </table>
+
+                              ) : (
+
+                                  <span className='text-lg text-red-500 font-semibold'>
+                                      포지션 리스트가 확인되지 않습니다. 카피트레이딩을 시작해 주세요.
+                                  </span>
+
+                              )}
 
                           </div>
 
