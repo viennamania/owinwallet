@@ -422,11 +422,13 @@ export async function updatePositionList(
   {
     applicationId,
     positions,
+    status,
   }
   :
   {
     applicationId: number,
     positions: object,
+    status: boolean,
   },
 ) {
 
@@ -443,7 +445,9 @@ export async function updatePositionList(
       $set: {
         positionList: {
           positions: positions,
+          status: status,
           timestamp: new Date().toISOString(),
+        
         }
       }
     }

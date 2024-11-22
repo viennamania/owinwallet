@@ -174,9 +174,10 @@ export async function POST(request: NextRequest) {
         await updatePositionList({
             applicationId: applicationId,
             positions: data.data.positions,
+            status: true,
         });
             
-        //console.log("result", result);
+        console.log("result", result);
 
 
 
@@ -187,11 +188,19 @@ export async function POST(request: NextRequest) {
             result: {
                 status: "ok",
                 data: data.data,
-                timestamp: moment.utc().format('YYYY-MM-DDTHH:mm:ss'),
+                timestamp: result?.positionList?.timestamp,
             }
         });
 
       } else {
+
+        await updatePositionList({
+            applicationId: applicationId,
+            positions: [],
+            status: false,
+        });
+
+
           return NextResponse.json({
               result: {
                   status: "error",
