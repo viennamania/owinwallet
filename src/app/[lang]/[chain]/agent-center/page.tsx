@@ -1898,6 +1898,7 @@ export default function AIPage({ params }: any) {
                         return {
                             applicationId: applicationId,
                             positions: data.result?.data?.positions,
+                            timestamp: data.result?.timestamp,
                         }
                     } else {
                         return item;

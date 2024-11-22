@@ -475,12 +475,13 @@ export default function AgentPage({ params }: any) {
         );
 
         setPositionList(
-            applications.map((item) => {
-                return {
-                    applicationId: item.id,
-                    positions: [],
-                };
-            })
+          applications.map((item) => {
+              return {
+                  applicationId: item.id,
+                  positions: item?.positionList?.positions || [],
+                  timestamp: item?.positionList?.timestamp || 0,
+              };
+          })
         );
     } , [applications]);
 
@@ -536,12 +537,16 @@ export default function AgentPage({ params }: any) {
 
         if (data.result?.status === "ok") {
 
+          const positions = data.result?.data?.positions || [];
+          const timestamp = data.result?.timestamp || 0;
+
             setPositionList(
                 positionList.map((item) => {
                     if (item.applicationId === applicationId) {
                         return {
                             applicationId: applicationId,
-                            positions: data.result?.data?.positions,
+                            positions: positions,
+                            timestamp: timestamp,
                         }
                     } else {
                         return item;
@@ -1148,6 +1153,15 @@ export default function AgentPage({ params }: any) {
                                   </button>
 
                               </div>
+
+                              {/* timestamp */}
+                              <span className='text-xs text-gray-800'>
+                                  {positionList.find((item) => item.applicationId === application.id)?.timestamp
+                                  ? new Date(positionList.find((item) => item.applicationId === application.id)?.timestamp).toLocaleString()
+                                  : ""
+                                  }
+                              </span>
+
 
                               <table className='w-full text-xs text-gray-800
                                   border border-gray-300 rounded-lg p-2 shadow-md bg-white divide-y divide-gray-300

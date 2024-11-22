@@ -169,11 +169,16 @@ export async function POST(request: NextRequest) {
         //console.log(JSON.stringify(data.data));
 
         // call updatePositionList
+
+        const result =
         await updatePositionList({
             applicationId: applicationId,
             positions: data.data.positions,
         });
             
+        //console.log("result", result);
+
+
 
 
 
@@ -182,6 +187,7 @@ export async function POST(request: NextRequest) {
             result: {
                 status: "ok",
                 data: data.data,
+                timestamp: moment.utc().format('YYYY-MM-DDTHH:mm:ss'),
             }
         });
 
