@@ -1496,7 +1496,8 @@ export default function AIPage({ params }: any) {
             applications.map((item) => {
                 return {
                     applicationId: item.id,
-                    positions: [],
+                    positions: item?.positionList?.positions || [],
+                    timestamp: item?.positionList?.timestamp || 0,
                 };
             })
         );
@@ -2212,6 +2213,7 @@ export default function AIPage({ params }: any) {
                                                     HTX 포지션 리스트
                                                 </span>
 
+                                                {/*
                                                 <button
                                                     onClick={() => {
                                                         getPositionList(
@@ -2229,8 +2231,19 @@ export default function AIPage({ params }: any) {
                                                 >
                                                     {checkingPositionList.find((item) => item.applicationId === application.id)?.checking ? "Checking..." : "Check"}
                                                 </button>
+                                                */}
 
                                             </div>
+
+                                            {/* timestamp */}
+                                            <span className='text-xs text-gray-800'>
+                                                {positionList.find((item) => item.applicationId === application.id)?.timestamp
+                                                ? new Date(positionList.find((item) => item.applicationId === application.id)?.timestamp).toLocaleString()
+                                                : ""
+                                                }
+                                            </span>
+
+
                                             <table className='w-full text-xs text-gray-800
                                                 border border-gray-300 rounded-lg p-2 shadow-md bg-white divide-y divide-gray-300
                                             '>

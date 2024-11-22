@@ -29,7 +29,10 @@ function sign_sha(method, baseurl, path, data) {
 }
 */
 
-
+// updatePositionList
+import {
+    updatePositionList,
+} from '@lib/api/agent';
 
 
 
@@ -41,6 +44,7 @@ export async function POST(request: NextRequest) {
   const {
     htxAccessKey,
     htxSecretKey,
+    applicationId,
    } = body;
 
   //console.log("htxAccessKey", htxAccessKey);
@@ -164,13 +168,23 @@ export async function POST(request: NextRequest) {
 
         //console.log(JSON.stringify(data.data));
 
+        // call updatePositionList
+        await updatePositionList({
+            applicationId: applicationId,
+            positions: data.data.positions,
+        });
+            
 
-          return NextResponse.json({
-              result: {
-                  status: "ok",
-                  data: data.data,
-              }
-          });
+
+
+
+        return NextResponse.json({
+            result: {
+                status: "ok",
+                data: data.data,
+            }
+        });
+
       } else {
           return NextResponse.json({
               result: {

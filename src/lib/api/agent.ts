@@ -417,6 +417,57 @@ export async function updateAssetValuation(
 
 }
 
+// updatePositionList
+export async function updatePositionList(
+  {
+    applicationId,
+    positions,
+  }
+  :
+  {
+    applicationId: number,
+    positions: object,
+  },
+) {
+
+  if (!applicationId || !positions) {
+    return null;
+  }
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('agents');
+
+  const result = await collection.updateOne(
+    { id: applicationId },
+    {
+      $set: {
+        positionList: {
+          positions: positions,
+          timestamp: new Date().toISOString(),
+        }
+      }
+    }
+  );
+
+  if (result) {
+    return {
+      applicationId: applicationId,
+      positionList: {
+        positions: positions,
+        timestamp: new Date().toISOString(),
+      }
+    };
+  } else {
+    return null;
+  }
+
+}
+
+
+
+
+
+
 // update agent bot nft
 export async function updateAgentBotNft(
   {
@@ -545,6 +596,15 @@ export async function updateApplicationStartTrading(
   }
 
 }
+
+
+
+
+
+
+
+
+
 
 
 
