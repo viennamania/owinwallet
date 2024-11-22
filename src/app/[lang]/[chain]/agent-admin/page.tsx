@@ -1498,6 +1498,7 @@ export default function AIPage({ params }: any) {
                     applicationId: item.id,
                     positions: item?.positionList?.positions || [],
                     timestamp: item?.positionList?.timestamp || 0,
+                    status: item?.positionList?.status || false,
                 };
             })
         );
@@ -1561,6 +1562,8 @@ export default function AIPage({ params }: any) {
                         return {
                             applicationId: applicationId,
                             positions: data.result?.data?.positions,
+                            timestamp: data.result?.data?.timestamp,
+                            status: data.result?.data?.status,
                         }
                     } else {
                         return item;
@@ -2064,28 +2067,7 @@ export default function AIPage({ params }: any) {
                                                 {Copy}
                                             </button>
                                         </div>
-                                        <div className='w-full hidden flex-row items-center justify-between gap-2'>
-                                            <div className='flex flex-col gap-2'>
-                                                <span className='text-lg font-semibold text-yellow-500'>
-                                                    핸드폰번호
-                                                </span>
-                                                <span className='text-sm text-gray-800'>
-                                                    {application.userPhoneNumber}
-                                                </span>
-                                            </div>
-                                            {/* copy button */}
-                                            <button
-                                                onClick={() => {
-                                                    navigator.clipboard.writeText(application.userPhoneNumber);
-                                                    toast.success("Copied to clipboard");
-                                                }}
-                                                className="bg-gray-500 text-white p-2 rounded-lg
-                                                    hover:bg-gray-600
-                                                "
-                                            >
-                                                {Copy}
-                                            </button>
-                                        </div>
+
 
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                                             <div className='flex flex-col gap-2'>
@@ -2209,12 +2191,12 @@ export default function AIPage({ params }: any) {
                                         */}
 
                                         {/* getPositionList */}
-                                        <div className='w-full flex flex-col items-center justify-between gap-2'>
+                                        <div className='w-full flex flex-col items-start justify-between gap-2'>
+                                            
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                 <span className='text-xs text-yellow-800'>
                                                     HTX 포지션 리스트
                                                 </span>
-
                                                 {/*
                                                 <button
                                                     onClick={() => {
@@ -2245,110 +2227,102 @@ export default function AIPage({ params }: any) {
                                                 }
                                             </span>
 
+                                            {/* check status */}
+                                            {positionList.find((item) => item.applicationId === application.id)?.status
+                                            ? (
 
-                                            <table className='w-full text-xs text-gray-800
-                                                border border-gray-300 rounded-lg p-2 shadow-md bg-white divide-y divide-gray-300
-                                            '>
-                                                <thead
-                                                    className='bg-gray-200 text-xs
-                                                    w-full rounded-lg
-                                                    '
-                                                >
+                                                <table className='w-full text-xs text-gray-800
+                                                    border border-gray-300 rounded-lg p-2 shadow-md bg-white divide-y divide-gray-300
+                                                '>
+                                                    <thead
+                                                        className='bg-gray-200 text-xs
+                                                        w-full rounded-lg
+                                                        '
+                                                    >
 
-                                                    <tr className='bg-gray-200 
-                                                        border border-gray-300
-                                                    '>
-                                                        <th className='text-center
+                                                        <tr className='bg-gray-200 
                                                             border border-gray-300
                                                         '>
-                                                            Contract<br/>Side
-                                                        </th>
-                                                        <th className='text-center
-                                                            border border-gray-300
-                                                        '>
-                                                            Volumn<br/>Margin<br/>Profit<br/>Rate
-                                                        </th>
-                                                        <th className='text-center
-                                                            border border-gray-300
-                                                        '>
-                                                            Price
-                                                        </th>
-                                                    </tr>
-                                                </thead>
+                                                            <th className='text-center
+                                                                border border-gray-300
+                                                            '>
+                                                                Contract<br/>Side
+                                                            </th>
+                                                            <th className='text-center
+                                                                border border-gray-300
+                                                            '>
+                                                                Volumn<br/>Margin<br/>Profit<br/>Rate
+                                                            </th>
+                                                            <th className='text-center
+                                                                border border-gray-300
+                                                            '>
+                                                                Price
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
 
-                                                {positionList.length === 0 && (
                                                     <tbody
                                                         className='divide-y divide-gray-300'
                                                     >
-                                                        <tr
-                                                            className='border border-gray-300 bg-white
-                                                            hover:bg-gray-100
-                                                            '
-                                                        >
-                                                            <td className='text-center
-                                                                border border-gray-300
-                                                                p-2
-                                                            '>
-                                                                No data
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                )}
-                                                <tbody
-                                                    className='divide-y divide-gray-300'
-                                                >
-                                                    {positionList.find((item) => item.applicationId === application.id)?.positions.map((position : any) => (
-                                                        <tr key={position.contract_code}
-                                                            className='border border-gray-300 bg-white
-                                                            hover:bg-gray-100
-                                                            '
-                                                        >
-                                                            <td className='text-right
-                                                                border border-gray-300
-                                                                p-2
-                                                            '>
-                                                                <span className='text-xs text-gray-800 font-semibold'>
-                                                                {/// ETH-USDT  delete -USDT
-                                                                    position.contract_code.replace("-USDT", "")
-                                                                }
-                                                                </span><br/>
+                                                        {positionList.find((item) => item.applicationId === application.id)?.positions.map((position : any) => (
+                                                            <tr key={position.contract_code}
+                                                                className='border border-gray-300 bg-white
+                                                                hover:bg-gray-100
+                                                                '
+                                                            >
+                                                                <td className='text-right
+                                                                    border border-gray-300
+                                                                    p-2
+                                                                '>
+                                                                    <span className='text-xs text-gray-800 font-semibold'>
+                                                                    {/// ETH-USDT  delete -USDT
+                                                                        position.contract_code.replace("-USDT", "")
+                                                                    }
+                                                                    </span><br/>
 
-                                                                {
-                                                                    position.position_side === "long" ? (
-                                                                        <span className='text-green-500 font-semibold'>
-                                                                            Long
-                                                                        </span>
-                                                                    ) : (
-                                                                        <span className='text-red-500 font-semibold'>
-                                                                            Short
-                                                                        </span>
-                                                                    )
-                                                                }
-                                                                
-                                                            </td>
-                                                            <td className='text-right
-                                                                border border-gray-300
-                                                                p-2
-                                                            '>
-                                                                {position.volume}<br/>
+                                                                    {
+                                                                        position.position_side === "long" ? (
+                                                                            <span className='text-green-500 font-semibold'>
+                                                                                Long
+                                                                            </span>
+                                                                        ) : (
+                                                                            <span className='text-red-500 font-semibold'>
+                                                                                Short
+                                                                            </span>
+                                                                        )
+                                                                    }
+                                                                    
+                                                                </td>
+                                                                <td className='text-right
+                                                                    border border-gray-300
+                                                                    p-2
+                                                                '>
+                                                                    {position.volume}<br/>
 
-                                                                {Number(position.position_margin).toFixed(2)}<br/>
+                                                                    {Number(position.position_margin).toFixed(2)}<br/>
                                                             
-                                                                {Number(position.profit).toFixed(2)}<br/>
+                                                                    {Number(position.profit).toFixed(2)}<br/>
 
-                                                                {Number(position.profit_rate).toFixed(2)}%
-                                                            </td>
-                                                            <td className='text-right
-                                                                border border-gray-300
-                                                                p-2
-                                                            '>
-                                                                {position.liquidation_price}
-                                                            </td>
-                                                        </tr>
-                                                    ))}
-                                                </tbody>
-                                            </table>
+                                                                    {Number(position.profit_rate).toFixed(2)}%
+                                                                </td>
+                                                                <td className='text-right
+                                                                    border border-gray-300
+                                                                    p-2
+                                                                '>
+                                                                    {position.liquidation_price}
+                                                                </td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
 
+                                            ) : (
+
+                                                <span className='text-lg text-red-500 font-semibold'>
+                                                    포지션 리스트가 확인되지 않습니다. 카피트레이딩을 시작해 주세요.
+                                                </span>
+
+                                            )}
 
                                         </div>
 
