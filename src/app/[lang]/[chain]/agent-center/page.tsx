@@ -2637,6 +2637,8 @@ export default function AIPage({ params }: any) {
                                                 </button>
                                             </div>
 
+
+
                                             {/* getPositionList */}
                                             <div className='w-full flex flex-col items-start justify-between gap-2'>
                                                 
@@ -2707,7 +2709,12 @@ export default function AIPage({ params }: any) {
                                                                     border border-gray-300
                                                                     p-2
                                                                 '>
-                                                                    {position.contract_code}<br/>
+                                                                    <span className='text-xs text-gray-800 font-semibold'>
+                                                                    {/// ETH-USDT  delete -USDT
+                                                                        position.contract_code.replace("-USDT", "")
+                                                                    }
+                                                                    </span><br/>
+
                                                                     {
                                                                         position.position_side === "long" ? (
                                                                             <span className='text-green-500 font-semibold'>
