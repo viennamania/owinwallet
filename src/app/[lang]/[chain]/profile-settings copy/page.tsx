@@ -1417,12 +1417,10 @@ export default function SettingsPage({ params }: any) {
 
                 <AppBarComponent />
 
-                {/*
                 <Header
                     agent={agent ? agent : ""}
                     tokenId={agentNumber ? agentNumber : ""}
                 />
-                */}
         
 
 
@@ -1430,20 +1428,14 @@ export default function SettingsPage({ params }: any) {
 
                     <div className='flex flex-row items-center space-x-4'>
                         <Image
-                            src={avatar ? avatar : "/profile-default.png"}
+                            src="/logo-tbot.webp"
                             alt="Profile Picture"
                             width={50}
                             height={50}
-                            className="rounded-full object-cover bg-gray-300
-                            border border-gray-300 w-12 h-12"
+                            className="rounded-full"  
                         />
-                        <div className='flex flex-row items-center gap-2'>
-                            <span className="text-xl font-semibold">
-                                My Page
-                            </span>
-                            <span className="text-2xl font-semibold text-green-500">
-                                {nickname ? nickname : ""}
-                            </span>
+                        <div className="text-2xl font-semibold">
+                            {Profile_Settings}
                         </div>
 
 
@@ -1453,35 +1445,31 @@ export default function SettingsPage({ params }: any) {
                 
                     <div className='w-full flex flex-col gap-4 items-start justify-center'>
 
-
-                      
-                        <ConnectButton
-                            client={client}
-                            wallets={wallets}
-                            accountAbstraction={{
-                                chain: polygon,
-                                factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum, ethereum
-                                sponsorGas: true
-                            }}
-                            theme={"light"}
-                            connectButton={{
-                                label: "Sign in with OWIN Magic Wallet",
-                            }}
-                            connectModal={{
-                                size: "wide", 
-                                titleIcon: "https://owinwallet.com/icon-tbot.png",                           
-                                showThirdwebBranding: false,
-
-                            }}
-                            locale={"ko_KR"}
-                            //locale={"en_US"}
-                        />
-
                         <div className='w-full flex flex-col gap-2'>
 
+                            <ConnectButton
+                                client={client}
+                                wallets={wallets}
+                                accountAbstraction={{
+                                    chain: polygon,
+                                    factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum, ethereum
+                                    sponsorGas: true
+                                }}
+                                theme={"light"}
+                                connectButton={{
+                                    label: "Sign in with OWIN Magic Wallet",
+                                }}
+                                connectModal={{
+                                    size: "wide", 
+                                    titleIcon: "https://owinwallet.com/icon-tbot.png",                           
+                                    showThirdwebBranding: false,
 
+                                }}
+                                locale={"ko_KR"}
+                                //locale={"en_US"}
+                            />
 
-                            {!address ? (
+                            {!address && (
                                 <div className='flex flex-row gap-2 items-center justify-start'>
                                     {/* dot */}
                                     <div className="h-2 w-2 bg-green-500 rounded-full"></div>
@@ -1489,124 +1477,123 @@ export default function SettingsPage({ params }: any) {
                                         {Please_connect_your_wallet_first}
                                     </span>
                                 </div>
-                            ) : (
-                                <Image
-                                    src="/icon-wallet-live.gif"
-                                    alt="Wallet"
-                                    width={65}
-                                    height={25}
-                                    className="rounded"
-                                />
                             )}
                             
 
                             {address && (
-                                <div className='w-full flex flex-col xl:flex-row gap-2 items-start justify-between border border-gray-300 p-4 rounded-lg
-                                bg-zinc-800'>
-                                    
-                                    <div className='xl:w-1/2 flex flex-col gap-2 items-start justify-between'>
-                                        
-                                        <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
-                                            입금용 지갑주소(Polygon)
-                                        </div>
-                                        <div className='flex flex-row gap-2 items-center justify-between'>
-                                            <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
-                                                {address.substring(0, 6)}...{address.substring(address.length - 4, address.length)}
-                                            </div>
-                                            <button
-                                                onClick={() => {
-                                                    navigator.clipboard.writeText(address);
-                                                    toast.success('지갑주소가 복사되었습니다');
-                                                }}
-                                                className="p-2 bg-blue-500 text-zinc-100 rounded"
-                                            >
-                                                Copy
-                                            </button>
-                                        </div>
+                                <div className='w-full flex flex-col gap-2 items-start justify-between border border-gray-300 p-4 rounded-lg'>
+                                    <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
+                                        입금용 지갑주소(Polygon)
                                     </div>
-
-                                    <div className='xl:w-1/2 flex flex-col gap-4 items-start justify-center'>
-
-                                        <div className='w-full flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
-
-                                            <div className="p-2 bg-green-500 text-zinc-100 rounded">
-                                                {
-                                                    My_Balance
-                                                }
-                                            </div>
-                                            <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
-                                                {
-                                                    Number(balance).toFixed(2)
-                                                } USDT
-                                            </div>
+                                    <div className='flex flex-row gap-2 items-center justify-between'>
+                                        <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
+                                            {address.substring(0, 6)}...{address.substring(address.length - 4, address.length)}
                                         </div>
-
-                                        {/* send USDT */}
-                                        <div className='w-full flex flex-col gap-2 items-start justify-between border border-gray-300 p-4 rounded-lg'>
-                                            <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
-                                                {Send_USDT}
-                                            </div>
-                                            <div className='flex flex-col gap-2 items-start justify-between'>
-                                                <input
-                                                    className="p-2 w-64 bg-zinc-100 rounded text-lg font-semibold"
-                                                    placeholder="0.00"
-                                                    type='number'
-                                                    onChange={(e) => {
-                                                        setAmount(Number(e.target.value));
-                                                    }}
-                                                />
-                                                <input
-                                                    className="p-2 w-64 bg-zinc-100 rounded text-lg font-semibold"
-                                                    placeholder="받는 사람 지갑주소"
-                                                    type='text'
-                                                    onChange={(e) => {
-                                                        setRecipient({
-                                                            ...recipient,
-                                                            walletAddress: e.target.value,
-                                                        });
-                                                    }}
-                                                />
-                                                <button
-                                                    disabled={sending || !amount || !recipient.walletAddress}
-                                                    onClick={() => {
-                                                        sendUsdt();
-                                                    }}
-                                                    className={`p-2 bg-blue-500 text-zinc-100 rounded hover:bg-blue-600
-                                                        ${sending || !amount || !recipient.walletAddress ? 'opacity-50' : ''}`}
-                                                >
-                                                    <div className='flex flex-row gap-2 items-center justify-between'>
-                                                        {sending && (
-                                                            <Image
-                                                                src="/loading.png"
-                                                                alt="Send"
-                                                                width={25}
-                                                                height={25}
-                                                                className="animate-spin"
-                                                            />
-                                                        )}
-                                                        <span className='text-lg font-semibold'>
-                                                            {Pay_USDT}
-                                                        </span>
-                                                    </div>
-                                                </button>
-                                            </div>
-                                        </div>
-
+                                        <button
+                                            onClick={() => {
+                                                navigator.clipboard.writeText(address);
+                                                toast.success('지갑주소가 복사되었습니다');
+                                            }}
+                                            className="p-2 bg-blue-500 text-zinc-100 rounded"
+                                        >
+                                            Copy
+                                        </button>
                                     </div>
-
-
-
-
-
                                 </div>
                             )}
 
 
+ 
+
                         </div>
+
+
+
+
+                        {address && (
+
+                            <div className='w-full flex flex-col gap-4 items-start justify-center'>
+
+                                <div className='w-full flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
+                                    <Image
+                                        src="/icon-wallet-live.gif"
+                                        alt="Wallet"
+                                        width={65}
+                                        height={25}
+                                        className="rounded"
+                                    />
+                                    <div className="p-2 bg-green-500 text-zinc-100 rounded">
+                                        {
+                                            My_Balance
+                                        }
+                                    </div>
+                                    <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
+                                        {
+                                            Number(balance).toFixed(2)
+                                        } USDT
+                                    </div>
+                                </div>
+
+                                {/* send USDT */}
+                                <div className='w-full flex flex-col gap-2 items-start justify-between border border-gray-300 p-4 rounded-lg'>
+                                    <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
+                                        {Send_USDT}
+                                    </div>
+                                    <div className='flex flex-col xl:flex-row gap-2 items-start justify-between'>
+                                        <input
+                                            className="p-2 w-64 text-zinc-100 bg-zinc-800 rounded text-lg font-semibold"
+                                            placeholder="0.00"
+                                            type='number'
+                                            onChange={(e) => {
+                                                setAmount(Number(e.target.value));
+                                            }}
+                                        />
+                                        <input
+                                            className="p-2 w-64 text-zinc-100 bg-zinc-800 rounded text-lg font-semibold"
+                                            placeholder="받는 사람 지갑주소"
+                                            type='text'
+                                            onChange={(e) => {
+                                                setRecipient({
+                                                    ...recipient,
+                                                    walletAddress: e.target.value,
+                                                });
+                                            }}
+                                        />
+                                        <button
+                                            disabled={sending}
+                                            onClick={() => {
+                                                sendUsdt();
+                                            }}
+                                            className={`p-2 bg-blue-500 text-zinc-100 rounded ${sending ? 'opacity-50' : ''}`}
+                                        >
+                                            <div className='flex flex-row gap-2 items-center justify-between'>
+                                                {sending && (
+                                                    <Image
+                                                        src="/loading.png"
+                                                        alt="Send"
+                                                        width={25}
+                                                        height={25}
+                                                        className="animate-spin"
+                                                    />
+                                                )}
+                                                <span className='text-lg font-semibold'>
+                                                    {Pay_USDT}
+                                                </span>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+
+
+
+
+                            </div>
+
+                        )}
+
 
                         
                     </div>
-
 
 
                     <div className='w-full  flex flex-col gap-5 '>
@@ -1615,214 +1602,203 @@ export default function SettingsPage({ params }: any) {
                     
 
 
-                        <div className='flex flex-col xl:flex-row gap-2 items-start justify-between border border-gray-300 p-4 rounded-lg'>
 
+                        {address && userCode && (
+                            <div className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
 
-                            <div className='flex flex-col gap-2 items-start justify-between'>
-
-                                {address && userCode && (
-                                    <div className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
-
-                                        <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
-                                            {My_Nickname}
-                                        </div>
-
-                                        <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
-                                            {nickname}
-                                        </div>
-
-                                        
-                                        <button
-                                            onClick={() => {
-
-                                                nicknameEdit ? setNicknameEdit(false) : setNicknameEdit(true);
-
-                                            } }
-                                            className="p-2 bg-blue-500 text-zinc-100 rounded"
-                                        >
-                                            {nicknameEdit ? Cancel : Edit}
-                                        </button>
-
-                                        <Image
-                                            src="/verified.png"
-                                            alt="Verified"
-                                            width={20}
-                                            height={20}
-                                            className="rounded-lg"
-                                        />
-
-
-                                        
-                                    </div>
-                                )}
-
-
-                                { (address && (nicknameEdit || !userCode)) && (
-                                    <div className=' flex flex-col xl:flex-row gap-2 items-start justify-between border border-gray-300 p-4 rounded-lg'>
-
-                                        <div
-                                            className="bg-green-500 text-sm text-zinc-100 p-2 rounded"
-                                        >
-                                            {!userCode ? Enter_your_nickname :
-                                                nicknameEdit ? "수정할 내 닉네임" : Enter_your_nickname
-                                            }
-                                        </div>
-
-                                        
-                                        <div className='flex flex-col gap-2 items-start justify-between'>
-                                            <input
-                                                disabled={!address}
-                                                className="p-2 w-64 text-zinc-100 bg-zinc-800 rounded text-2xl font-semibold"
-                                                placeholder={Enter_your_nickname}
-                                                
-                                                //value={nickname}
-                                                value={editedNickname}
-
-                                                type='text'
-                                                onChange={(e) => {
-                                                    // check if the value is a number
-                                                    // check if the value is alphanumeric and lowercase
-
-                                                    if (!/^[a-z0-9]*$/.test(e.target.value)) {
-                                                        toast.error(Nickname_should_be_alphanumeric_lowercase);
-                                                        return;
-                                                    }
-                                                    if ( e.target.value.length > 10) {
-                                                        toast.error(Nickname_should_be_at_least_5_characters_and_at_most_10_characters);
-                                                        return;
-                                                    }
-
-                                                    //setNickname(e.target.value);
-
-                                                    setEditedNickname(e.target.value);
-
-                                                    checkNicknameIsDuplicate(e.target.value);
-
-                                                } }
-                                            />
-
-                                            {editedNickname && isNicknameDuplicate && (
-                                                <div className='flex flex-row gap-2 items-center justify-between'>
-                                                    <span className='text-xs font-semibold text-red-500'>
-                                                        이미 사용중인 닉네임입니다.
-                                                    </span>
-                                                </div>
-                                            )}
-
-                                            {editedNickname
-                                            && !isNicknameDuplicate
-                                            && editedNickname.length >= 5
-                                            && (
-                                                <div className='flex flex-row gap-2 items-center justify-between'>
-                                                    <span className='text-xs font-semibold text-green-500'>
-                                                        사용가능한 닉네임입니다.
-                                                    </span>
-                                                </div>
-                                            )}
-
-                                            <span className='text-xs font-semibold'>
-                                                {Nickname_should_be_5_10_characters}
-                                            </span>
-                                        </div>
-
-                                        <button
-                                            disabled={
-                                                !address
-                                                || !editedNickname
-                                                || editedNickname.length < 5
-                                                || isNicknameDuplicate
-                                                || loadingSetUserData
-                                            }
-                                            className={`
-                                                ${!address
-                                                || !editedNickname
-                                                || editedNickname.length < 5
-                                                || isNicknameDuplicate
-                                                || loadingSetUserData
-                                                ? 'bg-gray-300 text-gray-400'
-                                                : 'bg-blue-500 text-zinc-100'}
-
-                                                p-2 rounded-lg text-sm font-semibold
-                                            `}
-                                            onClick={() => {
-                                                setUserData();
-                                            }}
-                                        >
-                                            {loadingSetUserData ? "저장중..." : Save}
-                                            
-                                        </button>
-
-                                        
-
-                                    </div>
-                                )}
-
-                            </div>
-
-
-                            {userCode && (
-                                <div className='flex flex-row xl:flex-row gap-2 items-start justify-between border border-gray-300 p-4 rounded-lg'>
-
-                                    <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
-                                        {My_Profile_Picture}
-                                    </div>
-
-                                    <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
-                                        <Uploader
-                                            lang={params.lang}
-                                            walletAddress={address as string}
-                                        />
-                                    </div>
-
+                                <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
+                                    {My_Nickname}
                                 </div>
-                            )}
 
+                                <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
+                                    {nickname}
+                                </div>
 
+                                
+                                <button
+                                    onClick={() => {
 
+                                        nicknameEdit ? setNicknameEdit(false) : setNicknameEdit(true);
 
+                                    } }
+                                    className="p-2 bg-blue-500 text-zinc-100 rounded"
+                                >
+                                    {nicknameEdit ? Cancel : Edit}
+                                </button>
 
-
-
-                            {/*
-                            {userCode && (
-
-                                <div className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
-
-                                    <div className="bg-red-800 text-sm text-zinc-100 p-2 rounded">
-                                        My Referral Code
-                                    </div>
-
-                                    <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
-                                        {userCode}
-                                    </div>
-
-    
-
-                                    <button
-                                        onClick={() => {
-                                            navigator.clipboard.writeText(userCode);
-                                            toast.success('Referral code copied to clipboard');
-                                        }}
-                                        className="p-2 bg-blue-500 text-zinc-100 rounded"
-                                    >
-                                        Copy
-                                    </button>
-
-                                    <Image
+                                <Image
                                     src="/verified.png"
                                     alt="Verified"
                                     width={20}
                                     height={20}
                                     className="rounded-lg"
-                                    />
+                                />
 
 
+                                
+                            </div>
+                        )}
+
+
+                        { (address && (nicknameEdit || !userCode)) && (
+                            <div className=' flex flex-col xl:flex-row gap-2 items-start justify-between border border-gray-300 p-4 rounded-lg'>
+
+                                <div
+                                    className="bg-green-500 text-sm text-zinc-100 p-2 rounded"
+                                >
+                                    {!userCode ? Enter_your_nickname :
+                                        nicknameEdit ? "수정할 내 닉네임" : Enter_your_nickname
+                                    }
                                 </div>
 
-                            )}
-                            */}
+                                <div className='flex flex-col gap-2 items-start justify-between'>
+                                    <input
+                                        disabled={!address}
+                                        className="p-2 w-64 text-zinc-100 bg-zinc-800 rounded text-2xl font-semibold"
+                                        placeholder={Enter_your_nickname}
+                                        
+                                        //value={nickname}
+                                        value={editedNickname}
 
-                        </div>
+                                        type='text'
+                                        onChange={(e) => {
+                                            // check if the value is a number
+                                            // check if the value is alphanumeric and lowercase
+
+                                            if (!/^[a-z0-9]*$/.test(e.target.value)) {
+                                                toast.error(Nickname_should_be_alphanumeric_lowercase);
+                                                return;
+                                            }
+                                            if ( e.target.value.length > 10) {
+                                                toast.error(Nickname_should_be_at_least_5_characters_and_at_most_10_characters);
+                                                return;
+                                            }
+
+                                            //setNickname(e.target.value);
+
+                                            setEditedNickname(e.target.value);
+
+                                            checkNicknameIsDuplicate(e.target.value);
+
+                                        } }
+                                    />
+
+                                    {editedNickname && isNicknameDuplicate && (
+                                        <div className='flex flex-row gap-2 items-center justify-between'>
+                                            <span className='text-xs font-semibold text-red-500'>
+                                                이미 사용중인 닉네임입니다.
+                                            </span>
+                                        </div>
+                                    )}
+
+                                    {editedNickname
+                                    && !isNicknameDuplicate
+                                    && editedNickname.length >= 5
+                                    && (
+                                        <div className='flex flex-row gap-2 items-center justify-between'>
+                                            <span className='text-xs font-semibold text-green-500'>
+                                                사용가능한 닉네임입니다.
+                                            </span>
+                                        </div>
+                                    )}
+                                </div>
+
+
+                                <div className='flex flex-row gap-2 items-center justify-between'>
+                                    <span className='text-xs font-semibold'>
+                                        {Nickname_should_be_5_10_characters}
+                                    </span>
+                                </div>
+                                <button
+                                    disabled={
+                                        !address
+                                        || !editedNickname
+                                        || editedNickname.length < 5
+                                        || isNicknameDuplicate
+                                        || loadingSetUserData
+                                    }
+                                    className={`
+                                        ${!address
+                                        || !editedNickname
+                                        || editedNickname.length < 5
+                                        || isNicknameDuplicate
+                                        || loadingSetUserData
+                                        ? 'bg-gray-300 text-gray-400'
+                                        : 'bg-blue-500 text-zinc-100'}
+
+                                        p-2 rounded-lg text-sm font-semibold
+                                    `}
+                                    onClick={() => {
+                                        setUserData();
+                                    }}
+                                >
+                                    {loadingSetUserData ? "저장중..." : Save}
+                                    
+                                </button>
+
+                                
+
+                            </div>
+                        )}
+
+
+                        {userCode && (
+                            <div className='flex flex-row xl:flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
+
+                                <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
+                                    {My_Profile_Picture}
+                                </div>
+
+                                <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
+                                    <Uploader
+                                        lang={params.lang}
+                                        walletAddress={address as string}
+                                    />
+                                </div>
+
+                            </div>
+                        )}
+
+
+
+                        {/*
+                        {userCode && (
+
+                            <div className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
+
+                                <div className="bg-red-800 text-sm text-zinc-100 p-2 rounded">
+                                    My Referral Code
+                                </div>
+
+                                <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
+                                    {userCode}
+                                </div>
+
+ 
+
+                                <button
+                                    onClick={() => {
+                                        navigator.clipboard.writeText(userCode);
+                                        toast.success('Referral code copied to clipboard');
+                                    }}
+                                    className="p-2 bg-blue-500 text-zinc-100 rounded"
+                                >
+                                    Copy
+                                </button>
+
+                                <Image
+                                src="/verified.png"
+                                alt="Verified"
+                                width={20}
+                                height={20}
+                                className="rounded-lg"
+                                />
+
+
+                            </div>
+
+                        )}
+                        */}
 
 
 
@@ -1911,7 +1887,7 @@ export default function SettingsPage({ params }: any) {
                                 </div>
 
                                 {/* 은행명, 계좌번호, 예금주 */}
-                                <div className='flex flex-col xl:flex-row gap-2 items-start justify-between'>
+                                <div className='flex flex-col gap-2 items-start justify-between'>
                                                                         
                                     <input 
                                         disabled={applying}
@@ -2342,7 +2318,12 @@ export default function SettingsPage({ params }: any) {
                                               {/* goto button for detail page */}
                                               <button
                                                   onClick={() => {
-                                                      router.push('/' + params.lang + '/' + params.chain + '/aiagent/' + nft.contract.address + '/' + nft.tokenId);
+                                                      router.push('/' + params.lang + '/' + params.chain + '/agent/' + nft.contract.address + '/' + nft.tokenId);
+
+                                                      // open new window
+
+                                                      //window.open('https://owinwallet.com/' + params.lang + '/' + params.chain + '/agent/' + nft.contract.address + '/' + nft.tokenId);
+
 
                                                   }}
                                                   className="p-2 bg-blue-500 text-zinc-100 rounded
@@ -2357,7 +2338,7 @@ export default function SettingsPage({ params }: any) {
                                               <button
                                                   onClick={() => {
                                                       navigator.clipboard.writeText(
-                                                          'https://owinwallet.com/kr/polygon/promotion/?agent=' +
+                                                          'https://owinwallet.com/kr/polygon/tbot/?agent=' +
                                                           nft.contract.address + '&tokenId=' + nft.tokenId
                                                       );
                                                       toast.success('레퍼럴 URL 복사 완료');
@@ -2562,7 +2543,7 @@ function Header(
             {/* logo */}
             <button
                 onClick={() => {
-                    //router.push('/kr/polygon/?agent=' + agent + '&tokenId=' + tokenId);
+                    router.push('/kr/polygon/?agent=' + agent + '&tokenId=' + tokenId);
                 }}
             >            
                 <div className="flex flex-row gap-2 items-center">
@@ -2583,20 +2564,20 @@ function Header(
                 <button
                 onClick={() => {
                     router.push(
-                        "/kr/polygon/promotion?agent=" + agent + "&tokenId=" + tokenId
+                        "/kr/polygon/tbot?agent=" + agent + "&tokenId=" + tokenId
                     );
                 }}
                 className="text-gray-600 hover:underline text-xs xl:text-lg"
                 >
-                TBOT Page
+                TBOT
                 </button>
                 <button
                 onClick={() => {
-                    router.push('/kr/polygon/my-page?agent=' + agent + '&tokenId=' + tokenId);
+                    router.push('/kr/polygon/profile-settings?agent=' + agent + '&tokenId=' + tokenId);
                 }}
                 className="text-gray-600 hover:underline text-xs xl:text-lg"
                 >
-                My Page
+                SETTINGS
                 </button>
             </div>
 
