@@ -260,7 +260,7 @@ bot.on('message:text', async (ctx) => {
     );
     */
 
-
+    /*
     await bot.api.sendMessage(
         ctx.message.chat.id,
 
@@ -276,7 +276,15 @@ bot.on('message:text', async (ctx) => {
             parse_mode: "HTML",
         },
     );
+    */
 
+    await bot.api.sendMessage(
+        ctx.message.chat.id,
+        'https://owinwallet.com/kr/polygon/tbot',
+        {
+            parse_mode: "HTML",
+        },
+    );
 
 
     if (ctx.message.text === '/start') {
@@ -322,7 +330,7 @@ bot.on('message:text', async (ctx) => {
 
             const randomColor = Math.floor(Math.random() * robotColors.length);
 
-            const englishPrompt = "One cute and " + randomColor + " color metallic robot character with shiny skin in Japanese anime style with a sign PUMP. transparent background.";
+            const englishPrompt = "One cute and " + randomColor + " color metallic robot character with shiny skin in Japanese anime style with a sign AGENT. transparent background.";
 
 
             const negative_prompt = "easynegative,ng_deepnegative_v1_75t,((monochrome)),((grayscale)),bad-picture-chill-75v, (worst quality, low quality:1.4), monochrome, grayscale, sketches, paintings, lowres, normalres, blurry, acnes on face, {{sperm}}, {{bra}}";
@@ -688,6 +696,7 @@ bot.on('message:video', async (ctx) => {
 } )
 */
 
+/*
 bot.command("start", async (ctx) => {
     await ctx.reply("Hi! I can only read messages that explicitly reply to me!", {
       // Make Telegram clients automatically show a reply interface to the user.
@@ -707,6 +716,7 @@ bot.on("edited_message", async (ctx) => {
 
     console.log("editedText", editedText)
 });
+*/
 
 
 /*
