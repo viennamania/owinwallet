@@ -283,7 +283,7 @@ bot.on('message:text', async (ctx) => {
 
     await bot.api.sendMessage(
         ctx.message.chat.id,
-        'https://owinwallet.com/kr/polygon/tbot',
+        'https://owinwallet.com/kr/polygon/profile-settings',
         {
             parse_mode: "HTML",
         },
