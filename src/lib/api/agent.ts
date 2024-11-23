@@ -140,7 +140,7 @@ export async function insertOne(data: any) {
 export async function getAllAgents({
   center = '',
   page = 1,
-  limit = 100,
+  limit = 200,
 }) {
 
   const client = await clientPromise;
