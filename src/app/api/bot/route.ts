@@ -242,7 +242,10 @@ bot.on('message:text', async (ctx) => {
 
     //await ctx.reply('Hello!')
 
-    await ctx.reply("Hello!", {
+
+    const hello = "안녕하세요! AI 에이전트 서비스입니다.";
+
+    await ctx.reply(hello, {
         // `reply_parameters` specifies the actual reply feature.
         reply_parameters:{
                 message_id: ctx.msg.message_id
@@ -595,7 +598,7 @@ bot.on('message:text', async (ctx) => {
 
 
 
-    await ctx.reply(ctx.message.text)
+    /////await ctx.reply(ctx.message.text)
 
 })
 
