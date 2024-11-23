@@ -1490,13 +1490,27 @@ export default function SettingsPage({ params }: any) {
                                     </span>
                                 </div>
                             ) : (
-                                <Image
+                                <div className="mt-0 w-full flex items-center justify-start gap-5">
+                                    <Image
                                     src="/icon-wallet-live.gif"
                                     alt="Wallet"
                                     width={65}
                                     height={25}
                                     className="rounded"
-                                />
+                                    />
+                                    <div className="flex flex-col gap-2">
+                                    {/* disconnect button */}
+                                    <button
+                                        onClick={() => {
+                                        confirm("지갑 연결을 해제하시겠습니까?") && activeWallet?.disconnect();
+                                        }}
+                                        className="bg-zinc-800 text-white p-2 rounded-lg"
+                                    >
+                                        지갑 연결 해제
+                                    </button>
+                                    </div>
+                        
+                                </div>
                             )}
                             
 
