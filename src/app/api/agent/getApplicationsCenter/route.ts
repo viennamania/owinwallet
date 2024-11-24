@@ -21,6 +21,7 @@ export async function POST(request: NextRequest) {
   }
 
   if (walletAddress === "0x7bfF3359841D26C8046364b93E7dA01886ae1c22" // wayne
+      || walletAddress === "0x648A9CF18A02ec961990C1183eCc1e0C6989d10B" // wayne telegram
 
       || walletAddress === "0x030549f3E1644008c920d0046caE758317Dab8CE" // ppump wayne
 
