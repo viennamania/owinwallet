@@ -1918,6 +1918,13 @@ export default function AIPage({ params }: any) {
                                                 <span className='text-lg font-semibold text-gray-800'>
                                                     신청번호: #{application.id}
                                                 </span>
+
+                                            </div>
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                {/* center */}
+                                                <span className='text-xs font-semibold text-gray-800'>
+                                                    {application?.center === 'ppump' ? 'PPUMP': 'OWIN'}
+                                                </span>
                                             </div>
 
                                             {/* 신청일자 */}

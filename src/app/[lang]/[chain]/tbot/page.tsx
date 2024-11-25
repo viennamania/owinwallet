@@ -1823,15 +1823,11 @@ export default function AIPage({ params }: any) {
                 },
                 body: JSON.stringify({
                     walletAddress: address,
-                    
                     //nickname: nickname,
                     nickname: editedNickname,
                     userType: userType,
-
                     mobile: userPhoneNumber,
                     telegramId: userTelegramId,
-
-
                 }),
             });
 
