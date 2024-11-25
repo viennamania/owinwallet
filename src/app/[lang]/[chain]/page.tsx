@@ -626,6 +626,8 @@ export default function Index({ params }: any) {
             }),
         });
 
+        if (!response) return;
+
         const data = await response?.json();
 
         console.log("data", data);
