@@ -45,6 +45,10 @@ export interface UserProps {
   tronWalletPrivateKey: string,
 
   erc721ContractAddress: string,
+
+  userType: string,
+
+  telegramId: string,
 }
 
 export interface ResultProps {
@@ -1133,7 +1137,7 @@ export async function setMasterBotContractAddressByWalletAddress(
 
 export async function getAllAgents(
   {
-    limit = 200,
+    limit = 300,
     page = 1,
   }: {
     limit: number;
@@ -1189,7 +1193,9 @@ export async function getAllAgents(
       walletAddress: user.walletAddress,
       nickname: user.nickname,
       avatar: user.avatar,
+      userType: user.userType,
       mobile: user.mobile,
+      telegramId: user.telegramId,
       email: user.email,
       tronWalletAddress: user.tronWalletAddress,
       erc721ContractAddress: user.erc721ContractAddress,

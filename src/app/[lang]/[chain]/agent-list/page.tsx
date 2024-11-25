@@ -1829,7 +1829,7 @@ export default function AIPage({ params }: any) {
 
                                                         {agents.map((agent) => (
                                                             <div
-                                                                key={agent.erc721ContractAddress}
+                                                                key={agent.id}
                                                                 className='flex flex-row items-center gap-2
                                                                     border border-gray-300 p-2 rounded-lg
                                                                     hover:shadow-lg cursor-pointer
@@ -1878,9 +1878,35 @@ export default function AIPage({ params }: any) {
                                                                             agent.nickname
                                                                         }
                                                                     </span>
-                                                                    <span className='text-xs font-semibold text-gray-500'>
-                                                                        {agent?.mobile.substring(0, 5) + "..." + agent?.mobile.substring(8, 11)}
-                                                                    </span>
+                                                                    {/* userType */}
+                                                                    
+                                                                    {agent?.userType === "telegram" ? (
+                                                                        <div className='flex flex-col items-start gap-2'>
+                                                                            <Image
+                                                                                src="/logo-telegram.webp"
+                                                                                alt="Telegram"
+                                                                                width={20}
+                                                                                height={20}
+                                                                            />
+                                                                            <span className='text-xs font-semibold text-gray-500'>
+                                                                                {agent?.telegramId}
+                                                                            </span>
+                                                                        </div>
+                                                                    ) : (
+                                                                        <div className='flex flex-col items-start gap-2'>
+                                                                            <Image
+                                                                                src="/logo-cellphone.webp"
+                                                                                alt="Discord"
+                                                                                width={20}
+                                                                                height={20}
+                                                                            />
+                                                                            <span className='text-xs font-semibold text-gray-500'>
+                                                                                {agent?.mobile.substring(0, 5) + "..." + agent?.mobile.substring(8, 11)}
+                                                                            </span>
+                                                                        </div>
+                                                                    )}
+                                                                    
+
                                                                 </div>
                                                                 
 
