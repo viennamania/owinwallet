@@ -19,6 +19,14 @@ export async function POST(request: NextRequest) {
     telegramId,
   } = body;
 
+  /*
+  console.log('walletAddress', walletAddress);
+  console.log('nickname', nickname);
+  console.log('userType', userType);
+  console.log('mobile', mobile);
+  console.log('telegramId', telegramId);
+  */
+
 
 
   const result = await insertOneVerified({

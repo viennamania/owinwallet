@@ -141,7 +141,7 @@ export async function insertOneVerified(data: any) {
 
 
   const client = await clientPromise;
-  const collection = client.db('pump').collection('users');
+  const collection = client.db('vienna').collection('users');
 
   // check same walletAddress or smae nickname
 
@@ -155,7 +155,7 @@ export async function insertOneVerified(data: any) {
     { projection: { _id: 0, emailVerified: 0 } }
   );
 
-  console.log('checkUser: ' + checkUser);
+  console.log('checkUser: ' + JSON.stringify(checkUser));
 
 
   if (checkUser) {
