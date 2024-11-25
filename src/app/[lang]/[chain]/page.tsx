@@ -53,8 +53,12 @@ import { balanceOf, getBalance, transfer } from "thirdweb/extensions/erc20";
  
 
 
-import { getUserPhoneNumber } from "thirdweb/wallets/in-app";
-
+import {
+  getUserPhoneNumber,
+  getProfiles,
+  getSocialIcon,
+  getUserEmail,
+} from "thirdweb/wallets/in-app";
 
 import { toast } from 'react-hot-toast';
 
@@ -89,7 +93,10 @@ import { N } from "ethers";
 const wallets = [
   inAppWallet({
     auth: {
-      options: ["phone"],
+      options: [
+        "phone",
+        "telegram",
+      ],
     },
   }),
 ];
@@ -475,7 +482,7 @@ export default function Index({ params }: any) {
   //console.log("address", address);
 
       
-
+  /*
   const [phoneNumber, setPhoneNumber] = useState("");
 
   useEffect(() => {
@@ -496,6 +503,49 @@ export default function Index({ params }: any) {
     }
 
   } , [address]);
+  */
+
+  const [userType, setUserType] = useState("");
+  const [userTelegramId, setUserTelegramId] = useState("");
+  const [userAvatar, setUserAvatar] = useState("");
+  const [userNickname, setUserNickname] = useState("");
+  const [userPhoneNumber, setUserPhoneNumber] = useState("");
+
+
+
+  useEffect(() => {
+
+    const fetchData = async () => {
+
+      getProfiles({ client }).then((profiles) => {
+        
+        ///console.log("profiles======", profiles);
+
+        if (profiles) {
+          profiles.forEach((
+            profile  // { type: "phone", details: { phone: "+8201098551647", id: "30e2276d8030b0bb9c27b4b7410d9de8960bab3d632f34d23d6e089182625506" } }
+          ) => {
+            if (profile.type === "phone") {
+              setUserType("phone");
+              setUserPhoneNumber(profile.details.phone || "");
+            } else if (profile.type === "telegram") {
+              setUserType("telegram");
+              const details = profile.details as any;
+              setUserAvatar(details.picture || "");
+              setUserNickname(details.username || "");
+              setUserTelegramId(details.id || "");
+            }
+          });
+        }
+
+      } );
+
+    }
+
+
+    client && fetchData();
+
+  } , []);
 
  
 
@@ -935,23 +985,25 @@ export default function Index({ params }: any) {
                 </div>
               </button>
 
-              <button
-                onClick={() => {
-                  window.open("https://t.me/owin_chatbot", "_blank");
-                }}
-                className="p-2 bg-zinc-800 text-white rounded"
-              >
-                <div className="flex flex-row gap-2 items-center">
-                  <Image
-                    src="/logo-telegram.webp"
-                    alt="Telegram"
-                    width={50}
-                    height={50}
-                    className="rounded-lg w-10 h-10"
-                  />
-                  <span>Go to Telegram</span>
-                </div>
-              </button>
+              {address && userType === "telegram" && (
+                  <button
+                      onClick={() => {
+                          window.open("https://t.me/owin_chatbot", "_blank");
+                      }}
+                      className="p-2 bg-zinc-800 text-white rounded"
+                      >
+                      <div className="flex flex-row gap-2 items-center">
+                          <Image
+                          src="/logo-telegram.webp"
+                          alt="Telegram"
+                          width={50}
+                          height={50}
+                          className="rounded-lg w-10 h-10"
+                          />
+                          <span>Go to Telegram</span>
+                      </div>
+                  </button>
+              )}
 
             </div>
 

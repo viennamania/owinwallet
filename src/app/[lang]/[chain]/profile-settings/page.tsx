@@ -54,7 +54,10 @@ import {
 import { smartWallet, inAppWallet } from "thirdweb/wallets";
 
 
-import { getUserPhoneNumber } from "thirdweb/wallets/in-app";
+import {
+    getUserPhoneNumber,
+    getProfiles,
+} from "thirdweb/wallets/in-app";
 
 
 import Image from 'next/image';
@@ -145,7 +148,10 @@ export default function SettingsPage({ params }: any) {
     const wallets = [
         inAppWallet({
           auth: {
-            options: ["phone"],
+            options: [
+                "phone",
+                "telegram",
+            ],
           },
         }),
     ];
@@ -368,7 +374,7 @@ export default function SettingsPage({ params }: any) {
       
     ////console.log("address", address);
  
-
+    /*
     const [phoneNumber, setPhoneNumber] = useState("");
 
     useEffect(() => {
@@ -389,8 +395,50 @@ export default function SettingsPage({ params }: any) {
       }
   
     } , [address]);
+     */
 
 
+
+
+    const [userPhoneNumber, setUserPhoneNumber] = useState("");
+    const [userType, setUserType] = useState("");
+    const [userTelegramId, setUserTelegramId] = useState("");
+    //const [userAvatar, setUserAvatar] = useState("");
+    //const [userNickname, setUserNickname] = useState("");
+
+
+
+    useEffect(() => {
+
+        const fetchData = async () => {
+    
+          getProfiles({ client }).then((profiles) => {
+            
+            ///console.log("profiles======", profiles);
+    
+            if (profiles) {
+              profiles.forEach((
+                profile  // { type: "phone", details: { phone: "+8201098551647", id: "30e2276d8030b0bb9c27b4b7410d9de8960bab3d632f34d23d6e089182625506" } }
+              ) => {
+                if (profile.type === "phone") {
+                  setUserType("phone");
+                  setUserPhoneNumber(profile.details.phone || "");
+                } else if (profile.type === "telegram") {
+                  setUserType("telegram");
+                  const details = profile.details as any;
+                  setUserTelegramId(details.id || "");
+                }
+              });
+            }
+    
+          } );
+    
+        }
+    
+    
+        client && fetchData();
+    
+      }, []);
 
 
 
@@ -676,12 +724,12 @@ export default function SettingsPage({ params }: any) {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    walletAddress: address,
-                    
+                    walletAddress: address,                    
                     //nickname: nickname,
                     nickname: editedNickname,
-
-                    mobile: phoneNumber,
+                    userType: userType,
+                    mobile: userPhoneNumber,
+                    telegramId: userTelegramId,
                 }),
             });
 
@@ -839,7 +887,7 @@ export default function SettingsPage({ params }: any) {
           lang: params.lang,
           chain: params.chain,
           walletAddress: address,
-          mobile: phoneNumber,
+          mobile: userPhoneNumber,
         }),
       });
   
