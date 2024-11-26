@@ -43,23 +43,25 @@ export async function insertOne(data: any) {
 
   console.log('insertOne data: ' + JSON.stringify(data));
   /*
-  {"walletAddress":"0x7bfF3359841D26C8046364b93E7dA01886ae1c22",
-  "agentBot":"0xf1963dB42E46b5EFf302c0fD9AC42AEaEd0C39A8",
-  "userName":"dsaf",
-  "userPhoneNumber":"23423",
-  "userEmail":"sadfs",
-  "htxUid":"sdaf",
-  "htxUsdtWalletAddress":"sdf",
-  "apiAccessKey":"sadf",
-  "apiSecretKey":"sdfasd"}
+    {"center":"",
+    "walletAddress":"0x2C91bf7ac8300913367Bf1c29b14c25556c0df92",
+    "agentBot":"0x1ADf35501D4Edde233C2e1D8b209417dEa4dDd8c",
+    "agentBotNumber":0,
+    "userName":"judgement",
+    "userPhoneNumber":"1234",
+    "userEmail":"genie1647@gmail.com",
+    "htxUserId":64102420,
+    "htxUsdtWalletAddress":"",
+    "apiAccessKey":"dc81de74-43e7185b-qz5c4v5b6n-d98b6",
+    "apiSecretKey":"f0c5be2c-b5f99118-7c4c1691-6f594"
+    }
   */
 
   if (!data.walletAddress
     || !data.agentBot
+    /////|| !data.agentBotNumber  => if agentBotNumber is 0, it will be false
     || !data.userName
-    || !data.userPhoneNumber
     || !data.userEmail
-
     || !data.htxUserId
     
     //////|| !data.htxUsdtWalletAddress
@@ -70,20 +72,35 @@ export async function insertOne(data: any) {
   }
 
 
+
+
+
   const client = await clientPromise;
   const collection = client.db('vienna').collection('agents');
 
 
+  try {
+
   // check if walletAddress exists
   const checkWalletAddress = await collection.findOne({ walletAddress: data.walletAddress });
+  
+  ////console.log('checkWalletAddress: ' + JSON.stringify(checkWalletAddress));
+
+  
   if (checkWalletAddress) {
     return null;
   }
+
+  
+
 
 
   // generate id 100000 ~ 999999
 
   const id = Math.floor(Math.random() * 900000) + 100000;
+
+
+
 
 
   const result = await collection.insertOne(
@@ -99,6 +116,7 @@ export async function insertOne(data: any) {
       userName: data.userName,
       userPhoneNumber: data.userPhoneNumber,
       userEmail: data.userEmail,
+      userTelegramId: data.userTelegramId,
       htxUserId: data.htxUserId,
       htxUsdtWalletAddress: data.htxUsdtWalletAddress,
       apiAccessKey: data.apiAccessKey,
@@ -110,6 +128,11 @@ export async function insertOne(data: any) {
     }
   );
 
+
+  ///console.log('insertOne result: ' + JSON.stringify(result));
+
+
+
   if (result) {
     return {
       id: id,
@@ -119,6 +142,7 @@ export async function insertOne(data: any) {
       userName: data.userName,
       userPhoneNumber: data.userPhoneNumber,
       userEmail: data.userEmail,
+      userTelegramId: data.userTelegramId,
       htxUserId: data.htxUserId,
       htxUsdtWalletAddress: data.htxUsdtWalletAddress,
       apiAccessKey: data.apiAccessKey,
@@ -128,6 +152,11 @@ export async function insertOne(data: any) {
 
     };
   } else {
+    return null;
+  }
+
+  } catch (e) {
+    console.log('insertOne error: ' + e);
     return null;
   }
 

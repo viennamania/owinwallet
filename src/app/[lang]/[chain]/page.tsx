@@ -551,6 +551,8 @@ export default function Index({ params }: any) {
 
   ////console.log(phoneNumber);
 
+  console.log("userType========", userType);
+
 
 
 

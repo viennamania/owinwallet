@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
   apiSecretKey: apiSecretKey,
   */
 
-  const { center, walletAddress, agentBot, agentBotNumber, userName, userPhoneNumber, userEmail, htxUserId, htxUsdtWalletAddress, apiAccessKey, apiSecretKey } = body;
+  const { center, walletAddress, agentBot, agentBotNumber, userName, userPhoneNumber, userEmail, userTelegramId, htxUserId, htxUsdtWalletAddress, apiAccessKey, apiSecretKey } = body;
 
 
 
@@ -39,6 +39,7 @@ export async function POST(request: NextRequest) {
     userName: userName,
     userPhoneNumber: userPhoneNumber,
     userEmail: userEmail,
+    userTelegramId: userTelegramId,
     htxUserId: htxUserId,
     htxUsdtWalletAddress: htxUsdtWalletAddress,
     apiAccessKey: apiAccessKey,
@@ -64,26 +65,33 @@ export async function POST(request: NextRequest) {
   if (user) {
     const { mobile } = user;
 
+    if (mobile && mobile.length > 10) {
 
-    const msgBody = `[OWIN] [TID:#${applicationId}] You have a new agent application from [${userName}]`;
+
+      const msgBody = `[OWIN] [TID:#${applicationId}] You have a new agent application from [${userName}]`;
+
+      const message = await client.messages.create({
+        body: msgBody,
+        from: "+17622254217",
+        to: mobile,
+      });
+
+    }
+
+  }
+
+  if (userPhoneNumber && userPhoneNumber.length > 10) {
+
+    // send sms to userPhoneNumber
+    const msgBody = `[OWIN] [TID:#${applicationId}] Your master bot application has been submitted successfully!`;
 
     const message = await client.messages.create({
       body: msgBody,
       from: "+17622254217",
-      to: mobile,
+      to: userPhoneNumber,
     });
-
+  
   }
-
-
-  // send sms to userPhoneNumber
-  const msgBody = `[OWIN] [TID:#${applicationId}] Your master bot application has been submitted successfully!`;
-
-  const message = await client.messages.create({
-    body: msgBody,
-    from: "+17622254217",
-    to: userPhoneNumber,
-  });
 
  
   return NextResponse.json({
