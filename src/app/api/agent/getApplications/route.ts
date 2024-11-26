@@ -37,6 +37,8 @@ export async function POST(request: NextRequest) {
       || walletAddress === "0xE052B4f1B6842d422Debf17eB5361138830d6c1c"
       || walletAddress === "0x78d937Ec95f1674BF9E43d90D6231f504AC2D6c3"
 
+      || walletAddress === "0xaB6fB9F80469511195Db7Ac707Cb3F4aD99b1755" // center
+
     
     ) {
 

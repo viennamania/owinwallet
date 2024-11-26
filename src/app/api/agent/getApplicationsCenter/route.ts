@@ -35,6 +35,8 @@ export async function POST(request: NextRequest) {
       || walletAddress === "0xFb580c68794A963632FF272ab5A7233ee6114fef" // 곽준규
 
       || walletAddress === "0x4d459172eeDA205Ed0DbA2b8897c9cA864069057" // 오원대표
+
+      || walletAddress === "0xaB6fB9F80469511195Db7Ac707Cb3F4aD99b1755" // 
     
     ) {
 
