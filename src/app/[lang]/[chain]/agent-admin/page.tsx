@@ -97,7 +97,10 @@ import { start } from 'repl';
 const wallets = [
     inAppWallet({
       auth: {
-        options: ["phone"],
+        options: [
+            "phone",
+            "telegram",
+        ],
       },
     }),
 ];
