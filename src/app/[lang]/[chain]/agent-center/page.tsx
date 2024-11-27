@@ -87,7 +87,10 @@ import { Timestamp } from 'mongodb';
 const wallets = [
     inAppWallet({
       auth: {
-        options: ["phone"],
+        options: [
+            "phone",
+            "telegram",
+        ],
       },
     }),
 ];
