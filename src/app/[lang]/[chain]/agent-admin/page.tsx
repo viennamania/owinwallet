@@ -1625,24 +1625,23 @@ export default function AIPage({ params }: any) {
         });
         */
 
-        const res = await fetch('/api/agent/getApplicationsCenter', {
-            method: 'POST',
+        const response = await fetch("/api/agent/getApplications", {
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
-              },
+                "Content-Type": "application/json",
+            },
             body: JSON.stringify({
                 walletAddress: address,
-                center: '',
             }),
         });
   
-        if (!res.ok) {
+        if (!response.ok) {
             setIsExporting(false);
             console.error('Error fetching data');
             return;
         }
 
-        const post = await res.json();
+        const post = await response.json();
   
         const total = post.result.totalCount;
 
