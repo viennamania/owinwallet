@@ -94,6 +94,9 @@ import { add } from 'thirdweb/extensions/farcaster/keyGateway';
 import { start } from 'repl';
 
 
+
+import * as XLSX from "xlsx";
+
 const wallets = [
     inAppWallet({
       auth: {
@@ -1597,6 +1600,147 @@ export default function AIPage({ params }: any) {
 
 
 
+    const [isExporting, setIsExporting] = useState(false);
+
+    const exportToCSV = async (fileName: string) => {
+  
+        setIsExporting(true);
+      
+        /*
+  
+        const res = await fetch('/api/doingdoit/user/getAllForDownload', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            },
+          body: JSON.stringify({
+            sort: sortConfig.key,
+            order: sortConfig.direction,
+            q: searchTerm,
+            startDate: startDate,
+            endDate: endDate,
+            regTypeArray: regTypeArray,
+  
+            }),
+        });
+        */
+
+        const res = await fetch('/api/agent/getApplicationsCenter', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              },
+            body: JSON.stringify({
+                walletAddress: address,
+                center: '',
+            }),
+        });
+  
+        if (!res.ok) {
+            setIsExporting(false);
+            console.error('Error fetching data');
+            return;
+        }
+
+        const post = await res.json();
+  
+        const total = post.result.totalCount;
+
+        const items = post.result.applications as any[];
+  
+   
+        ///console.log('items', items);
+  
+  
+        
+  
+        const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+  
+        const fileExtension = '.xlsx';
+  
+        /*
+        const formattedData = items.map((item) => {
+            const { id, ...rest } = item;
+            return rest;
+        });
+        */
+  
+        const formattedData  = [] as any[];
+  
+        items.map((item, index ) => {
+  
+            /*
+            const { id, ...rest } = item;
+    
+            
+            
+            formattedData.push({
+            //'No': id,
+    
+            '회원번호': id,
+            '가입일시': new Date(rest.createdAt).toLocaleString(),
+            '이메일': rest.email,
+            '닉네임': rest.nickname,
+            '가입유형': rest.regType === 'email' ? '이메일' : rest.regType === 'kakao' ? '카카오' : rest.regType === 'naver' ? '네이버' : rest.regType === 'google' ? '구글' : '기타',
+            '생년월일': rest.birthDate,
+            '셩별': rest.gender,
+            '휴대전화': rest.mobile,
+            '식단기록 목적': rest.purpose,
+            '키': rest.height,
+            '몸무게': rest.weight,
+            
+    
+            });
+            */
+
+
+            formattedData.push({
+                'Market': item?.center === 'ppump' ? 'PPUMP' : 'OWIN',
+                '신청번호': item.id,
+                '신청일시': new Date(item.createdAt).toLocaleString(),
+                '지갑주소': item.walletAddress,
+                '신청자': item.userName,
+                '신청자 이메일': item.userEmail,
+                'UID': item.htxUid,
+            });
+
+
+
+    
+        } );
+  
+  
+  
+      const ws = XLSX.utils.json_to_sheet(formattedData);
+  
+      const wb = { Sheets: { data: ws }, SheetNames: ['data'] };
+  
+      const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+  
+      const data = new Blob([excelBuffer], { type: fileType });
+  
+      const now = new Date();
+  
+      const date = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+  
+      const time = `${now.getHours()}-${now.getMinutes()}-${now.getSeconds()}`;
+  
+      const dateTime = `${date}_${time}`;
+  
+      const fileNameExtension = `${fileName}_${dateTime}${fileExtension}`;
+  
+      ///XLSX.writeFile(data  , fileNameExtension);
+  
+      ///XLSX.writeFile(data, fileNameExtension);
+  
+      XLSX.writeFile(wb, fileNameExtension);
+        
+    
+      setIsExporting(false);
+  
+  
+    }
+  
 
 
     return (
@@ -1860,6 +2004,19 @@ export default function AIPage({ params }: any) {
                                     `}
                                 >
                                     {loadingApplications ? "Loading..." : "Reload"}
+                                </button>
+
+                                {/* export button */}
+                                <button
+                                    onClick={() => {
+                                        exportToCSV('HTX_신청목록');
+                                    }}
+                                    disabled={isExporting}
+                                    className={`${isExporting ? "bg-gray-500" : "bg-green-500"} text-white p-2 rounded-lg
+                                        hover:bg-green-600
+                                    `}
+                                >
+                                    {isExporting ? "Exporting..." : "Export"}
                                 </button>
                             </div>
 

@@ -39,7 +39,8 @@
 		"thirdweb": "^5.67.0",
 		"tronweb": "^6.0.0",
 		"twilio": "^5.2.2",
-		"use-sound": "^4.0.3"
+		"use-sound": "^4.0.3",
+		"xlsx": "^0.18.5"
 	},
 	"devDependencies": {
 		"@types/crypto-js": "^4.2.2",
