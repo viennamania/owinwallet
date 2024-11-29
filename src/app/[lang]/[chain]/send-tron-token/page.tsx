@@ -1029,7 +1029,7 @@ export default function SendUsdt({ params }: any) {
 
                           const selectedUser = users.find((user) => user.nickname === e.target.value) as any;
 
-                          console.log("selectedUser", selectedUser);
+                          ///console.log("selectedUser", selectedUser);
 
                           setRecipient(selectedUser);
 
@@ -1060,7 +1060,7 @@ export default function SendUsdt({ params }: any) {
                           }}
                         />
 
-                        {recipient?.walletAddress && (
+                        {recipient?.tronWalletAddress && (
                           <Image
                             src="/verified.png"
                             alt="check"
@@ -1082,16 +1082,13 @@ export default function SendUsdt({ params }: any) {
                       placeholder={User_wallet_address}
                       className=" w-80  xl:w-full p-2 border border-gray-300 rounded text-white text-xs xl:text-lg font-semibold"
                       value={
-                        params.chain === "tron" ?
-                        recipient?.walletAddress
-                        :
-                        recipient?.walletAddress
+                        recipient?.tronWalletAddress
                       }
                       onChange={(e) => {
       
                         setRecipient({
                           ...recipient,
-                          walletAddress: e.target.value,
+                          tronWalletAddress: e.target.value,
                         });
 
                       } }
