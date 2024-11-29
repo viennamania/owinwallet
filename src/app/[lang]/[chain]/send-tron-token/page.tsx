@@ -933,7 +933,6 @@ export default function SendUsdt({ params }: any) {
 
 
 
-
                 </div>
 
               </div>

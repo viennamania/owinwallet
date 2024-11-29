@@ -797,7 +797,7 @@ export default function SendUsdt({ params }: any) {
               <div className="w-full flex flex-col xl:flex-row items-start justify-between gap-3">
 
                 {/* my usdt balance */}
-                <div className="flex flex-row items-start gap-3">
+                <div className="w-full flex flex-row items-start gap-3">
                   
                   <div className="flex flex-col gap-2 items-start">
                     
@@ -851,90 +851,47 @@ export default function SendUsdt({ params }: any) {
                   )}
 
 
-                  {/*address && (
+                  {address && (
 
-                    <div className="flex flex-col gap-2 items-center
-                      border border-zinc-400 rounded-md p-2">
-                  
-                      <div className="flex flex-row items-center gap-2">
-                        <button
-                          className="text-sm text-zinc-400 underline"
-                          onClick={() => {
-                            navigator.clipboard.writeText(address);
-                            toast.success('Copied wallet address');
-                          } }
-                        >
-                          {address.substring(0, 6)}...{address.substring(address.length - 4)}
-                        </button>
+                  <div className="w-full flex flex-col gap-2 items-center
+                    border border-zinc-400 rounded-md p-2">
 
-                        <div className="flex flex-row items-center gap-2">
-                    
-                          <Image
-                            src={user?.avatar || "/profile-default.png"}
-                            alt="Avatar"
-                            width={20}
-                            height={20}
-                            priority={true} // Added priority property
-                            className="rounded-full"
-                            style={{
-                                objectFit: 'cover',
-                                width: '20px',
-                                height: '20px',
-                            }}
-                          />
-                          
-                          <div className="text-lg font-semibold text-white ">
-                            {
-                              user && user.nickname ? user.nickname : Anonymous
-                            }
-                          </div>
-
-                   
-                          {address && !user && (
-                            <button
-                              onClick={() => {
-                                router.push('/' + params.lang + '/' + params.chain + '/profiles?wallet=' + wallet);
-                              }}
-                              className="text-sm text-zinc-400 underline"
-                            >
-                              Go to profile
-                            </button>
-                          )}
-
-                        </div>
-
-
-
-
-                      </div>
-                    
-
+                    <div className="text-sm text-gray-800">
+                      {My_Wallet_Address}
                     </div>
 
-                  )*/}
-
-
-
-                  {/* evm wallet address */}
-                  {address && params.chain !== "tron" && (
                     <div className="flex flex-row items-center gap-2">
-                      <div className="text-sm text-gray-800">
-                        {My_Wallet_Address}
-                      </div>
-                      <div className="text-lg font-semibold text-gray-800">
-                        <button
-                          className="text-sm text-zinc-400 underline"
-                          onClick={() => {
-                            navigator.clipboard.writeText(address);
-                            toast.success('Copied wallet address');
-                          } }
-                        >
-                          {address.substring(0, 6)}...{address.substring(address.length - 4)}
-                        </button>
-                      </div>
-                    </div>
-                  )}
+                      <button
+                        className="text-sm text-zinc-400 underline"
+                        onClick={() => {
+                          navigator.clipboard.writeText(address);
+                          toast.success('Copied wallet address');
+                        } }
+                      >
+                        {address.substring(0, 6)}...{address.substring(address.length - 4)}
+                      </button>
 
+                    </div>
+
+                    <Canvas
+                      text={address}
+                        options={{
+                          //level: 'M',
+                          margin: 2,
+                          scale: 4,
+                          width: 200,
+                          color: {
+                              dark: '#000000FF',
+                              light: '#FFFFFFFF',
+                          },
+                        }}
+                    />
+
+
+
+                  </div>
+
+                  ) }
                     
 
 
@@ -974,44 +931,49 @@ export default function SendUsdt({ params }: any) {
 
               <div className='mb-5 flex flex-col xl:flex-row gap-5 items-start justify-between'>
 
-                <input
-                  disabled={sending}
-                  type="number"
-                  //placeholder="Enter amount"
-                  className=" w-64 p-2 border border-gray-300 rounded text-black text-5xl font-semibold "
-                  
-                  value={amount}
-
-                  onChange={(e) => (
-
-                    // check if the value is a number
-
-
-                    // check if start 0, if so remove it
-
-                    e.target.value = e.target.value.replace(/^0+/, ''),
-
-
-
-                    // check balance
-
-                    setAmount(e.target.value as any)
-
-                  )}
-                />
-           
-       
-
-                {/* check box for want to receive wallet address */}
-                <div className="flex flex-row items-center gap-2">
+                <div className='w-full flex flex-col gap-5 items-start justify-between'>
                   <input
-                    type="checkbox"
-                    className="w-6 h-6"
-                    checked={wantToReceiveWalletAddress}
-                    onChange={(e) => setWantToReceiveWalletAddress(e.target.checked)}
+                    disabled={sending}
+                    type="number"
+                    //placeholder="Enter amount"
+                    className=" w-64 p-2 border border-gray-300 rounded text-black text-5xl font-semibold "
+                    
+                    value={amount}
+
+                    onChange={(e) => (
+
+                      // check if the value is a number
+
+
+                      // check if start 0, if so remove it
+
+                      e.target.value = e.target.value.replace(/^0+/, ''),
+
+
+
+                      // check balance
+
+                      setAmount(e.target.value as any)
+
+                    )}
                   />
-                  <div className="text-white">{Enter_Wallet_Address}</div>
+            
+        
+
+                  {/* check box for want to receive wallet address */}
+                  <div className="flex flex-row items-center gap-2">
+                    <input
+                      type="checkbox"
+                      className="w-6 h-6"
+                      checked={wantToReceiveWalletAddress}
+                      onChange={(e) => setWantToReceiveWalletAddress(e.target.checked)}
+                    />
+                    <div className="text-white">{Enter_Wallet_Address}</div>
+                  </div>
+
                 </div>
+
+
             
             
                 {!wantToReceiveWalletAddress ? (
