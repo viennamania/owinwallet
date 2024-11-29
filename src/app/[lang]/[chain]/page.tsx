@@ -861,9 +861,13 @@ export default function Index({ params }: any) {
     }
 
     // timer
+    /*
     const interval = setInterval(() => {
       tronWalletAddress && getTronBalance();
     } , 10000);
+
+    return () => clearInterval(interval);
+    */
 
 
 
@@ -936,11 +940,13 @@ export default function Index({ params }: any) {
       address && getUsdtBalance();
 
       // timer
+      /*
       const interval = setInterval(() => {
         address && getUsdtBalance();
       }, 10000);
 
       return () => clearInterval(interval);
+      */
 
 
   } , [address, tronWalletAddress, params.chain, contract]);
@@ -1876,8 +1882,8 @@ export default function Index({ params }: any) {
                       router.push(
                         //"/" + params.lang + "/" + params.chain + "/sell-usdt"
 
-                        wallet === "smart" ?
-                        "/" + params.lang + "/" + params.chain + "/sell-usdt?wallet=smart"
+                        params.chain === "tron" ?
+                        "/" + params.lang + "/" + params.chain + "/sell-tron-usdt"
                         :
                         "/" + params.lang + "/" + params.chain + "/sell-usdt"
 

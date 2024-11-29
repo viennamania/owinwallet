@@ -437,9 +437,13 @@ export default function SendUsdt({ params }: any) {
     }
 
     // timer
+    /*
     const interval = setInterval(() => {
       tronWalletAddress && getTronBalance();
     } , 10000);
+
+    return () => clearInterval(interval
+    */
 
 
 
@@ -477,12 +481,15 @@ export default function SendUsdt({ params }: any) {
 
       if (tronWalletAddress) getUsdtBalance();
 
+      /*
       // timer for balance
       const interval = setInterval(() => {
         if (tronWalletAddress) getUsdtBalance();
       } , 1000);
 
       return () => clearInterval(interval);
+      */
+
 
   } , [tronWalletAddress]);
 
