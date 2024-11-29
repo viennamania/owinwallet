@@ -371,7 +371,7 @@ export default function Index({ params }: any) {
 
 
 
-  console.log('address', address);
+  ////console.log('address', address);
 
 
 
@@ -545,7 +545,7 @@ export default function Index({ params }: any) {
 
     client && fetchData();
 
-  } , []);
+  } , [address]);
 
  
 
@@ -803,31 +803,35 @@ export default function Index({ params }: any) {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            lang: params.lang,
-            chain: params.chain,
             walletAddress: address,
           }),
         });
 
+        if (!response) return;
+
         const data = await response.json();
+
+        console.log("getTronWalletAddress data", data);
 
         setTronWalletAddress(data?.result?.tronWalletAddress);
 
       };
   
-      if (address && params.chain === "tron") {
+      if (address) {
         getTronWalletAddress();
       }
   
       
   
-    } , [address, params.chain, params.lang]);
+    } , [address]);
 
 
-  console.log("tronWalletAddress", tronWalletAddress);
+  //console.log("tronWalletAddress", tronWalletAddress);
 
 
-  console.log("address", address);
+  //console.log("address", address);
+
+
 
   // getTronBalance
   const [tronBalance, setTronBalance] = useState(0);
@@ -840,8 +844,6 @@ export default function Index({ params }: any) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          lang: params.lang,
-          chain: params.chain,
           tronWalletAddress: tronWalletAddress,
         }),
       });
@@ -854,11 +856,11 @@ export default function Index({ params }: any) {
 
     };
 
-    if (tronWalletAddress && params.chain === "tron") {
+    if (tronWalletAddress) {
       getTronBalance();
     }
 
-  } , [tronWalletAddress, params.chain, params.lang]);
+  } , [tronWalletAddress]);
 
   console.log("tronBalance", tronBalance);
 
@@ -893,7 +895,11 @@ export default function Index({ params }: any) {
 
 
 
-        if (address) {
+        if (address
+          && params.chain === "polygon"
+          || params.chain === "arbitrum"
+          || params.chain === "ethereum"
+        ) {
           
           /*
           const contract = getContract({
@@ -922,6 +928,7 @@ export default function Index({ params }: any) {
       getUsdtBalance();
 
   } , [address, tronWalletAddress, params.chain, contract]);
+
 
 
 
@@ -1406,6 +1413,11 @@ export default function Index({ params }: any) {
 
                   <button
                     onClick={() => {
+
+                      params.chain === "tron" ?
+                      router.push(
+                        "/" + params.lang + "/" + params.chain + "/send-tron-token/?token=USDT"
+                      ) :
                       router.push(
                         "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=USDT"
                         + "&agent=" + agent + "&tokenId=" + agentNumber
