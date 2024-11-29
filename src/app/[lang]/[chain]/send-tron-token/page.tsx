@@ -437,7 +437,12 @@ export default function SendUsdt({ params }: any) {
 
       };
 
-      tronWalletAddress && getUsdtBalance();
+      // timer for balance
+      const interval = setInterval(() => {
+        if (tronWalletAddress) getUsdtBalance();
+      } , 1000);
+
+      return () => clearInterval(interval);
 
   } , [tronWalletAddress]);
 

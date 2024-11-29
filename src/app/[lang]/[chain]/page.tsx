@@ -925,7 +925,13 @@ export default function Index({ params }: any) {
 
       };
 
-      getUsdtBalance();
+      // timer
+      const interval = setInterval(() => {
+        getUsdtBalance();
+      }, 10000);
+
+      return () => clearInterval(interval);
+
 
   } , [address, tronWalletAddress, params.chain, contract]);
 
