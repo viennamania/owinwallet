@@ -664,7 +664,7 @@ useEffect(() => {
   }
 
 
-  const [wantToReceiveWalletAddress, setWantToReceiveWalletAddress] = useState(false);
+  const [wantToReceiveWalletAddress, setWantToReceiveWalletAddress] = useState(true);
 
 
   const [sending, setSending] = useState(false);
@@ -1050,6 +1050,7 @@ useEffect(() => {
         
 
                   {/* check box for want to receive wallet address */}
+                  {/*
                   <div className="flex flex-row items-center gap-2">
                     <input
                       type="checkbox"
@@ -1059,6 +1060,8 @@ useEffect(() => {
                     />
                     <div className="text-white">{Enter_Wallet_Address}</div>
                   </div>
+                  */}
+
                 </div>
             
             
