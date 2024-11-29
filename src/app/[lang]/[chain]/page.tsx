@@ -925,6 +925,8 @@ export default function Index({ params }: any) {
 
       };
 
+      getUsdtBalance();
+
       // timer
       const interval = setInterval(() => {
         getUsdtBalance();

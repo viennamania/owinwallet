@@ -437,6 +437,8 @@ export default function SendUsdt({ params }: any) {
 
       };
 
+      if (tronWalletAddress) getUsdtBalance();
+
       // timer for balance
       const interval = setInterval(() => {
         if (tronWalletAddress) getUsdtBalance();
