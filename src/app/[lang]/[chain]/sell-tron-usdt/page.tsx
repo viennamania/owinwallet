@@ -520,58 +520,127 @@ export default function Index({ params }: any) {
 
 
 
-    const [nativeBalance, setNativeBalance] = useState(0);
-    const [balance, setBalance] = useState(0);
-    useEffect(() => {
-  
-      // get the balance
-      const getBalance = async () => {
-  
-        ///console.log('getBalance address', address);
-  
+    
+  const [tronWalletAddress, setTronWalletAddress] = useState('');
+  useEffect(() => {
         
-        const result = await balanceOf({
-          contract,
-          address: address || "",
-        });
-  
-    
-        //console.log(result);
-    
-        setBalance( Number(result) / 10 ** 6 );
-  
-  
-        await fetch('/api/user/getBalanceByWalletAddress', {
+      // get tron wallet address
+      const getTronWalletAddress = async () => {
+
+        const response = await fetch('/api/tron/getTronWalletAddress', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            chain: params.chain,
             walletAddress: address,
           }),
-        })
-  
-        .then(response => response.json())
-  
-        .then(data => {
-            setNativeBalance(data.result?.displayValue);
         });
-  
-  
-  
+
+        if (!response) return;
+
+        const data = await response.json();
+
+        console.log("getTronWalletAddress data", data);
+
+        setTronWalletAddress(data?.result?.tronWalletAddress);
+
       };
   
-      if (address) getBalance();
+      if (address) {
+        getTronWalletAddress();
+      }
   
+      
+  
+    } , [address]);
+
+  // getTronBalance
+  const [tronBalance, setTronBalance] = useState(0);
+  useEffect(() => {
+    
+    const getTronBalance = async () => {
+      const response = await fetch('/api/tron/getTronBalance', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          tronWalletAddress: tronWalletAddress,
+        }),
+      });
+
+      if (!response) return;
+
+      const data = await response.json();
+
+      setTronBalance(data.result.tronBalance);
+
+    };
+
+    if (tronWalletAddress) {
+      getTronBalance();
+    }
+
+    // timer
+    /*
+    const interval = setInterval(() => {
+      tronWalletAddress && getTronBalance();
+    } , 10000);
+
+    return () => clearInterval(interval
+    */
+
+
+
+  } , [tronWalletAddress]);
+
+
+
+  // usdt balance
+  const [usdtBalance, setUsdtBalance] = useState(0);
+
+  useEffect(() => {
+    
+      const getUsdtBalance = async () => {
+
+
+          const response = await fetch('/api/tron/getUsdtBalance', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              tronWalletAddress: tronWalletAddress,
+            }),
+          });
+
+          if (!response) return;
+
+          const data = await response.json();
+
+          setUsdtBalance(data.result?.usdtBalance);
+      
+
+
+      };
+
+      if (tronWalletAddress) getUsdtBalance();
+
+      /*
+      // timer for balance
       const interval = setInterval(() => {
-        if (address) getBalance();
+        if (tronWalletAddress) getUsdtBalance();
       } , 1000);
-  
+
       return () => clearInterval(interval);
-  
-    } , [address, contract, params.chain]);
-  
+      */
+
+
+  } , [tronWalletAddress]);
+
+
+
   
   
     const [escrowWalletAddress, setEscrowWalletAddress] = useState('');
@@ -1020,7 +1089,7 @@ export default function Index({ params }: any) {
       // check balance
       // send payment request
 
-      if (balance < amount) {
+      if (usdtBalance < amount) {
         toast.error(Insufficient_balance);
         return;
       }
@@ -1116,17 +1185,6 @@ export default function Index({ params }: any) {
           if (data.result) {
 
             fetchSellOrders();
-
-            // refresh balance
-
-            const result = await balanceOf({
-              contract,
-              address: address || "",
-            });
-
-            //console.log(result);
-
-            setBalance( Number(result) / 10 ** 6 );
 
 
             toast.success(Payment_request_has_been_sent);
@@ -1561,7 +1619,7 @@ export default function Index({ params }: any) {
                       <div className="text-sm">{My_Balance}</div>
                       <div className="flex flex-row items-end justify-center  gap-2">
                         <span className="text-4xl font-semibold text-gray-800">
-                          {Number(balance).toFixed(2)}
+                          {Number(usdtBalance).toFixed(2)}
                         </span>
                         <span className="text-lg">USDT</span>
                       </div>

@@ -372,39 +372,39 @@ export default function SendUsdt({ params }: any) {
 
 
 
-  const [tronWalletAddress, setTronWalletAddress] = useState('');
-  useEffect(() => {
-        
-      // get tron wallet address
-      const getTronWalletAddress = async () => {
-
-        const response = await fetch('/api/tron/getTronWalletAddress', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            walletAddress: address,
-          }),
-        });
-
-        if (!response) return;
-
-        const data = await response.json();
-
-        console.log("getTronWalletAddress data", data);
-
-        setTronWalletAddress(data?.result?.tronWalletAddress);
-
-      };
-  
-      if (address) {
-        getTronWalletAddress();
-      }
-  
+const [tronWalletAddress, setTronWalletAddress] = useState('');
+useEffect(() => {
       
-  
-    } , [address]);
+    // get tron wallet address
+    const getTronWalletAddress = async () => {
+
+      const response = await fetch('/api/tron/getTronWalletAddress', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          walletAddress: address,
+        }),
+      });
+
+      if (!response) return;
+
+      const data = await response.json();
+
+      console.log("getTronWalletAddress data", data);
+
+      setTronWalletAddress(data?.result?.tronWalletAddress);
+
+    };
+
+    if (address) {
+      getTronWalletAddress();
+    }
+
+    
+
+  } , [address]);
 
 
 
