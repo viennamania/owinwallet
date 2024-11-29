@@ -860,6 +860,13 @@ export default function Index({ params }: any) {
       getTronBalance();
     }
 
+    // timer
+    const interval = setInterval(() => {
+      tronWalletAddress && getTronBalance();
+    } , 10000);
+
+
+
   } , [tronWalletAddress]);
 
   console.log("tronBalance", tronBalance);
@@ -890,7 +897,8 @@ export default function Index({ params }: any) {
 
           const data = await response.json();
 
-          setUsdtBalance(data.result?.usdtBalance);
+          setUsdtBalance(data.result?.usdtBalance || 0);
+
         }
 
 
@@ -925,11 +933,11 @@ export default function Index({ params }: any) {
 
       };
 
-      getUsdtBalance();
+      address && getUsdtBalance();
 
       // timer
       const interval = setInterval(() => {
-        getUsdtBalance();
+        address && getUsdtBalance();
       }, 10000);
 
       return () => clearInterval(interval);
@@ -1443,6 +1451,43 @@ export default function Index({ params }: any) {
                     />
                   </button>
                 </div>
+
+                {/* if tron chain, then show tron balance */}
+                {params.chain === "tron" && (
+                  <div className="mt-4 flex flex-row gap-2 justify-between items-center p-2">
+                    <Image
+                      src="/logo-tron.png"
+                      alt="TRX"
+                      width={35}
+                      height={35}
+                      className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
+                    />
+                    <div className="text-4xl font-semibold text-zinc-100">
+                      {Number(tronBalance).toFixed(2)}
+                    </div>
+                    <p className="w-12 text-sm text-gray-600">TRX</p>
+                    
+                    <button
+                      disabled={true}
+                      onClick={() => {
+                        router.push(
+                          "/" + params.lang + "/" + params.chain + "/send-tron-coin/?wallet=" + wallet
+                        );
+                      }}
+                      className="text-sm text-blue-500 hover:underline"
+                    >
+                      <Image
+                        src="/goto-icon.webp"
+                        alt="Send"
+                        width={20}
+                        height={20}
+                      />
+                    </button>
+                    
+                  </div>
+                )}
+
+
 
 
                 {/* apply button of listing for new token */}
