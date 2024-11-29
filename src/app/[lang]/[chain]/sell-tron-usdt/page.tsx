@@ -832,7 +832,7 @@ export default function Index({ params }: any) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          lang: params.lang,
+          ///lang: params.lang,
           chain: params.chain,
           walletAddress: address,
           searchMyOrders: searchMyOrders
@@ -948,7 +948,7 @@ export default function Index({ params }: any) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          lang: params.lang,
+          ///lang: params.lang,
           chain: params.chain,
           walletAddress: address,
           usdtAmount: orderUsdtAmount,
@@ -1617,12 +1617,19 @@ export default function Index({ params }: any) {
                     
                     <div className="flex flex-col gap-2 items-start">
                       <div className="text-sm">{My_Balance}</div>
+                      
                       <div className="flex flex-row items-end justify-center  gap-2">
                         <span className="text-4xl font-semibold text-gray-800">
                           {Number(usdtBalance).toFixed(2)}
                         </span>
                         <span className="text-lg">USDT</span>
                       </div>
+
+                      {/* TRX balance */}
+                      <div className="flex flex-row items-center gap-2 text-xs">
+                        {Number(tronBalance).toFixed(4)}{' '}TRX
+                      </div>
+
                     </div>
 
                     {!address && (

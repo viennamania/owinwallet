@@ -163,7 +163,7 @@ export async function insertSellOrder(data: any) {
 
   console.log('insertSellOrder data: ' + JSON.stringify(data));
 
-  if (!data.walletAddress || !data.usdtAmount || !data.krwAmount || !data.rate) {
+  if (!data.chain || !data.walletAddress || !data.usdtAmount || !data.krwAmount || !data.rate) {
     return null;
   }
 
@@ -207,7 +207,6 @@ export async function insertSellOrder(data: any) {
   const result = await collection.insertOne(
 
     {
-      lang: data.lang,
       chain: data.chain,
       walletAddress: data.walletAddress,
       nickname: nickname,
@@ -283,12 +282,14 @@ export async function getSellOrders(
 
     limit,
     page,
+    chain,
     walletAddress,
     searchMyOrders,
   }: {
 
     limit: number;
     page: number;
+    chain: string;
     walletAddress: string;
     searchMyOrders: boolean;
   
@@ -311,7 +312,11 @@ export async function getSellOrders(
     const results = await collection.find<UserProps>(
 
       //{ walletAddress: walletAddress, status: { $ne: 'paymentConfirmed' } },
-      { walletAddress: walletAddress },
+      {
+        chain: chain,
+        walletAddress: walletAddress
+      },
+
       
       //{ projection: { _id: 0, emailVerified: 0 } }
 
@@ -330,6 +335,8 @@ export async function getSellOrders(
     const results = await collection.find<UserProps>(
       {
         //status: 'ordered',
+
+        chain: chain,
   
         status: { $ne: 'paymentConfirmed' },
   
