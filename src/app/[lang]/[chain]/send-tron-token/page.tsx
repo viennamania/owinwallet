@@ -699,6 +699,7 @@ useEffect(() => {
 
 
         // send USDT
+        /*
         // Call the extension function to prepare the transaction
         const transaction = transfer({
             //contract,
@@ -716,6 +717,36 @@ useEffect(() => {
 
           transaction,
         });
+        */
+
+        // send USDT (tron)
+
+        const response = await fetch('/api/tron/createTransaction', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            fromWalletAddress: address,
+            toWalletAddress: recipient.walletAddress,
+            amount: amount,
+          }),
+        });
+
+        if (!response) {
+          setSending(false);
+          toast.error(Failed_to_send_USDT);
+          return;
+        }
+
+        const data = await response.json();
+
+        console.log("data", data);
+
+
+
+
+        /*
 
         
         if (transactionHash) {
@@ -760,7 +791,15 @@ useEffect(() => {
 
         }
 
-    
+        */
+
+
+
+
+
+
+
+
 
       
 
@@ -906,12 +945,10 @@ useEffect(() => {
                       <span className="text-lg">{token}</span>
                     </div>
 
-                    <div className="flex flex-row items-end justify-center gap-2">
-                      <span className="text-4xl font-semibold text-gray-800">
-                        {Number(tronBalance).toFixed(2)}
-                      </span>
-                      <span className="text-lg">TRX</span>
-                    </div>
+                      {/* TRX balance */}
+                      <div className="flex flex-row items-center gap-2 text-xs">
+                        {Number(tronBalance).toFixed(4)}{' '}TRX
+                      </div>
 
 
                   </div>

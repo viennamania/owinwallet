@@ -957,6 +957,7 @@ export default function Index({ params }: any) {
 
 
   // chainBalance
+  /*
   const [chainBalance, setChainBalance] = useState(0);
   useEffect(() => {
     if (params.chain === "tron") {
@@ -973,6 +974,7 @@ export default function Index({ params }: any) {
   }
 
   , [tronBalance, params.chain]);
+  */
       
 
 
