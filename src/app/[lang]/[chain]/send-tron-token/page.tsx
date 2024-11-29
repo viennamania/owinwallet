@@ -409,6 +409,44 @@ export default function SendUsdt({ params }: any) {
 
 
 
+  // getTronBalance
+  const [tronBalance, setTronBalance] = useState(0);
+  useEffect(() => {
+    
+    const getTronBalance = async () => {
+      const response = await fetch('/api/tron/getTronBalance', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          tronWalletAddress: tronWalletAddress,
+        }),
+      });
+
+      if (!response) return;
+
+      const data = await response.json();
+
+      setTronBalance(data.result.tronBalance);
+
+    };
+
+    if (tronWalletAddress) {
+      getTronBalance();
+    }
+
+    // timer
+    const interval = setInterval(() => {
+      tronWalletAddress && getTronBalance();
+    } , 10000);
+
+
+
+  } , [tronWalletAddress]);
+
+
+
   // usdt balance
   const [usdtBalance, setUsdtBalance] = useState(0);
 
@@ -860,6 +898,15 @@ export default function SendUsdt({ params }: any) {
                       </span>
                       <span className="text-lg">{token}</span>
                     </div>
+
+                    <div className="flex flex-row items-end justify-center gap-2">
+                      <span className="text-4xl font-semibold text-gray-800">
+                        {Number(tronBalance).toFixed(2)}
+                      </span>
+                      <span className="text-lg">TRX</span>
+                    </div>
+
+
                   </div>
 
 
@@ -1031,7 +1078,7 @@ export default function SendUsdt({ params }: any) {
 
                           const selectedUser = users.find((user) => user.nickname === e.target.value) as any;
 
-                          ///console.log("selectedUser", selectedUser);
+                          //console.log("selectedUser", selectedUser);
 
                           setRecipient(selectedUser);
 
