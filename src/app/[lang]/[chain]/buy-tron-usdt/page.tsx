@@ -990,7 +990,63 @@ export default function Index({ params }: any) {
                   <div className="flex flex-row items-start gap-3">
                     
                     <div className="flex flex-col gap-2 items-start">
-                      <div className="text-sm">{My_Balance}</div>
+                      
+                      <div className="flex flex-row items-center gap-2">
+                        <div className="text-sm">{My_Balance}</div>
+                        {/* reload button */}
+                        <button
+                          className="text-sm bg-zinc-800 px-2 py-1 rounded-md text-white hover:bg-zinc-700"
+                          onClick={() => {
+                            
+                            // get usdt balance
+
+                            const getUsdtBalance = async () => {
+                              const response = await fetch('/api/tron/getUsdtBalance', {
+                                method: 'POST',
+                                headers: {
+                                  'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                  tronWalletAddress: tronWalletAddress,
+                                }),
+                              });
+
+                              if (!response) return;
+
+                              const data = await response.json();
+
+                              setUsdtBalance(data.result?.usdtBalance);
+                            }
+
+                            if (tronWalletAddress) getUsdtBalance();
+
+                            const getTronBalance = async () => {
+                              const response = await fetch('/api/tron/getTronBalance', {
+                                method: 'POST',
+                                headers: {
+                                  'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                  tronWalletAddress: tronWalletAddress,
+                                }),
+                              });
+
+                              if (!response) return;
+
+                              const data = await response.json();
+
+                              setTronBalance(data.result.tronBalance);
+                            }
+
+                            if (tronWalletAddress) getTronBalance();
+
+                            
+                          }}
+                        >
+                          Reload
+                        </button>
+                      </div>
+
                       
                       <div className="flex flex-row items-end justify-center  gap-2">
                         <span className="text-4xl font-semibold text-gray-800">
