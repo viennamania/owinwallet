@@ -1313,7 +1313,7 @@ export default function Index({ params }: any) {
 
 
 
-    const response = await fetch('/api/order/confirmPayment', {
+    const response = await fetch('/api/tron/confirmPayment', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -2978,7 +2978,7 @@ export default function Index({ params }: any) {
 
                                     </div>
 
-
+                                    {/*
                                     <div className="flex flex-row gap-1">
 
                                       <input
@@ -3024,6 +3024,7 @@ export default function Index({ params }: any) {
                                       </button>
 
                                     </div>
+                                    */}
 
 
 
