@@ -1542,13 +1542,10 @@ export default function Index({ params }: any) {
 
                       // redirect to buy USDT page
                       router.push(
-                        //"/" + params.lang + "/" + params.chain + "/buy-usdt"
-
-                        wallet === "smart" ?
-                        "/" + params.lang + "/" + params.chain + "/buy-usdt?wallet=smart"
+                        params.chain === "tron" ?
+                        "/" + params.lang + "/" + params.chain + "/buy-tron-usdt"
                         :
                         "/" + params.lang + "/" + params.chain + "/buy-usdt"
-
                       );
 
                     }}
@@ -1803,7 +1800,7 @@ export default function Index({ params }: any) {
                         }
 
                         router.push(
-                          "/" + params.lang + "/polygon/profile-settings" + "?agent=" + agent
+                          "/" + params.lang + "/" + params.chain + "/profile-settings" + "?agent=" + agent + "&tokenId=" + agentNumber
                         );
 
                       }}

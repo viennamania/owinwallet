@@ -10,13 +10,14 @@ export async function POST(request: NextRequest) {
 
   const body = await request.json();
 
-  const { walletAddress, searchMyTrades } = body;
+  const { lang, chain, walletAddress, searchMyTrades } = body;
 
 
 
   const result = await getSellOrdersForBuyer({
     limit: 300,
     page: 1,
+    chain,
     walletAddress,
     searchMyTrades,
   });

@@ -566,12 +566,14 @@ export async function getSellOrdersForBuyer(
   {
     limit,
     page,
+    chain,
     walletAddress,
     searchMyTrades,
   }: {
 
     limit: number;
     page: number;
+    chain: string;
     walletAddress: string;
     searchMyTrades: boolean;
   }
@@ -594,6 +596,7 @@ export async function getSellOrdersForBuyer(
     const results = await collection.find<UserProps>(
       {
         'buyer.walletAddress': walletAddress,
+        chain: chain,
         status: { $ne: 'paymentConfirmed' },
       },
       
@@ -613,7 +616,7 @@ export async function getSellOrdersForBuyer(
         //status: 'ordered',
   
         status: { $ne: 'paymentConfirmed' },
-  
+        chain: chain,
         // exclude private sale
         privateSale: { $ne: true },
       },
