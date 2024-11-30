@@ -2882,48 +2882,55 @@ export default function Index({ params }: any) {
                                 )}
 
                                 {item.status === 'accepted' && (
-                                  <div className="flex flex-row gap-1">
+                                  <div className="flex flex-col gap-1 mt-1 mb-1">
+                                    <div className="flex flex-row gap-1">
 
-                                    {/* check box for agreement */}
-                                    <input
-                                      disabled={escrowing[index] || requestingPayment[index]}
-                                      type="checkbox"
-                                      checked={requestPaymentCheck[index]}
-                                      onChange={(e) => {
-                                        setRequestPaymentCheck(
-                                          requestPaymentCheck.map((item, idx) => {
-                                            if (idx === index) {
-                                              return e.target.checked;
-                                            }
-                                            return item;
-                                          })
-                                        );
-                                      }}
-                                    />
-
-                                    <button
-                                      disabled={escrowing[index] || requestingPayment[index] || !requestPaymentCheck[index]}
-                                      
-                                      className={`flex flex-row gap-1 text-xs text-white px-2 py-1 rounded-md ${escrowing[index] || requestingPayment[index] || !requestPaymentCheck[index] ? 'bg-gray-500' : 'bg-green-500'}`}
-                                      onClick={() => {
-
-                                        requestPayment(
-                                          index,
-                                          item._id,
-                                          item.usdtAmount
-                                        );
-                                      }}
-                                    >
-                                      <Image
-                                        src="/loading.png"
-                                        alt="loading"
-                                        width={16}
-                                        height={16}
-                                        className={escrowing[index] || requestingPayment[index] ? 'animate-spin' : 'hidden'}
+                                      {/* check box for agreement */}
+                                      <input
+                                        disabled={escrowing[index] || requestingPayment[index]}
+                                        type="checkbox"
+                                        checked={requestPaymentCheck[index]}
+                                        onChange={(e) => {
+                                          setRequestPaymentCheck(
+                                            requestPaymentCheck.map((item, idx) => {
+                                              if (idx === index) {
+                                                return e.target.checked;
+                                              }
+                                              return item;
+                                            })
+                                          );
+                                        }}
                                       />
-                                      <span>{Request_Payment}</span>
-                                    
-                                    </button>
+
+                                      <button
+                                        disabled={escrowing[index] || requestingPayment[index] || !requestPaymentCheck[index]}
+                                        
+                                        className={`flex flex-row gap-1 text-xs text-white px-2 py-1 rounded-md ${escrowing[index] || requestingPayment[index] || !requestPaymentCheck[index] ? 'bg-gray-500' : 'bg-green-500'}`}
+                                        onClick={() => {
+
+                                          requestPayment(
+                                            index,
+                                            item._id,
+                                            item.usdtAmount
+                                          );
+                                        }}
+                                      >
+                                        <Image
+                                          src="/loading.png"
+                                          alt="loading"
+                                          width={16}
+                                          height={16}
+                                          className={escrowing[index] || requestingPayment[index] ? 'animate-spin' : 'hidden'}
+                                        />
+                                        <span>{Request_Payment}</span>
+                                      
+                                      </button>
+
+                                    </div>
+
+                                    <span className="text-sm text-zinc-400 w-36">
+                                      판매 수량을 에스크로에 예치하고 구매자에게 결제를 요청합니다.
+                                    </span>
 
                                   </div>
                                 )}
@@ -3595,6 +3602,10 @@ export default function Index({ params }: any) {
 
                                     </button>
 
+                                    <span className="text-sm text-zinc-400">
+                                      판매 수량을 에스크로에 예치하고 구매자에게 결제를 요청합니다.
+                                    </span>
+
                                   </div>
 
                                 )}
@@ -3622,7 +3633,7 @@ export default function Index({ params }: any) {
 
                                       {If_the_seller_does_not_deposit_the_USDT_to_escrow}
 
-                                      {this_trade_will_be_cancelled_in}
+                                      {this_trade_will_be_cancelled_in}{' '}
 
                                       {
                                         (1 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) - 1) > 0
