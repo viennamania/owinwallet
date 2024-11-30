@@ -87,8 +87,13 @@ export async function POST(request: NextRequest) {
     const fromWalletAddress = user.tronEscrowWalletAddress;
     const tronWalletPrivateKey = user.tronEscrowWalletPrivateKey;
 
+    const buyerWalletAddress = buyer.walletAddress;
 
-    const toWalletAddress = buyer.walletAddress;
+    const buyerUser = await getOneByWalletAddress(buyerWalletAddress);
+
+    const toWalletAddress = buyerUser?.tronWalletAddress;
+
+
 
   
 
