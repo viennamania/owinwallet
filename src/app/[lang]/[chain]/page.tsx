@@ -1156,7 +1156,7 @@ export default function Index({ params }: any) {
 
 
 
-        {true && (
+        {!address && (
 
           <div className="w-full flex flex-col justify-center items-start gap-2 p-2">
 
@@ -1799,6 +1799,10 @@ export default function Index({ params }: any) {
                         }
 
                         router.push(
+
+                          params.chain === "tron" ?
+                          "/" + params.lang + "/" + params.chain + "/profile-settings-tron" + "?agent=" + agent + "&tokenId=" + agentNumber
+                          :
                           "/" + params.lang + "/" + params.chain + "/profile-settings" + "?agent=" + agent + "&tokenId=" + agentNumber
                         );
 

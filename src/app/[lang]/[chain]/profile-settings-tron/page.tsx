@@ -54,7 +54,10 @@ import {
 import { smartWallet, inAppWallet } from "thirdweb/wallets";
 
 
-import { getUserPhoneNumber } from "thirdweb/wallets/in-app";
+import {
+    getUserPhoneNumber,
+    getProfiles,
+} from "thirdweb/wallets/in-app";
 
 
 import Image from 'next/image';
@@ -145,7 +148,10 @@ export default function SettingsPage({ params }: any) {
     const wallets = [
         inAppWallet({
           auth: {
-            options: ["phone"],
+            options: [
+                "phone",
+                "telegram",
+            ],
           },
         }),
     ];
@@ -368,7 +374,7 @@ export default function SettingsPage({ params }: any) {
       
     ////console.log("address", address);
  
-
+    /*
     const [phoneNumber, setPhoneNumber] = useState("");
 
     useEffect(() => {
@@ -389,8 +395,50 @@ export default function SettingsPage({ params }: any) {
       }
   
     } , [address]);
+     */
 
 
+
+
+    const [userPhoneNumber, setUserPhoneNumber] = useState("");
+    const [userType, setUserType] = useState("");
+    const [userTelegramId, setUserTelegramId] = useState("");
+    //const [userAvatar, setUserAvatar] = useState("");
+    //const [userNickname, setUserNickname] = useState("");
+
+
+
+    useEffect(() => {
+
+        const fetchData = async () => {
+    
+          getProfiles({ client }).then((profiles) => {
+            
+            ///console.log("profiles======", profiles);
+    
+            if (profiles) {
+              profiles.forEach((
+                profile  // { type: "phone", details: { phone: "+8201098551647", id: "30e2276d8030b0bb9c27b4b7410d9de8960bab3d632f34d23d6e089182625506" } }
+              ) => {
+                if (profile.type === "phone") {
+                  setUserType("phone");
+                  setUserPhoneNumber(profile.details.phone || "");
+                } else if (profile.type === "telegram") {
+                  setUserType("telegram");
+                  const details = profile.details as any;
+                  setUserTelegramId(details.id || "");
+                }
+              });
+            }
+    
+          } );
+    
+        }
+    
+    
+        client && fetchData();
+    
+      }, []);
 
 
 
@@ -676,12 +724,12 @@ export default function SettingsPage({ params }: any) {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    walletAddress: address,
-                    
+                    walletAddress: address,                    
                     //nickname: nickname,
                     nickname: editedNickname,
-
-                    mobile: phoneNumber,
+                    userType: userType,
+                    mobile: userPhoneNumber,
+                    telegramId: userTelegramId,
                 }),
             });
 
@@ -839,7 +887,7 @@ export default function SettingsPage({ params }: any) {
           lang: params.lang,
           chain: params.chain,
           walletAddress: address,
-          mobile: phoneNumber,
+          mobile: userPhoneNumber,
         }),
       });
   
@@ -1418,6 +1466,8 @@ export default function SettingsPage({ params }: any) {
                 <AppBarComponent />
 
                 <Header
+                    lang={params.lang}
+                    chain={params.chain}
                     agent={agent ? agent : ""}
                     tokenId={agentNumber ? agentNumber : ""}
                 />
@@ -1447,40 +1497,43 @@ export default function SettingsPage({ params }: any) {
 
                         <div className='w-full flex flex-col gap-2'>
 
-                            <ConnectButton
-                                client={client}
-                                wallets={wallets}
-                                accountAbstraction={{
-                                    chain: polygon,
-                                    factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum, ethereum
-                                    sponsorGas: true
-                                }}
-                                theme={"light"}
-                                connectButton={{
-                                    label: "Sign in with OWIN Magic Wallet",
-                                }}
-                                connectModal={{
-                                    size: "wide", 
-                                    titleIcon: "https://owinwallet.com/icon-tbot.png",                           
-                                    showThirdwebBranding: false,
-
-                                }}
-                                locale={"ko_KR"}
-                                //locale={"en_US"}
-                            />
-
                             {!address && (
-                                <div className='flex flex-row gap-2 items-center justify-start'>
-                                    {/* dot */}
-                                    <div className="h-2 w-2 bg-green-500 rounded-full"></div>
-                                    <span className="text-sm text-gray-500">
-                                        {Please_connect_your_wallet_first}
-                                    </span>
-                                </div>
+                                <>
+                                    <ConnectButton
+                                        client={client}
+                                        wallets={wallets}
+                                        accountAbstraction={{
+                                            chain: polygon,
+                                            factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum, ethereum
+                                            sponsorGas: true
+                                        }}
+                                        theme={"light"}
+                                        connectButton={{
+                                            label: "Sign in with OWIN Magic Wallet",
+                                        }}
+                                        connectModal={{
+                                            size: "wide", 
+                                            titleIcon: "https://owinwallet.com/icon-tbot.png",                           
+                                            showThirdwebBranding: false,
+
+                                        }}
+                                        locale={"ko_KR"}
+                                        //locale={"en_US"}
+                                    />
+
+                            
+                                    <div className='flex flex-row gap-2 items-center justify-start'>
+                                        {/* dot */}
+                                        <div className="h-2 w-2 bg-green-500 rounded-full"></div>
+                                        <span className="text-sm text-gray-500">
+                                            {Please_connect_your_wallet_first}
+                                        </span>
+                                    </div>
+                                </>
                             )}
                             
 
-                            {address && (
+                            {/*address && (
                                 <div className='w-full flex flex-col gap-2 items-start justify-between border border-gray-300 p-4 rounded-lg'>
                                     <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
                                         입금용 지갑주소(Polygon)
@@ -1500,7 +1553,7 @@ export default function SettingsPage({ params }: any) {
                                         </button>
                                     </div>
                                 </div>
-                            )}
+                            )*/}
 
 
  
@@ -1510,7 +1563,7 @@ export default function SettingsPage({ params }: any) {
 
 
 
-                        {address && (
+                        {/*address && (
 
                             <div className='w-full flex flex-col gap-4 items-start justify-center'>
 
@@ -1534,7 +1587,6 @@ export default function SettingsPage({ params }: any) {
                                     </div>
                                 </div>
 
-                                {/* send USDT */}
                                 <div className='w-full flex flex-col gap-2 items-start justify-between border border-gray-300 p-4 rounded-lg'>
                                     <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
                                         {Send_USDT}
@@ -1589,7 +1641,7 @@ export default function SettingsPage({ params }: any) {
 
                             </div>
 
-                        )}
+                        )*/}
 
 
                         
@@ -2092,420 +2144,7 @@ export default function SettingsPage({ params }: any) {
                             </div>
                         )}
 
-                    
-
                     </div>
-
-
-                    {/* 새로고침 버튼 */}
-                    {address && userCode && erc721ContractAddress && (
-                        <div className='w-full flex flex-row items-center justify-start gap-2'>
-                            <button
-                                onClick={() => {
-                                    window.location.reload();
-                                }}
-                                className="p-2 bg-blue-500 text-zinc-100 rounded"
-                            >
-                                새로고침
-                            </button>
-
-                            <span className="text-xs font-semibold text-red-500">
-                                민팅에 되지않을 경우 새로고침 해주세요.
-                            </span>
-
-                        </div>
-                    )}
-
-
-                    {/* deploy erc721 contract */}
-                    {address && userCode && !erc721ContractAddress && (
-
- 
-                        <button
-                            disabled={loadingDeployErc721Contract}
-                            onClick={deployErc721Contract}
-                            className={`
-                                ${loadingDeployErc721Contract ? 'bg-gray-300 text-gray-400' : 'bg-green-500 text-zinc-100'}
-                                p-2 rounded-lg text-sm font-semibold
-                            `}
-                        >
-                            <div className='flex flex-row gap-2 items-center justify-center'>
-                                {/* rotating icon */}
-                                {address && loadingDeployErc721Contract && (
-                                    <Image
-                                        src="/loading.png"
-                                        alt="loding"
-                                        width={30}
-                                        height={30}
-                                        className='animate-spin'
-                                    />
-                                )}
-                                {address && loadingDeployErc721Contract && 'AI 에이전트 계약주소 생성중...'}
-                                {address && !erc721ContractAddress && !loadingDeployErc721Contract && 'AI 에이전트 계약주소 생성하기'}
- 
-                            </div>
-
-                        </button>
-
-                        )}
-
-                        {/* My Referral Code */}
-                        {/* address */}
-                        {address && erc721ContractAddress && (
-
-                            <div className='w-full flex flex-col gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
-
-                                <div className='w-full flex flex-row gap-2 items-center justify-between'>
-                                    <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
-                                        AI 에이전트 계약주소
-                                    </div>
-
-                                    <span className='text-xs xl:text-lg font-semibold'>
-                                        {erc721ContractAddress.substring(0, 6) + '...' + erc721ContractAddress.substring(erc721ContractAddress.length - 4)}
-                                    </span>
-
-
-
-
-                                    {/* https://opensea.io/assets/matic/0xC1F501331E5d471230189E4A57E5268f10d0072A */}
-                                    {/* open new window */}
-                                    
-                                    <button
-                                        onClick={() => {
-                                            window.open('https://opensea.io/assets/matic/' + erc721ContractAddress);
-                                        }}
-                                        className="p-2 rounded hover:bg-gray-300"
-                                    >
-                                        <Image
-                                            src="/logo-opensea.png"
-                                            alt="OpenSea"
-                                            width={30}
-                                            height={30}
-                                            className="rounded-lg"
-                                        />
-                                    </button>
-                                    
-
-
-                                    {/* verified icon */}
-
-                                    <Image
-                                        src="/verified.png"
-                                        alt="Verified"
-                                        width={20}
-                                        height={20}
-                                        className="rounded-lg"
-                                    />
-
-
-                                </div>
-
-                                
-
-                                {/* mint AI Agent NFT */}
-                                <div className='w-full flex flex-col gap-2 items-start justify-between border border-gray-300 p-4 rounded-lg'>
-                                    
-                                    <span className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
-                                        AI 에이전트 NFT 발행
-                                    </span>
-
-                                    <div className='flex flex-col xl:flex-row gap-2 items-start justify-between'>
-                                        <input 
-                                            className="p-2 w-64 text-zinc-100 bg-zinc-800 rounded text-lg font-semibold"
-                                            placeholder="에이전트 이름"
-                                            type='text'
-                                            onChange={(e) => {
-                                                setAgentName(e.target.value);
-                                            }}
-                                            value={agentName}
-                                        />
-                                        <input 
-                                            className="p-2 w-64 text-zinc-100 bg-zinc-800 rounded text-lg font-semibold"
-                                            placeholder="에이전트 설명"
-                                            type='text'
-                                            onChange={(e) => {
-                                                setAgentDescription(e.target.value);
-                                            }}
-                                            value={agentDescription}
-                                        />
-                                    </div>
-
-                                    <button
-                                        disabled={mintingAgentNft}
-                                        onClick={mintAgentNft}
-                                        className={`
-                                            ${mintingAgentNft ? 'bg-gray-300 text-gray-400' : 'bg-blue-500 text-zinc-100'}
-                                            p-2 rounded-sm text-sm font-semibold
-                                        `}
-                                    >
-                                        <div className='flex flex-row gap-2 items-center justify-center'>
-                                            {/* rotating icon */}
-                                            {mintingAgentNft && (
-                                                <Image
-                                                    src="/loading.png"
-                                                    alt="loding"
-                                                    width={30}
-                                                    height={30}
-                                                    className='animate-spin'
-                                                />
-                                            )}
-                                            {mintingAgentNft && 'AI 에이전트 NFT 발행중...'}
-                                            {!mintingAgentNft && 'AI 에이전트 NFT 발행하기'}
-                                        </div>
-                                    </button>
-
-                                    {messageMintingAgentNft && (
-                                        <span className='text-lg font-semibold text-red-500
-                                            border border-gray-300 p-4 rounded-lg'>
-                                            {messageMintingAgentNft}
-                                        </span>
-                                    )}
-
-                                    {ganeratingAgentImage && (
-                                        <div className='flex flex-row gap-2 items-center justify-center'>
-                                            <Image
-                                                src="/loading.png"
-                                                alt="loding"
-                                                width={30}
-                                                height={30}
-                                                className='animate-spin'
-                                            />
-                                            <span className='text-xs font-semibold'>
-                                                AI 에이전트 이미지 생성중...
-                                            </span>
-                                        </div>
-                                    )}
-
-                                    {agentImage && (
-                                        <Image
-                                            src={agentImage}
-                                            alt="AI Agent"
-                                            width={200}
-                                            height={200}
-                                            className="rounded-lg"
-                                        />
-                                    )}
-    
-                                </div>
-
-
-                            </div>
-
-                        )}
-
-
-
-
-
-                        {address && (
-
-                            <div className='w-full flex flex-col gap-2 items-start justify-between border border-gray-300 p-4 rounded-lg'>
-       
-                                <div className='mt-10 flex flex-col gap-2 items-start justify-between'>
-                                  <span className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
-                                      My AI 에이전트 NFT
-                                  </span>
-                              </div>
-                              <div className='w-full grid grid-cols-1 xl:grid-cols-3 gap-2'>
-                                  {myNfts?.map((nft, index) => (
-                                      <div
-                                          key={index}
-                                          className='w-full flex flex-col gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg
-                                          bg-yellow-50'
-                                      >
-
-                                          <div className='w-full flex flex-row gap-2 items-center justify-between'>
-                                              {/* goto button for detail page */}
-                                              <button
-                                                  onClick={() => {
-                                                      router.push('/' + params.lang + '/' + params.chain + '/agent/' + nft.contract.address + '/' + nft.tokenId);
-
-                                                      // open new window
-
-                                                      //window.open('https://owinwallet.com/' + params.lang + '/' + params.chain + '/agent/' + nft.contract.address + '/' + nft.tokenId);
-
-
-                                                  }}
-                                                  className="p-2 bg-blue-500 text-zinc-100 rounded
-                                                  hover:bg-blue-600 text-xs xl:text-lg font-semibold"
-                                              >
-                                                  <span className='text-xs xl:text-lg font-semibold'>
-                                                      상세보기
-                                                  </span>
-                                              </button>
-
-                                              {/* referral link button */}
-                                              <button
-                                                  onClick={() => {
-                                                      navigator.clipboard.writeText(
-                                                          'https://owinwallet.com/kr/polygon/tbot/?agent=' +
-                                                          nft.contract.address + '&tokenId=' + nft.tokenId
-                                                      );
-                                                      toast.success('레퍼럴 URL 복사 완료');
-                                                  }}
-                                                  className="p-2 bg-blue-500 text-zinc-100 rounded
-                                                  hover:bg-blue-600 text-xs xl:text-lg font-semibold"
-                                              >
-                                                  레퍼럴 URL 복사
-                                              </button>
-
-                                          </div>
-
-
-                                          <div className='w-full grid grid-cols-2 gap-2 items-center justify-between'>
-
-
-                                              <div className="flex flex-col gap-2 items-center justify-center">
-
-
-                                                  {/*}
-                                                  <button
-                                                      onClick={() => {
-                                                          window.open('https://opensea.io/assets/matic/' + erc721ContractAddress + '/' + nft.tokenId);
-                                                      }}
-                                                      className="p-2 rounded hover:bg-gray-300"
-                                                  >
-                                                      <Image
-                                                          src="/logo-opensea.png"
-                                                          alt="OpenSea"
-                                                          width={30}
-                                                          height={30}
-                                                          className="rounded-lg"
-                                                      />
-                                                  </button>
-                                                  */}
-
-                                                  <Image
-                                                      src={nft.image.thumbnailUrl}
-                                                      alt="NFT"
-                                                      width={200}
-                                                      height={200}
-                                                      className="rounded-lg w-32 xl:w-40 border border-gray-300"
-                                                      
-                                                  />
-
-                                                  {/* 누적 배당수익 */}
-                                                  <div className='flex flex-col gap-2 items-start justify-between
-                                                      border border-gray-300 p-4 rounded-lg'>
-                                                      <span className='text-xs xl:text-lg font-semibold'>
-                                                          Total Dividend
-                                                      </span>
-                                                      <span className='text-xl xl:text-2xl font-semibold text-green-500'>
-                                                          0.00 USDT
-                                                      </span>
-                                                      {/* 배당 수령 */}
-                                                      {/*
-                                                      <button
-                                                          className="p-2 bg-blue-500 text-zinc-100 rounded
-                                                          hover:bg-blue-600"
-                                                      >
-                                                          Claim Dividend
-                                                      </button>
-                                                      */}
-                                                  </div>
-
-
-                                              </div>
-
-                                              <div className='flex flex-col gap-2 items-start justify-between'>
-                                                  {/* contract address */}
-                                                  <div className='text-sm font-semibold text-blue-500'>
-                                                      계약주소: {nft.contract.address.substring(0, 6) + '...' + nft.contract.address.substring(nft.contract.address.length - 4)}
-                                                  </div>
-                                                  <div className='text-sm font-semibold text-blue-500'>
-                                                      계약번호: #{nft.tokenId}
-                                                  </div>
-                                                  <div className='text-sm font-semibold text-green-500'>
-                                                      {
-                                                          nft?.name?.substring(0, 10) + '...'
-                                                      }
-                                                  </div>
-                                                  <div className='text-xs font-semibold'>
-                                                      {nft?.description?.substring(0, 10) + '...'}
-                                                  </div>
-
-                                                  <div className='flex flex-col gap-2 items-start justify-between'>
-                                                      {/* // from now to mint in hours minutes seconds
-                                                      // now - mint */}
-                                                      <span className='text-xs xl:text-sm font-semibold'>
-                                                          Start{' '}{(new Date().getTime() - new Date(nft.mint.timestamp).getTime()) / 1000 / 60 / 60 / 24 > 1
-                                                              ? `${Math.floor((new Date().getTime() - new Date(nft.mint.timestamp).getTime()) / 1000 / 60 / 60 / 24)} days ago`
-                                                              : `${Math.floor((new Date().getTime() - new Date(nft.mint.timestamp).getTime()) / 1000 / 60 / 60)} hours ago`
-                                                          }
-                                                      </span>
-                                                      
-                                                      {/* Accounts */}
-                                                      <span className='text-xs xl:text-sm font-semibold'>
-                                                          Accounts: 0
-                                                      </span>
-
-                                                      {/* Funds */}
-                                                      <span className='text-xs xl:text-sm font-semibold'>
-                                                          Funds: 0 USDT
-                                                      </span>
-
-                                                      {/* 수익률 */}
-                                                      <span className='text-xs xl:text-sm font-semibold'>
-                                                          ROI: ??%
-                                                      </span>
-
-
-
-                                                  </div>
-
-
-
-                                              </div>
-
-                                          </div>
-
-                                          {/*
-                                          <div className='w-full flex flex-row gap-2 items-center justify-between'>
-                                      
-                                              <button
-                                                  onClick={() => {
-                                                      navigator.clipboard.writeText(
-                                                          'https://owinwallet.com/kr/polygon/tbot/?agent=' +
-                                                          erc721ContractAddress + '&tokenId=' + nft.tokenId
-                                                      );
-                                                      toast.success('레퍼럴 URL 복사 완료');
-                                                  }}
-                                                  className="w-full p-2 bg-blue-500 text-zinc-100 rounded hover:bg-blue-600"
-                                              >
-                                                  레퍼럴 URL 복사
-                                              </button>
-
-                                              <button
-                                                  onClick={() => {
-                                                      window.open('https://opensea.io/assets/matic/' + erc721ContractAddress + '/' + nft.tokenId);
-                                                  }}
-                                                  className="p-2 rounded hover:bg-gray-300"
-                                              >
-                                                  <Image
-                                                      src="/logo-opensea.png"
-                                                      alt="OpenSea"
-                                                      width={30}
-                                                      height={30}
-                                                      className="rounded-lg"
-                                                  />
-                                              </button>
-
-                                          </div>
-                                          */}
-
-                                      </div>
-                                  ))}
-                              </div>
-
-                            </div>
-
-
-                        )}
-
-
-
-
-
 
 
                 </div>
@@ -2522,9 +2161,13 @@ export default function SettingsPage({ params }: any) {
 
 function Header(
     {
+        lang,
+        chain,
         agent,
         tokenId,
     } : {
+        lang: string
+        chain: string
         agent: string
         tokenId: string
     }
@@ -2543,7 +2186,9 @@ function Header(
             {/* logo */}
             <button
                 onClick={() => {
-                    router.push('/kr/polygon/?agent=' + agent + '&tokenId=' + tokenId);
+                    router.push(
+                        "/" + lang + "/" + chain + "/?agent=" + agent + "&tokenId=" + tokenId
+                    )
                 }}
             >            
                 <div className="flex flex-row gap-2 items-center">
@@ -2564,7 +2209,7 @@ function Header(
                 <button
                 onClick={() => {
                     router.push(
-                        "/kr/polygon/tbot?agent=" + agent + "&tokenId=" + tokenId
+                        "/" + lang + "/" + chain + "/tbot?agent=" + agent + "&tokenId=" + tokenId
                     );
                 }}
                 className="text-gray-600 hover:underline text-xs xl:text-lg"
@@ -2573,7 +2218,9 @@ function Header(
                 </button>
                 <button
                 onClick={() => {
-                    router.push('/kr/polygon/profile-settings?agent=' + agent + '&tokenId=' + tokenId);
+                    router.push(
+                        "/" + lang + "/" + chain + "/profile-settings?agent=" + agent + "&tokenId=" + tokenId
+                    );
                 }}
                 className="text-gray-600 hover:underline text-xs xl:text-lg"
                 >
