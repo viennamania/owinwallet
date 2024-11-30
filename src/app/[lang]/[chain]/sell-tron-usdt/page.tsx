@@ -1116,7 +1116,6 @@ export default function Index({ params }: any) {
     const requestPayment = async (
       index: number,
       orderId: string,
-      tradeId: string,
       amount: number,
     ) => {
       // check balance
@@ -1149,17 +1148,20 @@ export default function Index({ params }: any) {
 
       // send USDT
       // Call the extension function to prepare the transaction
+      /*
       const transaction = transfer({
         contract,
         to: escrowWalletAddress,
         amount: amount,
       });
+      */
       
 
 
       try {
 
 
+        /*
         const transactionResult = await sendAndConfirmTransaction({
             transaction: transaction,
             
@@ -1167,7 +1169,7 @@ export default function Index({ params }: any) {
         });
 
         //console.log("transactionResult===", transactionResult);
-
+        */
 
         setEscrowing(
           escrowing.map((item, idx) => idx === index ? false : item)
@@ -1177,13 +1179,13 @@ export default function Index({ params }: any) {
 
         // send payment request
 
-        if (transactionResult) {
-
-          
+ 
           setRequestingPayment(
             requestingPayment.map((item, idx) => idx === index ? true : item)
           );
         
+
+          /*
           const response = await fetch('/api/order/requestPayment', {
             method: 'POST',
             headers: {
@@ -1196,23 +1198,24 @@ export default function Index({ params }: any) {
               transactionHash: transactionResult.transactionHash,
             })
           });
+          */
+
+          const response = await fetch('/api/tron/requestPayment', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              lang: params.lang,
+              chain: params.chain,
+              orderId: orderId,
+            })
+          });
 
           const data = await response.json();
 
           ///console.log('/api/order/requestPayment data====', data);
 
-
-          /*
-          setRequestingPayment(
-            requestingPayment.map((item, idx) => {
-              if (idx === index) {
-                return false;
-              }
-              return item;
-            })
-          );
-          */
-          
 
 
           if (data.result) {
@@ -1229,7 +1232,7 @@ export default function Index({ params }: any) {
             toast.error('Payment request has been failed');
           }
 
-        }
+ 
 
 
       } catch (error) {
@@ -2907,7 +2910,6 @@ export default function Index({ params }: any) {
                                         requestPayment(
                                           index,
                                           item._id,
-                                          item.tradeId,
                                           item.usdtAmount
                                         );
                                       }}
@@ -3444,10 +3446,10 @@ export default function Index({ params }: any) {
                                   </p>
 
 
+                                  {/*
                                   {item.status !== 'paymentConfirmed' && item.status !== 'cancelled'
                                   && address && item.walletAddress === address && (
                                     <>
-                                    {/* chat with buyer */}
 
                                     <button
                                       className="bg-blue-500 text-white px-2 py-1 rounded-md"
@@ -3467,6 +3469,7 @@ export default function Index({ params }: any) {
                                     
                                     </>
                                   )}
+                                  */}
 
 
 
