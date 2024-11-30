@@ -1476,10 +1476,9 @@ export default function Index({ params }: any) {
                     <p className="w-12 text-sm text-gray-600">TRX</p>
                     
                     <button
-                      disabled={true}
                       onClick={() => {
                         router.push(
-                          "/" + params.lang + "/" + params.chain + "/send-tron-coin/?wallet=" + wallet
+                          "/" + params.lang + "/" + params.chain + "/send-tron-coin"
                         );
                       }}
                       className="text-sm text-blue-500 hover:underline"
