@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
 
     const balance = await tronWeb.trx.getBalance(tronWalletAddress);
 
-    console.log("balance", balance);
+    console.log("trx balance", balance);
 
     const tronBalance = tronWeb.fromSun(balance);
 

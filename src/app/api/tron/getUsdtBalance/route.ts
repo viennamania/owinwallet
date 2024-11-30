@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
 
   const { lang, chain, tronWalletAddress } = body;
 
-  console.log("tronWalletAddress", tronWalletAddress);
+  console.log("getUsdtBalance tronWalletAddress", tronWalletAddress);
 
   
   // USDT contract address
@@ -46,6 +46,9 @@ export async function POST(request: NextRequest) {
 
     //const balance = await tronWeb.trx.getBalance(tronWalletAddress);
 
+    // set the owner address
+    tronWeb.setAddress(contractAddress);
+
     const contract = await tronWeb.contract().at(contractAddress);
 
  
@@ -70,7 +73,9 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error(error);
+
+    console.error('getUsdtBalance error:', error);
+
 
     return NextResponse.json({
       result: null,

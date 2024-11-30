@@ -88,6 +88,9 @@ const broadcastTx = await tronWeb.trx.sendRawTransaction(signedTx);
   //console.log("tronWalletPrivateKey", tronWalletPrivateKey);
 
 
+  // USDT contract address
+  const contractAddress = 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t';
+
   try {
 
     const tronWeb = new TronWeb({
@@ -105,7 +108,7 @@ const broadcastTx = await tronWeb.trx.sendRawTransaction(signedTx);
       //"TRC-20 Contract Address according to network you use",
       //'transfer(address,uint256)',
 
-      'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t',
+      contractAddress,
       'transfer(address,uint256)',
       {
         
