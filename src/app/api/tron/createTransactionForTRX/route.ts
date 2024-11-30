@@ -115,7 +115,7 @@ const broadcastTx = await tronWeb.trx.sendRawTransaction(signedTx);
     const broadcastTx = await tronWeb.trx.sendRawTransaction(signedTx);
 
 
-    console.log("broadcastTx", broadcastTx);
+    //console.log("broadcastTx", broadcastTx);
 
     if (!broadcastTx || !broadcastTx.transaction || !broadcastTx.transaction.txID) {
       return NextResponse.json({
