@@ -2720,7 +2720,9 @@ export default function Index({ params }: any) {
 
                               <td className="p-2">
                                 <div className="flex flex-col gap-1">
-                                  <span className="text-xl">{item.usdtAmount}{' '}USDT</span>
+                                  
+                                  <span className="text-xl text-green-500">{item.usdtAmount}{' '}USDT</span>
+
                                   <span className="text-lg text-yellow-500 font-semibold">
                                     {Number(item.krwAmount).toLocaleString('ko-KR', {
                                       style: 'currency',
@@ -3244,12 +3246,12 @@ export default function Index({ params }: any) {
 
                             <div className="mt-4 flex flex-col items-start gap-2">
 
-                              <p className="text-lg font-semibold text-white">
+                              <p className="text-2xl font-semibold text-green-500">
                                 {Sell_Amount}: {item.usdtAmount} USDT
                               </p>
 
 
-                              <p className="text-2xl text-zinc-400">
+                              <p className="text-xl text-zinc-400">
                                 {Price}: {
                                   // currency
                                 
@@ -3261,17 +3263,11 @@ export default function Index({ params }: any) {
                                 }
                               </p>
 
+                              <p className="text-sm font-semibold text-white">{Rate}: {
 
-                              <div className="flex flex-row items-start gap-2">
+                                Number(item.krwAmount / item.usdtAmount).toFixed(2)
 
-
-                                <p className="text-lg font-semibold text-white">{Rate}: {
-
-                                  Number(item.krwAmount / item.usdtAmount).toFixed(2)
-
-                                }</p>
-
-                              </div>
+                              }</p>
 
                             </div>
 
