@@ -1846,7 +1846,10 @@ export default function Index({ params }: any) {
                       
 
                               <div className="mt-4 flex flex-col items-start text-sm ">
-                                {Payment}: {Bank_Transfer} ({item.seller?.bankInfo.bankName})
+                                <span className="text-white">{Payment}: {Bank_Transfer}</span>
+                                <span className="text-zinc-400">{item.seller?.bankInfo.bankName}</span>
+                                <span className="text-zinc-400">{item.seller?.bankInfo.accountNumber}</span>
+                                <span className="text-zinc-400">{item.seller?.bankInfo.accountHolder}</span>
                               </div>
 
 
