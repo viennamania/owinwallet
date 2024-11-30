@@ -88,9 +88,6 @@ const broadcastTx = await tronWeb.trx.sendRawTransaction(signedTx);
   //console.log("tronWalletPrivateKey", tronWalletPrivateKey);
 
 
-  // USDT contract address
-  const contractAddress = 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t';
-
   try {
 
     const tronWeb = new TronWeb({
@@ -102,40 +99,27 @@ const broadcastTx = await tronWeb.trx.sendRawTransaction(signedTx);
     });
 
 
-
-
-    const tx = await tronWeb.transactionBuilder.triggerSmartContract(
-      //"TRC-20 Contract Address according to network you use",
-      //'transfer(address,uint256)',
-
-      contractAddress,
-      'transfer(address,uint256)',
-      {
-        
-        //feeLimit: 10000000,
-        feeLimit: 1e9,
-
-        callValue: 0
-      },
-      [
-        {
-          type: 'address',
-          value: toWalletAddress
-        },
-        {
-          type: 'uint256',
-          value: amount * 1000000
-        }
-      ],
-      tronWeb.address.toHex(fromWalletAddress)
+    // transfer TRX
+    const tx = await tronWeb.transactionBuilder.sendTrx(
+      toWalletAddress,
+      amount,
+      fromWalletAddress,
     );
 
-    const signedTx = await tronWeb.trx.sign(tx.transaction);
+
+
+    const signedTx = await tronWeb.trx.sign(tx);
 
     const broadcastTx = await tronWeb.trx.sendRawTransaction(signedTx);
 
 
     //console.log("broadcastTx", broadcastTx);
+
+    if (!broadcastTx || !broadcastTx.transaction || !broadcastTx.transaction.txID) {
+      return NextResponse.json({
+        result: null,
+      });
+    }
 
 
   

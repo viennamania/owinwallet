@@ -93,7 +93,6 @@
     "Failed_to_send_USDT": "Failed to send USDT",
 
 
-
     "Go_Buy_USDT": "Go Buy USDT",
     "Go_Sell_USDT": "Go Sell USDT",
 
@@ -400,7 +399,11 @@
 
     "Mint_NFT": "Mint NFT",
     "Alert_NFT_minted": "NFT minted successfully",
-    "Minting_NFT": "Minting NFT"
+    "Minting_NFT": "Minting NFT",
 
+
+    "Sent_successfully": "Sent successfully",
+
+    "Failed_to_send": "Failed to send"
 
 }

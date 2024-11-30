@@ -137,6 +137,12 @@ const broadcastTx = await tronWeb.trx.sendRawTransaction(signedTx);
 
     //console.log("broadcastTx", broadcastTx);
 
+    if (!broadcastTx || !broadcastTx.transaction || !broadcastTx.transaction.txID) {
+      return NextResponse.json({
+        result: null,
+      });
+    }
+
 
   
     return NextResponse.json({

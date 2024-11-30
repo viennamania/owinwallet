@@ -98,9 +98,9 @@ export async function POST(request: NextRequest) {
 
     const broadcastTx = await tronWeb.trx.sendRawTransaction(signedTx);
 
-    if (!broadcastTx) {
+    if (!broadcastTx || !broadcastTx.transaction || !broadcastTx.transaction.txID) {
       return NextResponse.json({
-        error: "broadcastTx failed",
+        result: null,
       });
     }
 

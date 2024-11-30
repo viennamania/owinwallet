@@ -1,4 +1,3 @@
-// send USDT
 'use client';
 
 
@@ -152,6 +151,10 @@ export default function SendTronTRX({ params }: any) {
 
     My_Wallet_Address: "",
 
+    Sent_successfully: "",
+
+    Failed_to_send: "",
+
   } );
 
   useEffect(() => {
@@ -199,6 +202,10 @@ export default function SendTronTRX({ params }: any) {
     Anonymous,
 
     My_Wallet_Address,
+
+    Sent_successfully,
+
+    Failed_to_send,
 
   } = data;
 
@@ -582,7 +589,7 @@ useEffect(() => {
 
         if (!data.result) {
           setSending(false);
-          toast.error(Failed_to_send_USDT);
+          toast.error(Failed_to_send);
           return;
         }
 
@@ -607,14 +614,14 @@ useEffect(() => {
 
 
 
-          toast.success(USDT_sent_successfully);
+          toast.success(Sent_successfully);
 
           setAmount(0); // reset amount
 
  
 
         } else {
-          toast.error(Failed_to_send_USDT);
+          toast.error(Failed_to_send);
         }
 
 
@@ -622,7 +629,7 @@ useEffect(() => {
       
       console.error("error", error);
 
-      toast.error(Failed_to_send_USDT);
+      toast.error(Failed_to_send);
     }
 
     setSending(false);

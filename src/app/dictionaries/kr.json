@@ -345,6 +345,10 @@
 
     "Mint_NFT": "NFT 발행하기",
     "Alert_NFT_minted": "NFT가 발행되었습니다.",
-    "Minting_NFT": "NFT 발행 중입니다."
+    "Minting_NFT": "NFT 발행 중입니다.",
+
+    "Sent_successfully": "성공적으로 전송되었습니다.",
+
+    "Failed_to_send": "전송에 실패했습니다."
 
 }
