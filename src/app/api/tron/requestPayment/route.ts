@@ -98,6 +98,11 @@ export async function POST(request: NextRequest) {
 
     const broadcastTx = await tronWeb.trx.sendRawTransaction(signedTx);
 
+    if (!broadcastTx) {
+      return NextResponse.json({
+        error: "broadcastTx failed",
+      });
+    }
 
 
     const transactionHash = broadcastTx.transaction.txID;
