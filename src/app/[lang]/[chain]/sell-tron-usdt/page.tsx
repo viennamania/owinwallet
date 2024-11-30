@@ -655,7 +655,7 @@ export default function Index({ params }: any) {
   
       setMakeingEscrowWallet(true);
   
-      fetch('/api/order/getEscrowWalletAddress', {
+      fetch('/api/tron/getEscrowWalletAddress', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -664,7 +664,6 @@ export default function Index({ params }: any) {
           lang: params.lang,
           chain: params.chain,
           walletAddress: address,
-          isSmartAccount: false,
         }),
       })
       .then(response => response.json())
@@ -674,7 +673,7 @@ export default function Index({ params }: any) {
   
   
           if (data.result) {
-            setEscrowWalletAddress(data.result.escrowWalletAddress);
+            setEscrowWalletAddress(data.result?.tronEscrowWalletAddress);
           } else {
             toast.error('Escrow wallet address has been failed');
           }
@@ -700,32 +699,22 @@ export default function Index({ params }: any) {
   
         if (!escrowWalletAddress || escrowWalletAddress === '') return;
   
-  
-        const result = await balanceOf({
-          contract,
-          address: escrowWalletAddress,
-        });
-  
-    
-        setEscrowBalance( Number(result) / 10 ** 6 );
-  
-  
-  
-  
-        await fetch('/api/user/getBalanceByWalletAddress', {
+        const response = await fetch('/api/tron/getUsdtBalance', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            chain: params.chain,
-            walletAddress: escrowWalletAddress,
+            tronWalletAddress: escrowWalletAddress,
           }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            setEscrowNativeBalance(data.result?.displayValue);
         });
+
+        if (!response) return;
+
+        const data = await response.json();
+
+        setEscrowBalance(data.result?.usdtBalance);
+  
   
       };
   
@@ -733,11 +722,11 @@ export default function Index({ params }: any) {
   
       const interval = setInterval(() => {
         getEscrowBalance();
-      } , 1000);
+      } , 10000);
   
       return () => clearInterval(interval);
   
-    } , [address, escrowWalletAddress, contract, params.chain]);
+    } , [address, escrowWalletAddress]);
     
   
 
@@ -778,7 +767,7 @@ export default function Index({ params }: any) {
   
             const data = await response.json();
   
-            //console.log("data", data);
+            console.log("data", data);
   
             if (data.result) {
                 setNickname(data.result.nickname);
@@ -789,9 +778,8 @@ export default function Index({ params }: any) {
   
                 setSeller(data.result.seller);
 
-                setEscrowWalletAddress(data.result.escrowWalletAddress);
+                setEscrowWalletAddress(data.result?.tronEscrowWalletAddress);
 
-  
             }
         };
   
@@ -1841,17 +1829,18 @@ export default function Index({ params }: any) {
                     
                       {user && (
                         
-                        <div className="text-xl font-semibold text-white">
+                        <div className="flex flex-col gap-2 items-start">
                           {/* Get Escrow Wallet Address */}
-                          {/*
+                          
                           <button
+                            disabled={makeingEscrowWallet}
                             onClick={() => {
                               makeEscrowWallet();
                             }}
 
                             className={`
                               ${makeingEscrowWallet ? 'bg-zinc-600' : 'bg-green-500'}
-                              px-2 py-1 rounded-md  
+                              px-3 py-2 rounded-md text-white text-sm
                             `}
                           >
                             <div className="flex flex-row items-center gap-2">
@@ -1864,7 +1853,11 @@ export default function Index({ params }: any) {
                               )}
                             </div>
                           </button>
-                          */}
+
+                          <span className="text-sm text-red-500">
+                            판매자의 에스크로 지갑이 없습니다. 에스크로 지갑을 만들어주세요.
+                          </span>
+                          
                           
                         </div>
                         
