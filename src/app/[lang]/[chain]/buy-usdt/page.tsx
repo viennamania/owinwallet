@@ -1283,7 +1283,7 @@ export default function Index({ params }: any) {
                                   </div>
                                 )}
 
-                                {item.status === 'completed' && (
+                                {item.status === 'paymentConfirmed' && (
                                   <div className="text-sm text-green-500">
                                     {Completed_at}
                                   </div>

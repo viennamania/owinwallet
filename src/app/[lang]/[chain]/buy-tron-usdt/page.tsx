@@ -1386,7 +1386,7 @@ export default function Index({ params }: any) {
                                   </div>
                                 )}
 
-                                {item.status === 'completed' && (
+                                {item.status === 'paymentConfirmed' && (
                                   <div className="text-sm text-green-500">
                                     {Completed_at}
                                   </div>
@@ -1782,6 +1782,25 @@ export default function Index({ params }: any) {
 
 
                                 </div>
+                            )}
+
+                            {item.status === 'paymentConfirmed' && (
+                              <div className="mb-4 flex flex-row items-center bg-green-500 px-2 py-1 rounded-md gap-2">
+                                <Image
+                                  src="/icon-completed.png"
+                                  alt="Completed"
+                                  width={32}
+                                  height={32}
+                                />
+                                <div className="flex flex-col items-start">
+                                  <span className="text-sm font-semibold text-white">
+                                    {item.tradeId}
+                                  </span>
+                                  <p className="text-sm font-semibold text-white">
+                                    {Completed_at} {new Date(item.paymentConfirmedAt).toLocaleString()}
+                                  </p>
+                                </div>
+                              </div>
                             )}
 
 
