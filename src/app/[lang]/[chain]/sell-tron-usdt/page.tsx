@@ -729,7 +729,8 @@ export default function Index({ params }: any) {
     } , [address, escrowWalletAddress]);
     
   
-
+    console.log('escrowWalletAddress', escrowWalletAddress);
+    console.log('escrowBalance', escrowBalance);
 
     
   
