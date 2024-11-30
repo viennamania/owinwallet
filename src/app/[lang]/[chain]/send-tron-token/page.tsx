@@ -686,6 +686,16 @@ useEffect(() => {
       return;
     }
 
+
+    if (!recipient.walletAddress) {
+      toast.error('Please enter a valid recipient wallet address');
+      return;
+    }
+
+    ///console.log("recipient.walletAddress", recipient.walletAddress);
+
+
+
  
 
     setSending(true);
@@ -727,7 +737,7 @@ useEffect(() => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            fromWalletAddress: address,
+            walletAddress: address,
             toWalletAddress: recipient.walletAddress,
             amount: amount,
           }),
@@ -744,10 +754,13 @@ useEffect(() => {
         console.log("data", data);
 
 
+        if (!data.result) {
+          setSending(false);
+          toast.error(Failed_to_send_USDT);
+          return;
+        }
 
-
-        /*
-
+        const { transactionHash } = data.result;
         
         if (transactionHash) {
 
@@ -772,36 +785,11 @@ useEffect(() => {
 
           setAmount(0); // reset amount
 
-          // refresh balance
-
-          // get the balance
-
-          const result = await balanceOf({
-            contract,
-            address: address,
-          });
-
-          //console.log(result);
-
-          setBalance( Number(result) / 10 ** 6 );
+ 
 
         } else {
-
           toast.error(Failed_to_send_USDT);
-
         }
-
-        */
-
-
-
-
-
-
-
-
-
-      
 
 
     } catch (error) {

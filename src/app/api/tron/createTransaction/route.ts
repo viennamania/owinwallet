@@ -70,6 +70,8 @@ const broadcastTx = await tronWeb.trx.sendRawTransaction(signedTx);
 
 
   */
+  
+ 
 
   const user = await getOneByWalletAddress(walletAddress);
 
@@ -82,7 +84,8 @@ const broadcastTx = await tronWeb.trx.sendRawTransaction(signedTx);
   const fromWalletAddress = user?.tronWalletAddress;
   const tronWalletPrivateKey = user?.tronWalletPrivateKey;
 
-  ///console.log("tronWalletPrivateKey", tronWalletPrivateKey);
+  //console.log("fromWalletAddress", fromWalletAddress);
+  //console.log("tronWalletPrivateKey", tronWalletPrivateKey);
 
 
   try {
@@ -112,7 +115,10 @@ const broadcastTx = await tronWeb.trx.sendRawTransaction(signedTx);
       'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t',
       'transfer(address,uint256)',
       {
-        feeLimit: 10000000,
+        
+        //feeLimit: 10000000,
+        feeLimit: 1e9,
+
         callValue: 0
       },
       [
@@ -133,14 +139,14 @@ const broadcastTx = await tronWeb.trx.sendRawTransaction(signedTx);
     const broadcastTx = await tronWeb.trx.sendRawTransaction(signedTx);
 
 
-    console.log("broadcastTx", broadcastTx);
+    //console.log("broadcastTx", broadcastTx);
 
 
   
     return NextResponse.json({
 
       result: {
-        transactionHash: broadcastTx,
+        transactionHash: broadcastTx.transaction.txID,
       },
       
     });
