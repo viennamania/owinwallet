@@ -733,7 +733,52 @@ export default function Index({ params }: any) {
     console.log('escrowBalance', escrowBalance);
 
     
+    // escrow native balance trx
+    useEffect(() => {
+                  
+        const getEscrowNativeBalance = async () => {
+    
+          if (!address) {
+            setEscrowNativeBalance(0);
+            return;
+          }
+    
+          if (!escrowWalletAddress || escrowWalletAddress === '') return;
+    
+          const response = await fetch('/api/tron/getTronBalance', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              tronWalletAddress: escrowWalletAddress,
+            }),
+          });
   
+          if (!response) return;
+  
+          const data = await response.json();
+  
+          setEscrowNativeBalance(data.result?.tronBalance);
+    
+    
+        };
+    
+        getEscrowNativeBalance();
+    
+        const interval = setInterval(() => {
+          getEscrowNativeBalance();
+        } , 10000);
+    
+        return () => clearInterval(interval);
+    
+      }
+
+    , [address, escrowWalletAddress]);
+
+
+
+
 
 
 
@@ -1734,7 +1779,7 @@ export default function Index({ params }: any) {
                         </div>
 
                         <div className="flex flex-row items-end justify-center  gap-2">
-                          <span className="text-4xl font-semibold text-white">
+                          <span className="text-4xl font-semibold text-gray-800">
                             {Number(escrowBalance).toFixed(2)}
                           </span>
                           <span className="text-lg">USDT</span>
@@ -1795,6 +1840,11 @@ export default function Index({ params }: any) {
                           
                           
 
+                        </div>
+
+                        {/* excrow native balance */}
+                        <div className="flex flex-row items-center gap-2 text-xs ">
+                          {escrowNativeBalance && Number(escrowNativeBalance).toFixed(4)}{' '}TRX
                         </div>
 
 
