@@ -2978,6 +2978,10 @@ export default function Index({ params }: any) {
 
                                     </div>
 
+                                    <span className="text-sm text-zinc-400 w-36">
+                                      입금 확인 후, 결제 확인 버튼을 눌러주세요. 에스크로되어 있는 USDT가 구매자에게 전달됩니다.
+                                    </span>
+
                                     {/*
                                     <div className="flex flex-row gap-1">
 
@@ -3725,6 +3729,10 @@ export default function Index({ params }: any) {
                                         <span>{Confirm_Payment}</span>
 
                                       </button>
+
+                                      <span className="text-sm text-zinc-400">
+                                        입금 확인 후, 결제 확인 버튼을 눌러주세요. 에스크로되어 있는 USDT가 구매자에게 전달됩니다.
+                                      </span>
 
                                     </div>
                                   )}
