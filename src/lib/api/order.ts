@@ -597,7 +597,7 @@ export async function getSellOrdersForBuyer(
       {
         'buyer.walletAddress': walletAddress,
         chain: chain,
-        status: { $ne: 'paymentConfirmed' },
+        //status: { $ne: 'paymentConfirmed' },
       },
       
       //{ projection: { _id: 0, emailVerified: 0 } }
@@ -615,7 +615,8 @@ export async function getSellOrdersForBuyer(
       {
         //status: 'ordered',
   
-        status: { $ne: 'paymentConfirmed' },
+        //status: { $ne: 'paymentConfirmed' },
+
         chain: chain,
         // exclude private sale
         privateSale: { $ne: true },
