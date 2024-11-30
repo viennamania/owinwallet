@@ -3346,7 +3346,11 @@ export default function Index({ params }: any) {
                                 (item.status === 'accepted' || item.status === 'paymentRequested') ? (
 
                                   <div className="flex flex-row items-center gap-2">
-                                    <span>{Seller}: {item.nickname}</span>
+                                    <span
+                                      className="text-yellow-500"
+                                    >
+                                      {Seller}: {item.nickname}
+                                    </span>
                                     <span className="text-green-500">:{Me}</span>
                                     
                                     {/* goto /sell-usdt/:id */}
@@ -3369,7 +3373,11 @@ export default function Index({ params }: any) {
                                 ) : (item.walletAddress === address && item.status === 'ordered') ? (
 
                                   <div className="flex flex-row items-center gap-2">
-                                    <span>{Seller}: {item.nickname}</span>
+                                    <span
+                                      className="text-yellow-500"
+                                    >
+                                      {Seller}: {item.nickname}
+                                    </span>
                                     <span className="text-green-500">:{Me}</span>
                                            
                                     <button
@@ -3419,7 +3427,9 @@ export default function Index({ params }: any) {
 
                                 ) : (
                                 
-                                  <span>
+                                  <span
+                                    className="text-yellow-500"
+                                  >
                                     {Seller}: {item.nickname}
                                   </span>
 
