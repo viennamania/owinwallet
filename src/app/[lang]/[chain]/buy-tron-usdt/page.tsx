@@ -1325,8 +1325,11 @@ export default function Index({ params }: any) {
 
 
                             <td className="p-2">
-                              <div className="text-sm font-semibold text-white">
-                                {item.seller?.bankInfo.bankName}
+                              <div className="flex flex-col gap-2 items-start">
+                                <span className="text-sm text-white">{Bank_Transfer}</span>
+                                <span className="text-sm text-zinc-400">{item.seller?.bankInfo.bankName}</span>
+                                <span className="text-sm text-zinc-400">{item.seller?.bankInfo.accountNumber}</span>
+                                <span className="text-sm text-zinc-400">{item.seller?.bankInfo.accountHolder}</span>
                               </div>
                             </td>
 
@@ -1752,6 +1755,7 @@ export default function Index({ params }: any) {
 
 
                                     {/* share button */}
+                                    {/*
                                     <button
                                       className="ml-5 text-sm bg-blue-500 text-white px-2 py-1 rounded-md hover:bg-blue-600"
                                       onClick={() => {
@@ -1773,6 +1777,7 @@ export default function Index({ params }: any) {
                                         height={20}
                                       />
                                     </button>
+                                    */}
 
 
 
@@ -1888,7 +1893,7 @@ export default function Index({ params }: any) {
 
                                 </p>
 
-
+                                {/*
                                 {address && item.walletAddress !== address && item.buyer && item.buyer.walletAddress === address && (
                                   <button
                                     className="bg-green-500 text-white px-4 py-2 rounded-lg"
@@ -1906,6 +1911,7 @@ export default function Index({ params }: any) {
                                     {Chat_with_Seller + ' ' + item.nickname}
                                   </button>
                                 )}
+                                */}
 
 
                               </div>
