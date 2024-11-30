@@ -92,17 +92,10 @@ const broadcastTx = await tronWeb.trx.sendRawTransaction(signedTx);
 
     const tronWeb = new TronWeb({
       fullHost: 'https://api.trongrid.io',
-      
       headers: {
-
-        //'TRON-PRO-API-KEY': process.env.TRONGRID_API_KEY,
-
-        'TRON-PRO-API-KEY': '429a03b7-ef22-4723-867e-5dcfeef6f787',
-
+        'TRON-PRO-API-KEY': process.env.TRONGRID_API_KEY,
       },
-
       privateKey: tronWalletPrivateKey,
-      
     });
 
 

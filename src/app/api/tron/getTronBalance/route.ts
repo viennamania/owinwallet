@@ -15,11 +15,9 @@ export async function POST(request: NextRequest) {
 
     const tronWeb = new TronWeb({
       fullHost: 'https://api.trongrid.io',
-      /*
       headers: {
         'TRON-PRO-API-KEY': process.env.TRONGRID_API_KEY,
       },
-      */
     });
 
     const balance = await tronWeb.trx.getBalance(tronWalletAddress);
