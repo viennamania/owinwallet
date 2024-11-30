@@ -16,6 +16,8 @@ export async function POST(request: NextRequest) {
 
   } = body;
 
+  console.log("toWalletAddress", toWalletAddress);
+
   /*
 
 const tronWeb = new TronWeb(
@@ -102,7 +104,7 @@ const broadcastTx = await tronWeb.trx.sendRawTransaction(signedTx);
     // transfer TRX
     const tx = await tronWeb.transactionBuilder.sendTrx(
       toWalletAddress,
-      amount,
+      amount * 1e6,
       fromWalletAddress,
     );
 
@@ -113,7 +115,7 @@ const broadcastTx = await tronWeb.trx.sendRawTransaction(signedTx);
     const broadcastTx = await tronWeb.trx.sendRawTransaction(signedTx);
 
 
-    //console.log("broadcastTx", broadcastTx);
+    console.log("broadcastTx", broadcastTx);
 
     if (!broadcastTx || !broadcastTx.transaction || !broadcastTx.transaction.txID) {
       return NextResponse.json({
