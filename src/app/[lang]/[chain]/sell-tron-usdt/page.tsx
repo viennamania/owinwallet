@@ -3531,7 +3531,64 @@ export default function Index({ params }: any) {
 
                             {/* waiting for escrow */}
                             {item.status === 'accepted' && (
-                                <div className="mt-4 flex flex-row gap-2 items-center justify-start">
+
+                              <div className="mt-4 flex flex-col gap-2 items-start justify-start">
+
+                                {/* requestPayment */}
+
+                                {address && item.walletAddress === address && (
+
+                                  <div className="flex flex-row gap-2 items-center justify-start">
+
+                                    {/* check box for agreement */}
+                                    <input
+                                      disabled={escrowing[index] || requestingPayment[index]}
+                                      type="checkbox"
+                                      checked={requestPaymentCheck[index]}
+                                      onChange={(e) => {
+                                        setRequestPaymentCheck(
+                                          requestPaymentCheck.map((item, idx) => {
+                                            if (idx === index) {
+                                              return e.target.checked;
+                                            }
+                                            return item;
+                                          })
+                                        );
+                                      }}
+                                    />
+
+                                    <button
+                                      disabled={escrowing[index] || requestingPayment[index] || !requestPaymentCheck[index]}
+                                      
+                                      className={`flex flex-row gap-1 text-lg text-white px-2 py-1 rounded-md ${escrowing[index] || requestingPayment[index] || !requestPaymentCheck[index] ? 'bg-gray-500' : 'bg-green-500'}`}
+                                      onClick={() => {
+
+                                        requestPayment(
+                                          index,
+                                          item._id,
+                                          item.usdtAmount
+                                        );
+                                      }}
+                                    >
+                                      <Image
+                                        src="/loading.png"
+                                        alt="loading"
+                                        width={16}
+                                        height={16}
+                                        className={escrowing[index] || requestingPayment[index] ? 'animate-spin' : 'hidden'}
+                                      />
+                                      <span>{Request_Payment}</span>
+
+                                    </button>
+
+                                  </div>
+
+                                )}
+
+
+
+                                
+                                <div className="flex flex-row gap-2 items-center justify-center">
                                   <Image
                                     src="/loading.png"
                                     alt="Escrow"
@@ -3563,6 +3620,8 @@ export default function Index({ params }: any) {
                                     </span>
                                   </div>
                                 </div>
+
+                              </div>
                             )}
 
 
@@ -3580,7 +3639,10 @@ export default function Index({ params }: any) {
                                       width={32}
                                       height={32}
                                     />
-                                    <div>{Escrow}: {item.usdtAmount} USDT</div>
+                                    <span className="text-sm text-green-500 font-semibold">
+                                      {Escrow}: {item.usdtAmount} USDT
+                                    </span>
+                                    {/*}
                                     <button
                                       className="bg-white text-black px-2 py-2 rounded-md"
                                       onClick={() => {
@@ -3606,7 +3668,67 @@ export default function Index({ params }: any) {
                                         height={20}
                                       />
                                     </button>
+                                    */}
                                   </div>
+
+
+
+                                  {address && item.walletAddress === address && (
+                                    <div className="flex flex-row gap-2">
+
+                                      <input
+                                        disabled={confirmingPayment[index]}
+                                        type="checkbox"
+                                        checked={confirmPaymentCheck[index]}
+                                        onChange={(e) => {
+                                          setConfirmPaymentCheck(
+                                            confirmPaymentCheck.map((item, idx) => {
+                                              if (idx === index) {
+                                                return e.target.checked;
+                                              }
+                                              return item;
+                                            })
+                                          );
+                                        }}
+                                      />
+
+                                      <button
+                                        disabled={confirmingPayment[index] || !confirmPaymentCheck[index]}
+                                        className={`flex flex-row gap-1 text-lg text-white px-2 py-1 rounded-md ${confirmingPayment[index] || !confirmPaymentCheck[index] ? 'bg-gray-500' : 'bg-green-500'}`}
+                                        onClick={() => {
+                                          confirmPayment(
+                                            index,
+                                            item._id,
+                                            paymentAmounts[index]
+                                          );
+                                        }}
+
+                                      >
+
+                                        <Image
+                                          src="/loading.png"
+                                          alt="loading"
+                                          width={16}
+                                          height={16}
+                                          className={confirmingPayment[index] ? 'animate-spin' : 'hidden'}
+                                        />
+                                        <span>{Confirm_Payment}</span>
+
+                                      </button>
+
+                                    </div>
+                                  )}
+
+
+
+
+
+
+
+
+
+
+
 
                                   <div className="flex flex-row gap-2 items-center justify-start">
 
@@ -3620,9 +3742,9 @@ export default function Index({ params }: any) {
                                       className="animate-spin"
                                     />
 
-                                    <div>
+                                    <span className="text-sm text-green-500 font-semibold">
                                       {Waiting_for_seller_to_deposit} {item.krwAmount} KRW to {Seller}...
-                                    </div>
+                                    </span>
 
                                   </div>
 
