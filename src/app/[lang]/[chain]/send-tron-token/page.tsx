@@ -428,7 +428,7 @@ useEffect(() => {
 
       const data = await response.json();
 
-      setTronBalance(data.result.tronBalance);
+      data.result && setTronBalance(data.result.tronBalance);
 
     };
 
@@ -437,13 +437,12 @@ useEffect(() => {
     }
 
     // timer
-    /*
+    
     const interval = setInterval(() => {
       tronWalletAddress && getTronBalance();
     } , 10000);
 
-    return () => clearInterval(interval
-    */
+    return () => clearInterval(interval);
 
 
 
@@ -481,14 +480,14 @@ useEffect(() => {
 
       if (tronWalletAddress) getUsdtBalance();
 
-      /*
+      
       // timer for balance
       const interval = setInterval(() => {
         if (tronWalletAddress) getUsdtBalance();
-      } , 1000);
+      } , 10000);
 
       return () => clearInterval(interval);
-      */
+      
 
 
   } , [tronWalletAddress]);

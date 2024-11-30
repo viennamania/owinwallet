@@ -574,7 +574,7 @@ export default function Index({ params }: any) {
 
       const data = await response.json();
 
-      setTronBalance(data.result.tronBalance);
+      data.result && setTronBalance(data.result.tronBalance);
 
     };
 
@@ -583,13 +583,12 @@ export default function Index({ params }: any) {
     }
 
     // timer
-    /*
+    
     const interval = setInterval(() => {
       tronWalletAddress && getTronBalance();
     } , 10000);
 
-    return () => clearInterval(interval
-    */
+    return () => clearInterval(interval);
 
 
 
@@ -627,14 +626,14 @@ export default function Index({ params }: any) {
 
       if (tronWalletAddress) getUsdtBalance();
 
-      /*
+      
       // timer for balance
       const interval = setInterval(() => {
         if (tronWalletAddress) getUsdtBalance();
-      } , 1000);
+      } , 10000);
 
       return () => clearInterval(interval);
-      */
+      
 
 
   } , [tronWalletAddress]);
@@ -2647,8 +2646,7 @@ export default function Index({ params }: any) {
                             {Deposit_Name} / {Buyer}
                           </th>
 
-                          <th className="text-left">{Price} / {Sell_Amount} / {Rate}</th>
-
+                          <th className="text-left">{Sell_Amount} / {Price} / {Rate}</th>
 
                           <th className="text-left">{Payment}</th>
                           <th className="text-left">{Payment_Amount}</th>
@@ -2722,13 +2720,13 @@ export default function Index({ params }: any) {
 
                               <td className="p-2">
                                 <div className="flex flex-col gap-1">
+                                  <span className="text-xl">{item.usdtAmount}{' '}USDT</span>
                                   <span className="text-lg text-yellow-500 font-semibold">
                                     {Number(item.krwAmount).toLocaleString('ko-KR', {
                                       style: 'currency',
                                       currency: 'KRW',
                                     })}
                                   </span>
-                                  <span className="text-sm">{item.usdtAmount}{' '}USDT</span>
                                   <span className="text-xs">
                                     {Number(item.rate).toFixed(2)}
                                   </span>
@@ -3246,6 +3244,10 @@ export default function Index({ params }: any) {
 
                             <div className="mt-4 flex flex-col items-start gap-2">
 
+                              <p className="text-lg font-semibold text-white">
+                                {Sell_Amount}: {item.usdtAmount} USDT
+                              </p>
+
 
                               <p className="text-2xl text-zinc-400">
                                 {Price}: {
@@ -3262,7 +3264,6 @@ export default function Index({ params }: any) {
 
                               <div className="flex flex-row items-start gap-2">
 
-                                <p className="text-lg font-semibold text-white">{item.usdtAmount} USDT</p>
 
                                 <p className="text-lg font-semibold text-white">{Rate}: {
 

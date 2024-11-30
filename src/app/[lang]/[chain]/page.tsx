@@ -852,7 +852,7 @@ export default function Index({ params }: any) {
 
       const data = await response.json();
 
-      setTronBalance(data.result.tronBalance);
+      data.result && setTronBalance(data.result.tronBalance);
 
     };
 
@@ -861,19 +861,19 @@ export default function Index({ params }: any) {
     }
 
     // timer
-    /*
+    
     const interval = setInterval(() => {
       tronWalletAddress && getTronBalance();
     } , 10000);
 
     return () => clearInterval(interval);
-    */
+    
 
 
 
   } , [tronWalletAddress]);
 
-  console.log("tronBalance", tronBalance);
+  //console.log("tronBalance", tronBalance);
 
 
 
@@ -940,13 +940,13 @@ export default function Index({ params }: any) {
       address && getUsdtBalance();
 
       // timer
-      /*
+      
       const interval = setInterval(() => {
         address && getUsdtBalance();
       }, 10000);
 
       return () => clearInterval(interval);
-      */
+      
 
 
   } , [address, tronWalletAddress, params.chain, contract]);
