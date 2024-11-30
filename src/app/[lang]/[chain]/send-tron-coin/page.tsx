@@ -517,7 +517,7 @@ useEffect(() => {
 
 
 
-  const sendUsdt = async () => {
+  const sendTRX = async () => {
     if (sending) {
       return;
     }
@@ -554,30 +554,10 @@ useEffect(() => {
 
 
 
-        // send USDT
-        /*
-        // Call the extension function to prepare the transaction
-        const transaction = transfer({
-            //contract,
 
-            contract: contract,
+        // send TRX
 
-            to: recipient.walletAddress,
-            amount: amount,
-        });
-        
-
-        const { transactionHash } = await sendTransaction({
-          
-          account: activeAccount as any,
-
-          transaction,
-        });
-        */
-
-        // send USDT (tron)
-
-        const response = await fetch('/api/tron/createTransaction', {
+        const response = await fetch('/api/tron/createTransactionForTRX', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -1166,7 +1146,7 @@ useEffect(() => {
                 
                 disabled={!address || !recipient?.walletAddress || !amount || sending || !verifiedOtp}
 
-                onClick={sendUsdt}
+                onClick={sendTRX}
 
                 className={`mt-10 w-full p-2 rounded-lg text-xl font-semibold
 
