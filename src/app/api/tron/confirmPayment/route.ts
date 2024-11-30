@@ -85,15 +85,15 @@ export async function POST(request: NextRequest) {
 
     //const escrowWalletAddress = user.escrowWalletAddress;
     const fromWalletAddress = user.tronEscrowWalletAddress;
-    const tronWalletPrivateKey = user.tronWalletPrivateKey;
+    const tronWalletPrivateKey = user.tronEscrowWalletPrivateKey;
 
 
     const toWalletAddress = buyer.walletAddress;
 
   
 
-  // USDT contract address
-  const contractAddress = 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t';
+    // USDT contract address
+    const contractAddress = 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t';
 
 
     const tronWeb = new TronWeb({
