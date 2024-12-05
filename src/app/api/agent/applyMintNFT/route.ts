@@ -27,8 +27,7 @@ export async function POST(request: NextRequest) {
   apiSecretKey: apiSecretKey,
   */
 
-  const { center, walletAddress, agentBot, agentBotNumber, userName, userPhoneNumber, userEmail, userTelegramId, htxUserId, htxUsdtWalletAddress, apiAccessKey, apiSecretKey } = body;
-
+  const { center, walletAddress, agentBot, agentBotNumber, userName, userPhoneNumber, userEmail, userTelegramId, htxUserId, htxUsdtWalletAddress, apiAccessKey, apiSecretKey, apiPassword } = body;
 
 
   const result = await insertOne({
@@ -44,6 +43,7 @@ export async function POST(request: NextRequest) {
     htxUsdtWalletAddress: htxUsdtWalletAddress,
     apiAccessKey: apiAccessKey,
     apiSecretKey: apiSecretKey,
+    apiPassword: apiPassword,
   });
 
   if (!result) {
