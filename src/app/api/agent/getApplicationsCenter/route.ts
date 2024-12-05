@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
 
   const body = await request.json();
 
-  const { walletAddress, center } = body;
+  const { walletAddress, marketingCenter } = body;
 
 
   if (!walletAddress) {
@@ -37,11 +37,16 @@ export async function POST(request: NextRequest) {
       || walletAddress === "0x4d459172eeDA205Ed0DbA2b8897c9cA864069057" // 오원대표
 
       || walletAddress === "0xaB6fB9F80469511195Db7Ac707Cb3F4aD99b1755" // 
+
+
+
+
+      || walletAddress === "0x0d2846FDbaAc5e9526f9409aE18d3e2c9CdC9466" // wayne
     
     ) {
 
       const result = await getAllAgents({
-        center: center,
+        marketingCenter,
       });
  
       return NextResponse.json({

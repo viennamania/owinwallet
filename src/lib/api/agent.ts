@@ -170,7 +170,7 @@ export async function insertOne(data: any) {
 // getAllAgents
 // sort by createdAt desc
 export async function getAllAgents({
-  center = '',
+  marketingCenter = '',
   page = 1,
   limit = 200,
 }) {
@@ -179,7 +179,7 @@ export async function getAllAgents({
   const collection = client.db('vienna').collection('agents');
 
 
-  if (!center) {
+  if (!marketingCenter) {
     // get agents which center is not defined
     const result = await collection.find(
       {
@@ -190,8 +190,8 @@ export async function getAllAgents({
         */
 
         $or: [
-          { center: { $exists: false } },
-          { center: '' },
+          { marketingCenter: { $exists: false } },
+          { marketingCenter: '' },
         ]
 
 
@@ -217,7 +217,7 @@ export async function getAllAgents({
     // get agents which center is defined
     const result = await collection.find(
       {
-        center: center
+        marketingCenter: marketingCenter,
       },
       {
         sort: { createdAt: -1 },
