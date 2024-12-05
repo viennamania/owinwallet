@@ -117,11 +117,14 @@ export async function insertOne(data: any) {
       userPhoneNumber: data.userPhoneNumber,
       userEmail: data.userEmail,
       userTelegramId: data.userTelegramId,
+      exchange: data.exchange,
       htxUserId: data.htxUserId,
       htxUsdtWalletAddress: data.htxUsdtWalletAddress,
       apiAccessKey: data.apiAccessKey,
       apiSecretKey: data.apiSecretKey,
+      apiPassword: data.apiPassword,
 
+      marketingCenter: data.marketingCenter,
       center: data.center,
 
       createdAt: new Date().toISOString(),
