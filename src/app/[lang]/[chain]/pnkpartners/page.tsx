@@ -968,7 +968,7 @@ export default function AIPage({ params }: any) {
     const [myAgentNFT, setMyAgentNFT] = useState({} as any);
 
     // apply to mint NFT
-    // 이름, 핸드폰번호, 이메일주소, HTX UID, HTX USDT(TRON) 지갑주소, API Access Key, API Secret Key
+    // 이름, 핸드폰번호, 이메일주소, OKXUID, OKXUSDT(TRON) 지갑주소, API Access Key, API Secret Key
 
     const [userName, setUserName] = useState("");
     useEffect(() => {
@@ -1022,13 +1022,13 @@ export default function AIPage({ params }: any) {
         }
 
         if (htxUid === "") {
-            toast.error("HTX UID를 입력해 주세요.");
+            toast.error("OKXUID를 입력해 주세요.");
             return;
         }
 
         /*
         if (htxUsdtWalletAddress === "") {
-            toast.error("HTX USDT(TRON) 지갑주소를 입력해 주세요.");
+            toast.error("OKXUSDT(TRON) 지갑주소를 입력해 주세요.");
             return;
         }
         */
@@ -1263,12 +1263,12 @@ export default function AIPage({ params }: any) {
 
        
         if (htxAccessKey === "") {
-            toast.error("HTX Access Key를 입력해 주세요.");
+            toast.error("OKXAccess Key를 입력해 주세요.");
             return;
         }
 
         if (htxSecretKey === "") {
-            toast.error("HTX Secret Key를 입력해 주세요.");
+            toast.error("OKXSecret Key를 입력해 주세요.");
             return;
         }
 
@@ -1301,9 +1301,9 @@ export default function AIPage({ params }: any) {
 
             setHtxUid(data.result?.data[0]?.id);
 
-            toast.success("HTX API Key가 확인되었습니다.");
+            toast.success("OKXAPI Key가 확인되었습니다.");
         } else {
-            toast.error("HTX API Key를 확인할 수 없습니다.");
+            toast.error("OKXAPI Key를 확인할 수 없습니다.");
         }
 
         setCheckingHtxApiKey(false);
@@ -1323,12 +1323,12 @@ export default function AIPage({ params }: any) {
     ) => {
 
         if (htxAccessKey === "") {
-            toast.error("HTX Access Key를 입력해 주세요.");
+            toast.error("OKXAccess Key를 입력해 주세요.");
             return;
         }
 
         if (htxSecretKey === "") {
-            toast.error("HTX Secret Key를 입력해 주세요.");
+            toast.error("OKXSecret Key를 입력해 주세요.");
             return;
         }
 
@@ -1361,9 +1361,9 @@ export default function AIPage({ params }: any) {
             setIsValidBalance(true);
 
 
-            toast.success("HTX 계정 잔고가 확인되었습니다.");
+            toast.success("OKX계정 잔고가 확인되었습니다.");
         } else {
-            toast.error("HTX 계정 잔고를 확인할 수 없습니다.");
+            toast.error("OKX계정 잔고를 확인할 수 없습니다.");
         }
 
         setCheckingAccountBalance(false);
@@ -1381,12 +1381,12 @@ export default function AIPage({ params }: any) {
     ) => {
 
         if (htxAccessKey === "") {
-            toast.error("HTX Access Key를 입력해 주세요.");
+            toast.error("OKXAccess Key를 입력해 주세요.");
             return;
         }
 
         if (htxSecretKey === "") {
-            toast.error("HTX Secret Key를 입력해 주세요.");
+            toast.error("OKXSecret Key를 입력해 주세요.");
             return;
         }
 
@@ -1414,9 +1414,9 @@ export default function AIPage({ params }: any) {
         console.log("data.result", data.result);
 
         if (data.result?.status === "ok") {
-            toast.success("HTX 선물 계정으로 이체되었습니다.");
+            toast.success("OKX선물 계정으로 이체되었습니다.");
         } else {
-            toast.error("HTX 선물 계정으로 이체할 수 없습니다.");
+            toast.error("OKX선물 계정으로 이체할 수 없습니다.");
         }
 
         setTransferringToFuturesAccount(false);
@@ -1435,12 +1435,12 @@ export default function AIPage({ params }: any) {
     ) => {
 
         if (htxAccessKey === "") {
-            toast.error("HTX Access Key를 입력해 주세요.");
+            toast.error("OKXAccess Key를 입력해 주세요.");
             return;
         }
 
         if (htxSecretKey === "") {
-            toast.error("HTX Secret Key를 입력해 주세요.");
+            toast.error("OKXSecret Key를 입력해 주세요.");
             return;
         }
 
@@ -1465,9 +1465,9 @@ export default function AIPage({ params }: any) {
 
             setHtxAssetValuation(Number(data.result?.balance));
 
-            toast.success("HTX 자산 가치가 확인되었습니다.");
+            toast.success("OKX자산 가치가 확인되었습니다.");
         } else {
-            toast.error("HTX 자산 가치를 확인할 수 없습니다.");
+            toast.error("OKX자산 가치를 확인할 수 없습니다.");
         }
 
         setCheckingHtxAssetValuation(false);
@@ -1488,12 +1488,12 @@ export default function AIPage({ params }: any) {
     ) => {
 
         if (htxAccessKey === "") {
-            toast.error("HTX Access Key를 입력해 주세요.");
+            toast.error("OKXAccess Key를 입력해 주세요.");
             return;
         }
 
         if (htxSecretKey === "") {
-            toast.error("HTX Secret Key를 입력해 주세요.");
+            toast.error("OKXSecret Key를 입력해 주세요.");
             return;
         }
 
@@ -1524,9 +1524,9 @@ export default function AIPage({ params }: any) {
 
 
 
-            toast.success("HTX 매치 결과가 확인되었습니다.");
+            toast.success("OKX매치 결과가 확인되었습니다.");
         } else {
-            toast.error("HTX 매치 결과를 확인할 수 없습니다.");
+            toast.error("OKX매치 결과를 확인할 수 없습니다.");
         }
 
         setSearchingMatchResults(false);

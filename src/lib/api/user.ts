@@ -1212,6 +1212,15 @@ export async function getAllAgents(
 
         
         erc721ContractAddress: { $exists: true, $ne: null },
+
+        // center is owin_kingkong_bot or owin_kkk_bot
+
+        $or: [
+          { center: 'owin_kingkong_bot' },
+          { nickname: 'owin_kkk_bot' },
+        ]
+        
+
         
       },
       {

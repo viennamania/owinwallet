@@ -50,6 +50,8 @@ export async function POST(request: NextRequest) {
     omitMetadata: false, // // Flag to omit metadata
   });
   */
+
+  
   const response = await alchemy.nft.getNftMetadata(
     erc721ContractAddress,
     parseInt(tokenId)

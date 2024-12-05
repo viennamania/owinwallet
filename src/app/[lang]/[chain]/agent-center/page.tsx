@@ -1009,12 +1009,12 @@ export default function AIPage({ params }: any) {
     ) => {
 
         if (!htxAccessKey) {
-            toast.error("HTX Access Key를 입력해 주세요.");
+            toast.error("OKXAccess Key를 입력해 주세요.");
             return;
         }
 
         if (!htxSecretKey) {
-            toast.error("HTX Secret Key를 입력해 주세요.");
+            toast.error("OKXSecret Key를 입력해 주세요.");
             return;
         }
 
@@ -1071,9 +1071,9 @@ export default function AIPage({ params }: any) {
                 })
             );
 
-            toast.success("HTX 자산 가치가 확인되었습니다.");
+            toast.success("OKX자산 가치가 확인되었습니다.");
         } else {
-            toast.error("HTX 자산 가치를 확인할 수 없습니다.");
+            toast.error("OKX자산 가치를 확인할 수 없습니다.");
         }
 
         setCheckingHtxAssetValuationForAgent(
@@ -1117,12 +1117,12 @@ export default function AIPage({ params }: any) {
     ) => {
 
         if (htxAccessKey === "") {
-            toast.error("HTX Access Key를 입력해 주세요.");
+            toast.error("OKXAccess Key를 입력해 주세요.");
             return;
         }
 
         if (htxSecretKey === "") {
-            toast.error("HTX Secret Key를 입력해 주세요.");
+            toast.error("OKXSecret Key를 입력해 주세요.");
             return;
         }
 
@@ -1170,9 +1170,9 @@ export default function AIPage({ params }: any) {
 
 
 
-            toast.success("HTX 계정 잔고가 확인되었습니다.");
+            toast.success("OKX계정 잔고가 확인되었습니다.");
         } else {
-            toast.error("HTX 계정 잔고를 확인할 수 없습니다.");
+            toast.error("OKX계정 잔고를 확인할 수 없습니다.");
         }
 
         setCheckingAccountBalanceForAgent(
@@ -1205,12 +1205,12 @@ export default function AIPage({ params }: any) {
     ) => {
 
         if (htxAccessKey === "") {
-            toast.error("HTX Access Key를 입력해 주세요.");
+            toast.error("OKXAccess Key를 입력해 주세요.");
             return;
         }
 
         if (htxSecretKey === "") {
-            toast.error("HTX Secret Key를 입력해 주세요.");
+            toast.error("OKXSecret Key를 입력해 주세요.");
             return;
         }
 
@@ -1241,9 +1241,9 @@ export default function AIPage({ params }: any) {
 
 
 
-            toast.success("HTX 매치 결과가 확인되었습니다.");
+            toast.success("OKX매치 결과가 확인되었습니다.");
         } else {
-            toast.error("HTX 매치 결과를 확인할 수 없습니다.");
+            toast.error("OKX매치 결과를 확인할 수 없습니다.");
         }
 
         setSearchingMatchResults(false);
@@ -1692,12 +1692,12 @@ export default function AIPage({ params }: any) {
     ) => {
 
         if (!htxAccessKey) {
-            toast.error("HTX Access Key를 입력해 주세요.");
+            toast.error("OKXAccess Key를 입력해 주세요.");
             return;
         }
 
         if (!htxSecretKey) {
-            toast.error("HTX Secret Key를 입력해 주세요.");
+            toast.error("OKXSecret Key를 입력해 주세요.");
             return;
         }
 
@@ -1767,9 +1767,9 @@ export default function AIPage({ params }: any) {
                 })
             );
 
-            toast.success("HTX 통합 계정 자산이 확인되었습니다.");
+            toast.success("OKX통합 계정 자산이 확인되었습니다.");
         } else {
-            toast.error("HTX 통합 계정 자산을 확인할 수 없습니다.");
+            toast.error("OKX통합 계정 자산을 확인할 수 없습니다.");
         }
 
         setCheckingUnifiedAccountAssets(
@@ -1854,12 +1854,12 @@ export default function AIPage({ params }: any) {
     ) => {
 
         if (!htxAccessKey) {
-            toast.error("HTX Access Key를 입력해 주세요.");
+            toast.error("OKXAccess Key를 입력해 주세요.");
             return;
         }
 
         if (!htxSecretKey) {
-            toast.error("HTX Secret Key를 입력해 주세요.");
+            toast.error("OKXSecret Key를 입력해 주세요.");
             return;
         }
 
@@ -1914,9 +1914,9 @@ export default function AIPage({ params }: any) {
                 })
             );
 
-            toast.success("HTX 포지션 리스트가 확인되었습니다.");
+            toast.success("OKX포지션 리스트가 확인되었습니다.");
         } else {
-            toast.error("HTX 포지션 리스트를 확인할 수 없습니다.");
+            toast.error("OKX포지션 리스트를 확인할 수 없습니다.");
         }
 
         setCheckingPositionList(
@@ -2296,7 +2296,7 @@ export default function AIPage({ params }: any) {
                     )}
 
 
-                
+                    {/*}
                     <button
                         onClick={() => {
                         window.open('https://futures.htx.com.pk/futures/copy_trading/following/trader/NTA1MDk1Njk');
@@ -2305,7 +2305,7 @@ export default function AIPage({ params }: any) {
                     >
                         <div className='flex flex-row items-center gap-2'>
                             <Image
-                                src="/logo-exchange-htx.png"
+                                src="/logo-exchange-okx.png"
                                 alt="HTX"
                                 width={20}
                                 height={20}
@@ -2316,9 +2316,9 @@ export default function AIPage({ params }: any) {
                             </span>
                         </div>
                     </button>
-                    
-               
+                    */}
 
+            
  
                     {/* applications table */}
 
@@ -2327,13 +2327,13 @@ export default function AIPage({ params }: any) {
                             <div className='flex flex-row items-center gap-2'>
                                 
                                 <Image
-                                    src="/logo-exchange-htx.png"
+                                    src="/logo-exchange-okx.png"
                                     alt="HTX"
                                     width={50}
                                     height={50}
                                 />
                                 <span className='text-lg font-semibold text-gray-800'>
-                                    HTX 신청목록
+                                    OKX신청목록
                                 </span>
 
                                 {/* reload button */}
@@ -2582,7 +2582,7 @@ export default function AIPage({ params }: any) {
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                 <div className='flex flex-col gap-2'>
                                                     <span className='text-xs text-yellow-800'>
-                                                        HTX UID
+                                                        OKXUID
                                                     </span>
                                                     <span className='text-sm text-gray-800'>
                                                         {application.htxUid}
@@ -2692,7 +2692,7 @@ export default function AIPage({ params }: any) {
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                 <div className='flex flex-col gap-2'>
                                                     <span className='text-xs text-yellow-800'>
-                                                        HTX USDT(TRON) 지갑주소
+                                                        OKXUSDT(TRON) 지갑주소
                                                     </span>
                                                     <span className='text-xs text-gray-800'>
                                                         {application.htxUsdtWalletAddress.slice(0, 10)}...{application.htxUsdtWalletAddress.slice(-10)}
@@ -2757,7 +2757,7 @@ export default function AIPage({ params }: any) {
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                 <div className='flex flex-col gap-2'>
                                                     <span className='text-xs text-yellow-800'>
-                                                        HTX 자산 가치(SPOT)
+                                                        OKX자산 가치(SPOT)
                                                     </span>
                                                     <span className='text-sm text-gray-800'>
                                                         {htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.balance || 0} $(USD)
@@ -2794,7 +2794,7 @@ export default function AIPage({ params }: any) {
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                 <div className='flex flex-col gap-2'>
                                                     <span className='text-xs text-yellow-800'>
-                                                        HTX 통합계정 자산
+                                                        OKX통합계정 자산
                                                     </span>
                                                     <span className='text-sm text-gray-800'>
                                                         {unifiedAccountAssets.find((item) => item.applicationId === application.id)?.assets?.length || 0}
@@ -2826,7 +2826,7 @@ export default function AIPage({ params }: any) {
                                                 
                                                 <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                     <span className='text-xs text-yellow-800'>
-                                                        HTX 포지션 리스트
+                                                        OKX포지션 리스트
                                                     </span>
                                                     <button
                                                         onClick={() => {

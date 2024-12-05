@@ -832,14 +832,16 @@ export default function AgentPage({ params }: any) {
 
             <div className='flex flex-row items-center gap-2'>
                 <Image
-                    src='/logo-exchange-htx.png'
+                    src='/logo-exchange-okx.png'
                     width={60}
                     height={60}
                     alt='htx'
                     className='rounded-lg animate-pulse'
                 />
                 
+               
                 <div className='flex flex-col items-start justify-center gap-2'>
+                   {/*
                   <button
                     onClick={() => {
                       window.open('https://futures.htx.com.pk/futures/copy_trading/following/trader/NTA1MDk1Njk');
@@ -848,8 +850,9 @@ export default function AgentPage({ params }: any) {
                   >
                     트레이더 퍼포먼스 보러가기
                   </button>
+                  */}
                   <span className='text-lg font-semibold text-gray-800'>
-                      HTX 신청목록
+                      OKX신청목록
                   </span>
                 </div>
 
@@ -935,7 +938,7 @@ export default function AgentPage({ params }: any) {
                         '>
                           <div className='w-full flex flex-row items-center justify-between gap-2'>
                               <span className='text-sm text-gray-800'>
-                                  HTX UID: {application.htxUid}
+                                  OKXUID: {application.htxUid}
                               </span>
                           </div>
 
@@ -961,7 +964,7 @@ export default function AgentPage({ params }: any) {
 
                           <div className='w-full hidden flex-row items-center justify-between gap-2'>
                               <span className='text-xs text-gray-800'>
-                                  HTX USDT(TRON) 지갑주소: {application.htxUsdtWalletAddress}
+                                  OKXUSDT(TRON) 지갑주소: {application.htxUsdtWalletAddress}
                               </span>
                           </div>
 

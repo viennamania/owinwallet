@@ -494,12 +494,12 @@ export default function AgentPage({ params }: any) {
     ) => {
 
         if (!htxAccessKey) {
-            toast.error("HTX Access Key를 입력해 주세요.");
+            toast.error("OKXAccess Key를 입력해 주세요.");
             return;
         }
 
         if (!htxSecretKey) {
-            toast.error("HTX Secret Key를 입력해 주세요.");
+            toast.error("OKXSecret Key를 입력해 주세요.");
             return;
         }
 
@@ -558,9 +558,9 @@ export default function AgentPage({ params }: any) {
                 })
             );
 
-            toast.success("HTX 포지션 리스트가 확인되었습니다.");
+            toast.success("OKX포지션 리스트가 확인되었습니다.");
         } else {
-            toast.error("HTX 포지션 리스트를 확인할 수 없습니다.");
+            toast.error("OKX포지션 리스트를 확인할 수 없습니다.");
         }
 
         setCheckingPositionList(
@@ -969,7 +969,7 @@ export default function AgentPage({ params }: any) {
 
             <div className='flex flex-row items-center gap-2'>
                 <Image
-                    src='/logo-exchange-htx.png'
+                    src='/logo-exchange-okx.png'
                     width={60}
                     height={60}
                     alt='htx'
@@ -977,6 +977,7 @@ export default function AgentPage({ params }: any) {
                 />
                 
                 <div className='flex flex-col items-start justify-center gap-2'>
+                  {/*
                   <button
                     onClick={() => {
                       window.open('https://futures.htx.com.pk/futures/copy_trading/following/trader/NTA1MDk1Njk');
@@ -985,8 +986,10 @@ export default function AgentPage({ params }: any) {
                   >
                     트레이더 퍼포먼스 보러가기
                   </button>
+                  */}
+
                   <span className='text-lg font-semibold text-gray-800'>
-                      HTX 신청목록
+                      OKX신청목록
                   </span>
                 </div>
 
@@ -1087,7 +1090,7 @@ export default function AgentPage({ params }: any) {
                           </div>
                           <div className='w-full flex flex-row items-center justify-between gap-2'>
                               <span className='text-sm text-gray-800'>
-                                  HTX UID: {application.htxUid}
+                                  OKXUID: {application.htxUid}
                               </span>
                           </div>
 
@@ -1113,7 +1116,7 @@ export default function AgentPage({ params }: any) {
                           {/*
                           <div className='w-full flex-row items-center justify-between gap-2'>
                               <span className='text-xs text-gray-800'>
-                                  HTX USDT(TRON) 지갑주소: {application.htxUsdtWalletAddress}
+                                  OKXUSDT(TRON) 지갑주소: {application.htxUsdtWalletAddress}
                               </span>
                           </div>
 
@@ -1136,7 +1139,7 @@ export default function AgentPage({ params }: any) {
                               
                               <div className='w-full flex flex-row items-center justify-between gap-2'>
                                   <span className='text-xs text-yellow-800'>
-                                      HTX 포지션 리스트
+                                      OKX포지션 리스트
                                   </span>
                                   <button
                                       onClick={() => {
