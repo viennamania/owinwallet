@@ -143,9 +143,10 @@ export async function insertOneVerified(data: any) {
     userType: userType,
     mobile: mobile,
     telegramId: telegramId,
+    center: center,
   */
 
-  if (!data.walletAddress || !data.nickname || !data.userType) {
+  if (!data.walletAddress || !data.nickname ) {
     return null;
   }
 
@@ -187,7 +188,7 @@ export async function insertOneVerified(data: any) {
       mobile: data.mobile,
       telegramId: data.telegramId,
       email: data.email,
-
+      center: data.center,
 
       walletAddress: data.walletAddress,
 
