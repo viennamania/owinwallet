@@ -567,7 +567,7 @@ export default function AIPage({ params }: any) {
                 },
                 body: JSON.stringify({
                     walletAddress: address,
-                    center: '',
+                    marketingCenter: 'owin',
                 }),
             });
 
@@ -1617,7 +1617,7 @@ export default function AIPage({ params }: any) {
                 },
                 body: JSON.stringify({
                     walletAddress: address,
-                    center: '',
+                    marketingCenter: 'owin',
                 }),
             });
 
