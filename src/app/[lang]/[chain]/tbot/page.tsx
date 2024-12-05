@@ -38,10 +38,10 @@ import {
 import { inAppWallet } from "thirdweb/wallets";
 
 
-
 import {
     getProfiles,
 } from "thirdweb/wallets/in-app";
+
 
 import Image from 'next/image';
 
@@ -60,7 +60,6 @@ import {
 
 import AppBarComponent from "@/components/Appbar/AppBar";
 import { getDictionary } from "../../../dictionaries";
-
 
 import { deployERC721Contract } from 'thirdweb/deploys';
 
@@ -161,6 +160,8 @@ export default function AIPage({ params }: any) {
 
     const searchParams = useSearchParams();
 
+    const center = searchParams.get('center');
+
     const wallet = searchParams.get('wallet');
 
     const agent = searchParams.get('agent');
@@ -254,6 +255,7 @@ export default function AIPage({ params }: any) {
         Minting_NFT: "",
 
         Loading_my_images: "",
+
 
         Enter_your_nickname: "",
 
@@ -386,9 +388,28 @@ export default function AIPage({ params }: any) {
 
         const checkReferral = async () => {
 
+            /*
             if (agent === "" || agentNumber === "") {
                 return;
             }
+            */
+
+
+            let agentContractAddress = agent as string || "";
+            let agentTokenId = agentNumber as string || "";
+
+
+            console.log("agentContractAddress", agentContractAddress);
+            console.log("agentTokenId", agentTokenId);
+
+            // 0x50985B6974bFE7bFCCE313dfB59abd58EF4310fA 0 default
+            if (agentContractAddress === "" || agentTokenId === "") {
+                agentContractAddress = "0x50985B6974bFE7bFCCE313dfB59abd58EF4310fA";
+                agentTokenId = "0";
+            }
+
+
+
 
             setIsValidReferralLoading(true);
 
@@ -399,7 +420,7 @@ export default function AIPage({ params }: any) {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    erc721ContractAddress: agent,
+                    erc721ContractAddress: agentContractAddress,
                 }),
             });
 
@@ -429,8 +450,8 @@ export default function AIPage({ params }: any) {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    erc721ContractAddress: agent,
-                    tokenId: agentNumber,
+                    erc721ContractAddress: agentContractAddress,
+                    tokenId: agentTokenId,
                 }),
             });
 
@@ -453,8 +474,8 @@ export default function AIPage({ params }: any) {
                 setReferralAgentNFT(nftData.result);
 
 
-                setAgentBot(agent || "");
-                setSelectedBotNumber(Number(agentNumber));
+                setAgentBot(agentContractAddress);
+                setSelectedBotNumber(Number(agentTokenId));
 
             }
 
@@ -608,13 +629,6 @@ export default function AIPage({ params }: any) {
      */
 
 
-    /*
-        const [userPhoneNumber, setUserPhoneNumber] = useState("");
-    useEffect(() => {
-        phoneNumber && setUserPhoneNumber(phoneNumber);
-    } , [phoneNumber]);
-     */
-
 
     const [userPhoneNumber, setUserPhoneNumber] = useState("");
     const [userType, setUserType] = useState("");
@@ -658,9 +672,6 @@ export default function AIPage({ params }: any) {
 
 
 
-
-
-
     const { connect, isConnecting } = useConnectModal();
 
     const handleConnect = async () => {
@@ -671,7 +682,7 @@ export default function AIPage({ params }: any) {
   
         accountAbstraction: {
             chain: params.chain === "arbitrum" ? arbitrum : polygon,
-            factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+              
             sponsorGas: true
         },
 
@@ -724,6 +735,7 @@ export default function AIPage({ params }: any) {
 
 
 
+    const [masterBot, setMasterBot] = useState({} as any);
 
 
     console.log("address", address);
@@ -752,12 +764,14 @@ export default function AIPage({ params }: any) {
 
             const data = await response.json();
 
-            console.log("data", data);
+            //console.log("data", data);
 
 
             if (data.result) {
                 setNickname(data.result.nickname);
                 setUserCode(data.result.id);
+
+                setMasterBot(data.result.masterBot);
 
             }
         };
@@ -840,9 +854,9 @@ export default function AIPage({ params }: any) {
     
 
 
-    console.log("myNfts", myNfts);
+    ///console.log("myNfts", myNfts);
 
-    console.log("amountNft100", amountNft100);
+    ///console.log("amountNft100", amountNft100);
 
 
     // claim NFT (ERC1155) for the user
@@ -1049,13 +1063,12 @@ export default function AIPage({ params }: any) {
     const [myAgentNFT, setMyAgentNFT] = useState({} as any);
 
     // apply to mint NFT
-    // 닉네임, 핸드폰번호, 이메일주소, HTX UID, HTX USDT(TRON) 지갑주소, API Access Key, API Secret Key
+    // 닉네임, 핸드폰번호, 이메일주소, OKX UID, OKX USDT(TRON) 지갑주소, API Access Key, API Secret Key
 
     const [userName, setUserName] = useState("");
     useEffect(() => {
         nickname && setUserName(nickname);
     } , [nickname]);
-
 
 
     const [userEmail, setUserEmail] = useState("");
@@ -1065,6 +1078,7 @@ export default function AIPage({ params }: any) {
     const [htxUsdtWalletAddress, setHtxUsdtWalletAddress] = useState("");
     const [apiAccessKey, setApiAccessKey] = useState("");
     const [apiSecretKey, setApiSecretKey] = useState("");
+    const [apiPassword, setApiPassword] = useState("");
 
 
 
@@ -1102,13 +1116,13 @@ export default function AIPage({ params }: any) {
         }
 
         if (htxUserId === "") {
-            toast.error("HTX UserId 입력해 주세요.");
+            toast.error("OKX UserId 입력해 주세요.");
             return;
         }
 
         /*
         if (htxUsdtWalletAddress === "") {
-            toast.error("HTX USDT(TRON) 지갑주소를 입력해 주세요.");
+            toast.error("OKX USDT(TRON) 지갑주소를 입력해 주세요.");
             return;
         }
         */
@@ -1124,9 +1138,19 @@ export default function AIPage({ params }: any) {
             return;
         }
 
+        if (apiPassword === "") {
+            toast.error("API Password를 입력해 주세요.");
+            return;
+        }
+
         setApplyingMintNFT(true);
 
         // api call
+
+        let marketingCenter = "owin";
+        if (center === "ppump_orry_bot") {
+            marketingCenter = "ppump";
+        }
 
         const response = await fetch("/api/agent/applyMintNFT", {
             method: "POST",
@@ -1134,7 +1158,8 @@ export default function AIPage({ params }: any) {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                center: "",
+                marketingCenter: marketingCenter,
+                center: center,
                 walletAddress: address,
                 agentBot: agentBot,
                 agentBotNumber: selectedBotNumber,
@@ -1142,10 +1167,12 @@ export default function AIPage({ params }: any) {
                 userPhoneNumber: userPhoneNumber,
                 userTelegramId: userTelegramId,
                 userEmail: userEmail,
+                exchange: "okx",
                 htxUserId: htxUserId,
                 htxUsdtWalletAddress: htxUsdtWalletAddress,
                 apiAccessKey: apiAccessKey,
                 apiSecretKey: apiSecretKey,
+                apiPassword: apiPassword,
             }),
         });
 
@@ -1362,18 +1389,18 @@ export default function AIPage({ params }: any) {
 
        
         if (htxAccessKey === "") {
-            toast.error("HTX Access Key를 입력해 주세요.");
+            toast.error("OKX Access Key를 입력해 주세요.");
             return;
         }
 
         if (htxSecretKey === "") {
-            toast.error("HTX Secret Key를 입력해 주세요.");
+            toast.error("OKX Secret Key를 입력해 주세요.");
             return;
         }
 
         setCheckingHtxApiKey(true);
 
-        const response = await fetch("/api/agent/getAccount", {
+        const response = await fetch("/api/agent/getAccountOkx", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -1398,11 +1425,14 @@ export default function AIPage({ params }: any) {
 
             setIsValidAPIKey(true);
 
-            setHtxUserId(data.result?.data[0]?.id);
+            
+            //setHtxUserId(data.result?.data[0]?.id);
+            setHtxUserId("1234");
 
-            toast.success("HTX API Key가 확인되었습니다.");
+
+            toast.success("OKX API Key가 확인되었습니다.");
         } else {
-            toast.error("HTX API Key를 확인할 수 없습니다.");
+            toast.error("OKX API Key를 확인할 수 없습니다.");
         }
 
         setCheckingHtxApiKey(false);
@@ -1422,12 +1452,12 @@ export default function AIPage({ params }: any) {
     ) => {
 
         if (htxAccessKey === "") {
-            toast.error("HTX Access Key를 입력해 주세요.");
+            toast.error("OKX Access Key를 입력해 주세요.");
             return;
         }
 
         if (htxSecretKey === "") {
-            toast.error("HTX Secret Key를 입력해 주세요.");
+            toast.error("OKX Secret Key를 입력해 주세요.");
             return;
         }
 
@@ -1460,9 +1490,9 @@ export default function AIPage({ params }: any) {
             setIsValidBalance(true);
 
 
-            toast.success("HTX 계정 잔고가 확인되었습니다.");
+            toast.success("OKX 계정 잔고가 확인되었습니다.");
         } else {
-            toast.error("HTX 계정 잔고를 확인할 수 없습니다.");
+            toast.error("OKX 계정 잔고를 확인할 수 없습니다.");
         }
 
         setCheckingAccountBalance(false);
@@ -1480,12 +1510,12 @@ export default function AIPage({ params }: any) {
     ) => {
 
         if (htxAccessKey === "") {
-            toast.error("HTX Access Key를 입력해 주세요.");
+            toast.error("OKX Access Key를 입력해 주세요.");
             return;
         }
 
         if (htxSecretKey === "") {
-            toast.error("HTX Secret Key를 입력해 주세요.");
+            toast.error("OKX Secret Key를 입력해 주세요.");
             return;
         }
 
@@ -1513,9 +1543,9 @@ export default function AIPage({ params }: any) {
         console.log("data.result", data.result);
 
         if (data.result?.status === "ok") {
-            toast.success("HTX 선물 계정으로 이체되었습니다.");
+            toast.success("OKX 선물 계정으로 이체되었습니다.");
         } else {
-            toast.error("HTX 선물 계정으로 이체할 수 없습니다.");
+            toast.error("OKX 선물 계정으로 이체할 수 없습니다.");
         }
 
         setTransferringToFuturesAccount(false);
@@ -1535,12 +1565,12 @@ export default function AIPage({ params }: any) {
     ) => {
 
         if (htxAccessKey === "") {
-            toast.error("HTX Access Key를 입력해 주세요.");
+            toast.error("OKX Access Key를 입력해 주세요.");
             return;
         }
 
         if (htxSecretKey === "") {
-            toast.error("HTX Secret Key를 입력해 주세요.");
+            toast.error("OKX Secret Key를 입력해 주세요.");
             return;
         }
 
@@ -1567,9 +1597,9 @@ export default function AIPage({ params }: any) {
                 data.result?.assetValuation
             );
 
-            toast.success("HTX 자산 가치가 확인되었습니다.");
+            toast.success("OKX 자산 가치가 확인되었습니다.");
         } else {
-            toast.error("HTX 자산 가치를 확인할 수 없습니다.");
+            toast.error("OKX 자산 가치를 확인할 수 없습니다.");
         }
 
         setCheckingHtxAssetValuation(false);
@@ -1591,12 +1621,12 @@ export default function AIPage({ params }: any) {
     ) => {
 
         if (htxAccessKey === "") {
-            toast.error("HTX Access Key를 입력해 주세요.");
+            toast.error("OKX Access Key를 입력해 주세요.");
             return;
         }
 
         if (htxSecretKey === "") {
-            toast.error("HTX Secret Key를 입력해 주세요.");
+            toast.error("OKX Secret Key를 입력해 주세요.");
             return;
         }
 
@@ -1627,9 +1657,9 @@ export default function AIPage({ params }: any) {
 
 
 
-            toast.success("HTX 매치 결과가 확인되었습니다.");
+            toast.success("OKX 매치 결과가 확인되었습니다.");
         } else {
-            toast.error("HTX 매치 결과를 확인할 수 없습니다.");
+            toast.error("OKX 매치 결과를 확인할 수 없습니다.");
         }
 
         setSearchingMatchResults(false);
@@ -1672,12 +1702,12 @@ export default function AIPage({ params }: any) {
     ) => {
 
         if (htxAccessKey === "") {
-            toast.error("HTX Access Key를 입력해 주세요.");
+            toast.error("OKX Access Key를 입력해 주세요.");
             return;
         }
 
         if (htxSecretKey === "") {
-            toast.error("HTX Secret Key를 입력해 주세요.");
+            toast.error("OKX Secret Key를 입력해 주세요.");
             return;
         }
 
@@ -1696,7 +1726,7 @@ export default function AIPage({ params }: any) {
 
         if (!response.ok) {
             setGettingRebateInfo(false);
-            toast.error("HTX 리베이트 정보를 확인할 수 없습니다.");
+            toast.error("OKX 리베이트 정보를 확인할 수 없습니다.");
             return;
         }
 
@@ -1708,9 +1738,9 @@ export default function AIPage({ params }: any) {
 
             setRebateInfo(data.result?.data);
 
-            toast.success("HTX 리베이트 정보가 확인되었습니다.");
+            toast.success("OKX 리베이트 정보가 확인되었습니다.");
         } else {
-            toast.error("HTX 리베이트 정보를 확인할 수 없습니다.");
+            toast.error("OKX 리베이트 정보를 확인할 수 없습니다.");
         }
 
         setGettingRebateInfo(false);
@@ -1721,8 +1751,6 @@ export default function AIPage({ params }: any) {
     ////console.log("myAgent", myAgent);
 
 
-
-    // check user nickname duplicate
 
 
     const [isNicknameDuplicate, setIsNicknameDuplicate] = useState(false);
@@ -1829,18 +1857,19 @@ export default function AIPage({ params }: any) {
                     userType: userType,
                     mobile: userPhoneNumber,
                     telegramId: userTelegramId,
+                    center: center,
                 }),
             });
 
             if (!response.ok) {
+                console.error("Error setting user data");
                 toast.error('Error saving nickname');
+                return;
             }
 
             const data = await response.json();
 
-            console.log("data", data);
-
-
+            //console.log("data", data);
 
             if (data.result) {
 
@@ -1864,6 +1893,71 @@ export default function AIPage({ params }: any) {
 
 
 
+    const [payName, setPayName] = useState("");
+
+    const [selectedMasterBot, setSelectedMasterBot] = useState(0);
+    const [masterBotPrice, setMasterBotPrice] = useState(0);
+
+    const [applyingUpgradeMasterBot, setApplyingUpgradeMasterBot] = useState(false);
+
+    const applyUpgradeMasterBot = async () => {
+
+        if (address === "") {
+            toast.error("먼저 지갑을 연결해 주세요.");
+            return;
+        }
+
+        if (payName === "") {
+            toast.error("지급자 이름을 입력해 주세요.");
+            return;
+        }
+
+        if (masterBotPrice === 0) {
+            toast.error("Master bot을 선택해 주세요.");
+            return;
+        }
+
+        setApplyingUpgradeMasterBot(true);
+
+        const response = await fetch("/api/user/updateMasterBot", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                walletAddress: address,
+                masterBot: {
+                    id: selectedMasterBot,
+                    price: masterBotPrice,
+                    payName: payName,
+                },
+            }),
+        });
+
+        if (!response.ok) {
+            setApplyingUpgradeMasterBot(false);
+            console.error("Error updating user master bot");
+            toast.error('Error updating user master bot');
+            return;
+        }
+
+        const data = await response.json();
+
+        if (data.result) {
+            setMasterBot(data.result.masterBot);
+            toast.success('Master bot updated');
+        } else {
+            toast.error('Error updating user master bot');
+        }
+
+        setApplyingUpgradeMasterBot(false);
+    }
+
+
+
+
+
+
     return (
 
         <main className="p-4 pb-10 min-h-[100vh] flex items-start justify-center container max-w-screen-lg mx-auto">
@@ -1874,6 +1968,7 @@ export default function AIPage({ params }: any) {
                 <AppBarComponent />
 
                 <Header
+                    center={center || ""}
                     agent={agent || ""}
                     tokenId={agentNumber || ""}
                 />
@@ -1895,7 +1990,7 @@ export default function AIPage({ params }: any) {
                             height={40}
                         />
                         <span className="text-sm font-semibold text-gray-500">
-                            AI 로봇 트레이딩&아카데미 센터
+                            AGENT AI 로봇 트레이딩&아카데미 센터
                         </span>
                     </div>
                     <div className='flex flex-row items-center gap-4'>
@@ -2002,7 +2097,7 @@ export default function AIPage({ params }: any) {
 
                     > 100 TBOT을 무료로 제공합니다. 
                     1. 100 TBOT을 무료 구매하고, 
-                    2. HTX를 가입하면  HTX 본인계죄로 100 USDT를 무상으로 지급 !
+                    2. OKX를 가입하면  OKX 본인계죄로 100 USDT를 무상으로 지급 !
                     3. 100 MASTER BOT 무료 민팅 !
                     */}
                     {/* impact text */}
@@ -2035,7 +2130,7 @@ export default function AIPage({ params }: any) {
                                     font-semibold
                                     bg-yellow-200 p-2 rounded-lg
                                 '>
-                                    2. HTX를 가입하면  HTX 본인계죄로 100 USDT를 무상으로 지급 !
+                                    2. OKX를 가입하면  OKX 본인계죄로 100 USDT를 무상으로 지급 !
                                 </span>
                                 <span className='text-sm text-green-800
                                     font-semibold
@@ -2046,6 +2141,9 @@ export default function AIPage({ params }: any) {
                             </div>
 
                     </div>
+
+
+
 
                     <div className='w-full flex flex-col items-start gap-5 mt-10'>
                         {/* live icon */}
@@ -2074,30 +2172,33 @@ export default function AIPage({ params }: any) {
                                     </button>
                                 </div>
 
-
-
                             </div>
                         ) : (
-                            <div className='flex flex-col items-center gap-2'>
+                            <div className='flex flex-col items-start gap-2'>
                                 
                                 <ConnectButton
                                     client={client}
                                     wallets={wallets}
-                                    accountAbstraction={{   
+                                    accountAbstraction={{
                                         chain: polygon,
-                                        factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+                                        
                                         sponsorGas: true
                                     }}
                                     theme={"light"}
-                                        connectButton={{
-                                            label: "Sign in with Magic Wallet",
+                                    connectButton={{
+                                        label: "Sign in with AGENT Wallet",
                                     }}
                                     connectModal={{
-                                        size: "wide",                            
+                                        size: "wide", 
+                                        titleIcon: "https://aiagentbot.vercel.app/icon-pump-bot.png",                           
                                         showThirdwebBranding: false,
+
                                     }}
                                     locale={"ko_KR"}
+                                    //locale={"en_US"}
                                 />
+
+                      
 
 
                                 <span className='text-sm font-semibold text-red-500'>
@@ -2228,13 +2329,40 @@ export default function AIPage({ params }: any) {
                         </div>
                     )}
 
-
      
+
+                    <div className='w-full flex flex-col xl:flex-row items-center justify-between gap-2'>
+                        <button
+                            className='w-full bg-blue-500 text-zinc-100 p-2 rounded-lg text-sm font-semibold'
+                            onClick={() => {
+                                //window.open("https://www.htx.com.pk/invite/en-us/1h?invite_code=z73y9223", "_blank");
+                                // https://www.okx.com/join/69963198
+                                window.open("https://www.okx.com/join/69963198", "_blank");
+                            }}
+                        >
+                            OKX 가입하러 가기
+                        </button>
+                        {/* OKX 가입 메뉴얼 */}
+                        {/* https://drive.google.com/file/d/1eK_1jIc1PmZxJ-JYnxJKYJohoVqe1Dw9/view */}
+
+                        <button
+                            className='w-full bg-blue-500 text-zinc-100 p-2 rounded-lg text-sm font-semibold'
+                            onClick={() => {
+                                ///window.open("https://drive.google.com/file/d/1eK_1jIc1PmZxJ-JYnxJKYJohoVqe1Dw9/view", "_blank");
+
+                                // https://drive.google.com/file/d/1tTDrHUodLWmQfUdjYDr3z21WJHKj6I2j/view
+                                window.open("https://drive.google.com/file/d/1tTDrHUodLWmQfUdjYDr3z21WJHKj6I2j/view", "_blank");
+                            }}
+                        >
+                            OKX 가입 메뉴얼 보러 가기
+                        </button>
+                    </div>
+
 
 
                     {/* TBOT Image */}
                     {/*
-                    100 TBOT for HTX
+                    100 TBOT for OKX
                     1,000 TBOT for OKEX
                     10,000 TBOT for BYBIT
                     */}
@@ -2496,6 +2624,26 @@ export default function AIPage({ params }: any) {
                                             )}
                                         </div>
 
+                                        {/* got to install htx */}
+                                        {/* https://www.htx.com.pk/en-us/v/register/double-invite/web/?inviter_id=11343840&invite_code=z73y9223 */}
+                                        <div className='flex flex-col gap-2'>
+                                            <span className='text-sm font-semibold text-gray-500'>
+                                                OKX 계정이 없으신가요?
+                                            </span>
+                                            <button
+                                                className='bg-blue-500 text-zinc-100 p-2 rounded-lg text-lg font-semibold
+                                                    hover:bg-gray-300 hover:text-gray-500 hover:shadow-lg
+                                                '
+                                                onClick={() => {
+                                                    ///window.open('https://www.htx.com.pk/en-us/v/register/double-invite/web/?inviter_id=11343840&invite_code=z73y9223', "_blank");
+
+                                                    // https://www.okx.com/join/69963198
+                                                    window.open('https://www.okx.com/join/69963198', "_blank");
+                                                }}
+                                            >
+                                                OKX 계정 만들기
+                                            </button>
+                                        </div>
 
                                         <div className='w-full flex flex-col gap-2
                                             border border-gray-300 p-4 rounded-lg
@@ -2548,7 +2696,7 @@ export default function AIPage({ params }: any) {
                                                 
                                                 <div className='flex flex-row items-center justify-between gap-2'>
                                                     <span className='text-sm font-semibold text-gray-500'>
-                                                        HTX UID: {myAgent.htxUid}
+                                                        OKX UID: {myAgent.htxUid}
                                                     </span>
                                                     <Image
                                                         src="/verified.png"
@@ -2582,9 +2730,22 @@ export default function AIPage({ params }: any) {
                                                     />
                                                 </div>
 
+                                                {/* apiPassword */}
+                                                <div className='flex flex-row items-center justify-between gap-2'>
+                                                    <span className='text-sm font-semibold text-gray-500'>
+                                                        API Password: {myAgent?.apiPassword?.substring(0, 10) + "..."}
+                                                    </span>
+                                                    <Image
+                                                        src="/verified.png"
+                                                        alt="verified"
+                                                        width={20}
+                                                        height={20}
+                                                    />
+                                                </div>
+
                                                 <div className='hidden flex-row items-center justify-between gap-2'>
                                                     <span className='text-sm font-semibold text-gray-500'>
-                                                        HTX USDT(TRON) 지갑주소: {myAgent.htxUsdtWalletAddress.substring(0, 10) + "..."}
+                                                        OKX USDT(TRON) 지갑주소: {myAgent.htxUsdtWalletAddress.substring(0, 10) + "..."}
                                                     </span>
                                                     <Image
                                                         src="/verified.png"
@@ -2622,18 +2783,18 @@ export default function AIPage({ params }: any) {
                                                             checkHtxAssetValuation(myAgent.apiAccessKey, myAgent.apiSecretKey);
                                                         }}
                                                     >
-                                                        HTX 자산 가치 확인
+                                                        OKX 자산 가치 확인
                                                     </button>
                                                     {checkingHtxAssetValuation && (
                                                         <span className='text-sm font-semibold text-blue-500'>
-                                                            HTX 자산 가치 확인중...
+                                                            OKX 자산 가치 확인중...
                                                         </span>
                                                     )}
                                                 </div>
                                                 {htxAssetValuation?.balance && (
                                                     <div className='flex flex-col gap-2'>
                                                         <span className='text-sm font-semibold text-gray-500'>
-                                                            HTX 자산 가치: {htxAssetValuation?.balance} USDT
+                                                            OKX 자산 가치: {htxAssetValuation?.balance} USDT
                                                         </span>
                                                         {/* timestamp */}
                                                         <span className='text-sm font-semibold text-gray-500'>
@@ -2681,46 +2842,23 @@ export default function AIPage({ params }: any) {
                                     <div className='w-full flex flex-col items-center gap-2
                                         border border-gray-300 p-1 rounded-lg
                                     '>
-                                        {/* HTX 가입 */}
+                                        {/* OKX 가입 */}
                                         {/* new window
                                             https://www.htx.com.pk/invite/en-us/1h?invite_code=z73y9223
                                         */}
 
-                                        {/* HTX 거래소에 가입하고 아래 정보를 입력하세요. */}
+                                        {/* OKX 거래소에 가입하고 아래 정보를 입력하세요. */}
                                         <div className='flex flex-row items-center gap-2'>
                                             <Image
-                                                src="/logo-exchange-htx.png"
-                                                alt="HTX"
+                                                src="/logo-exchange-okx.png"
+                                                alt="OKX"
                                                 width={50}
                                                 height={50}
                                             />
                                             <span className='text-lg font-semibold text-gray-500'>
-                                                HTX 거래소에 가입하고 아래 정보를 입력하세요.
+                                                OKX 거래소에 가입하고 아래 정보를 입력하세요.
                                             </span>
                                         </div>
-
-                                        <div className='w-full flex flex-col xl:flex-row items-center justify-between gap-2'>
-                                            <button
-                                                className='w-full bg-blue-500 text-zinc-100 p-2 rounded-lg text-sm font-semibold'
-                                                onClick={() => {
-                                                    window.open("https://www.htx.com.pk/invite/en-us/1h?invite_code=z73y9223", "_blank");
-                                                }}
-                                            >
-                                                HTX 가입하러 가기
-                                            </button>
-                                            {/* HTX 가입 메뉴얼 */}
-                                            {/* https://drive.google.com/file/d/1eK_1jIc1PmZxJ-JYnxJKYJohoVqe1Dw9/view */}
-
-                                            <button
-                                                className='w-full bg-blue-500 text-zinc-100 p-2 rounded-lg text-sm font-semibold'
-                                                onClick={() => {
-                                                    window.open("https://drive.google.com/file/d/1eK_1jIc1PmZxJ-JYnxJKYJohoVqe1Dw9/view", "_blank");
-                                                }}
-                                            >
-                                                HTX 가입 메뉴얼 보기
-                                            </button>
-                                        </div>
-
 
 
                                         {!isValidReferralLoading && isValidReferral && (
@@ -2827,10 +2965,10 @@ export default function AIPage({ params }: any) {
                                             '>
 
                                                 <span className='text-lg font-semibold text-blue-500'>
-                                                    AI 에이전트를 소유한 회원를 선택하세요
+                                                    AI 에이전트를 선택하세요
                                                 </span>
 
-                                                <div className='w-full flex flex-col gap-5'>
+                                                <div className='w-full flex flex-col gap-2'>
 
                                                     <div className='w-full grid grid-cols-3 gap-2'>
                                                         {agents.map((agent) => (
@@ -2884,10 +3022,6 @@ export default function AIPage({ params }: any) {
                                                     </div>
 
                                                     <div className='w-full flex flex-col gap-2 h-min-96'>
-
-                                                        <span className='text-lg font-semibold text-blue-500'>
-                                                            AI 에이전트 NFT를 선택하세요
-                                                        </span>
 
                                                         {loadingAgentBotList && (
                                                             <div className='flex flex-col items-center gap-2'>
@@ -3003,20 +3137,21 @@ export default function AIPage({ params }: any) {
 
 
                                         {/* input for apply */}
-                                        {/* 닉네임, 핸드폰번호, 이메일주소, HTX UID, HTX USDT(TRON) 지갑주소 */}
+                                        {/* 닉네임, 핸드폰번호, 이메일주소, OKX UID, OKX USDT(TRON) 지갑주소 */}
                                         {/* API Access Key, API Secret Key */}
 
 
 
-                                        <div className='w-full flex flex-col gap-2
+                                        <div className='mt-5 w-full flex flex-col gap-2
                                             border border-gray-300 p-4 rounded-lg
                                         '>
                                             <span className='text-lg font-semibold text-blue-500'>
-                                                HTX API 정보를 입력하세요.
+                                                OKX API 정보를 입력하세요.
                                             </span>
 
+
                                             <span className='text-sm font-semibold text-gray-500'>
-                                                HTX API Access Key
+                                                OKX API Access Key
                                             </span>
                                             <input
                                                 disabled={!address || applyingMintNFT}
@@ -3026,7 +3161,7 @@ export default function AIPage({ params }: any) {
                                                 className="w-full p-2 rounded-lg border border-gray-300"
                                             />
                                             <span className='text-sm font-semibold text-gray-500'>
-                                                HTX API Secret Key
+                                                OKX API Secret Key
                                             </span>
                                             <input
                                                 disabled={!address || applyingMintNFT}
@@ -3036,23 +3171,36 @@ export default function AIPage({ params }: any) {
                                                 className="w-full p-2 rounded-lg border border-gray-300"
                                             />
 
+                                            <span className='text-sm font-semibold text-gray-500'>
+                                                OKX API Password
+                                            </span>
+                                            <input
+                                                disabled={!address || applyingMintNFT}
+                                                onChange={(e) => setApiPassword(e.target.value)}
+                                                type="text"
+                                                placeholder="API Password"
+                                                className="w-full p-2 rounded-lg border border-gray-300"
+                                            />
+
+
+
                                             {/* button for api call /api/agent/getAccount */}
                                             <button
-                                                disabled={!address || checkingHtxApiKey || !apiAccessKey || !apiSecretKey || isValidAPIKey}
+                                                disabled={!address || checkingHtxApiKey || !apiAccessKey || !apiSecretKey || !apiPassword || isValidAPIKey}
                                                 className={` ${checkingHtxApiKey || !apiAccessKey || !apiSecretKey || isValidAPIKey
                                                     ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold`}
                                                 onClick={() => {
                                                     checkHtxApiKey(apiAccessKey, apiSecretKey);
                                                 }}
                                             >
-                                                HTX API 정보 확인하기
+                                                OKX API 정보 확인하기
                                             </button>
 
 
 
                                             {checkingHtxApiKey && (
                                                 <span className='text-sm font-semibold text-blue-500'>
-                                                    HTX API Key 확인중...
+                                                    OKX API Key 확인중...
                                                 </span>
                                             )}
 
@@ -3065,7 +3213,7 @@ export default function AIPage({ params }: any) {
                                                         height={20}
                                                     />
                                                     <span className='text-sm font-semibold text-green-500'>
-                                                        HTX API Key가 확인되었습니다.
+                                                        OKX API Key가 확인되었습니다.
                                                     </span>
                                                 </div>
 
@@ -3073,7 +3221,7 @@ export default function AIPage({ params }: any) {
 
                                             {!checkingHtxApiKey && !isValidAPIKey && (
                                                 <span className='text-sm font-semibold text-red-500'>
-                                                    HTX API Key가 확인되지 않았습니다. 다시 확인해서 입력해주세요.
+                                                    OKX API Key가 확인되지 않았습니다. 다시 확인해서 입력해주세요.
                                                 </span>
                                             )}
 
@@ -3081,14 +3229,14 @@ export default function AIPage({ params }: any) {
 
                                         <div className='w-full hidden flex-col gap-2 border border-gray-300 p-4 rounded-lg'>
                                             <span className='text-sm font-semibold text-gray-500'>
-                                                HTX UserId
+                                                OKX UserId
                                             </span>
                                             <input
                                                 disabled={true}
                                                 value={htxUserId}
                                                 onChange={(e) => setHtxUserId(e.target.value)}
                                                 type="text"
-                                                placeholder="HTX UserId"
+                                                placeholder="OKX UserId"
                                                 className="w-full p-2 rounded-lg border border-gray-300"
                                             />
                                         </div>
@@ -3098,26 +3246,23 @@ export default function AIPage({ params }: any) {
 
 
 
-                                        {/* HTX USDT(TRON) 지갑주소 */}
+                                        {/* OKX USDT(TRON) 지갑주소 */}
 
                                         <div className='mt-5 w-full flex-col gap-2 hidden'>
-                                            
                                             <span className='text-sm font-semibold text-gray-500'>
-                                                HTX USDT(TRON) 입금용 지갑주소
+                                                OKX USDT(TRON) 입금용 지갑주소
                                             </span>
-
                                             <input
                                                 disabled={!address || applyingMintNFT}
                                                 onChange={(e) => setHtxUsdtWalletAddress(e.target.value)}
                                                 type="text"
-                                                placeholder="HTX USDT(TRON) 지갑주소"
+                                                placeholder="OKX USDT(TRON) 지갑주소"
                                                 className="w-full p-2 rounded-lg border border-gray-300"
                                             />
                                         </div>
 
 
                                         <div className='mt-5 w-full flex flex-col gap-2 border border-gray-300 p-4 rounded-lg'>
-                                            
                                             <span className='text-lg font-semibold text-blue-500'>
                                                 닉네임, 핸드폰번호, 이메일주소를 입력하세요.
                                             </span>
@@ -3171,9 +3316,10 @@ export default function AIPage({ params }: any) {
 
                             </div>
 
-
+ 
                             <div className='flex flex-col gap-2'>
 
+                                {/*
                                 <button
                                     onClick={() => {
                                     window.open('https://futures.htx.com.pk/futures/copy_trading/following/trader/NTA1MDk1Njk');
@@ -3182,8 +3328,8 @@ export default function AIPage({ params }: any) {
                                 >
                                     <div className='flex flex-row items-center gap-2'>
                                         <Image
-                                            src="/logo-exchange-htx.png"
-                                            alt="HTX"
+                                            src="/logo-exchange-okx.png"
+                                            alt="OKX"
                                             width={20}
                                             height={20}
                                             className='rounded-full bg-white p-1'
@@ -3193,6 +3339,8 @@ export default function AIPage({ params }: any) {
                                         </span>
                                     </div>
                                 </button>
+                                */}
+
 
 
                                 <span className='text-lg font-semibold text-blue-500'>
@@ -3250,239 +3398,429 @@ export default function AIPage({ params }: any) {
                                 
                         </div>
 
-                        {/*
-                        Ai 트레이딩 1000 TBOT
-                        • AI 자동매매 트레이딩 서비스 이용권
-                        NFT 입니다.
-                        • HTX 거래소 전용
-                        계정 운영 방식
-                        • 본인 거래소 계정에서 직접 자금 관리
-                        • 최소 운영자금: 100 USDT
-                        • 자유로운 입출금 가능
-                        • 계좌 잔고 50% 이상 출금 시 서비스 일시
-                        중지
-                        리스크 고지
-                        - 디지털자산 투자에는 원금 손실 위험이
-                        있습니다
-                        - 과거 수익률이 미래 수익을 보장하지 않
-                        습니다
-                        - 높은 레버리지 거래는 큰 손실을 초래할
-                        수 있습니다
-                        Master BOT 혜택
-                        •거래소 리베이트 프로그램 참여 자격 부여
-                        •거래 실적에 따른 변동 리워드 제공
-                        •주 단위 리워드 정산
-                        •추가 지원AI 트레이딩 시스템 운영 교육
+
+                        {/* 마스터 봇 6개월, 2% UPGARADE
+                        330 + 33 = 363 USDT 
+                        515,460 원(vat 포함)
                         */}
+              
 
-
-                        <div className='flex flex-col xl:flex-row gap-5 items-center xl:items-start justify-between border
-                         border-blue-500 p-4 rounded-lg'>
-                            <div className='flex flex-row items-center gap-2'>
-                                {/* dot */}
-                                <div className='w-4 h-4 bg-red-500 rounded-full'></div>
-                                <span className='text-2xl font-semibold text-blue-500'>
-                                    1000 TBOT
-                                </span>
-                            </div>
-                            <div className='flex flex-col items-center gap-2
-                                border border-gray-300 p-4 rounded-lg
-                            '>
-                                <div className='flex flex-row items-center gap-2'>
-                                    <Image
-                                        src="/logo-tbot-1000.png"
-                                        alt="TBOT"
-                                        width={200}
-                                        height={200}
-                                    />
-                                </div>
-                                {/* button for buy */}
-                                {/* 121 USDT BUY */}
-                                <button
-                                    onClick={() => {
-                                        toast.error("잔고가 부족합니다. 1000 TBOT을 구매하려면 1,210 USDT가 필요합니다.");
-                                    } }
-                                    className='bg-blue-500 text-zinc-100 p-2 rounded text-lg font-semibold'
-                                >
-                                    1,210 USDT BUY
-                                </button>
-                            </div>
-
-                            <div className='flex flex-col gap-2'>
-
-                                <span className='text-lg font-semibold text-blue-500'>
-                                    AI 트레이딩 1000 TBOT
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    • AI 자동매매 트레이딩 서비스 이용권 NFT 입니다.
-                                </span>
-                                <span className='text-lg font-semibold text-blue-500 mt-2'>
-                                    계정 운영 방식
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    • 본인 거래소 계정에서 직접 자금 관리
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    • 최소 운영자금: 1000 USDT
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    • 자유로운 입출금 가능
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    • 계좌 잔고 50% 이상 출금 시 서비스 일시 중지
-                                </span>
-
-                                <span className='text-lg font-semibold text-blue-500 mt-2'>
-                                    리스크 고지
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    - 디지털자산 투자에는 원금 손실 위험이 있습니다
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    - 과거 수익률이 미래 수익을 보장하지 않 습니다
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    - 높은 레버리지 거래는 큰 손실을 초래할 수 있습니다
-                                </span>
-
-                                <span className='text-lg font-semibold text-blue-500 mt-2'>
-                                    Master BOT 혜택
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    • 거래소 리베이트 프로그램 참여 자격 부여
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    • 거래 실적에 따른 변동 리워드 제공
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    • 주 단위 리워드 정산
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    • 추가 지원AI 트레이딩 시스템 운영 교육
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        {/*
-                        Ai 트레이딩 1000 TBOT
-                        • AI 자동매매 트레이딩 서비스 이용권
-                        NFT 입니다.
-                        • HTX 거래소 전용
-                        계정 운영 방식
-                        • 본인 거래소 계정에서 직접 자금 관리
-                        • 최소 운영자금: 100 USDT
-                        • 자유로운 입출금 가능
-                        • 계좌 잔고 50% 이상 출금 시 서비스 일시
-                        중지
-                        리스크 고지
-                        - 디지털자산 투자에는 원금 손실 위험이
-                        있습니다
-                        - 과거 수익률이 미래 수익을 보장하지 않
-                        습니다
-                        - 높은 레버리지 거래는 큰 손실을 초래할
-                        수 있습니다
-                        Master BOT 혜택
-                        •거래소 리베이트 프로그램 참여 자격 부여
-                        •거래 실적에 따른 변동 리워드 제공
-                        •주 단위 리워드 정산
-                        •추가 지원AI 트레이딩 시스템 운영 교육
-                        */}
-
-                        <div className='flex flex-col xl:flex-row gap-5 items-center xl:items-start justify-between border
-                        border-red-500 p-4 rounded-lg'>
-                            <div className='flex flex-row items-center gap-2'>
-                                {/* dot */}
-                                <div className='w-4 h-4 bg-red-500 rounded-full'></div>
-                                <span className='text-2xl font-semibold text-blue-500'>
-                                    10000 TBOT
-                                </span>
-                            </div>
-                            <div className='flex flex-col items-center gap-2
-                                border border-gray-300 p-4 rounded-lg
-                            '>
-                                <div className='flex flex-row items-center gap-2'>
-                                    <Image
-                                        src="/logo-tbot-10000.png"
-                                        alt="TBOT"
-                                        width={200}
-                                        height={200}
-                                    />
-                                </div>
-                                {/* button for buy */}
-                                {/* 121 USDT BUY */}
-                                <button
-                                    onClick={() => {
-                                        toast.error("잔고가 부족합니다. 10000 TBOT을 구매하려면 12,100 USDT가 필요합니다.");
-                                    } }
-                                    className='bg-blue-500 text-zinc-100 p-2 rounded text-lg font-semibold'
-                                >
-                                    12,100 USDT BUY
-                                </button>
-                            </div>
-
-                            <div className='flex flex-col gap-2'>
-
-                                <span className='text-lg font-semibold text-blue-500'>
-                                    AI 트레이딩 10000 TBOT
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    • AI 자동매매 트레이딩 서비스 이용권 NFT 입니다.
-                                </span>
-                                <span className='text-lg font-semibold text-blue-500 mt-2'>
-                                    계정 운영 방식
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    • 본인 거래소 계정에서 직접 자금 관리
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    • 최소 운영자금: 10000 USDT
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    • 자유로운 입출금 가능
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    • 계좌 잔고 50% 이상 출금 시 서비스 일시 중지
-                                </span>
-
-                                <span className='text-lg font-semibold text-blue-500 mt-2'>
-                                    리스크 고지
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    - 디지털자산 투자에는 원금 손실 위험이 있습니다
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    - 과거 수익률이 미래 수익을 보장하지 않 습니다
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    - 높은 레버리지 거래는 큰 손실을 초래할 수 있습니다
-                                </span>
-
-                                <span className='text-lg font-semibold text-blue-500 mt-2'>
-                                    Master BOT 혜택
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    • 거래소 리베이트 프로그램 참여 자격 부여
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    • 거래 실적에 따른 변동 리워드 제공
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    • 주 단위 리워드 정산
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    • 추가 지원AI 트레이딩 시스템 운영 교육
-                                </span>
-
-                            </div>
-
-                        </div>
 
 
                     </div>
 
+                    {/*
+                    image=/logo-mbot-upgrade.png
+                    마스터 봇 6개월
+                    2% UPGARADE
+                    330 + 33 = 363 USDT 
+                    515,460 원(vat 포함)
+                    */}
+                    {/*
+                    image
+                    마스터 봇 6개월
+                    4% UPGARADE
+                    550 + 55 = 605 USDT 
+                    859,100원(vat포함)
+                    */}
+                    {/*
+                    마스터 봇 6개월
+                    6% UPGARADE
+                    1100 + 110 = 1210 USDT
+                    1,718,200 원(vat포함)
+                    */}
+                    {/*
+                    마스터 봇 6개월
+                    8% UPGARADE
+                    5500 + 550 = 6050 USDT 
+                    8,591,000 원(vat포함)
+                    */}
+                    {/*
+                    마스터 봇 6개월
+                    10% UPGARADE
+                    11000 + 1100 = 12100 USDT 
+                    17,182,000 원(vat포함)
+                    */}
+                 
+
+
+                    {/* 제목: 업그레이드 */}
+                    <div className='w-full flex flex-col gap-2 mt-5'>
+                        <div className='flex flex-row items-center gap-2'>
+                            {/* dot */}
+                            <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
+                            {/* title */}
+                            <span className='text-xl font-semibold text-black'>
+                                마스터 봇 업그레이드
+                            </span>
+                        </div>
+                        <span className='text-sm text-gray-500'>
+                            • 마스터 봇 6개월 이용권을 업그레이드 합니다.
+                        </span>
+                    </div>
+
+                    {userCode && !masterBot?.id && (
+                    <>
+
+                        <div className='w-full grid grid-cols-1 xl:grid-cols-3 gap-2
+                            border border-red-300 p-4 rounded-lg
+                        '>
+
+                            <div
+                            className={`flex flex-col gap-2
+                                p-4 rounded-lg border-2 hover:shadow-lg hover:bg-gray-100
+                                ${selectedMasterBot === 0 ? 'border-blue-500' : 'border-gray-300'}
+                            `}
+                            onClick={() => {
+                                setSelectedMasterBot(0);
+                                setMasterBotPrice(515460);
+                            } }
+                            >
+                                <Image
+                                    src="/logo-mbot-upgrade.png"
+                                    alt="Master Bot Upgrade"
+                                    width={200}
+                                    height={200}
+                                    className='rounded-lg w-full'
+                                />
+                                <span className='text-sm font-semibold text-blue-500'>
+                                    마스터 봇 6개월
+                                </span>
+                                <span className='text-lg font-semibold text-red-500'>
+                                    2% UPGARADE
+                                </span>
+                                <span className='text-sm font-semibold text-gray-500'>
+                                    330 + 33 = 363 USDT
+                                </span>
+                                <span className='text-sm font-semibold text-gray-500'>
+                                    515,460 원(vat 포함)
+                                </span>
+                            </div> 
+                            <div className={`flex flex-col gap-2
+                                p-4 rounded-lg border-2 hover:shadow-lg hover:bg-gray-100
+                                ${selectedMasterBot === 1 ? 'border-blue-500' : 'border-gray-300'}
+                            `}
+                            onClick={() => {
+                                setSelectedMasterBot(1);
+                                setMasterBotPrice(859100);
+                            } }
+                            >
+                                <Image
+                                    src="/logo-mbot-upgrade.png"
+                                    alt="Master Bot Upgrade"
+                                    width={200}
+                                    height={200}
+                                    className='rounded-lg w-full'
+                                />
+                                <span className='text-sm font-semibold text-blue-500'>
+                                    마스터 봇 6개월
+                                </span>
+                                <span className='text-lg font-semibold text-red-500'>
+                                    4% UPGARADE
+                                </span>
+                                <span className='text-sm font-semibold text-gray-500'>
+                                    550 + 55 = 605 USDT
+                                </span>
+                                <span className='text-sm font-semibold text-gray-500'>
+                                    859,100원(vat포함)
+                                </span>
+                            </div>
+                            <div className={`flex flex-col gap-2
+                                p-4 rounded-lg border-2 hover:shadow-lg hover:bg-gray-100
+                                ${selectedMasterBot === 2 ? 'border-blue-500' : 'border-gray-300'}
+                            `}
+                            onClick={() => {
+                                setSelectedMasterBot(2);
+                                setMasterBotPrice(1718200);
+                            } }
+                            >
+                                <Image
+                                    src="/logo-mbot-upgrade.png"
+                                    alt="Master Bot Upgrade"
+                                    width={200}
+                                    height={200}
+                                    className='rounded-lg w-full'
+                                />
+                                <span className='text-sm font-semibold text-blue-500'>
+                                    마스터 봇 6개월
+                                </span>
+                                <span className='text-lg font-semibold text-red-500'>
+                                    6% UPGARADE
+                                </span>
+                                <span className='text-sm font-semibold text-gray-500'>
+                                    1100 + 110 = 1210 USDT
+                                </span>
+                                <span className='text-sm font-semibold text-gray-500'>
+                                    1,718,200 원(vat포함)
+                                </span>
+                            </div>
+                            <div className={`flex flex-col gap-2
+                                p-4 rounded-lg border-2 hover:shadow-lg hover:bg-gray-100
+                                ${selectedMasterBot === 3 ? 'border-blue-500' : 'border-gray-300'}
+                            `}
+                            onClick={() => {
+                                setSelectedMasterBot(3);
+                                setMasterBotPrice(859100);
+                            } }
+                            >
+                                <Image
+                                    src="/logo-mbot-upgrade.png"
+                                    alt="Master Bot Upgrade"
+                                    width={200}
+                                    height={200}
+                                    className='rounded-lg w-full'
+                                />
+                                <span className='text-sm font-semibold text-blue-500'>
+                                    마스터 봇 6개월
+                                </span>
+                                <span className='text-lg font-semibold text-red-500'>
+                                    8% UPGARADE
+                                </span>
+                                <span className='text-sm font-semibold text-gray-500'>
+                                    5500 + 550 = 6050 USDT
+                                </span>
+                                <span className='text-sm font-semibold text-gray-500'>
+                                    8,591,000 원(vat포함)
+                                </span>
+                            </div>
+                            <div className={`flex flex-col gap-2
+                                p-4 rounded-lg border-2 hover:shadow-lg hover:bg-gray-100
+                                ${selectedMasterBot === 4 ? 'border-blue-500' : 'border-gray-300'}
+                            `}
+                            onClick={() => {
+                                setSelectedMasterBot(4);
+                                setMasterBotPrice(1718200);
+                            } }
+                            >
+
+                                <Image
+                                    src="/logo-mbot-upgrade.png"
+                                    alt="Master Bot Upgrade"
+                                    width={200}
+                                    height={200}
+                                    className='rounded-lg w-full'
+                                />
+                                <span className='text-sm font-semibold text-blue-500'>
+                                    마스터 봇 6개월
+                                </span>
+                                <span className='text-lg font-semibold text-red-500'>
+                                    10% UPGARADE
+                                </span>
+                                <span className='text-sm font-semibold text-gray-500'>
+                                    11000 + 1100 = 12100 USDT
+                                </span>
+                                <span className='text-sm font-semibold text-gray-500'>
+                                    17,182,000 원(vat포함)
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <div className='w-full flex flex-col gap-2 mt-5'>
+
+                                                    {/* 입급할 계좌 */}
+                                {/* KB국민은행 342301-04-169235 (주) 프로젝트오리진 */}
+                                <div className='flex flex-col gap-2
+                                    border border-gray-300 p-4 rounded-lg
+                                '>
+                                    <span className='text-sm font-semibold text-gray-500'>
+                                        입금할 계좌
+                                    </span>
+                                    {center === "ppump_orry_bot" ? (
+                                    <span className='text-sm font-semibold text-gray-500'>
+                                        KB국민은행 342301-04-169235 (주)프로젝트오리진
+                                    </span>
+                                    ) : (
+                                    <span className='text-sm font-semibold text-gray-500'>
+                                        NH 농협은행 301-0357-6583-41 온리윈 주식회사
+                                    </span>
+                                    )}
+                                </div>
+                                {/* 입금할 금액 */}
+                                <div className='flex flex-col gap-2
+                                    border border-gray-300 p-4 rounded-lg
+                                '>
+                                    <span className='text-sm font-semibold text-gray-500'>
+                                        입금할 금액
+                                    </span>
+                                    <span className='text-lg font-semibold text-blue-500'>
+                                        {masterBotPrice.toLocaleString()} 원(vat 포함)
+                                    </span>
+                                </div>
+
+                                {/* 입금자명 */}
+                                <input
+                                    //disabled={true}
+                                    value={payName || ""}
+                                    onChange={(e) =>
+                                        setPayName(e.target.value)
+                                    }
+
+                                    type="text"
+                                    placeholder="입금자명"
+                                    className="w-full p-2 rounded-lg border border-gray-300"
+                                />
+                                <button
+                                    disabled={!payName || !address || applyingUpgradeMasterBot}
+                                    className={` ${!payName || !address || applyingUpgradeMasterBot ?
+                                        'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold`}
+
+                                    onClick={applyUpgradeMasterBot}
+
+                                >
+                                    {applyingUpgradeMasterBot ? "업그레이드 신청중..." : "업그레이드 신청하기"}
+                                </button>
+
+                        </div>
+
+                    </>
+                    )}
+            
+                    {userCode && masterBot?.id && (
+
+                        <div className='w-full flex flex-col gap-2'>
+                            <div className='w-full flex flex-col gap-2'>
+                                <span className='text-lg font-semibold text-blue-500'>
+                                    마스터 봇 업그레이드 신청이 완료되었습니다.
+                                </span>
+                                <span className='text-sm font-semibold text-gray-500'>
+                                    • 결제 확인 후 24시간 이내에 마스터 봇이 업그레이드 됩니다.
+                                </span>
+                                {/* payName, masterBotPrice, 입금할 계좌 */}
+                                <div className='flex flex-col gap-2
+                                border border-gray-300 p-4 rounded-lg
+                                '>
+                                    <span className='text-sm font-semibold text-gray-500'>
+                                        입금자명
+                                    </span>
+                                    <span className='text-lg font-semibold text-blue-500'>
+                                        {masterBot?.payName}
+                                    </span>
+                                    <span className='text-sm font-semibold text-gray-500'>
+                                        {masterBot?.price.toLocaleString()} 원(vat 포함)
+                                    </span>
+                                    <span className='text-sm font-semibold text-gray-500'>
+                                        {center === "ppump_orry_bot" ? (
+                                        "KB국민은행 342301-04-169235 (주)프로젝트오리진"
+                                        ) : (
+                                        "NH 농협은행 301-0357-6583-41 온리윈 주식회사"
+                                        )}
+                                    </span>
+                                </div>
+                            </div>
+                            {masterBot?.id === 0 && (
+                                <div className='w-full flex flex-col gap-2
+                                border border-gray-300 p-4 rounded-lg
+                                '>
+                                    <Image
+                                        src="/logo-mbot-upgrade.png"
+                                        alt="Master Bot Upgrade"
+                                        width={200}
+                                        height={200}
+                                        className='rounded-lg w-full'
+                                    />
+                                    <span className='text-lg font-semibold text-blue-500'>
+                                        마스터 봇 6개월
+                                    </span>
+                                    <span className='text-lg font-semibold text-red-500'>
+                                        2% UPGARADE
+                                    </span>
+                                    <span className='text-sm font-semibold text-gray-500'>
+                                        330 + 33 = 363 USDT
+                                    </span>
+                                    <span className='text-sm font-semibold text-gray-500'>
+                                        515,460 원(vat 포함)
+                                    </span>
+                                </div>
+                            )}
+                            {masterBot?.id === 1 && (
+                                <div className='w-full flex flex-col gap-2
+                                border border-gray-300 p-4 rounded-lg
+                                '>
+                                    <Image
+                                        src="/logo-mbot-upgrade.png"
+                                        alt="Master Bot Upgrade"
+                                        width={200}
+                                        height={200}
+                                        className='rounded-lg w-full'
+                                    />
+                                    <span className='text-lg font-semibold text-blue-500'>
+                                        마스터 봇 6개월
+                                    </span>
+                                    <span className='text-lg font-semibold text-red-500'>
+                                        4% UPGARADE
+                                    </span>
+                                    <span className='text-sm font-semibold text-gray-500'>
+                                        550 + 55 = 605 USDT
+                                    </span>
+                                    <span className='text-sm font-semibold text-gray-500'>
+                                        859,100원(vat포함)
+                                    </span>
+                                </div>
+                            )}
+                            {masterBot?.id === 2 && (
+                                <div className='w-full flex flex-col gap-2
+                                border border-gray-300 p-4 rounded-lg
+                                '>
+                                    <Image
+                                        src="/logo-mbot-upgrade.png"
+                                        alt="Master Bot Upgrade"
+                                        width={200}
+                                        height={200}
+                                        className='rounded-lg w-full'
+                                    />
+                                    <span className='text-lg font-semibold text-blue-500'>
+                                        마스터 봇 6개월
+                                    </span>
+                                    <span className='text-lg font-semibold text-red-500'>
+                                        6% UPGARADE
+                                    </span>
+                                    <span className='text-sm font-semibold text-gray-500'>
+                                        1100 + 110 = 1210 USDT
+                                    </span>
+                                    <span className='text-sm font-semibold text-gray-500'>
+                                        1,718,200 원(vat포함)
+                                    </span>
+                                </div>
+                            )}
+                            {masterBot?.id === 3 && (
+                                <div className='w-full flex flex-col gap-2'>
+                                    <span className='text-lg font-semibold text-blue-500'>
+                                        마스터 봇 6개월
+                                    </span>
+                                    <span className='text-lg font-semibold text-red-500'>
+                                        8% UPGARADE
+                                    </span>
+                                    <span className='text-sm font-semibold text-gray-500'>
+                                        5500 + 550 = 6050 USDT
+                                    </span>
+                                    <span className='text-sm font-semibold text-gray-500'>
+                                        8,591,000 원(vat포함)
+                                    </span>
+                                </div>
+                            )}
+                            {masterBot?.id === 4 && (
+                                <div className='w-full flex flex-col gap-2'>
+                                    <span className='text-lg font-semibold text-blue-500'>
+                                        마스터 봇 6개월
+                                    </span>
+                                    <span className='text-lg font-semibold text-red-500'>
+                                        10% UPGARADE
+                                    </span>
+                                    <span className='text-sm font-semibold text-gray-500'>
+                                        11000 + 1100 = 12100 USDT
+                                    </span>
+                                    <span className='text-sm font-semibold text-gray-500'>
+                                        17,182,000 원(vat포함)
+                                    </span>
+                                </div>
+                            )}
+                            
+
+
+                        </div>
+                    )}
+                           
 
                 </div>
 
@@ -3506,9 +3844,11 @@ export default function AIPage({ params }: any) {
 
 function Header(
     {
+        center,
         agent,
         tokenId,
     } : {
+        center: string
         agent: string
         tokenId: string
     }
@@ -3527,29 +3867,32 @@ function Header(
             {/* logo */}
             <button
                 onClick={() => {
-                    router.push('/kr/polygon/?agent=' + agent + '&tokenId=' + tokenId);
+                    router.push(
+                        '/kr/polygon/?agent=' + agent + '&tokenId=' + tokenId + '&center=' + center
+                    );
                 }}
             >            
                 <div className="flex flex-row gap-2 items-center">
                     <Image
-                    src="/circle-logo.webp"
+                    src="/logo-pump.webp"
                     alt="Circle Logo"
                     width={35}
                     height={35}
                     className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
                     />
                     <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
-                    OWIN
+                    AGENT
                     </span>
                 </div>
             </button>
+
 
           <div className="flex flex-row gap-2 items-center">
 
             <button
               onClick={() => {
                 router.push(
-                    "/kr/polygon/tbot?agent=" + agent + "&tokenId=" + tokenId
+                    "/kr/polygon/tbot?agent=" + agent + "&tokenId=" + tokenId + "&center=" + center
                   );
               }}
               className="text-gray-600 hover:underline text-xs xl:text-lg"
@@ -3558,7 +3901,9 @@ function Header(
             </button>
             <button
               onClick={() => {
-                router.push('/kr/polygon/profile-settings?agent=' + agent + '&tokenId=' + tokenId);
+                router.push(
+                    '/kr/polygon/profile-settings?agent=' + agent + '&tokenId=' + tokenId + '&center=' + center
+                );
               }}
               className="text-gray-600 hover:underline text-xs xl:text-lg"
             >
