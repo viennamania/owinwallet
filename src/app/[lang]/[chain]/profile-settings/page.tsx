@@ -152,7 +152,7 @@ export default function SettingsPage({ params }: any) {
           auth: {
             options: [
                 "phone",
-                "telegram",
+                 
             ],
           },
         }),
