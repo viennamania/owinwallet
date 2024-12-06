@@ -54,6 +54,8 @@ export interface UserProps {
 
   telegramId: string,
 
+  center: string,
+
 
 }
 
@@ -1217,7 +1219,7 @@ export async function getAllAgents(
 
         $or: [
           { center: 'owin_kingkong_bot' },
-          { nickname: 'owin_kkk_bot' },
+          { center: 'owin_kkk_bot' },
         ]
         
 
@@ -1245,6 +1247,7 @@ export async function getAllAgents(
       mobile: user.mobile,
       telegramId: user.telegramId,
       email: user.email,
+      center: user.center,
       tronWalletAddress: user.tronWalletAddress,
       erc721ContractAddress: user.erc721ContractAddress,
     };

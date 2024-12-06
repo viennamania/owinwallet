@@ -1720,55 +1720,340 @@ export default function AIPage({ params }: any) {
                         )}
                     </div>
      
+                    <div className='w-full flex flex-col items-start gap-5 mt-10'>
 
-                    <div className='w-full flex flex-col xl:flex-row gap-5 items-start justify-start'>
-                        {/* 에이전트 등록 => goto profile-settings */}
-                        <button
-                            onClick={() => {
-                                router.push(
-                                    "profile-settings",
-                                );
-                            }}
-                            className="bg-blue-500 text-white p-2 rounded-lg"
-                        >
-                            <div className='flex flex-row items-center gap-2'>
-                                <Image
-                                    src="/logo-opensea.png"
-                                    alt="Settings"
-                                    width={50}
-                                    height={50}
-                                    className='rounded-full bg-white p-1 w-8 h-8'
-                                />
-                                <span className='text-sm font-semibold'>
-                                    AI 에이전트 NFT 등록하러 가기
-                                </span>
+                        <div className='flex flex-row items-center gap-2'>
+                            {/* dot */}
+                            <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
+                            <span className='text-xl font-semibold text-zinc-800'>
+                                AI 에이전트 센터 텔레그램 봇 목록
+                            </span>
+                        </div>
+                        <div className='w-full grid grid-cols-2 xl:grid-cols-5 gap-2 items-start justify-start'>
+                            {/* 에이전트 등록 */}
+
+                            {/*
+                            kingkong	https://t.me/owin_kingkong_bot
+                            shingyu	https://t.me/owin_shingyu_bot
+                            young	https://t.me/owin_young_bot
+                            drosi	https://t.me/owin_drosi_bot
+                            ok	https://t.me/owin_ok_bot
+                            nyong	https://t.me/owin_nyong_bot
+                            kok	https://t.me/owin_kok_bot
+                            anawin	https://t.me/owin_anawin_bot
+                            kek	https://t.me/owin_kek_bot
+                            
+                            */}
+
+                            <div className='flex flex-col items-center justify-between gap-2
+                                bg-white p-4 rounded-lg shadow-md
+                            '>
+                                <button
+                                    onClick={() => {
+                                        window.open('https://t.me/owin_kingkong_bot');
+                                    }}
+                                    className="w-full flex bg-blue-500 text-white p-2 rounded-lg"
+                                >
+                                    <div className='flex flex-row items-center gap-2'>
+                                        <Image
+                                            src="/logo-telegram.webp"
+                                            alt="Telegram"
+                                            width={50}
+                                            height={50}
+                                            className='rounded-full bg-white p-1 w-8 h-8'
+                                        />
+                                        <span className='text-sm font-semibold'>
+                                            kingkong
+                                        </span>
+                                    </div>
+                                </button>
+                                {/* 복사하기 버튼 */}
+                                <button
+                                    onClick={() => {
+                                        navigator.clipboard.writeText('https://t.me/owin_kingkong_bot');
+                                        toast.success("텔레그램 링크가 복사되었습니다.");
+                                    }}
+                                    className="w-full flex bg-blue-500 text-white p-2 rounded-lg text-center"
+                                >
+                                    복사
+                                </button>
                             </div>
-                        </button>
 
-                        {/* TBOT 구매 => goto tbot */}
-                        <button
-                            onClick={() => {
-                                router.push(
-                                    "tbot",
-                                );
-                            }}
-                            className="bg-blue-500 text-white p-2 rounded-lg"
-                        >
-                            <div className='flex flex-row items-center gap-2'>
-                                <Image
-                                    src="/logo-tbot-100.png"
-                                    alt="TBOT"
-                                    width={50}
-                                    height={50}
-                                    className='rounded-full bg-white p-1 w-8 h-8'
-                                />
-                                <span className='text-sm font-semibold'>
-                                    TBOT 구매하러 가기
-                                </span>
+                            <div className='flex flex-col items-center justify-between gap-2
+                                bg-white p-4 rounded-lg shadow-md
+                            '>
+                                <button
+                                    onClick={() => {
+                                        window.open('https://t.me/owin_shingyu_bot');
+                                    }}
+                                    className="w-full flex bg-blue-500 text-white p-2 rounded-lg"
+                                >
+                                    <div className='flex flex-row items-center gap-2'>
+                                        <Image
+                                            src="/logo-telegram.webp"
+                                            alt="Telegram"
+                                            width={50}
+                                            height={50}
+                                            className='rounded-full bg-white p-1 w-8 h-8'
+                                        />
+                                        <span className='text-sm font-semibold'>
+                                            shingyu
+                                        </span>
+                                    </div>
+                                </button>
+                                {/* 복사하기 버튼 */}
+                                <button
+                                    onClick={() => {
+                                        navigator.clipboard.writeText('https://t.me/owin_shingyu_bot');
+                                        toast.success("텔레그램 링크가 복사되었습니다.");
+                                    }}
+                                    className="w-full flex bg-blue-500 text-white p-2 rounded-lg text-center"
+                                >
+                                    복사
+                                </button>
                             </div>
-                        </button>
+
+                            <div className='flex flex-col items-center justify-between gap-2
+                                bg-white p-4 rounded-lg shadow-md
+                            '>
+                                <button
+                                    onClick={() => {
+                                        window.open('https://t.me/owin_young_bot');
+                                    }}
+                                    className="w-full flex bg-blue-500 text-white p-2 rounded-lg"
+                                >
+                                    <div className='flex flex-row items-center gap-2'>
+                                        <Image
+                                            src="/logo-telegram.webp"
+                                            alt="Telegram"
+                                            width={50}
+                                            height={50}
+                                            className='rounded-full bg-white p-1 w-8 h-8'
+                                        />
+                                        <span className='text-sm font-semibold'>
+                                            young
+                                        </span>
+                                    </div>
+                                </button>
+                                {/* 복사하기 버튼 */}
+                                <button
+                                    onClick={() => {
+                                        navigator.clipboard.writeText('https://t.me/owin_young_bot');
+                                        toast.success("텔레그램 링크가 복사되었습니다.");
+                                    }}
+                                    className="w-full flex bg-blue-500 text-white p-2 rounded-lg text-center"
+                                >
+                                    복사
+                                </button>
+                            </div>
+
+                            <div className='flex flex-col items-center justify-between gap-2
+                                bg-white p-4 rounded-lg shadow-md
+                            '>
+                                <button
+                                    onClick={() => {
+                                        window.open('https://t.me/owin_drosi_bot');
+                                    }}
+                                    className="w-full flex bg-blue-500 text-white p-2 rounded-lg"
+                                >
+                                    <div className='flex flex-row items-center gap-2'>
+                                        <Image
+                                            src="/logo-telegram.webp"
+                                            alt="Telegram"
+                                            width={50}
+                                            height={50}
+                                            className='rounded-full bg-white p-1 w-8 h-8'
+                                        />
+                                        <span className='text-sm font-semibold'>
+                                            drosi
+                                        </span>
+                                    </div>
+                                </button>
+                                {/* 복사하기 버튼 */}
+                                <button
+                                    onClick={() => {
+                                        navigator.clipboard.writeText('https://t.me/owin_drosi_bot');
+                                        toast.success("텔레그램 링크가 복사되었습니다.");
+                                    }}
+                                    className="w-full flex bg-blue-500 text-white p-2 rounded-lg text-center"
+                                >
+                                    복사
+                                </button>
+                            </div>
+
+                            <div className='flex flex-col items-center justify-between gap-2
+                                bg-white p-4 rounded-lg shadow-md
+                            '>
+                                <button
+                                    onClick={() => {
+                                        window.open('https://t.me/owin_ok_bot');
+                                    }}
+                                    className="w-full flex bg-blue-500 text-white p-2 rounded-lg"
+                                >
+                                    <div className='flex flex-row items-center gap-2'>
+                                        <Image
+                                            src="/logo-telegram.webp"
+                                            alt="Telegram"
+                                            width={50}
+                                            height={50}
+                                            className='rounded-full bg-white p-1 w-8 h-8'
+                                        />
+                                        <span className='text-sm font-semibold'>
+                                            ok
+                                        </span>
+                                    </div>
+                                </button>
+                                {/* 복사하기 버튼 */}
+                                <button
+                                    onClick={() => {
+                                        navigator.clipboard.writeText('https://t.me/owin_ok_bot');
+                                        toast.success("텔레그램 링크가 복사되었습니다.");
+                                    }}
+                                    className="w-full flex bg-blue-500 text-white p-2 rounded-lg text-center"
+                                >
+                                    복사
+                                </button>
+                            </div>
+
+                            <div className='flex flex-col items-center justify-between gap-2
+                                bg-white p-4 rounded-lg shadow-md
+                            '>
+                                <button
+                                    onClick={() => {
+                                        window.open('https://t.me/owin_nyong_bot');
+                                    }}
+                                    className="w-full flex bg-blue-500 text-white p-2 rounded-lg"
+                                >
+                                    <div className='flex flex-row items-center gap-2'>
+                                        <Image
+                                            src="/logo-telegram.webp"
+                                            alt="Telegram"
+                                            width={50}
+                                            height={50}
+                                            className='rounded-full bg-white p-1 w-8 h-8'
+                                        />
+                                        <span className='text-sm font-semibold'>
+                                            nyong
+                                        </span>
+                                    </div>
+                                </button>
+                                {/* 복사하기 버튼 */}
+                                <button
+                                    onClick={() => {
+                                        navigator.clipboard.writeText('https://t.me/owin_nyong_bot');
+                                        toast.success("텔레그램 링크가 복사되었습니다.");
+                                    }}
+                                    className="w-full flex bg-blue-500 text-white p-2 rounded-lg text-center"
+                                >
+                                    복사
+                                </button>
+                            </div>
+
+                            <div className='flex flex-col items-center justify-between gap-2
+                                bg-white p-4 rounded-lg shadow-md
+                            '>
+                                <button
+                                    onClick={() => {
+                                        window.open('https://t.me/owin_kok_bot');
+                                    }}
+                                    className="w-full flex bg-blue-500 text-white p-2 rounded-lg"
+                                >
+                                    <div className='flex flex-row items-center gap-2'>
+                                        <Image
+                                            src="/logo-telegram.webp"
+                                            alt="Telegram"
+                                            width={50}
+                                            height={50}
+                                            className='rounded-full bg-white p-1 w-8 h-8'
+                                        />
+                                        <span className='text-sm font-semibold'>
+                                            kok
+                                        </span>
+                                    </div>
+                                </button>
+                                {/* 복사하기 버튼 */}
+                                <button
+                                    onClick={() => {
+                                        navigator.clipboard.writeText('https://t.me/owin_kok_bot');
+                                        toast.success("텔레그램 링크가 복사되었습니다.");
+                                    }}
+                                    className="w-full flex bg-blue-500 text-white p-2 rounded-lg text-center"
+                                >
+                                    복사
+                                </button>
+                            </div>
+
+                            <div className='flex flex-col items-center justify-between gap-2
+                                bg-white p-4 rounded-lg shadow-md
+                            '>
+                                <button
+                                    onClick={() => {
+                                        window.open('https://t.me/owin_anawin_bot');
+                                    }}
+                                    className="w-full flex bg-blue-500 text-white p-2 rounded-lg"
+                                >
+                                    <div className='flex flex-row items-center gap-2'>
+                                        <Image
+                                            src="/logo-telegram.webp"
+                                            alt="Telegram"
+                                            width={50}
+                                            height={50}
+                                            className='rounded-full bg-white p-1 w-8 h-8'
+                                        />
+                                        <span className='text-sm font-semibold'>
+                                            anawin
+                                        </span>
+                                    </div>
+                                </button>
+                                {/* 복사하기 버튼 */}
+                                <button
+                                    onClick={() => {
+                                        navigator.clipboard.writeText('https://t.me/owin_anawin_bot');
+                                        toast.success("텔레그램 링크가 복사되었습니다.");
+                                    }}
+                                    className="w-full flex bg-blue-500 text-white p-2 rounded-lg text-center"
+                                >
+                                    복사
+                                </button>
+                            </div>
+
+                            <div className='flex flex-col items-center justify-between gap-2
+                                bg-white p-4 rounded-lg shadow-md
+                            '>
+                                <button
+                                    onClick={() => {
+                                        window.open('https://t.me/owin_kek_bot');
+                                    }}
+                                    className="w-full flex bg-blue-500 text-white p-2 rounded-lg"
+                                >
+                                    <div className='flex flex-row items-center gap-2'>
+                                        <Image
+                                            src="/logo-telegram.webp"
+                                            alt="Telegram"
+                                            width={50}
+                                            height={50}
+                                            className='rounded-full bg-white p-1 w-8 h-8'
+                                        />
+                                        <span className='text-sm font-semibold'>
+                                            kek
+                                        </span>
+                                    </div>
+                                </button>
+                                {/* 복사하기 버튼 */}
+                                <button
+                                    onClick={() => {
+                                        navigator.clipboard.writeText('https://t.me/owin_kek_bot');
+                                        toast.success("텔레그램 링크가 복사되었습니다.");
+                                    }}
+                                    className="w-full flex bg-blue-500 text-white p-2 rounded-lg text-center"
+                                >
+                                    복사
+                                </button>
+                            </div>
 
 
+
+                        </div>
                     </div>
 
 
@@ -1832,7 +2117,7 @@ export default function AIPage({ params }: any) {
                                                         {agents.map((agent) => (
                                                             <div
                                                                 key={agent.id}
-                                                                className='flex flex-row items-center gap-2
+                                                                className='flex flex-col items-center gap-2
                                                                     border border-gray-300 p-2 rounded-lg
                                                                     hover:shadow-lg cursor-pointer
                                                                 '>
@@ -1882,7 +2167,7 @@ export default function AIPage({ params }: any) {
                                                                     </span>
                                                                     {/* userType */}
                                                                     
-                                                                    {agent?.userType === "telegram" ? (
+                                                                  
                                                                         <div className='flex flex-col items-start gap-2'>
                                                                             <Image
                                                                                 src="/logo-telegram.webp"
@@ -1894,19 +2179,13 @@ export default function AIPage({ params }: any) {
                                                                                 {agent?.telegramId}
                                                                             </span>
                                                                         </div>
-                                                                    ) : (
-                                                                        <div className='flex flex-col items-start gap-2'>
-                                                                            <Image
-                                                                                src="/logo-cellphone.webp"
-                                                                                alt="Discord"
-                                                                                width={20}
-                                                                                height={20}
-                                                                            />
-                                                                            <span className='text-xs font-semibold text-gray-500'>
-                                                                                {agent?.mobile.substring(0, 5) + "..." + agent?.mobile.substring(8, 11)}
-                                                                            </span>
-                                                                        </div>
-                                                                    )}
+    
+
+                                                                    <div className='flex flex-col items-start gap-2'>
+                                                                        <span className='text-xs font-semibold text-gray-500'>
+                                                                            {agent?.center}
+                                                                        </span>
+                                                                    </div>
                                                                     
 
                                                                 </div>
