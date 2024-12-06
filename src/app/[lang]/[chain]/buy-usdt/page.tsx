@@ -922,7 +922,7 @@ export default function Index({ params }: any) {
                       wallets={wallets}
                       accountAbstraction={{
                         chain: polygon,
-                        factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum, ethereum
+                         
                         sponsorGas: true
                       }}
                       theme={"light"}
