@@ -33,6 +33,8 @@ export async function POST(request: NextRequest) {
 
       || walletAddress === "0x2C91bf7ac8300913367Bf1c29b14c25556c0df92" // wayne owin telegram
 
+      || walletAddress === "0x0d2846FDbaAc5e9526f9409aE18d3e2c9CdC9466" // wayne
+
       // AI Labs
       || walletAddress === "0x40fa492D30815F17BD83B6945103AEfbe7B92EBe" // AI Labs
       || walletAddress === "0x3e3E906e33D25cecA1aee550CACB1bCE74450Ed6"
