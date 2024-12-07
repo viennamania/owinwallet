@@ -411,6 +411,8 @@ export default function AIPage({ params }: any) {
 
 
 
+
+
             setIsValidReferralLoading(true);
 
 
@@ -483,9 +485,19 @@ export default function AIPage({ params }: any) {
     
         }
 
-        checkReferral();
 
-    } , [agent, agentNumber]);
+
+        // check center substring 5 characters is ppump
+        // then invalid referral
+
+
+        if (center && center.substring(0, 5) === "ppump") {
+            setIsValidReferral(false);
+        } else {
+            checkReferral();
+        }
+
+    } , [agent, agentNumber, center]);
 
     console.log("isValidReferralLoading", isValidReferralLoading);
     console.log("isValidReferral", isValidReferral);
