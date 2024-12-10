@@ -1720,6 +1720,8 @@ export default function AIPage({ params }: any) {
                         )}
                     </div>
      
+
+     
                     <div className='w-full flex flex-col items-start gap-5 mt-10'>
 
                         <div className='flex flex-row items-center gap-2'>
@@ -1729,6 +1731,7 @@ export default function AIPage({ params }: any) {
                                 AI 에이전트 센터 텔레그램 봇 목록
                             </span>
                         </div>
+                        
                         <div className='w-full grid grid-cols-2 xl:grid-cols-5 gap-2 items-start justify-start'>
                             {/* 에이전트 등록 */}
 
@@ -2054,7 +2057,10 @@ export default function AIPage({ params }: any) {
 
 
                         </div>
+
                     </div>
+
+
 
 
 
@@ -2187,7 +2193,6 @@ export default function AIPage({ params }: any) {
                                                                         </span>
                                                                     </div>
                                                                     
-
                                                                 </div>
                                                                 
 

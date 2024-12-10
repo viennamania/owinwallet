@@ -1217,10 +1217,12 @@ export async function getAllAgents(
 
         // center is owin_kingkong_bot or owin_kkk_bot
 
+        /*
         $or: [
           { center: 'owin_kingkong_bot' },
           { center: 'owin_kkk_bot' },
         ]
+          */
         
 
         
