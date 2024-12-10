@@ -3537,6 +3537,7 @@ export default function AIPage({ params }: any) {
                                     859,100원(vat포함)
                                 </span>
                             </div>
+
                             <div className={`flex flex-col gap-2
                                 p-4 rounded-lg border-2 hover:shadow-lg hover:bg-gray-100
                                 ${selectedMasterBot === 2 ? 'border-blue-500' : 'border-gray-300'}
@@ -3566,13 +3567,15 @@ export default function AIPage({ params }: any) {
                                     1,718,200 원(vat포함)
                                 </span>
                             </div>
+                            
+
                             <div className={`flex flex-col gap-2
                                 p-4 rounded-lg border-2 hover:shadow-lg hover:bg-gray-100
                                 ${selectedMasterBot === 3 ? 'border-blue-500' : 'border-gray-300'}
                             `}
                             onClick={() => {
                                 setSelectedMasterBot(3);
-                                setMasterBotPrice(859100);
+                                setMasterBotPrice(8591000);
                             } }
                             >
                                 <Image
@@ -3595,6 +3598,7 @@ export default function AIPage({ params }: any) {
                                     8,591,000 원(vat포함)
                                 </span>
                             </div>
+
                             <div className={`flex flex-col gap-2
                                 p-4 rounded-lg border-2 hover:shadow-lg hover:bg-gray-100
                                 ${selectedMasterBot === 4 ? 'border-blue-500' : 'border-gray-300'}
