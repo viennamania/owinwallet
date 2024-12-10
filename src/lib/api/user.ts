@@ -1215,14 +1215,35 @@ export async function getAllAgents(
         
         erc721ContractAddress: { $exists: true, $ne: null },
 
-        // center is owin_kingkong_bot or owin_kkk_bot
-
         /*
+        https://t.me/owin_kingkong_bot
+        https://t.me/owin_shingyu_bot
+        https://t.me/owin_young_bot
+        https://t.me/owin_drosi_bot
+        https://t.me/owin_ok_bot
+        https://t.me/owin_nyong_bot
+        https://t.me/owin_kok_bot
+        https://t.me/owin_anawin_bot
+        https://t.me/owin_kek_bot
+        https://t.me/owin_zzanga_bot
+        https://t.me/owin_sunoo_bot
+        */
+
+        
         $or: [
           { center: 'owin_kingkong_bot' },
-          { center: 'owin_kkk_bot' },
+          { center: 'owin_shingyu_bot' },
+          { center: 'owin_young_bot' },
+          { center: 'owin_drosi_bot' },
+          { center: 'owin_ok_bot' },
+          { center: 'owin_nyong_bot' },
+          { center: 'owin_kok_bot' },
+          { center: 'owin_anawin_bot' },
+          { center: 'owin_kek_bot' },
+          { center: 'owin_zzanga_bot' },
+          { center: 'owin_sunoo_bot' },
         ]
-          */
+          
         
 
         
