@@ -393,6 +393,7 @@ export async function getOneByWalletAddress(walletAddress: string) {
       htxUsdtWalletAddress: result.htxUsdtWalletAddress,
       apiAccessKey: result.apiAccessKey,
       apiSecretKey: result.apiSecretKey,
+      apiPassword: result.apiPassword,
       createdAt: result.createdAt,
       startTrading: result.startTrading,
       masterBotInfo: result.masterBotInfo,
