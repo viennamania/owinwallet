@@ -1558,7 +1558,7 @@ export default function SettingsPage({ params }: any) {
 
             const transactionResult = await sendAndConfirmTransaction({
                 transaction: transaction,
-                account: account,
+                account: account as any,
             });
 
             if (!transactionResult) {
