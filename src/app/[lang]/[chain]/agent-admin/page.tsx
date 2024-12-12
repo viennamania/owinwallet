@@ -2329,6 +2329,29 @@ export default function AIPage({ params }: any) {
                                                 {Copy}
                                             </button>
                                         </div>
+                                        {/* apiPassword */}
+                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                            <div className='flex flex-col gap-2'>
+                                                <span className='text-lg font-semibold text-yellow-500'>
+                                                    API Password
+                                                </span>
+                                                <span className='text-sm text-gray-800'>
+                                                    {application?.apiPassword?.substring(0, 5)}...{application?.apiPassword?.substring(application?.apiPassword.length - 5)}
+                                                </span>
+                                            </div>
+                                            {/* copy button */}
+                                            <button
+                                                onClick={() => {
+                                                    navigator.clipboard.writeText(application?.apiPassword);
+                                                    toast.success("Copied to clipboard");
+                                                }}
+                                                className="bg-gray-500 text-white p-2 rounded-lg
+                                                    hover:bg-gray-600
+                                                "
+                                            >
+                                                {Copy}
+                                            </button>
+                                        </div>
 
 
                                         {/* asset valuation */}

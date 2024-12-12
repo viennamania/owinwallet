@@ -253,7 +253,16 @@ export async function getAllAgentsForAILabs({ page = 1, limit = 100 }) {
   const collection = client.db('vienna').collection('agents');
 
   try {
+
+
+    // check apiPassword is exists
+
     const result = await collection.aggregate([
+      {
+        $match: {
+          apiPassword: { $exists: true },
+        }
+      },
       {
         $sort: {
           createdAt: -1,
@@ -267,6 +276,7 @@ export async function getAllAgentsForAILabs({ page = 1, limit = 100 }) {
       },
     
     ]).toArray();
+    
 
     if (result) {
       return {
