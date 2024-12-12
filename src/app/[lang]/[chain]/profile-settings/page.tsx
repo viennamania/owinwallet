@@ -2359,12 +2359,7 @@ export default function SettingsPage({ params }: any) {
 
                             <div className='w-full flex flex-col gap-2 items-start justify-between'>
 
-                                    {/* my NFTs */}
-                                    <div className='mt-10 flex flex-col gap-2 items-start justify-between'>
-                                        <span className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
-                                            My AI 에이전트 NFT
-                                        </span>
-                                    </div>
+
                                     <div className='w-full grid grid-cols-1 xl:grid-cols-3 gap-2'>
                                         {myNfts?.map((nft, index) => (
                                             <div
