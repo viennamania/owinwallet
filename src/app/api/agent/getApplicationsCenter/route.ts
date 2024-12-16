@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
 
       || walletAddress === "0xBB5af298798539303eA929Fc68De4F2341A5c12B" // kwak
 
-      || walletAddress === "0xAF590E8617d4C1729E1B252dE799621819F8313A" // exms center wallet address
+      || walletAddress === "0xAF590E8617d4C1729E1B252dE799621819F8313A" // exms center wallet address 유재민
     
     ) {
 
