@@ -46,6 +46,8 @@ export async function POST(request: NextRequest) {
       || walletAddress === "0xBB5af298798539303eA929Fc68De4F2341A5c12B" // kwak
 
       || walletAddress === "0xAF590E8617d4C1729E1B252dE799621819F8313A" // exms center wallet address 유재민
+
+      || walletAddress === "0xe2F5254c5493356E2EEB81e442e225E39a7E2350" // ppump center wallet address 곽준규
     
     ) {
 
