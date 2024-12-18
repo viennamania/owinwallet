@@ -1692,9 +1692,20 @@ export default function AIPage({ params }: any) {
             });
             */
 
+            let market = "";
+
+            if (item.center === 'ppump') {
+                market = 'PPUMP';
+            } else if (item.center === 'owin') {
+                market = 'OWIN';
+            } else if (item.center === 'exms') {
+                market = 'EXMS';
+            }
 
             formattedData.push({
-                'Market': item?.center === 'ppump' ? 'PPUMP' : 'OWIN',
+                
+                'Market': market,
+
                 '신청번호': item.id,
                 '신청일시': new Date(item.createdAt).toLocaleString(),
                 '지갑주소': item.walletAddress,
@@ -2083,7 +2094,11 @@ export default function AIPage({ params }: any) {
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                 {/* center */}
                                                 <span className='text-xs font-semibold text-gray-800'>
-                                                    {application?.center === 'ppump' ? 'PPUMP': 'OWIN'}
+                                                    {application?.center === 'ppump'
+                                                        ? 'PPUMP' : application?.center === 'owin'
+                                                        ? 'OWIN' : application?.center === 'exms'
+                                                        ? 'EXMS' : '기타'
+                                                    }
                                                 </span>
                                             </div>
 

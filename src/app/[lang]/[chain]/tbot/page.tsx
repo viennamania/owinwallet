@@ -491,7 +491,12 @@ export default function AIPage({ params }: any) {
         // then invalid referral
 
 
-        if (center && center.substring(0, 5) === "ppump") {
+        if (
+            center && (
+                center.substring(0, 5) === "ppump"
+                || center.substring(0, 4) === "exms"
+            )
+        ) {
             setIsValidReferral(false);
         } else {
             checkReferral();
