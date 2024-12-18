@@ -1967,6 +1967,9 @@ export default function AIPage({ params }: any) {
 
 
 
+    // usd / krw exchange rate
+    const [usdKrwExchangeRate, setUsdKrwExchangeRate] = useState(1437);
+
 
 
 
@@ -3411,49 +3414,9 @@ export default function AIPage({ params }: any) {
                         </div>
 
 
-                        {/* 마스터 봇 6개월, 2% UPGARADE
-                        330 + 33 = 363 USDT 
-                        515,460 원(vat 포함)
-                        */}
-              
-
-
 
                     </div>
 
-                    {/*
-                    image=/logo-mbot-upgrade.png
-                    마스터 봇 6개월
-                    2% UPGARADE
-                    330 + 33 = 363 USDT 
-                    515,460 원(vat 포함)
-                    */}
-                    {/*
-                    image
-                    마스터 봇 6개월
-                    4% UPGARADE
-                    550 + 55 = 605 USDT 
-                    859,100원(vat포함)
-                    */}
-                    {/*
-                    마스터 봇 6개월
-                    6% UPGARADE
-                    1100 + 110 = 1210 USDT
-                    1,718,200 원(vat포함)
-                    */}
-                    {/*
-                    마스터 봇 6개월
-                    8% UPGARADE
-                    5500 + 550 = 6050 USDT 
-                    8,591,000 원(vat포함)
-                    */}
-                    {/*
-                    마스터 봇 6개월
-                    10% UPGARADE
-                    11000 + 1100 = 12100 USDT 
-                    17,182,000 원(vat포함)
-                    */}
-                 
 
 
                     {/* 제목: 업그레이드 */}
@@ -3505,7 +3468,12 @@ export default function AIPage({ params }: any) {
                                     330 + 33 = 363 USDT
                                 </span>
                                 <span className='text-sm font-semibold text-gray-500'>
-                                    515,460 원(vat 포함)
+                                    {
+                                        Number(363 * usdKrwExchangeRate).toLocaleString('ko-KR', {
+                                            style: 'currency',
+                                            currency: 'KRW'
+                                        })
+                                    }(vat 포함)
                                 </span>
                             </div> 
                             <div className={`flex flex-col gap-2
@@ -3534,7 +3502,12 @@ export default function AIPage({ params }: any) {
                                     550 + 55 = 605 USDT
                                 </span>
                                 <span className='text-sm font-semibold text-gray-500'>
-                                    859,100원(vat포함)
+                                    {
+                                        Number(605 * usdKrwExchangeRate).toLocaleString('ko-KR', {
+                                            style: 'currency',
+                                            currency: 'KRW'
+                                        })
+                                    }(vat 포함)
                                 </span>
                             </div>
 
@@ -3564,7 +3537,12 @@ export default function AIPage({ params }: any) {
                                     1100 + 110 = 1210 USDT
                                 </span>
                                 <span className='text-sm font-semibold text-gray-500'>
-                                    1,718,200 원(vat포함)
+                                    {
+                                        Number(1210 * usdKrwExchangeRate).toLocaleString('ko-KR', {
+                                            style: 'currency',
+                                            currency: 'KRW'
+                                        })
+                                    }(vat 포함)
                                 </span>
                             </div>
                             
@@ -3595,7 +3573,12 @@ export default function AIPage({ params }: any) {
                                     5500 + 550 = 6050 USDT
                                 </span>
                                 <span className='text-sm font-semibold text-gray-500'>
-                                    8,591,000 원(vat포함)
+                                    {
+                                        Number(6050 * usdKrwExchangeRate).toLocaleString('ko-KR', {
+                                            style: 'currency',
+                                            currency: 'KRW'
+                                        })
+                                    }(vat 포함)
                                 </span>
                             </div>
 
@@ -3626,7 +3609,12 @@ export default function AIPage({ params }: any) {
                                     11000 + 1100 = 12100 USDT
                                 </span>
                                 <span className='text-sm font-semibold text-gray-500'>
-                                    17,182,000 원(vat포함)
+                                    {
+                                        Number(12100 * usdKrwExchangeRate).toLocaleString('ko-KR', {
+                                            style: 'currency',
+                                            currency: 'KRW'
+                                        })
+                                    }(vat 포함)
                                 </span>
                             </div>
 
@@ -3745,7 +3733,12 @@ export default function AIPage({ params }: any) {
                                         330 + 33 = 363 USDT
                                     </span>
                                     <span className='text-sm font-semibold text-gray-500'>
-                                        515,460 원(vat 포함)
+                                        {
+                                            Number(363 * usdKrwExchangeRate).toLocaleString('ko-KR', {
+                                                style: 'currency',
+                                                currency: 'KRW'
+                                            })
+                                        }(vat 포함)
                                     </span>
                                 </div>
                             )}
@@ -3770,7 +3763,12 @@ export default function AIPage({ params }: any) {
                                         550 + 55 = 605 USDT
                                     </span>
                                     <span className='text-sm font-semibold text-gray-500'>
-                                        859,100원(vat포함)
+                                        {
+                                            Number(605 * usdKrwExchangeRate).toLocaleString('ko-KR', {
+                                                style: 'currency',
+                                                currency: 'KRW'
+                                            })
+                                        }(vat 포함)
                                     </span>
                                 </div>
                             )}
@@ -3795,7 +3793,12 @@ export default function AIPage({ params }: any) {
                                         1100 + 110 = 1210 USDT
                                     </span>
                                     <span className='text-sm font-semibold text-gray-500'>
-                                        1,718,200 원(vat포함)
+                                        {
+                                            Number(1210 * usdKrwExchangeRate).toLocaleString('ko-KR', {
+                                                style: 'currency',
+                                                currency: 'KRW'
+                                            })
+                                        }(vat 포함)
                                     </span>
                                 </div>
                             )}
@@ -3811,7 +3814,12 @@ export default function AIPage({ params }: any) {
                                         5500 + 550 = 6050 USDT
                                     </span>
                                     <span className='text-sm font-semibold text-gray-500'>
-                                        8,591,000 원(vat포함)
+                                        {
+                                            Number(6050 * usdKrwExchangeRate).toLocaleString('ko-KR', {
+                                                style: 'currency',
+                                                currency: 'KRW'
+                                            })
+                                        }(vat 포함)
                                     </span>
                                 </div>
                             )}
@@ -3827,7 +3835,12 @@ export default function AIPage({ params }: any) {
                                         11000 + 1100 = 12100 USDT
                                     </span>
                                     <span className='text-sm font-semibold text-gray-500'>
-                                        17,182,000 원(vat포함)
+                                        {
+                                            Number(12100 * usdKrwExchangeRate).toLocaleString('ko-KR', {
+                                                style: 'currency',
+                                                currency: 'KRW'
+                                            })
+                                        }(vat 포함)
                                     </span>
                                 </div>
                             )}
