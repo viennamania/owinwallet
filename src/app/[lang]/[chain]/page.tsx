@@ -1271,6 +1271,7 @@ export default function Index({ params }: any) {
                     </div>
 
                     {/* select network */}
+                    {/*
                     <div className="flex flex-row gap-2 items-center">
                       <select 
                         className="p-2 bg-zinc-800 text-white rounded"
@@ -1309,6 +1310,7 @@ export default function Index({ params }: any) {
 
                       </select>
                     </div>
+                    */}
 
 
                     {/* button for polygon explorer */}
