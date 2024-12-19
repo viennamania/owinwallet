@@ -1162,10 +1162,17 @@ export default function SettingsPage({ params }: any) {
 
                 const data = await response.json();
 
-                ///console.log("myOwnedNfts====", data.result);
+                //console.log("myOwnedNfts====", data.result);
+
+                // exclude constract.isSpam = true;
 
                 if (data.result) {
-                    setMyNfts(data.result.ownedNfts);
+
+                    setMyNfts(
+                        data.result.ownedNfts.filter((nft: any) => !nft.contract.isSpam)
+                    )
+
+                    ////setMyNfts(data.result.ownedNfts);
                 } else {
                     setMyNfts([]);
                 }
@@ -1349,7 +1356,12 @@ export default function SettingsPage({ params }: any) {
             if (response.ok) {
                 const data = await response.json();
                 if (data.result) {
-                    setMyNfts(data.result.ownedNfts);
+
+                    setMyNfts(
+                        data.result.ownedNfts.filter((nft: any) => !nft.contract.isSpam)
+                    )
+
+                    //setMyNfts(data.result.ownedNfts);
                 } else {
                     setMyNfts([]);
                 }
@@ -1564,6 +1576,8 @@ export default function SettingsPage({ params }: any) {
                 throw new Error('Failed to transfer NFT');
             }
 
+            toast.success('AI 에이전트 NFT 전송 완료');
+
             setTransferingNftList(transferingNftList.map((item) => {
                 if (item.contractAddress === contractAddress && item.tokenId === tokenId) {
                     return {
@@ -1588,7 +1602,11 @@ export default function SettingsPage({ params }: any) {
             if (response.ok) {
                 const data = await response.json();
                 if (data.result) {
-                    setMyNfts(data.result.ownedNfts);
+                    setMyNfts(
+                        data.result.ownedNfts.filter((nft: any) => !nft.contract.isSpam)
+                    )
+
+                    //setMyNfts(data.result.ownedNfts);
                 } else {
                     setMyNfts([]);
                 }
@@ -1596,6 +1614,17 @@ export default function SettingsPage({ params }: any) {
 
         } catch (error) {
             console.error("transferNft error", error);
+
+            toast.error('Failed to transfer NFT');
+
+            setTransferingNftList(transferingNftList.map((item) => {
+                if (item.contractAddress === contractAddress && item.tokenId === tokenId) {
+                    return {
+                        ...item,
+                        transferring: false,
+                    };
+                }
+            }));
         }
 
 
@@ -1703,36 +1732,52 @@ export default function SettingsPage({ params }: any) {
 
                         {address && (
 
-                            <div className='w-full flex flex-col gap-4 items-start justify-center'>
 
-                                <div className='w-full flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
-                                
-                                    <div className=" flex flex-col xl:flex-row items-center justify-start gap-5">
-                                        <Image
-                                        src="/icon-wallet-live.gif"
-                                        alt="Wallet"
-                                        width={65}
-                                        height={25}
-                                        className="rounded"
-                                        />
-                                        <div className="flex flex-col gap-2">
-                                            {/* disconnect button */}
-                                            <button
-                                                onClick={() => {
-                                                confirm("지갑 연결을 해제하시겠습니까?") && 
-                                                    activeWallet?.disconnect();
-                                                }}
-                                                className="bg-zinc-800 text-white p-2 rounded-lg"
-                                            >
-                                                지갑 연결 해제
-                                            </button>
-                                        </div>
-
+                            <div className='w-full flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
+                            
+                                <div className="w-full flex flex-col xl:flex-row items-center justify-center gap-5">
+                                    <Image
+                                    src="/icon-wallet-live.gif"
+                                    alt="Wallet"
+                                    width={65}
+                                    height={25}
+                                    className="rounded"
+                                    />
+                                    <div className="flex flex-col gap-2">
+                                        {/* disconnect button */}
+                                        <button
+                                            onClick={() => {
+                                            confirm("지갑 연결을 해제하시겠습니까?") && 
+                                                activeWallet?.disconnect();
+                                            }}
+                                            className="bg-zinc-800 text-white p-2 rounded-lg"
+                                        >
+                                            지갑 연결 해제
+                                        </button>
                                     </div>
-                                    
+
+                                    {/* wallet address */}
+                                    <div className="text-xs xl:text-sm font-semibold">
+                                        {address}
+                                    </div>
+
+                                    {/* copy button */}
+                                    <button
+                                        onClick={() => {
+                                            navigator.clipboard.writeText(address);
+                                            toast.success('지갑 주소 복사 완료');
+                                        }}
+                                        className="bg-zinc-800 text-white p-2 rounded-lg"
+                                    >
+                                        복사하기
+                                    </button>
+
                                 </div>
 
+
+                                
                             </div>
+
 
                         )}
 
@@ -2053,22 +2098,12 @@ function Header(
                     className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
                     />
                     <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
-                    Magic Wallet
+                    OWIN
                     </span>
                 </div>
             </button>
 
             <div className="flex flex-row gap-2 items-center">
-                <button
-                onClick={() => {
-                    router.push(
-                        "/kr/polygon/tbot?agent=" + agent + "&tokenId=" + tokenId + "&center=" + center
-                    );
-                }}
-                className="text-gray-600 hover:underline text-xs xl:text-lg"
-                >
-                TBOT
-                </button>
                 <button
                 onClick={() => {
                     router.push(
@@ -2078,6 +2113,16 @@ function Header(
                 className="text-gray-600 hover:underline text-xs xl:text-lg"
                 >
                 SETTINGS
+                </button>
+                <button
+                onClick={() => {
+                    router.push(
+                        '/kr/polygon/my-nft?agent=' + agent + '&tokenId=' + tokenId + '&center=' + center
+                    );
+                }}
+                className="text-gray-600 hover:underline text-xs xl:text-lg"
+                >
+                    NFT
                 </button>
             </div>
 

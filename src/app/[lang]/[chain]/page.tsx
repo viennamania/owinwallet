@@ -1212,7 +1212,7 @@ export default function Index({ params }: any) {
         )}
 
         {address && (
-          <div className="mt-0 w-full flex items-center justify-start gap-5">
+          <div className="mt-0 w-full flex items-center justify-between gap-5">
             <Image
               src="/icon-wallet-live.gif"
               alt="Wallet"
@@ -2066,17 +2066,7 @@ function Header(
         </div>
         {/* menu */}
         <div className="flex flex-row gap-2 items-center">
-          
-          <button
-            onClick={() => {
-              router.push(
-                "/kr/polygon/tbot/?agent=" + agent + "&tokenId=" + tokenId
-              );
-            }}
-            className="text-gray-600 hover:underline text-xs xl:text-lg"
-          >
-            TBOT
-          </button>
+
           <button
             onClick={() => {
               router.push('/kr/polygon/profile-settings/?agent=' + agent + '&tokenId=' + tokenId);
@@ -2084,6 +2074,14 @@ function Header(
             className="text-gray-600 hover:underline text-xs xl:text-lg"
           >
             SETTINGS
+          </button>
+          <button
+            onClick={() => {
+              router.push('/kr/polygon/my-nft/?agent=' + agent + '&tokenId=' + tokenId);
+            }}
+            className="text-gray-600 hover:underline text-xs xl:text-lg"
+          >
+            NFT
           </button>
 
         </div>
