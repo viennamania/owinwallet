@@ -107,9 +107,10 @@ export default function SendUsdt({ params }: any) {
 
   const searchParams = useSearchParams();
  
-  const wallet = searchParams.get('wallet');
 
   const token = searchParams.get('token');
+
+  const center = searchParams.get('center');
 
 
   const agent = searchParams.get('agent');
@@ -735,6 +736,7 @@ export default function SendUsdt({ params }: any) {
         <Header
             lang={params.lang}
             chain={params.chain}
+            center={center ? center : ""}
             agent={agent || ""}
             tokenId={agentNumber || ""}
           />
@@ -1332,11 +1334,13 @@ function Header(
   {
       lang,
       chain,
+      center,
       agent,
       tokenId,
   } : {
       lang: string
       chain: string
+      center: string
       agent: string
       tokenId: string
   }
@@ -1377,26 +1381,16 @@ function Header(
         {/* menu */}
         <div className="flex flex-row gap-2 items-center">
 
-          <button
-            onClick={() => {
-              router.push(
-                '/' + lang + '/' + chain + '/tbot?agent=' + agent + '&tokenId=' + tokenId
-              );  
-            }}
-            className="text-gray-600 hover:underline text-xs xl:text-lg"
-          >
-            TBOT
-          </button>
-          <button
-            onClick={() => {
-              router.push(
-                '/' + lang + '/' + chain + '/profile-settings?agent=' + agent + '&tokenId=' + tokenId
-              );
-            }}
-            className="text-gray-600 hover:underline text-xs xl:text-lg"
-          >
-            SETTINGS
-          </button>
+              <button
+                onClick={() => {
+                    router.push(
+                        '/kr/polygon/my-nft?agent=' + agent + '&tokenId=' + tokenId + '&center=' + center
+                    );
+                }}
+                className="text-gray-600 hover:underline text-xs xl:text-lg"
+              >
+                NFT
+              </button>
 
         </div>
       </div>

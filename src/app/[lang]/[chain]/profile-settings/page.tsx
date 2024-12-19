@@ -2323,16 +2323,7 @@ function Header(
             </button>
 
             <div className="flex flex-row gap-2 items-center">
-                <button
-                    onClick={() => {
-                        router.push(
-                            '/kr/polygon/profile-settings?agent=' + agent + '&tokenId=' + tokenId + '&center=' + center
-                        );
-                    }}
-                    className="text-gray-600 hover:underline text-xs xl:text-lg"
-                >
-                    SETTINGS
-                </button>
+
                 <button
                     onClick={() => {
                         router.push(
