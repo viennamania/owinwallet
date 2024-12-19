@@ -2501,7 +2501,7 @@ export default function AIPage({ params }: any) {
 
 
                                             {/* agentBot and agentBotNumber */}
-                                            <div className='w-full flex flex-row items-start justify-between gap-2
+                                            <div className='flex flex-row items-start justify-between gap-2
                                                 border-b border-gray-300 pb-2
                                             '>
 
@@ -2605,7 +2605,7 @@ export default function AIPage({ params }: any) {
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                 <div className='flex flex-col gap-2'>
                                                     <span className='text-xs text-yellow-800'>
-                                                        OKXUID
+                                                        OKX UID
                                                     </span>
 
                                                     {

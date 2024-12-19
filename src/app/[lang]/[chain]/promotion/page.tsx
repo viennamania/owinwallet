@@ -989,7 +989,7 @@ export default function AIPage({ params }: any) {
     const [myAgentNFT, setMyAgentNFT] = useState({} as any);
 
     // apply to mint NFT
-    // 닉네임, 핸드폰번호, 이메일주소, OKXUID, OKXUSDT(TRON) 지갑주소, API Access Key, API Secret Key
+    // 닉네임, 핸드폰번호, 이메일주소, OKX UID, OKXUSDT(TRON) 지갑주소, API Access Key, API Secret Key
 
     const [userName, setUserName] = useState("");
     useEffect(() => {
@@ -2483,7 +2483,7 @@ export default function AIPage({ params }: any) {
                                                 
                                                 <div className='flex flex-row items-center justify-between gap-2'>
                                                     <span className='text-sm font-semibold text-gray-500'>
-                                                        OKXUID: {myAgent.htxUid}
+                                                        OKX UID: {myAgent.htxUid}
                                                     </span>
                                                     <Image
                                                         src="/verified.png"
@@ -2938,7 +2938,7 @@ export default function AIPage({ params }: any) {
 
 
                                         {/* input for apply */}
-                                        {/* 닉네임, 핸드폰번호, 이메일주소, OKXUID, OKXUSDT(TRON) 지갑주소 */}
+                                        {/* 닉네임, 핸드폰번호, 이메일주소, OKX UID, OKXUSDT(TRON) 지갑주소 */}
                                         {/* API Access Key, API Secret Key */}
 
 

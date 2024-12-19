@@ -851,7 +851,7 @@ export default function AIPage({ params }: any) {
 
 
     // apply to mint NFT
-    // 이름, 핸드폰번호, 이메일주소, OKXUID, OKXUSDT(TRON) 지갑주소, API Access Key, API Secret Key
+    // 이름, 핸드폰번호, 이메일주소, OKX UID, OKXUSDT(TRON) 지갑주소, API Access Key, API Secret Key
 
     const [userName, setUserName] = useState("");
     const [userPhoneNumber, setUserPhoneNumber] = useState("");
@@ -892,7 +892,7 @@ export default function AIPage({ params }: any) {
 
         /*
         if (htxUid === "") {
-            toast.error("OKXUID를 입력해 주세요.");
+            toast.error("OKX UID를 입력해 주세요.");
             return;
         }
         */
@@ -2177,7 +2177,7 @@ export default function AIPage({ params }: any) {
                                             </button>
 
                                             <span className='text-xl font-semibold text-gray-800'>
-                                                OKXUID: {htxUidList[index]}
+                                                OKX UID: {htxUidList[index]}
                                             </span>
                                         </div>
                                         */}
@@ -2186,7 +2186,7 @@ export default function AIPage({ params }: any) {
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                                             <div className='flex flex-col gap-2'>
                                                 <span className='text-xs text-yellow-800'>
-                                                    OKXUID
+                                                    OKX UID
                                                 </span>
                                                 <span className='text-sm text-gray-800'>
                                                     {application.okxUid}

@@ -1090,7 +1090,7 @@ export default function AgentPage({ params }: any) {
                           </div>
                           <div className='w-full flex flex-row items-center justify-between gap-2'>
                               <span className='text-sm text-gray-800'>
-                                  OKXUID: {application.htxUid}
+                                  OKX UID: {application.htxUid}
                               </span>
                           </div>
 

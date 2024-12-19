@@ -968,7 +968,7 @@ export default function AIPage({ params }: any) {
     const [myAgentNFT, setMyAgentNFT] = useState({} as any);
 
     // apply to mint NFT
-    // 이름, 핸드폰번호, 이메일주소, OKXUID, OKXUSDT(TRON) 지갑주소, API Access Key, API Secret Key
+    // 이름, 핸드폰번호, 이메일주소, OKX UID, OKXUSDT(TRON) 지갑주소, API Access Key, API Secret Key
 
     const [userName, setUserName] = useState("");
     useEffect(() => {
@@ -1022,7 +1022,7 @@ export default function AIPage({ params }: any) {
         }
 
         if (htxUid === "") {
-            toast.error("OKXUID를 입력해 주세요.");
+            toast.error("OKX UID를 입력해 주세요.");
             return;
         }
 
