@@ -963,9 +963,6 @@ export default function AIPage({ params }: any) {
                     }
                 })
             );
-            
-            
-
 
         } else {
             toast.error("API Access Key를 확인할 수 없습니다.");

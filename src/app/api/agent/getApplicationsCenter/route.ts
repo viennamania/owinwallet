@@ -38,6 +38,9 @@ export async function POST(request: NextRequest) {
 
       || walletAddress === "0xaB6fB9F80469511195Db7Ac707Cb3F4aD99b1755" // 
 
+      || walletAddress === "0xfD6c58c58029212a5f181EA324cBC6051c7161EF" // owin 센터
+
+
 
       
 
