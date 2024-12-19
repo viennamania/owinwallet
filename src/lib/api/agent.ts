@@ -599,6 +599,51 @@ export async function updateHtxUid(
 
 }
 
+
+
+
+// update htxUid
+export async function updateOkxUid(
+  {
+    applicationId,
+    okxUid,
+  }
+  :
+  {
+    applicationId: number,
+    okxUid: number,
+  },
+) {
+
+  if (!applicationId || !okxUid) {
+    return null;
+  }
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('agents');
+
+  const result = await collection.updateOne(
+    { id: applicationId },
+    {
+      $set: {
+        okxUid: okxUid,
+      }
+    }
+  );
+
+  if (result) {
+    return {
+      applicationId: applicationId,
+      okxUid: okxUid,
+    };
+  } else {
+    return null;
+  }
+
+}
+
+
+
 // updateApplicationStartTrading
 export async function updateApplicationStartTrading(
   {
