@@ -942,8 +942,13 @@ export default function AIPage({ params }: any) {
         //console.log("updateHtxUID data", data);
 
         if (data.result?.status === "ok") {
-            toast.success("API Access Key가 확인되었습니다.");
 
+            if (data.result?.okxUid === "0") {
+                toast.error("API Access Key를 확인할 수 없습니다.");
+            } else {
+
+                toast.success("API Access Key가 확인되었습니다.");
+            }
 
             // update application
             setApplications(
@@ -958,6 +963,8 @@ export default function AIPage({ params }: any) {
                     }
                 })
             );
+            
+            
 
 
         } else {
@@ -2594,13 +2601,29 @@ export default function AIPage({ params }: any) {
                                                     <span className='text-xs text-yellow-800'>
                                                         OKXUID
                                                     </span>
-                                                    <span className='text-sm text-gray-800'>
-                                                        {application?.okxUid}
-                                                    </span>
+
+                                                    {
+                                                        application?.okxUid === "0"
+                                                        ? (
+                                                            <span className='text-sm text-red-800'>
+                                                                API Access Key 오류
+                                                            </span>
+                                                        )
+                                                        : (
+                                                            <span className='text-sm text-gray-800'>
+                                                                {application.okxUid}
+                                                            </span>
+                                                        )
+                      
+                                                        
+                                                    }
+
+
                                                 </div>
 
                                                 {/* checkApiAccessKey */}
-                                                {!application.okxUid && (
+                                                {
+                                                (!application.okxUid || application.okxUid === "0") ? (
                                                     <button
                                                         onClick={() => {
                                                             checkApiAccessKey(
@@ -2617,21 +2640,21 @@ export default function AIPage({ params }: any) {
                                                     >
                                                         {checkingApiAccessKeyList.find((item) => item.applicationId === application.id)?.checking ? "Updating..." : "Update UID"}
                                                     </button>
+                                                )
+                                                :
+                                                (
+                                                    <button
+                                                        onClick={() => {
+                                                            navigator.clipboard.writeText(application?.okxUid);
+                                                            toast.success("Copied to clipboard");
+                                                        }}
+                                                        className="bg-gray-500 text-white p-2 rounded-lg
+                                                            hover:bg-gray-600
+                                                        "
+                                                    >
+                                                        Copy
+                                                    </button>
                                                 )}
-
-
-                                                {/* copy button */}
-                                                <button
-                                                    onClick={() => {
-                                                        navigator.clipboard.writeText(application?.okxUid);
-                                                        toast.success("Copied to clipboard");
-                                                    }}
-                                                    className="bg-gray-500 text-white p-2 rounded-lg
-                                                        hover:bg-gray-600
-                                                    "
-                                                >
-                                                    Copy
-                                                </button>
                                             </div>
 
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>

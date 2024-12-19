@@ -1,43 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-
-/*
-import moment from 'moment';
-
-
-// var HmacSHA256 = require('crypto-js/hmac-sha256')
-
-import {
-  HmacSHA256,
-} from 'crypto-js';
-
-import CryptoJS from 'crypto-js';
-
-*/
-
-
 import {
   updateOkxUid
 } from '@lib/api/agent';
-
-
-/*
-function sign_sha(method, baseurl, path, data) {
-    var pars = [];
-    for (let item in data) {
-        pars.push(item + "=" + encodeURIComponent(data[item]));
-    }
-    var p = pars.sort().join("&");
-    var meta = [method, baseurl, path, p].join('\n');
-    // console.log(meta);
-    var hash = HmacSHA256(meta, config.huobi.secretkey);
-    var Signature = encodeURIComponent(CryptoJS.enc.Base64.stringify(hash));
-    // console.log(`Signature: ${Signature}`);
-    p += `&Signature=${Signature}`;
-    // console.log(p);
-    return p;
-}
-*/
 
 
 
@@ -47,7 +12,7 @@ import * as crypto from 'crypto';
 const BASE_URL = 'https://www.okx.com';
 
 
-
+/*
 async function getOkxAccountInfo(apiAccessKey: string, apiSecretKey: string, apiPassword: string) {
     // API 인증 정보
     const API_KEY = '22af6f87-3b35-4a79-bed2-053099d259c4';
@@ -111,7 +76,7 @@ async function getOkxAccountInfo(apiAccessKey: string, apiSecretKey: string, api
         console.error(`처리 오류: ${error.message}`);
     }
 }
-
+*/
 
 
 
@@ -174,6 +139,42 @@ export async function POST(request: NextRequest) {
 
 
     try {
+
+
+      // Trading 계좌 조회
+      /*
+      const tradingInfo = await makeRequest(
+        '/api/v5/account/balance',
+        apiAccessKey,
+        apiSecretKey,
+        apiPassword,
+      );
+      if (tradingInfo && tradingInfo.code === '0') {
+          console.log(`\nTrading account: $${tradingInfo.data?.[0]?.totalEq || '0'}`);
+      }
+
+
+      // Funding 계좌 조회
+      const fundingInfo = await makeRequest(
+        '/api/v5/asset/balances',
+        apiAccessKey,
+        apiSecretKey,
+        apiPassword,
+      );
+      if (fundingInfo && fundingInfo.code === '0') {
+          console.log('\nFunding account:');
+          fundingInfo.data.forEach((asset: any) => {
+              if (parseFloat(asset.availBal || '0') > 0) {
+                  console.log(`  ${asset.ccy}: ${asset.availBal}`);
+              }
+          });
+      }
+      */
+
+
+
+
+
       // UID 조회 부분
       const accountInfo = await makeRequest(
         '/api/v5/account/config',
@@ -187,40 +188,21 @@ export async function POST(request: NextRequest) {
           if (uid) {
               console.log(`\nUID: ${uid}`);
 
-
-
-              const result = await updateOkxUid({
+              await updateOkxUid({
                 applicationId,
                 okxUid: uid,
               });
 
-              if (result) {
-                return NextResponse.json({
-                  result: {
-                    status: "ok",
-                    okxUid: uid,
-                  },
-                });
-              }
-
-
-
               return NextResponse.json({
                 result: {
-                    status: "ok",
-                    okxUid: uid,
+                  status: "ok",
+                  okxUid: uid,
                 },
               });
+
+
           }
       }
-
-      return NextResponse.json({
-        result: {
-            status: "error",
-        },
-      });
-    
-
 
 
 
@@ -228,16 +210,23 @@ export async function POST(request: NextRequest) {
     } catch (error) {
         console.error("error", error);
 
-        return NextResponse.json({
-            result: {
-                status: "error",
-            },
-        });
+
     }
 
 
 
 
+    await updateOkxUid({
+      applicationId,
+      okxUid: "0",
+    });
+
+    return NextResponse.json({
+        result: {
+          status: "ok",
+          okxUid: "0",
+        },
+    });
 
 
 

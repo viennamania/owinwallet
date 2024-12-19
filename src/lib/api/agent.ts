@@ -611,11 +611,11 @@ export async function updateOkxUid(
   :
   {
     applicationId: number,
-    okxUid: number,
+    okxUid: string,
   },
 ) {
 
-  if (!applicationId || !okxUid) {
+  if (!applicationId) {
     return null;
   }
 
