@@ -1711,7 +1711,7 @@ export default function AIPage({ params }: any) {
                 '지갑주소': item.walletAddress,
                 '신청자': item.userName,
                 '신청자 이메일': item.userEmail,
-                'UID': item.htxUid,
+                'UID': item.okxUid,
             });
 
 
@@ -2189,7 +2189,7 @@ export default function AIPage({ params }: any) {
                                                     OKXUID
                                                 </span>
                                                 <span className='text-sm text-gray-800'>
-                                                    {application.htxUid}
+                                                    {application.okxUid}
                                                 </span>
                                             </div>
 
