@@ -2060,14 +2060,6 @@ function Header(
 
           <button
             onClick={() => {
-              router.push('/kr/polygon/profile-settings/?agent=' + agent + '&tokenId=' + tokenId);
-            }}
-            className="text-gray-600 hover:underline text-xs xl:text-lg"
-          >
-            SETTINGS
-          </button>
-          <button
-            onClick={() => {
               router.push('/kr/polygon/my-nft/?agent=' + agent + '&tokenId=' + tokenId);
             }}
             className="text-gray-600 hover:underline text-xs xl:text-lg"
