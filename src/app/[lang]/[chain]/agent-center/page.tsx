@@ -1018,20 +1018,25 @@ export default function AIPage({ params }: any) {
         );
     } , [applications]);
 
-    const checkHtxAssetValuation = async (
+    const checkOkxAssetValuation = async (
         applicationId: number,
-
-        htxAccessKey: string,
-        htxSecretKey: string,
+        okxAccessKey: string,
+        okxSecretKey: string,
+        okxPassword: string,
     ) => {
 
-        if (!htxAccessKey) {
+        if (!okxAccessKey) {
             toast.error("OKXAccess Key를 입력해 주세요.");
             return;
         }
 
-        if (!htxSecretKey) {
+        if (!okxSecretKey) {
             toast.error("OKXSecret Key를 입력해 주세요.");
+            return;
+        }
+
+        if (!okxPassword) {
+            toast.error("OKXPassword를 입력해 주세요.");
             return;
         }
 
@@ -1054,14 +1059,15 @@ export default function AIPage({ params }: any) {
         ));
 
 
-        const response = await fetch("/api/agent/getAssetValuation", {
+        const response = await fetch("/api/okx/getAssetValuation", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                htxAccessKey: htxAccessKey,
-                htxSecretKey: htxSecretKey,
+                apiAccessKey: okxAccessKey,
+                apiSecretKey: okxSecretKey,
+                apiPassword: okxPassword,
                 applicationId: applicationId,
             }),
         });
@@ -1070,7 +1076,7 @@ export default function AIPage({ params }: any) {
 
         
 
-        ///console.log("getAssetValuation data.result", data.result);
+        console.log("getAssetValuation data.result", data.result);
 
 
         if (data.result?.status === "ok") {
@@ -2797,7 +2803,7 @@ export default function AIPage({ params }: any) {
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                 <div className='flex flex-col gap-2'>
                                                     <span className='text-xs text-yellow-800'>
-                                                        OKX자산 가치(SPOT)
+                                                        OKX Funding Balance
                                                     </span>
                                                     <span className='text-sm text-gray-800'>
                                                         {htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.balance || 0} $(USD)
@@ -2812,10 +2818,11 @@ export default function AIPage({ params }: any) {
                                                 </div>
                                                 <button
                                                     onClick={() => {
-                                                        checkHtxAssetValuation(
+                                                        checkOkxAssetValuation(
                                                             application.id,
                                                             application.apiAccessKey,
                                                             application.apiSecretKey,
+                                                            application.apiPassword,
                                                         );
                                                     }}
                                                     disabled={
