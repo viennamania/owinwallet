@@ -68,7 +68,7 @@ export async function GET(request: NextRequest) {
 
   for (let i = 0; i < applications.length; i++) {
     const application = applications[i];
-    const { applicationId, apiAccessKey, apiSecretKey, apiPassword } = application;
+    const { id, apiAccessKey, apiSecretKey, apiPassword } = application;
 
     if (apiAccessKey && apiSecretKey && apiPassword) {
 
@@ -91,9 +91,11 @@ export async function GET(request: NextRequest) {
             };
   
             await updateTradingAccountBalance({
-              applicationId,
+              applicationId: id,
               tradingAccountBalance: tradingAccountBalance,
             });
+
+
         }
       } catch (error : any) {
         console.error(`API 요청 오류: ${error?.message}`);

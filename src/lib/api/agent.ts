@@ -522,8 +522,6 @@ export async function updateTradingAccountBalance(
 ) {
 
   
-  //console.log('updateAssetValuation applicationId: ' + applicationId);
-  //console.log('updateAgentAssetValuation assetValuation: ' + assetValuation);
 
   if (!applicationId || !tradingAccountBalance) {
     return null;
