@@ -472,6 +472,56 @@ export async function updateAssetValuation(
 
 }
 
+
+
+
+// update agent trading account balance
+export async function updateTradingAccountBalance(
+  {
+    applicationId,
+    tradingAccountBalance,
+  }
+  :
+  {
+    applicationId: number,
+    tradingAccountBalance: object,
+  },
+) {
+
+  
+  //console.log('updateAssetValuation applicationId: ' + applicationId);
+  //console.log('updateAgentAssetValuation assetValuation: ' + assetValuation);
+
+  if (!applicationId || !tradingAccountBalance) {
+    return null;
+  }
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('agents');
+
+  const result = await collection.updateOne(
+    { id: applicationId },
+    {
+      $set: {
+        tradingAccountBalance: tradingAccountBalance,
+      }
+    }
+  );
+
+  if (result) {
+    return {
+      applicationId: applicationId,
+      tradingAccountBalance: tradingAccountBalance,
+    };
+  } else {
+    return null;
+  }
+
+}
+
+
+
+
 // updatePositionList
 export async function updatePositionList(
   {

@@ -4,7 +4,7 @@ import moment from 'moment';
 
 
 import {
-	updateAssetValuation,
+	updateTradingAccountBalance,
 } from '@lib/api/agent';
 
 
@@ -89,88 +89,48 @@ export async function POST(request: NextRequest) {
 
    try {
 
-      let data = {};
 
+    
       
-      // Funding 계좌 조회
-      const fundingInfo = await makeRequest(
-        '/api/v5/asset/balances',
+      const tradingInfo = await makeRequest(
+        '/api/v5/account/balance',
         apiAccessKey,
         apiSecretKey,
         apiPassword,
       );
+      if (tradingInfo && tradingInfo.code === '0') {
+          console.log(`\nTrading account: $${tradingInfo.data?.[0]?.totalEq || '0'}`);
 
-      ////console.log('\nFundingInfo: ', fundingInfo);
+          const balance = tradingInfo.data?.[0]?.totalEq || '0';
 
+          const tradingAccountBalance = {
+            balance: balance,
+            timestamp: moment().valueOf(),
+          };
 
-
-
-
-      if (fundingInfo && fundingInfo.code === '0') {
-
-          //console.log('\nFunding account: ' + fundingInfo.data.length);
-
-          if (fundingInfo.data.length === 0) {
-
-              data = {
-                balance: 0,
-                timestamp: moment().valueOf(),
-              };
-
-              await updateAssetValuation({
-                applicationId,
-                assetValuation: data,
-              });
-
-              return NextResponse.json({
-                  result: {
-                      status: "ok",
-                      assetValuation: data,
-                  }
-              });
-          }
-          
-          //fundingInfo.data.forEach((asset: any) => {
-          fundingInfo.data.forEach(async (asset: any) => {
-
-              if (parseFloat(asset.availBal || '0') > 0) {
-                  console.log(`  ${asset.ccy}: ${asset.availBal}`);
-
-
-                  data = {
-                    balance: asset.availBal,
-                    timestamp: moment().valueOf(),
-                  };
-
-                  // call updateAssetValuation
-                  await updateAssetValuation({
-                    applicationId,
-                    assetValuation: data,
-                  });
-
-
-
-              }
-
+          await updateTradingAccountBalance({
+            applicationId,
+            tradingAccountBalance: tradingAccountBalance,
           });
-
 
           return NextResponse.json({
             result: {
                 status: "ok",
-                assetValuation: data,
+                tradingAccountBalance: tradingAccountBalance,
             }
           });
-
       }
-    
 
 
-
-      
-    } catch (error) {
-        console.error("error", error);
+    } catch (error : any) {
+      console.error(`API 요청 오류: ${error?.message}`);
+      return NextResponse.json({
+        result: {
+            status: "error",
+        },
+      });
     }
+
 
  
     return NextResponse.json({
@@ -178,5 +138,7 @@ export async function POST(request: NextRequest) {
           status: "error",
       },
     });
+
+
   
 }
