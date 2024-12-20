@@ -6,6 +6,7 @@ import moment from 'moment';
 import {
   getAllAgentsForAILabs,
 	updateTradingAccountBalance,
+  updateAssetBalance,
 } from '@lib/api/agent';
 
 
@@ -97,10 +98,45 @@ export async function GET(request: NextRequest) {
 
 
         }
+
+
       } catch (error : any) {
         console.error(`API 요청 오류: ${error?.message}`);
       }
+
+
+
+
+      try {
+
+        // Funding 계좌 조회
+        const fundingInfo = await makeRequest(
+          '/api/v5/asset/balances',
+          apiAccessKey,
+          apiSecretKey,
+          apiPassword,
+        );
+        if (fundingInfo && fundingInfo.code === '0') {
+            
+            //console.log('\nFunding account: ', fundingInfo);
+
+
+            await updateAssetBalance({
+              applicationId: id,
+              assetBalance: fundingInfo.data,
+            });
+
+  
+        }
+
+
+
+      } catch (error : any) {
+        console.error(`API 요청 오류: ${error?.message}`);
+      }
+
     }
+
   }
 
   

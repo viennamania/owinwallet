@@ -508,6 +508,53 @@ export async function updateAssetValuation(
 
 
 
+
+
+
+// update agent asset balance
+export async function updateAssetBalance(
+  {
+    applicationId,
+    assetBalance,
+  }
+  :
+  {
+    applicationId: number,
+    assetBalance: object,
+  },
+
+) {
+  
+
+  if (!applicationId || !assetBalance) {
+    return null;
+  }
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('agents');
+
+  const result = await collection.updateOne(
+    { id: applicationId },
+    {
+      $set: {
+        assetBalance: assetBalance,
+      }
+    }
+  );
+
+  if (result) {
+    return {
+      applicationId: applicationId,
+      assetBalance: assetBalance,
+    };
+  } else {
+    return null;
+  }
+
+}
+
+
+
 // update agent trading account balance
 export async function updateTradingAccountBalance(
   {
@@ -549,6 +596,11 @@ export async function updateTradingAccountBalance(
   }
 
 }
+
+
+
+
+
 
 
 
