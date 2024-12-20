@@ -3161,7 +3161,7 @@ export default function AIPage({ params }: any) {
                                                 ) : (
 
                                                     <span className='text-lg text-red-500 font-semibold'>
-                                                        포지션 리스트가 확인되지 않습니다. 카피트레이딩을 시작해 주세요.
+                                                        
                                                     </span>
 
                                                 )}
