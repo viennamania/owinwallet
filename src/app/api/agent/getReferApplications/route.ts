@@ -17,8 +17,8 @@ export async function POST(request: NextRequest) {
     agentBotNumber,
   } = body;
 
-  console.log("getReferApplications agentBot: ", agentBot);
-  console.log("getReferApplications agentBotNumber: ", agentBotNumber);
+  //console.log("getReferApplications agentBot: ", agentBot);
+  //console.log("getReferApplications agentBotNumber: ", agentBotNumber);
 
 
   if (!agentBot || !agentBotNumber) {
