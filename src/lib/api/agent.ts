@@ -408,7 +408,10 @@ export async function getOneByWalletAddress(walletAddress: string) {
       userName: result.userName,
       userPhoneNumber: result.userPhoneNumber,
       userEmail: result.userEmail,
-      htxUid: result.htxUid,
+      
+      //htxUid: result.htxUid,
+      okxUid: result.okxUid,
+
       htxUsdtWalletAddress: result.htxUsdtWalletAddress,
       apiAccessKey: result.apiAccessKey,
       apiSecretKey: result.apiSecretKey,
