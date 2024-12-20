@@ -269,7 +269,8 @@ export async function getAllAgentsForAILabs({ page = 1, limit = 100 }) {
     const result = await collection.aggregate([
       {
         $match: {
-          apiPassword: { $exists: true },
+          ///apiPassword: { $exists: true },
+          exchange: 'okx',
         }
       },
       {
@@ -285,11 +286,43 @@ export async function getAllAgentsForAILabs({ page = 1, limit = 100 }) {
       },
     
     ]).toArray();
-    
+
 
     if (result) {
+
+
+      // total count
+      const totalCount = await collection.find(
+        {
+          ///apiPassword: { $exists: true },
+          exchange: 'okx',
+        },
+      ).count();
+
+
+      // sum of total trandingAccountBalance.balance is string convert to number
+
+      const totalTradingAccountBalance = await collection.aggregate([
+        {
+          $match: {
+            ///apiPassword: { $exists: true },
+            exchange: 'okx',
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            total: { $sum: { $toDouble: "$tradingAccountBalance.balance" } },
+          }
+        }
+      ]).toArray();
+
+      console.log('totalTradingAccountBalance: ' + JSON.stringify(totalTradingAccountBalance));
+
+     
       return {
-        totalCount: result.length,
+        totalCount: totalCount,
+        totalTradingAccountBalance: totalTradingAccountBalance[0].total,
         applications: result,
       };
     } else {

@@ -745,6 +745,8 @@ export default function AIPage({ params }: any) {
     // get all applications
     const [isAdmin, setIsAdmin] = useState(true);
 
+
+    const [totalTradingAccountBalance, setTotalTradingAccountBalance] = useState(0);
     const [applications, setApplications] = useState([] as any[]);
     const [loadingApplications, setLoadingApplications] = useState(false);
     useEffect(() => {
@@ -771,6 +773,10 @@ export default function AIPage({ params }: any) {
             const total = data.result.totalCount;
 
             setApplications(data.result.applications);
+
+
+            setTotalTradingAccountBalance( data.result.totalTradingAccountBalance );
+
 
             setLoadingApplications(false);
 
@@ -2129,6 +2135,25 @@ export default function AIPage({ params }: any) {
 
                                 </div>
                             </div>
+
+
+                            {/* totalTradingAccountBalance */}
+                            {totalTradingAccountBalance > 0 && (
+                                <div className='w-full flex flex-col gap-2'>
+                                    <span className='text-2xl font-semibold text-gray-800'>
+                                        총 거래 계정 잔고: {
+                                        Number(totalTradingAccountBalance).toLocaleString('en-US', {
+                                            style: 'currency',
+                                            currency: 'USD'
+                                          })
+                                        }
+
+
+                                    </span>
+                                </div>
+                            )}
+
+                           
 
                             
 
