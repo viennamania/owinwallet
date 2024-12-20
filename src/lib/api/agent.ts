@@ -317,7 +317,7 @@ export async function getAllAgentsForAILabs({ page = 1, limit = 100 }) {
         }
       ]).toArray();
 
-      console.log('totalTradingAccountBalance: ' + JSON.stringify(totalTradingAccountBalance));
+      ///console.log('totalTradingAccountBalance: ' + JSON.stringify(totalTradingAccountBalance));
 
      
       return {
