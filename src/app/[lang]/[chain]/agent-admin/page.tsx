@@ -2160,7 +2160,7 @@ export default function AIPage({ params }: any) {
                                                     {application?.center === 'ppump'
                                                         ? 'PPUMP' : application?.center === 'owin'
                                                         ? 'OWIN' : application?.center === 'exms'
-                                                        ? 'EXMS' : application?.center === 'exms'
+                                                        ? 'EXMS' : '기타'
                                                     }
                                                 </span>
                                             </div>
