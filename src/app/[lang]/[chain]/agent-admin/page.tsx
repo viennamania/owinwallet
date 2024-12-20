@@ -1781,6 +1781,7 @@ export default function AIPage({ params }: any) {
                 '신청자': item.userName,
                 '신청자 이메일': item.userEmail,
                 'UID': item.okxUid,
+                '거래 계정 잔고': item.tradingAccountBalance.balance.toFixed(2),
             });
 
 
@@ -2344,9 +2345,36 @@ export default function AIPage({ params }: any) {
                                                 <span className='text-xs text-yellow-800'>
                                                     OKX Trading Balance
                                                 </span>
-                                                <span className='text-sm text-gray-800'>
-                                                    {tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.balance} $(USD)
-                                                </span>
+
+                                                {/* if balance is not zero red color */}
+
+                                                {
+                                                    tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.balance > 0 ? (
+                                                        <span className='text-lg text-red-500'>
+                                                            {
+                                                                Number(tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.balance)
+                                                                .toLocaleString('en-US', {
+                                                                    style: 'currency',
+                                                                    currency: 'USD'
+                                                                })
+                                                            
+                                                                
+                                                            }
+                                                        </span>
+                                                    ) : (
+                                                        <span className='text-lg text-gray-800'>
+                                                            {
+                                                                Number(tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.balance)
+                                                                .toLocaleString('en-US', {
+                                                                    style: 'currency',
+                                                                    currency: 'USD'
+                                                                })
+                                                            }
+                                                        </span>
+                                                    )
+                                                }
+
+
                                                 {/* convert timestamp to date */}
                                                 <span className='text-xs text-gray-800'>
                                                     {tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.timestamp
