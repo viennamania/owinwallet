@@ -1196,7 +1196,7 @@ export default function AIPage({ params }: any) {
 
         
 
-        console.log("getAssetValuation data.result", data.result);
+        ///console.log("getAssetValuation data.result", data.result);
 
 
         if (data.result?.status === "ok") {
@@ -3004,6 +3004,7 @@ export default function AIPage({ params }: any) {
 
                                       
                                             {/* queryUnifiedAccountAssets */}
+                                            {/*
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                 <div className='flex flex-col gap-2'>
                                                     <span className='text-xs text-yellow-800'>
@@ -3031,10 +3032,12 @@ export default function AIPage({ params }: any) {
                                                     {checkingUnifiedAccountAssets.find((item) => item.applicationId === application.id)?.checking ? "Checking..." : "Check"}
                                                 </button>
                                             </div>
+                                            */}
 
 
 
                                             {/* getPositionList */}
+                                            {/*
                                             <div className='w-full flex flex-col items-start justify-between gap-2'>
                                                 
                                                 <div className='w-full flex flex-row items-center justify-between gap-2'>
@@ -3061,7 +3064,7 @@ export default function AIPage({ params }: any) {
 
                                                 </div>
 
-                                                {/* timestamp */}
+                                        
                                                 <span className='text-xs text-gray-800'>
                                                     {positionList.find((item) => item.applicationId === application.id)?.timestamp
                                                     ? new Date(positionList.find((item) => item.applicationId === application.id)?.timestamp).toLocaleString()
@@ -3069,7 +3072,7 @@ export default function AIPage({ params }: any) {
                                                     }
                                                 </span>
 
-                                                {/* check status */}
+                                            
                                                 {positionList.find((item) => item.applicationId === application.id)?.status
                                                 ? (
 
@@ -3167,6 +3170,7 @@ export default function AIPage({ params }: any) {
                                                 )}
 
                                             </div>
+                                            */}
                                             
 
 

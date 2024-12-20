@@ -99,7 +99,8 @@ export async function POST(request: NextRequest) {
         apiPassword,
       );
       if (tradingInfo && tradingInfo.code === '0') {
-          console.log(`\nTrading account: $${tradingInfo.data?.[0]?.totalEq || '0'}`);
+          
+          //console.log(`\nTrading account: $${tradingInfo.data?.[0]?.totalEq || '0'}`);
 
           const balance = tradingInfo.data?.[0]?.totalEq || '0';
 
