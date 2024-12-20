@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
   apiSecretKey: apiSecretKey,
   */
 
-  const { marketingCenter, center, walletAddress, agentBot, agentBotNumber, userName, userPhoneNumber, userEmail, userTelegramId, exchange, htxUserId, htxUsdtWalletAddress, apiAccessKey, apiSecretKey, apiPassword } = body;
+  const { marketingCenter, center, walletAddress, agentBot, agentBotNumber, userName, userPhoneNumber, userEmail, userTelegramId, exchange, htxUserId, okxUid, htxUsdtWalletAddress, apiAccessKey, apiSecretKey, apiPassword } = body;
 
 
   const result = await insertOne({
@@ -41,7 +41,12 @@ export async function POST(request: NextRequest) {
     userEmail: userEmail,
     userTelegramId: userTelegramId,
     exchange: exchange,
-    htxUserId: htxUserId,
+    
+    //htxUserId: htxUserId,
+
+    okxUid: okxUid,
+
+
     htxUsdtWalletAddress: htxUsdtWalletAddress,
     apiAccessKey: apiAccessKey,
     apiSecretKey: apiSecretKey,
@@ -69,29 +74,37 @@ export async function POST(request: NextRequest) {
 
     if (mobile && mobile.length > 10) {
 
+      try {
 
-      const msgBody = `[OWIN] [TID:#${applicationId}] You have a new agent application from [${userName}]`;
+        const msgBody = `[OWIN] [TID:#${applicationId}] You have a new agent application from [${userName}]`;
+
+        const message = await client.messages.create({
+          body: msgBody,
+          from: "+17622254217",
+          to: mobile,
+        });
+
+      } catch (error) {
+        console.error("error", error);
+      }
+    }
+  }
+  
+
+  if (userPhoneNumber && userPhoneNumber.length > 10) {
+
+    try {
+      // send sms to userPhoneNumber
+      const msgBody = `[OWIN] [TID:#${applicationId}] Your master bot application has been submitted successfully!`;
 
       const message = await client.messages.create({
         body: msgBody,
         from: "+17622254217",
-        to: mobile,
+        to: userPhoneNumber,
       });
-
+    } catch (error) {
+      console.error("error", error);
     }
-
-  }
-
-  if (userPhoneNumber && userPhoneNumber.length > 10) {
-
-    // send sms to userPhoneNumber
-    const msgBody = `[OWIN] [TID:#${applicationId}] Your master bot application has been submitted successfully!`;
-
-    const message = await client.messages.create({
-      body: msgBody,
-      from: "+17622254217",
-      to: userPhoneNumber,
-    });
   
   }
 

@@ -490,13 +490,11 @@ export default function AIPage({ params }: any) {
         // check center substring 5 characters is ppump
         // then invalid referral
 
-
-        if (
-            center && (
-                center.substring(0, 5) === "ppump"
-                || center.substring(0, 4) === "exms"
-            )
-        ) {
+        if (!center) {
+            setIsValidReferral(false);
+        } else if (center.length < 5) {
+            setIsValidReferral(false);
+        } else if (center.substring(0, 4) !== "owin") {
             setIsValidReferral(false);
         } else {
             checkReferral();
@@ -504,8 +502,8 @@ export default function AIPage({ params }: any) {
 
     } , [agent, agentNumber, center]);
 
-    console.log("isValidReferralLoading", isValidReferralLoading);
-    console.log("isValidReferral", isValidReferral);
+    //console.log("isValidReferralLoading", isValidReferralLoading);
+    //console.log("isValidReferral", isValidReferral);
 
     
 
@@ -755,7 +753,7 @@ export default function AIPage({ params }: any) {
     const [masterBot, setMasterBot] = useState({} as any);
 
 
-    console.log("address", address);
+    //console.log("address", address);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -1090,7 +1088,7 @@ export default function AIPage({ params }: any) {
 
     const [userEmail, setUserEmail] = useState("");
     
-    const [htxUserId, setHtxUserId] = useState("");
+    const [okxUid, setOkxUid] = useState("");
 
     const [htxUsdtWalletAddress, setHtxUsdtWalletAddress] = useState("");
     const [apiAccessKey, setApiAccessKey] = useState("");
@@ -1132,8 +1130,8 @@ export default function AIPage({ params }: any) {
             return;
         }
 
-        if (htxUserId === "") {
-            toast.error("OKX UserId 입력해 주세요.");
+        if (okxUid === "") {
+            toast.error("OKX UID 입력해 주세요.");
             return;
         }
 
@@ -1162,12 +1160,31 @@ export default function AIPage({ params }: any) {
 
         setApplyingMintNFT(true);
 
+
+        if (center && center.length < 5) {
+            setApplyingMintNFT(false);
+            toast.error("Marketing Center를 선택해 주세요.");
+            return;
+        }
+
         // api call
 
         let marketingCenter = "owin";
-        if (center === "ppump_orry_bot") {
-            marketingCenter = "ppump";
+
+
+        if (center && center.length < 5) {
+            setApplyingMintNFT(false);
+            toast.error("Marketing Center를 선택해 주세요.");
+            return;
         }
+
+        if (center?.substring(0, 4) !== "owin") {
+            setApplyingMintNFT(false);
+            toast.error("Marketing Center를 선택해 주세요.");
+            return;
+        }
+
+
 
         const response = await fetch("/api/agent/applyMintNFT", {
             method: "POST",
@@ -1185,7 +1202,7 @@ export default function AIPage({ params }: any) {
                 userTelegramId: userTelegramId,
                 userEmail: userEmail,
                 exchange: "okx",
-                htxUserId: htxUserId,
+                okxUid: okxUid,
                 htxUsdtWalletAddress: htxUsdtWalletAddress,
                 apiAccessKey: apiAccessKey,
                 apiSecretKey: apiSecretKey,
@@ -1400,37 +1417,44 @@ export default function AIPage({ params }: any) {
     // check htx api key
     const [checkingHtxApiKey, setCheckingHtxApiKey] = useState(false);
     const checkHtxApiKey = async (
-        htxAccessKey: string,
-        htxSecretKey: string,
+        apiAccessKey: string,
+        apiSecretKey: string,
+        apiPassword: string,
     ) => {
 
        
-        if (htxAccessKey === "") {
+        if (apiAccessKey === "") {
             toast.error("OKX Access Key를 입력해 주세요.");
             return;
         }
 
-        if (htxSecretKey === "") {
+        if (apiSecretKey === "") {
             toast.error("OKX Secret Key를 입력해 주세요.");
+            return;
+        }
+
+        if (apiPassword === "") {
+            toast.error("OKX Password를 입력해 주세요.");
             return;
         }
 
         setCheckingHtxApiKey(true);
 
-        const response = await fetch("/api/agent/getAccountOkx", {
+        const response = await fetch("/api/okx/checkUID", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                htxAccessKey: htxAccessKey,
-                htxSecretKey: htxSecretKey,
+                apiAccessKey: apiAccessKey,
+                apiSecretKey: apiSecretKey,
+                apiPassword: apiPassword,
             }),
         });
         /*
         {
             status: 'ok',
-            data: [ { id: 63912897, type: 'spot', subtype: '', state: 'working' } ]
+            okxUid: '1234',
         }
         */
 
@@ -1442,9 +1466,7 @@ export default function AIPage({ params }: any) {
 
             setIsValidAPIKey(true);
 
-            
-            //setHtxUserId(data.result?.data[0]?.id);
-            setHtxUserId("1234");
+            setOkxUid(data.result?.okxUid);
 
 
             toast.success("OKX API Key가 확인되었습니다.");
@@ -1577,17 +1599,24 @@ export default function AIPage({ params }: any) {
 
 
     const checkHtxAssetValuation = async (
-        htxAccessKey: string,
-        htxSecretKey: string,
+        apiAccessKey: string,
+        apiSecretKey: string,
+        apiPassword: string,
+
     ) => {
 
-        if (htxAccessKey === "") {
+        if (apiAccessKey === "") {
             toast.error("OKX Access Key를 입력해 주세요.");
             return;
         }
 
-        if (htxSecretKey === "") {
+        if (apiSecretKey === "") {
             toast.error("OKX Secret Key를 입력해 주세요.");
+            return;
+        }
+
+        if (apiPassword === "") {
+            toast.error("OKX Password를 입력해 주세요.");
             return;
         }
 
@@ -1599,8 +1628,9 @@ export default function AIPage({ params }: any) {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                htxAccessKey: htxAccessKey,
-                htxSecretKey: htxSecretKey,
+                apiAccessKey: apiAccessKey,
+                apiSecretKey: apiSecretKey,
+                apiPassword: apiPassword,
             }),
         });
 
@@ -2165,7 +2195,7 @@ export default function AIPage({ params }: any) {
 
 
 
-                    <div className='w-full flex flex-col items-start gap-5 mt-10'>
+                    <div className='mt-10 w-full flex flex-col items-start gap-5'>
                         {/* live icon */}
                         {address ? (
                             <div className='flex flex-row items-center gap-2'>
@@ -2206,7 +2236,7 @@ export default function AIPage({ params }: any) {
                                     }}
                                     theme={"light"}
                                     connectButton={{
-                                        label: "Sign in with AGENT Wallet",
+                                        label: "Sign in with Wallet",
                                     }}
                                     connectModal={{
                                         size: "wide", 
@@ -2716,7 +2746,7 @@ export default function AIPage({ params }: any) {
                                                 
                                                 <div className='flex flex-row items-center justify-between gap-2'>
                                                     <span className='text-sm font-semibold text-gray-500'>
-                                                        OKX UID: {myAgent.htxUid}
+                                                        OKX UID: {myAgent?.okxUid}
                                                     </span>
                                                     <Image
                                                         src="/verified.png"
@@ -2763,6 +2793,7 @@ export default function AIPage({ params }: any) {
                                                     />
                                                 </div>
 
+                                                {/*
                                                 <div className='hidden flex-row items-center justify-between gap-2'>
                                                     <span className='text-sm font-semibold text-gray-500'>
                                                         OKX USDT(TRON) 지갑주소: {myAgent.htxUsdtWalletAddress.substring(0, 10) + "..."}
@@ -2774,6 +2805,7 @@ export default function AIPage({ params }: any) {
                                                         height={20}
                                                     />
                                                 </div>
+                                                */}
 
                                                 <span className='text-sm font-semibold text-gray-500'>
                                                     닉네임: {myAgent.userName}
@@ -2794,13 +2826,17 @@ export default function AIPage({ params }: any) {
                                                 <div className='flex flex-row items-center gap-2'>
                                                     <button
                                                         disabled={
-                                                            !myAgent?.apiAccessKey || !myAgent?.apiSecretKey || checkingHtxAssetValuation
+                                                            !myAgent?.apiAccessKey || !myAgent?.apiSecretKey || !myAgent?.apiPassword || checkingHtxAssetValuation
                                                         }
                                                         className={`
-                                                            ${!myAgent?.apiAccessKey || !myAgent?.apiSecretKey || checkingHtxAssetValuation ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold
+                                                            ${!myAgent?.apiAccessKey || !myAgent?.apiSecretKey || !myAgent?.apiPassword || checkingHtxAssetValuation ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold
                                                         `}
                                                         onClick={() => {
-                                                            checkHtxAssetValuation(myAgent.apiAccessKey, myAgent.apiSecretKey);
+                                                            checkHtxAssetValuation(
+                                                                myAgent.apiAccessKey,
+                                                                myAgent.apiSecretKey,
+                                                                myAgent.apiPassword,
+                                                            );
                                                         }}
                                                     >
                                                         OKX 자산 가치 확인
@@ -3207,10 +3243,14 @@ export default function AIPage({ params }: any) {
                                             {/* button for api call /api/agent/getAccount */}
                                             <button
                                                 disabled={!address || checkingHtxApiKey || !apiAccessKey || !apiSecretKey || !apiPassword || isValidAPIKey}
-                                                className={` ${checkingHtxApiKey || !apiAccessKey || !apiSecretKey || isValidAPIKey
+                                                className={` ${checkingHtxApiKey || !apiAccessKey || !apiSecretKey || !apiPassword || isValidAPIKey
                                                     ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold`}
                                                 onClick={() => {
-                                                    checkHtxApiKey(apiAccessKey, apiSecretKey);
+                                                    checkHtxApiKey(
+                                                        apiAccessKey,
+                                                        apiSecretKey,
+                                                        apiPassword,
+                                                    );
                                                 }}
                                             >
                                                 OKX API 정보 확인하기
@@ -3249,12 +3289,12 @@ export default function AIPage({ params }: any) {
 
                                         <div className='w-full hidden flex-col gap-2 border border-gray-300 p-4 rounded-lg'>
                                             <span className='text-sm font-semibold text-gray-500'>
-                                                OKX UserId
+                                                OKX UID
                                             </span>
                                             <input
                                                 disabled={true}
-                                                value={htxUserId}
-                                                onChange={(e) => setHtxUserId(e.target.value)}
+                                                value={okxUid}
+                                                onChange={(e) => setOkxUid(e.target.value)}
                                                 type="text"
                                                 placeholder="OKX UserId"
                                                 className="w-full p-2 rounded-lg border border-gray-300"

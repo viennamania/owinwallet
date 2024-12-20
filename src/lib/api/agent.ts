@@ -41,7 +41,7 @@ export interface ResultProps {
 
 export async function insertOne(data: any) {
 
-  console.log('insertOne data: ' + JSON.stringify(data));
+  //console.log('insertOne data: ' + JSON.stringify(data));
   /*
     {"center":"",
     "walletAddress":"0x2C91bf7ac8300913367Bf1c29b14c25556c0df92",
@@ -62,7 +62,10 @@ export async function insertOne(data: any) {
     /////|| !data.agentBotNumber  => if agentBotNumber is 0, it will be false
     || !data.userName
     || !data.userEmail
-    || !data.htxUserId
+
+    //|| !data.htxUserId
+
+    || !data.okxUid
     
     //////|| !data.htxUsdtWalletAddress
 
@@ -118,7 +121,10 @@ export async function insertOne(data: any) {
       userEmail: data.userEmail,
       userTelegramId: data.userTelegramId,
       exchange: data.exchange,
-      htxUserId: data.htxUserId,
+      
+      //htxUserId: data.htxUserId,
+      okxUid: data.okxUid,
+
       htxUsdtWalletAddress: data.htxUsdtWalletAddress,
       apiAccessKey: data.apiAccessKey,
       apiSecretKey: data.apiSecretKey,
@@ -146,7 +152,10 @@ export async function insertOne(data: any) {
       userPhoneNumber: data.userPhoneNumber,
       userEmail: data.userEmail,
       userTelegramId: data.userTelegramId,
-      htxUserId: data.htxUserId,
+      
+      //htxUserId: data.htxUserId,
+      okxUid: data.okxUid,
+
       htxUsdtWalletAddress: data.htxUsdtWalletAddress,
       apiAccessKey: data.apiAccessKey,
       apiSecretKey: data.apiSecretKey,
