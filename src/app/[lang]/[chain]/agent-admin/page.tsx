@@ -863,90 +863,6 @@ export default function AIPage({ params }: any) {
 
     
 
-    const applyMintAgentBot = async () => {
-
-        if (address === "") {
-            toast.error("먼저 지갑을 연결해 주세요.");
-            return;
-        }
-
-        if (agentBot === "") {
-            toast.error("Agent Bot을 선택해 주세요.");
-            return;
-        }
-
-        if (userName === "") {
-            toast.error("이름을 입력해 주세요.");
-            return;
-        }
-
-        if (userPhoneNumber === "") {
-            toast.error("핸드폰번호를 입력해 주세요.");
-            return;
-        }
-
-        if (userEmail === "") {
-            toast.error("이메일주소를 입력해 주세요.");
-            return;
-        }
-
-        /*
-        if (htxUid === "") {
-            toast.error("OKX UID를 입력해 주세요.");
-            return;
-        }
-        */
-
-        if (htxUsdtWalletAddress === "") {
-            toast.error("OKXUSDT(TRON) 지갑주소를 입력해 주세요.");
-            return;
-        }
-
-        if (apiAccessKey === "") {
-            toast.error("API Access Key를 입력해 주세요.");
-            return;
-        }
-
-        if (apiSecretKey === "") {
-            toast.error("API Secret Key를 입력해 주세요.");
-            return;
-        }
-
-
-        // api call
-
-        const response = await fetch("/api/agent/applyMintNFT", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                walletAddress: address,
-                agentBot: agentBot,
-                userName: userName,
-                userPhoneNumber: userPhoneNumber,
-                userEmail: userEmail,
-                //htxUid: htxUid,
-                htxUsdtWalletAddress: htxUsdtWalletAddress,
-                apiAccessKey: apiAccessKey,
-                apiSecretKey: apiSecretKey,
-            }),
-        });
-
-        if (!response.ok) {
-            console.error("Error applying mint NFT");
-            return;
-        }
-
-        const data = await response.json();
-
-        console.log("data", data);
-
-        if (data.result) {
-            toast.success("NFT Mint 신청이 완료되었습니다.");
-        }
-
-    }
 
     const [myAgent, setMyAgent] = useState({} as any);
     useEffect(() => {
@@ -968,7 +884,7 @@ export default function AIPage({ params }: any) {
 
             const data = await response.json();
 
-            console.log("data", data);
+            //console.log("data", data);
 
             setMyAgent(data.result);
 
@@ -1442,7 +1358,7 @@ export default function AIPage({ params }: any) {
                     if (item.id === applicationId) {
                         return {
                             ...item,
-                            htxUid: data.result?.htxUid,
+                            okxUid: data.result?.okxUid,
                         }
                     } else {
                         return item;
@@ -2188,10 +2104,11 @@ export default function AIPage({ params }: any) {
                                                 <span className='text-xs text-yellow-800'>
                                                     OKX UID
                                                 </span>
-                                                <span className='text-sm text-gray-800'>
+                                                <span className='text-xs text-gray-800'>
                                                     {application.okxUid}
                                                 </span>
                                             </div>
+
 
                                             {/* checkApiAccessKey */}
 
@@ -2214,7 +2131,7 @@ export default function AIPage({ params }: any) {
                                                 {/* copy button */}
                                                 <button
                                                     onClick={() => {
-                                                        navigator.clipboard.writeText(application.htxUid);
+                                                        navigator.clipboard.writeText(application.okxUid);
                                                         toast.success("Copied to clipboard");
                                                     }}
                                                     className="bg-gray-500 text-white p-2 rounded-lg
@@ -2225,6 +2142,28 @@ export default function AIPage({ params }: any) {
                                                 </button>
                                             </div>
                                         </div>
+
+
+                                        {/* asset valuation */}
+
+                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                            <div className='flex flex-col gap-2'>
+                                                <span className='text-xs text-yellow-800'>
+                                                    OKX Funding Balance
+                                                </span>
+                                                <span className='text-sm text-gray-800'>
+                                                    {htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.balance || 0} $(USD)
+                                                </span>
+                                                {/* convert timestamp to date */}
+                                                <span className='text-xs text-gray-800'>
+                                                    {htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.timestamp
+                                                    ? new Date(htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.timestamp).toLocaleString()
+                                                    : ""
+                                                    }
+                                                </span>
+                                            </div>
+                                        </div>
+
 
 
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
@@ -2396,35 +2335,17 @@ export default function AIPage({ params }: any) {
                                         */}
 
                                         {/* getPositionList */}
+                                        {/*
                                         <div className='w-full flex flex-col items-start justify-between gap-2'>
                                             
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                 <span className='text-xs text-yellow-800'>
                                                     OKX포지션 리스트
                                                 </span>
-                                                {/*
-                                                <button
-                                                    onClick={() => {
-                                                        getPositionList(
-                                                            application.id,
-                                                            application.apiAccessKey,
-                                                            application.apiSecretKey,
-                                                        );
-                                                    }}
-                                                    disabled={
-                                                        checkingPositionList.find((item) => item.applicationId === application.id)?.checking
-                                                    }
-                                                    className={`${checkingPositionList.find((item) => item.applicationId === application.id)?.checking ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
-                                                        hover:bg-blue-600
-                                                    `}
-                                                >
-                                                    {checkingPositionList.find((item) => item.applicationId === application.id)?.checking ? "Checking..." : "Check"}
-                                                </button>
-                                                */}
+
 
                                             </div>
 
-                                            {/* timestamp */}
                                             <span className='text-xs text-gray-800'>
                                                 {positionList.find((item) => item.applicationId === application.id)?.timestamp
                                                 ? new Date(positionList.find((item) => item.applicationId === application.id)?.timestamp).toLocaleString()
@@ -2432,7 +2353,6 @@ export default function AIPage({ params }: any) {
                                                 }
                                             </span>
 
-                                            {/* check status */}
                                             {positionList.find((item) => item.applicationId === application.id)?.status
                                             ? (
 
@@ -2530,6 +2450,14 @@ export default function AIPage({ params }: any) {
                                             )}
 
                                         </div>
+                                        */}
+
+
+
+
+
+
+
 
 
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
