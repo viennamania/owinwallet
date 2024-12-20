@@ -2251,7 +2251,7 @@ export default function AIPage({ params }: any) {
                                           
                                             <div className='flex flex-col gap-2'>
                                                 <div className='flex flex-row items-center justify-start gap-2'>
-                                                    {application.okxUid && (
+                                                    {(application.okxUid && application.okxUid !== '0') && (
                                                         <Image
                                                             src="/verified.png"
                                                             alt="HTX"
@@ -2266,9 +2266,17 @@ export default function AIPage({ params }: any) {
                                                     </span>
 
                                                 </div>
-                                                <span className='text-xs text-gray-800'>
-                                                    {application.okxUid}
-                                                </span>
+                                                <div className='flex flex-row items-center justify-start gap-2'>
+                                                    {application.okxUid === '0' ? (
+                                                        <span className='text-red-500'>
+                                                            Not verified
+                                                        </span>
+                                                    ) : (
+                                                        <span className='text-green-500 text-xs'>
+                                                            {application.okxUid}
+                                                        </span>
+                                                    )}
+                                                </div>
                                             </div>
 
 
