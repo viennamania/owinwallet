@@ -2048,7 +2048,7 @@ function Header(
         {/* logo */}
         <div className="flex flex-row gap-2 items-center">
           <Image
-            src="/circle-logo.webp"
+            src="/logo-owin.webp"
             alt="Circle Logo"
             width={35}
             height={35}
