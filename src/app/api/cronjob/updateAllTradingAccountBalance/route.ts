@@ -120,10 +120,14 @@ export async function GET(request: NextRequest) {
             
             //console.log('\nFunding account: ', fundingInfo);
 
+            const assetBalance = {
+              balanes: fundingInfo.data,
+              timestamp: moment().valueOf(),
+            } 
 
             await updateAssetBalance({
               applicationId: id,
-              assetBalance: fundingInfo.data,
+              assetBalance: assetBalance,
             });
 
   
