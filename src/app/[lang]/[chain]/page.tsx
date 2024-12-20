@@ -834,6 +834,7 @@ export default function Index({ params }: any) {
 
 
   // getTronBalance
+  /*
   const [tronBalance, setTronBalance] = useState(0);
   useEffect(() => {
     
@@ -874,7 +875,7 @@ export default function Index({ params }: any) {
   } , [tronWalletAddress]);
 
   //console.log("tronBalance", tronBalance);
-
+  */
 
 
 
@@ -1463,6 +1464,7 @@ export default function Index({ params }: any) {
                 </div>
 
                 {/* if tron chain, then show tron balance */}
+                {/*
                 {params.chain === "tron" && (
                   <div className="mt-4 flex flex-row gap-2 justify-between items-center p-2">
                     <Image
@@ -1495,6 +1497,7 @@ export default function Index({ params }: any) {
                     
                   </div>
                 )}
+                */}
 
 
 
