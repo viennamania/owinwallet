@@ -532,7 +532,7 @@ export default function AIPage({ params }: any) {
 
             const data = await response.json();
 
-            console.log("data", data);
+            ////console.log("data", data);
 
 
             if (data.result) {
@@ -643,7 +643,7 @@ export default function AIPage({ params }: any) {
 
             const metadata = await getContractMetadata({ contract });
 
-            console.log("metadata======", metadata);
+            //console.log("metadata======", metadata);
                 
 
             //setAgentBotErc721(nft721);
@@ -687,7 +687,7 @@ export default function AIPage({ params }: any) {
 
             const data = await response.json();
 
-            console.log("data", data);
+            ///console.log("data", data);
 
             setMyAgent(data.result);
 
@@ -798,7 +798,7 @@ export default function AIPage({ params }: any) {
 
         const data = await response.json();
 
-        console.log("data", data);
+        ///console.log("data", data);
 
         setAgentBotNftList(
             agentBotNftList.map((item) => {
@@ -1070,7 +1070,7 @@ export default function AIPage({ params }: any) {
 
         const data = await response.json();
 
-        console.log("data.result", data.result);
+        ////console.log("data.result", data.result);
 
         if (data.result?.status === "ok") {
 
@@ -2136,7 +2136,7 @@ export default function AIPage({ params }: any) {
         const items = post.result.applications as any[];
   
    
-        console.log('items', items);
+        ///console.log('items', items);
   
   
         
