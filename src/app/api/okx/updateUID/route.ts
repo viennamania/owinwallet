@@ -1,9 +1,11 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 import {
+  updateAccountConfig,
   updateOkxUid
 } from '@lib/api/agent';
 
+import moment from 'moment';
 
 
 import axios from 'axios';
@@ -183,10 +185,89 @@ export async function POST(request: NextRequest) {
         apiPassword,
       );
 
+
+      /*
+                {
+            "acctLv": "2",
+            "acctStpMode": "cancel_maker",
+            "autoLoan": false,
+            "ctIsoMode": "automatic",
+            "enableSpotBorrow": false,
+            "greeksType": "PA",
+            "ip": "",
+            "kycLv": "0",
+            "label": "정강민",
+            "level": "Lv1",
+            "levelTmp": "",
+            "liquidationGear": "-1",
+            "mainUid": "656077440519049601",
+            "mgnIsoMode": "automatic",
+            "opAuth": "0",
+            "perm": "read_only,trade",
+            "posMode": "long_short_mode",
+            "roleType": "0",
+            "spotBorrowAutoRepay": false,
+            "spotOffsetType": "",
+            "spotRoleType": "0",
+            "spotTraderInsts": [],
+            "traderInsts": [],
+            "type": "0",
+            "uid": "656077440519049601"
+          }
+
+          {
+            "acctLv": "2",
+            "acctStpMode": "cancel_maker",
+            "autoLoan": false,
+            "ctIsoMode": "automatic",
+            "enableSpotBorrow": false,
+            "greeksType": "PA",
+            "ip": "",
+            "kycLv": "2",
+            "label": "koko",
+            "level": "Lv1",
+            "levelTmp": "",
+            "liquidationGear": "-1",
+            "mainUid": "655940846881543236",
+            "mgnIsoMode": "automatic",
+            "opAuth": "0",
+            "perm": "read_only,trade",
+            "posMode": "long_short_mode",
+            "roleType": "2",
+            "spotBorrowAutoRepay": false,
+            "spotOffsetType": "",
+            "spotRoleType": "0",
+            "spotTraderInsts": [],
+            "traderInsts": [],
+            "type": "0",
+            "uid": "655940846881543236"
+          }
+      */
+
+
+
+
       if (accountInfo && accountInfo.code === '0') {
+
+          const accountConfig = {
+            data: accountInfo.data?.[0],
+            timestamp: moment().valueOf(),
+
+          };
+
+
+          await updateAccountConfig({
+            applicationId,
+            accountConfig: accountConfig,
+          });
+        
+
+
+
+
           const uid = accountInfo.data?.[0]?.uid;
           if (uid) {
-              console.log(`\nUID: ${uid}`);
+              ///console.log(`\nUID: ${uid}`);
 
               await updateOkxUid({
                 applicationId,

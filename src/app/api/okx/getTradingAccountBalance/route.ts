@@ -90,6 +90,60 @@ export async function POST(request: NextRequest) {
    try {
 
 
+      // /api/v5/account/config
+      /*
+      const accountConfig = await makeRequest(
+        '/api/v5/account/config',
+        apiAccessKey,
+        apiSecretKey,
+        apiPassword,
+      );
+
+      if (accountConfig && accountConfig.code === '0') {
+          console.log(`\nAccount config: ${JSON.stringify(accountConfig.data[0])}`);
+
+          
+          {
+            "acctLv": "2",
+            "acctStpMode": "cancel_maker",
+            "autoLoan": false,
+            "ctIsoMode": "automatic",
+            "enableSpotBorrow": false,
+            "greeksType": "PA",
+            "ip": "",
+            "kycLv": "0",
+            "label": "정강민",
+            "level": "Lv1",
+            "levelTmp": "",
+            "liquidationGear": "-1",
+            "mainUid": "656077440519049601",
+            "mgnIsoMode": "automatic",
+            "opAuth": "0",
+            "perm": "read_only,trade",
+            "posMode": "long_short_mode",
+            "roleType": "0",
+            "spotBorrowAutoRepay": false,
+            "spotOffsetType": "",
+            "spotRoleType": "0",
+            "spotTraderInsts": [],
+            "traderInsts": [],
+            "type": "0",
+            "uid": "656077440519049601"
+          }
+          
+
+
+      }
+      */
+    
+
+
+    
+
+
+
+
+
     
       
       const tradingInfo = await makeRequest(

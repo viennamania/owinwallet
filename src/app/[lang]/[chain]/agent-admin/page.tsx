@@ -2307,9 +2307,11 @@ export default function AIPage({ params }: any) {
 
 
                                             {/* checkApiAccessKey */}
+                                         
 
                                             <div className='flex flex-col gap-2'>
-                                                {/*}
+                                                
+                                                {/*
                                                 <button
                                                     onClick={() => {
                                                         checkApiAccessKey(application.id, application.apiAccessKey, application.apiSecretKey);
@@ -2322,6 +2324,7 @@ export default function AIPage({ params }: any) {
                                                     {checkingApiAccessKeyList.find((item) => item.applicationId === application.id)?.checking ? "Updating..." : "Update"}
                                                 </button>
                                                 */}
+                                                
 
 
                                                 {/* copy button */}

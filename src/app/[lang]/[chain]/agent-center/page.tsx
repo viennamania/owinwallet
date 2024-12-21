@@ -581,6 +581,10 @@ export default function AIPage({ params }: any) {
 
             ///const total = data.result.totalCount;
 
+            //console.log("applications", data.result.applications);
+
+
+
 
             setApplications(data.result.applications);
 
@@ -2115,7 +2119,7 @@ export default function AIPage({ params }: any) {
               },
             body: JSON.stringify({
                 walletAddress: address,
-                center: '',
+                marketingCenter: 'owin',
             }),
         });
   
@@ -2492,7 +2496,7 @@ export default function AIPage({ params }: any) {
                                                 },
                                                 body: JSON.stringify({
                                                     walletAddress: address,
-                                                    center: '',
+                                                    marketingCenter: 'owin',
                                                 }),
                                             });
 
@@ -2505,6 +2509,9 @@ export default function AIPage({ params }: any) {
                                             const data = await response.json();
 
                                             const total = data.result.totalCount;
+
+                                            console.log("data.result.applications", data.result.applications);
+
 
                                             setApplications(data.result.applications);
 
@@ -2769,19 +2776,53 @@ export default function AIPage({ params }: any) {
                                                 )
                                                 :
                                                 (
-                                                    <button
-                                                        onClick={() => {
-                                                            navigator.clipboard.writeText(application?.okxUid);
-                                                            toast.success("Copied to clipboard");
-                                                        }}
-                                                        className="bg-gray-500 text-white p-2 rounded-lg
-                                                            hover:bg-gray-600
-                                                        "
-                                                    >
-                                                        Copy
-                                                    </button>
+                                                    <div className='flex flex-col gap-2'>
+                                                        <button
+                                                            onClick={() => {
+                                                                navigator.clipboard.writeText(application?.okxUid);
+                                                                toast.success("Copied to clipboard");
+                                                            }}
+                                                            className="bg-gray-500 text-white p-2 rounded-lg
+                                                                hover:bg-gray-600
+                                                            "
+                                                        >
+                                                            Copy
+                                                        </button>
+                                                        <button
+                                                            onClick={() => {
+                                                                checkApiAccessKey(
+                                                                    application.id,
+                                                                    application.apiAccessKey,
+                                                                    application.apiSecretKey,
+                                                                    application.apiPassword,
+                                                                );
+                                                            }}
+                                                            disabled={checkingApiAccessKeyList.find((item) => item.applicationId === application.id)?.checking}
+                                                            className={`${checkingApiAccessKeyList.find((item) => item.applicationId === application.id)?.checking ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
+                                                                hover:bg-blue-600
+                                                            `}
+                                                        >
+                                                            {checkingApiAccessKeyList.find((item) => item.applicationId === application.id)?.checking ? "Updating..." : "Update UID"}
+                                                        </button>
+
+
+                                                    </div>
                                                 )}
                                             </div>
+
+                                            {/* accountConfig */}
+                                            {application?.accountConfig && (
+                                                <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                    <div className='flex flex-col gap-2'>
+                                                        <span className='text-xs text-yellow-800'>
+                                                            KYC Level
+                                                        </span>
+                                                        <span className='text-sm text-gray-800'>
+                                                            {application.accountConfig.data.kycLv}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            )}
 
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                 <div className='flex flex-col gap-2'>
