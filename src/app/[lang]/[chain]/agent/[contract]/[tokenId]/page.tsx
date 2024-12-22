@@ -744,20 +744,7 @@ export default function AgentPage({ params }: any) {
               <div className='w-full flex flex-col gap-5'>
 
 
-                <div className='w-full flex flex-row gap-2 items-center justify-between'>
-                    
-                    <button
-                        onClick={() => {
-                            navigator.clipboard.writeText(
-                                'https://owinwallet.com/kr/polygon/tbot/?agent=' +
-                                agentContractAddress + '&tokenId=' + agentTokenId
-                            );
-                            toast.success('레퍼럴 URL 복사 완료');
-                        }}
-                        className="w-full p-2 bg-blue-500 text-zinc-100 rounded hover:bg-blue-600"
-                    >
-                        레퍼럴 URL 복사
-                    </button>
+                <div className='w-full flex flex-row gap-2 items-center justify-between'>                
 
                     {/* opensea */}
                     <button

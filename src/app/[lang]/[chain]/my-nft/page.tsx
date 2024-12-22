@@ -1831,21 +1831,11 @@ export default function SettingsPage({ params }: any) {
 
                                                 <div className='w-full flex flex-row gap-2 items-start justify-between'>
                                                     {/* goto button for detail page */}
-                                                    {/*
+                                                    
                                                     <button
                                                         onClick={() => {
-
                                                             //router.push('/agent/' + nft.contract.address + '/' + nft.tokenId);
-
-                                                            // open new window
-
-                                                            window.open(
-                                                                'https://ppump.me/kr/polygon/tbot/?center=' + params.center +
-                                                                '&agent=' + nft.contract.address + 
-                                                                '&tokenId=' + nft.tokenId
-                                                            );
-
-
+                                                            router.push('/kr/polygon/agent/' + nft.contract.address + '/' + nft.tokenId + '/?center=' + params.center);
                                                         }}
                                                         className="p-2 bg-blue-500 text-zinc-100 rounded
                                                         hover:bg-blue-600 text-xs xl:text-lg font-semibold"
@@ -1854,7 +1844,7 @@ export default function SettingsPage({ params }: any) {
                                                             상세보기
                                                         </span>
                                                     </button>
-                                                    */}
+                                                    
 
                                                     {/* referral link button */}
                                                     <button
@@ -1985,6 +1975,21 @@ export default function SettingsPage({ params }: any) {
 
                                                 {/* transfer NFT */}
                                                 <div className='w-full flex flex-col gap-2 items-end justify-between'>
+                                                   
+                                                    <div className='w-full flex flex-col gap-2 items-start justify-between'>
+                                                        <span className='text-sm text-red-500 font-semibold'>
+                                                            소유권 이전하기
+                                                        </span>
+                                                        <div className='flex flex-row items-center justify-start gap-2'>
+                                                            <div className='w-3 h-3 bg-red-500 rounded-full'></div>
+                                                            <span className='text-xs text-gray-800'>
+                                                                소유권을 이전하면 소유자 권리를 모두 이전하는 것에 동의하는 것입니다.
+                                                            </span>
+                                                        </div>
+                                                    </div>                                                   
+
+                                                   
+                                                   
                                                     <input
                                                         className="p-2 w-full text-zinc-100 bg-zinc-800 rounded text-lg font-semibold"
                                                         placeholder="받는 사람 지갑주소"
