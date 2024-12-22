@@ -1792,6 +1792,7 @@ export default function AIPage({ params }: any) {
             formattedData.push({
                 
                 'Market': marketingCenter,
+                '센터봇': item.center,
                 '신청번호': item.id,
                 'UID': item.okxUid,
                 '신청일시': new Date(item.createdAt).toLocaleString(),
@@ -2111,7 +2112,7 @@ export default function AIPage({ params }: any) {
                                 {/* export button */}
                                 <button
                                     onClick={() => {
-                                        exportToCSV('HTX_신청목록');
+                                        exportToCSV('OKX_신청목록');
                                     }}
                                     disabled={isExporting}
                                     className={`${isExporting ? "bg-gray-500" : "bg-green-500"} text-white p-2 rounded-lg
