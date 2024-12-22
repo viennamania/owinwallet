@@ -3316,19 +3316,6 @@ export default function AIPage({ params }: any) {
 
                                         </div>
 
-                                        <div className='w-full hidden flex-col gap-2 border border-gray-300 p-4 rounded-lg'>
-                                            <span className='text-sm font-semibold text-gray-500'>
-                                                OKX UID
-                                            </span>
-                                            <input
-                                                disabled={true}
-                                                value={okxUid}
-                                                onChange={(e) => setOkxUid(e.target.value)}
-                                                type="text"
-                                                placeholder="OKX UserId"
-                                                className="w-full p-2 rounded-lg border border-gray-300"
-                                            />
-                                        </div>
 
 
                                         {/* check account balance */}
