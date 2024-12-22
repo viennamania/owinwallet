@@ -1202,7 +1202,6 @@ export default function AIPage({ params }: any) {
                 userTelegramId: userTelegramId,
                 userEmail: userEmail,
                 exchange: "okx",
-                okxUid: okxUid,
                 htxUsdtWalletAddress: htxUsdtWalletAddress,
                 apiAccessKey: apiAccessKey,
                 apiSecretKey: apiSecretKey,
@@ -1285,7 +1284,7 @@ export default function AIPage({ params }: any) {
 
             const data = await response.json();
 
-            //////console.log("getMyAgent data=========", data);
+            ////console.log("getMyAgent data=========", data);
 
             if (data.result) {
 
@@ -2793,6 +2792,35 @@ export default function AIPage({ params }: any) {
                                                     />
                                                 </div>
 
+                                                {/* KYC Level */}
+                                                {/* myAgent.accountConfig.data.kycLv */}
+                                                <div className='flex flex-row items-center justify-between gap-2'>
+                                                    <span className='text-sm font-semibold text-gray-500'>
+                                                        KYC Level: {myAgent?.accountConfig?.data?.kycLv}
+                                                    </span>
+
+                                                    {myAgent?.accountConfig?.data?.kycLv < 2 ? (
+                                                        <div className='flex flex-row items-center gap-2'>
+                                                            <span className='text-sm font-semibold text-red-500'>
+                                                                KYC 레벨이 낮습니다.
+                                                            </span>
+                                                        </div>
+
+                                                    ) : (
+                                                        <Image
+                                                            src="/verified.png"
+                                                            alt="verified"
+                                                            width={20}
+                                                            height={20}
+                                                        />
+                                                    )}
+                                                </div>
+
+                                           
+
+
+
+
                                                 {/*
                                                 <div className='hidden flex-row items-center justify-between gap-2'>
                                                     <span className='text-sm font-semibold text-gray-500'>
@@ -2821,6 +2849,7 @@ export default function AIPage({ params }: any) {
 
 
                                             {/* checkHtxAssetValuation */}
+                                            {/*
                                             <div className='flex flex-col gap-2'>
                                                 
                                                 <div className='flex flex-row items-center gap-2'>
@@ -2852,7 +2881,6 @@ export default function AIPage({ params }: any) {
                                                         <span className='text-sm font-semibold text-gray-500'>
                                                             OKX 자산 가치: {htxAssetValuation?.balance} USDT
                                                         </span>
-                                                        {/* timestamp */}
                                                         <span className='text-sm font-semibold text-gray-500'>
                                                             {new Date(htxAssetValuation?.timestamp).toLocaleString()}
                                                         </span>
@@ -2861,6 +2889,7 @@ export default function AIPage({ params }: any) {
                                             
 
                                             </div>
+                                            */}
 
 
                                         </div>

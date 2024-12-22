@@ -64,8 +64,6 @@ export async function insertOne(data: any) {
     || !data.userEmail
 
     //|| !data.htxUserId
-
-    || !data.okxUid
     
     //////|| !data.htxUsdtWalletAddress
 
@@ -122,8 +120,8 @@ export async function insertOne(data: any) {
       userTelegramId: data.userTelegramId,
       exchange: data.exchange,
       
-      //htxUserId: data.htxUserId,
       okxUid: data.okxUid,
+      accountConfig: data.accountConfig,
 
       htxUsdtWalletAddress: data.htxUsdtWalletAddress,
       apiAccessKey: data.apiAccessKey,
@@ -155,6 +153,7 @@ export async function insertOne(data: any) {
       
       //htxUserId: data.htxUserId,
       okxUid: data.okxUid,
+      accountConfig: data.accountConfig,
 
       htxUsdtWalletAddress: data.htxUsdtWalletAddress,
       apiAccessKey: data.apiAccessKey,
@@ -442,13 +441,15 @@ export async function getOneByWalletAddress(walletAddress: string) {
       userPhoneNumber: result.userPhoneNumber,
       userEmail: result.userEmail,
       
-      //htxUid: result.htxUid,
       okxUid: result.okxUid,
+      accountConfig: result.accountConfig,
 
       htxUsdtWalletAddress: result.htxUsdtWalletAddress,
+      
       apiAccessKey: result.apiAccessKey,
       apiSecretKey: result.apiSecretKey,
       apiPassword: result.apiPassword,
+
       createdAt: result.createdAt,
       startTrading: result.startTrading,
       masterBotInfo: result.masterBotInfo,
