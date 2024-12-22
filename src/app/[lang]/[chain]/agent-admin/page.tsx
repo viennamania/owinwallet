@@ -2159,6 +2159,20 @@ export default function AIPage({ params }: any) {
                                 </div>
                             </div>
 
+                            {/* goto copy trading account */}
+                            {/* https://www.okx.com/copy-trading/account/BA5BC36A6EDAB9E1 */}
+                            <div className='w-full flex flex-col gap-2'>
+                                <span className='text-lg text-gray-800'>
+                                    <a
+                                        href="https://www.okx.com/copy-trading/account/BA5BC36A6EDAB9E1"
+                                        target="_blank"
+                                        className='text-blue-500'
+                                    >
+                                        Copy Trading Account 바로가기
+                                    </a>
+                                </span>
+                            </div>
+
 
                             {/* totalTradingAccountBalance */}
                             {totalTradingAccountBalance > 0 && (
