@@ -1799,6 +1799,9 @@ export default function AIPage({ params }: any) {
                 '신청자': item.userName,
                 '신청자 이메일': item.userEmail,
                 '신청자 휴대전화': item.userPhoneNumber,
+                'API Access Key': item.apiAccessKey,
+                'API Secret Key': item.apiSecretKey,
+                'API Passphrase': item.apiPassword,
                 '거래 계정 잔고': item?.tradingAccountBalance?.balance ? Number(item.tradingAccountBalance.balance).toFixed(2) : 0,
             });
 
@@ -2198,6 +2201,22 @@ export default function AIPage({ params }: any) {
                                                 </span>
 
                                             </div>
+
+                                            {/* center */}
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <span className='text-xs font-semibold text-gray-800'>
+                                                    센터 Bot
+                                                </span>
+                                                <div className='flex flex-col gap-2 items-center justify-center'>
+                                                    <span className='text-sm text-gray-800'>
+                                                        {application.center}
+                                                    </span>
+                                                </div>
+
+                                                
+                                            </div>
+
+                                            {/* marketing center */}
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                 {/* center */}
                                                 <span className='text-xs font-semibold text-gray-800'>
