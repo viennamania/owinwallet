@@ -1416,7 +1416,7 @@ export default function AIPage({ params }: any) {
 
     // check htx api key
     const [checkingHtxApiKey, setCheckingHtxApiKey] = useState(false);
-    const checkHtxApiKey = async (
+    const checkOkxApiKey = async (
         apiAccessKey: string,
         apiSecretKey: string,
         apiPassword: string,
@@ -3246,7 +3246,7 @@ export default function AIPage({ params }: any) {
                                                 className={` ${checkingHtxApiKey || !apiAccessKey || !apiSecretKey || !apiPassword || isValidAPIKey
                                                     ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded text-lg font-semibold`}
                                                 onClick={() => {
-                                                    checkHtxApiKey(
+                                                    checkOkxApiKey(
                                                         apiAccessKey,
                                                         apiSecretKey,
                                                         apiPassword,
