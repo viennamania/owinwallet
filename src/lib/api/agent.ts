@@ -42,20 +42,9 @@ export interface ResultProps {
 export async function insertOne(data: any) {
 
   //console.log('insertOne data: ' + JSON.stringify(data));
-  /*
-    {"center":"",
-    "walletAddress":"0x2C91bf7ac8300913367Bf1c29b14c25556c0df92",
-    "agentBot":"0x1ADf35501D4Edde233C2e1D8b209417dEa4dDd8c",
-    "agentBotNumber":0,
-    "userName":"judgement",
-    "userPhoneNumber":"1234",
-    "userEmail":"genie1647@gmail.com",
-    "htxUserId":64102420,
-    "htxUsdtWalletAddress":"",
-    "apiAccessKey":"dc81de74-43e7185b-qz5c4v5b6n-d98b6",
-    "apiSecretKey":"f0c5be2c-b5f99118-7c4c1691-6f594"
-    }
-  */
+  
+
+
 
   if (!data.walletAddress
     || !data.agentBot
@@ -68,7 +57,8 @@ export async function insertOne(data: any) {
     //////|| !data.htxUsdtWalletAddress
 
     || !data.apiAccessKey
-    || !data.apiSecretKey) {
+    || !data.apiSecretKey
+    || !data.apiPassword) {
     return null;
   }
 
@@ -82,6 +72,7 @@ export async function insertOne(data: any) {
 
   try {
 
+  /*
   // check if walletAddress exists
   const checkWalletAddress = await collection.findOne({ walletAddress: data.walletAddress });
   
@@ -89,8 +80,11 @@ export async function insertOne(data: any) {
 
   
   if (checkWalletAddress) {
+
+    console.log('checkWalletAddress exists: ' + JSON.stringify(checkWalletAddress));
     return null;
   }
+  */
 
   
 
@@ -158,6 +152,7 @@ export async function insertOne(data: any) {
       htxUsdtWalletAddress: data.htxUsdtWalletAddress,
       apiAccessKey: data.apiAccessKey,
       apiSecretKey: data.apiSecretKey,
+      apiPassword: data.apiPassword,
 
       center: data.center,
 

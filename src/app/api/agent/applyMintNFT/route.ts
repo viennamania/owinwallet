@@ -96,6 +96,10 @@ export async function POST(request: NextRequest) {
 
   const uid = accountInfo.data?.[0]?.uid;
 
+  console.log("applyMintNFT uid", uid);
+
+
+
   if (!uid) {
     return NextResponse.error();
   }
