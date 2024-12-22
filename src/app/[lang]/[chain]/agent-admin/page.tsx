@@ -1761,6 +1761,7 @@ export default function AIPage({ params }: any) {
             });
             */
 
+            /*
             let market = "";
 
             if (item.center === 'ppump') {
@@ -1770,18 +1771,35 @@ export default function AIPage({ params }: any) {
             } else if (item.center === 'exms') {
                 market = 'EXMS';
             }
+            */
+
+            let marketingCenter = "";
+
+            // if slice(0, 5) = "ppump" => "PPUMP"
+            // if slice(0, 4) = "owin" => "OWIN"
+            // if slice(0, 4) = "exms" => "EXMS"
+
+            if (item.center?.slice(0, 5) === "ppump") {
+                marketingCenter = "PPUMP";
+            } else if (item.center?.slice(0, 4) === "owin") {
+                marketingCenter = "OWIN";
+            } else if (item.center?.slice(0, 4) === "exms") {
+                marketingCenter = "EXMS";
+            }
+
+            
 
             formattedData.push({
                 
-                'Market': market,
-
+                'Market': marketingCenter,
                 '신청번호': item.id,
+                'UID': item.okxUid,
                 '신청일시': new Date(item.createdAt).toLocaleString(),
                 '지갑주소': item.walletAddress,
                 '신청자': item.userName,
                 '신청자 이메일': item.userEmail,
-                'UID': item.okxUid,
-                '거래 계정 잔고': item.tradingAccountBalance.balance.toFixed(2),
+                '신청자 휴대전화': item.userPhoneNumber,
+                '거래 계정 잔고': item?.tradingAccountBalance?.balance ? Number(item.tradingAccountBalance.balance).toFixed(2) : 0,
             });
 
 
@@ -2183,10 +2201,21 @@ export default function AIPage({ params }: any) {
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                 {/* center */}
                                                 <span className='text-xs font-semibold text-gray-800'>
-                                                    {application?.center === 'ppump'
-                                                        ? 'PPUMP' : application?.center === 'owin'
-                                                        ? 'OWIN' : application?.center === 'exms'
-                                                        ? 'EXMS' : '기타'
+
+                                                    {
+
+
+                                                    
+
+                                                        // if slice(0, 5) = "ppump" => "PPUMP"
+                                                        // if slice(0, 4) = "owin" => "OWIN"
+                                                        // if slice(0, 4) = "exms" => "EXMS"
+
+                                                        
+                                                        application.center?.slice(0, 5) === "ppump" ? "PPUMP" :
+                                                        application.center?.slice(0, 4) === "owin" ? "OWIN" :
+                                                        application.center?.slice(0, 4) === "exms" ? "EXMS" : "기타"
+
                                                     }
                                                 </span>
                                             </div>
