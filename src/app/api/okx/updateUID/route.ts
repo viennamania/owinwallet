@@ -278,6 +278,7 @@ export async function POST(request: NextRequest) {
                 result: {
                   status: "ok",
                   okxUid: uid,
+                  accountConfig: accountConfig,
                 },
               });
 
