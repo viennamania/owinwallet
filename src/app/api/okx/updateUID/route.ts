@@ -255,6 +255,7 @@ export async function POST(request: NextRequest) {
 
           };
 
+          
 
           await updateAccountConfig({
             applicationId,

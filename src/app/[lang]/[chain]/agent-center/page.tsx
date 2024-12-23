@@ -955,6 +955,10 @@ export default function AIPage({ params }: any) {
                 toast.success("API Access Key가 확인되었습니다.");
             }
 
+            //console.log("data.result", data.result);
+
+
+
             // update application
             setApplications(
                 applications.map((item) => {
@@ -3028,7 +3032,7 @@ export default function AIPage({ params }: any) {
                                                         hover:bg-blue-600
                                                     `}
                                                 >
-                                                    {checkingTradingAccountBalanceList.find((item) => item.applicationId === application.id)?.checking ? "Checking..." : "Check"}
+                                                    {checkingTradingAccountBalanceList.find((item) => item.applicationId === application.id)?.checking ? "Updating..." : "Update"}
                                                 </button>
                                             </div>
 
@@ -3067,7 +3071,7 @@ export default function AIPage({ params }: any) {
                                                         hover:bg-blue-600
                                                     `}
                                                 >
-                                                    {checkingHtxAssetValuationForAgent.find((item) => item?.applicationId === application.id)?.checking ? "Checking..." : "Check"}
+                                                    {checkingHtxAssetValuationForAgent.find((item) => item?.applicationId === application.id)?.checking ? "Updating..." : "Update"}
                                                 </button>
                                             </div>
 
