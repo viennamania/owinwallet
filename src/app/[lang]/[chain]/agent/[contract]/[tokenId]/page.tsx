@@ -40,6 +40,8 @@ import {
 
 import { balanceOf, transfer } from "thirdweb/extensions/erc20";
  
+
+ 
 import {
   getOwnedNFTs,
   transferFrom,
@@ -99,7 +101,6 @@ import { Router } from 'next/router';
 import path from 'path';
 
 import { TronWeb, utils as TronWebUtils, Trx, TransactionBuilder, Contract, Event, Plugin } from 'tronweb';
-import { add } from 'thirdweb/extensions/farcaster/keyGateway';
 import { stat } from 'fs';
 
 
@@ -125,6 +126,7 @@ export default function AgentPage({ params }: any) {
 
   
   const [agent, setAgent] = useState({} as any);
+  const [ownerWalletAddress, setOwnerWalletAddress] = useState("");
   const [ownerInfo, setOwnerInfo] = useState({} as any);
 
   const [loadingAgent, setLoadingAgent] = useState(false);
@@ -151,9 +153,15 @@ export default function AgentPage({ params }: any) {
         }
   
         const data = await response.json();
+
+        //console.log("getAgentNFTByContractAddressAndTokenId data", data);
+
   
         setAgent(data.result);
-        setOwnerInfo(data.ownerInfo);
+
+        setOwnerWalletAddress(data?.ownerWalletAddress);
+
+        setOwnerInfo(data?.ownerInfo);
 
         ////console.log("agent======", data.result);
 
@@ -355,7 +363,9 @@ export default function AgentPage({ params }: any) {
       const fetchData = async () => {
 
           setLoadingApplications(true);
+
           const response = await fetch("/api/agent/getReferApplications", {
+
               method: "POST",
               headers: {
                   "Content-Type": "application/json",
@@ -376,7 +386,7 @@ export default function AgentPage({ params }: any) {
 
           const data = await response.json();
 
-          ////console.log("getReferApplications data", data);
+          console.log("getReferApplications data", data);
 
 
 
@@ -391,6 +401,9 @@ export default function AgentPage({ params }: any) {
       if (agentContractAddress && agentTokenId) fetchData();
 
   }, [agentContractAddress, agentTokenId]);
+
+
+
 
 
   // transferFrom
@@ -435,6 +448,23 @@ export default function AgentPage({ params }: any) {
 
       setTransferToAddress("");
 
+      // getAgent
+      const response = await fetch('/api/agent/getAgentNFTByContractAddressAndTokenId', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          erc721ContractAddress: agentContractAddress,
+          tokenId: agentTokenId,
+        }),
+      });
+      if (response) {
+        const data = await response.json();
+        setAgent(data.result);
+        setOwnerInfo(data.ownerInfo);
+      }
+
       toast.success("NFT transferred successfully");
 
     } else {
@@ -446,6 +476,8 @@ export default function AgentPage({ params }: any) {
     setLoadingTransfer(false);
 
   }
+
+
 
 
 
@@ -476,14 +508,14 @@ export default function AgentPage({ params }: any) {
         );
 
         setPositionList(
-          applications.map((item) => {
-              return {
-                  applicationId: item.id,
-                  positions: item?.positionList?.positions || [],
-                  timestamp: item?.positionList?.timestamp || 0,
-                  status: item?.positionList?.status || false,
-              };
-          })
+            applications.map((item) => {
+                return {
+                    applicationId: item.id,
+                    positions: item?.positionList?.positions || [],
+                    timestamp: item?.positionList?.timestamp || 0,
+                    status: item?.positionList?.status || false,
+                };
+            })
         );
     } , [applications]);
 
@@ -494,12 +526,12 @@ export default function AgentPage({ params }: any) {
     ) => {
 
         if (!htxAccessKey) {
-            toast.error("OKXAccess Key를 입력해 주세요.");
+            toast.error("HTX Access Key를 입력해 주세요.");
             return;
         }
 
         if (!htxSecretKey) {
-            toast.error("OKXSecret Key를 입력해 주세요.");
+            toast.error("HTX Secret Key를 입력해 주세요.");
             return;
         }
 
@@ -539,18 +571,14 @@ export default function AgentPage({ params }: any) {
 
         if (data.result?.status === "ok") {
 
-          const positions = data.result?.data?.positions || [];
-          const timestamp = data.result?.timestamp || 0;
-          const status = data.result?.status || false;
-
             setPositionList(
                 positionList.map((item) => {
                     if (item.applicationId === applicationId) {
                         return {
                             applicationId: applicationId,
-                            positions: positions,
-                            timestamp: timestamp,
-                            status: status,
+                            positions: data.result?.data?.positions,
+                            timestamp: data.result?.timestamp,
+                            status: data.result?.status,
                         }
                     } else {
                         return item;
@@ -558,9 +586,9 @@ export default function AgentPage({ params }: any) {
                 })
             );
 
-            toast.success("OKX포지션 리스트가 확인되었습니다.");
+            toast.success("HTX 포지션 리스트가 확인되었습니다.");
         } else {
-            toast.error("OKX포지션 리스트를 확인할 수 없습니다.");
+            toast.error("HTX 포지션 리스트를 확인할 수 없습니다.");
         }
 
         setCheckingPositionList(
@@ -577,6 +605,258 @@ export default function AgentPage({ params }: any) {
         );
 
     }
+
+
+
+
+
+
+    // check tradingAccountBalance for each application
+    const [checkingTradingAccountBalanceList, setCheckingTradingAccountBalanceList] = useState([] as any[]);
+    const [tradingAccountBalanceList, setTradingAccountBalanceList] = useState([] as any[]);
+
+    useEffect(() => {
+        setCheckingTradingAccountBalanceList(
+            applications.map((item) => {
+                return {
+                    applicationId: item.id,
+                    checking: false,
+                }
+            })
+        );
+
+        setTradingAccountBalanceList(
+            applications.map((item) => {
+                return {
+                    applicationId: item.id,
+                    tradingAccountBalance: item.tradingAccountBalance,
+                };
+            })
+        );
+    } , [applications]);
+
+    const checkTradingAccountBalance = async (
+        applicationId: number,
+        apiAccessKey: string,
+        apiSecretKey: string,
+        apiPassword: string,
+    ) => {
+
+        if (!apiAccessKey) {
+            toast.error("API Access Key를 입력해 주세요.");
+            return;
+        }
+
+        if (!apiSecretKey) {
+            toast.error("API Secret Key를 입력해 주세요.");
+            return;
+        }
+
+        if (!apiPassword) {
+            toast.error("API Password를 입력해 주세요.");
+            return;
+        }
+
+        if (!applicationId) {
+            toast.error("신청 ID를 입력해 주세요.");
+            return;
+        }
+
+        setCheckingTradingAccountBalanceList(
+            checkingTradingAccountBalanceList.map((item) => {
+                if (item.applicationId === applicationId) {
+                    return {
+                        applicationId: applicationId,
+                        checking: true,
+                    }
+                } else {
+                    return item;
+                }
+            }
+        ));
+
+        const response = await fetch("/api/okx/getTradingAccountBalance", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                apiAccessKey: apiAccessKey,
+                apiSecretKey: apiSecretKey,
+                apiPassword: apiPassword,
+                applicationId: applicationId,
+            }),
+        });
+
+        const data = await response.json();
+
+        console.log("data.result", data.result);
+
+        if (data.result?.status === "ok") {
+
+            setTradingAccountBalanceList(
+                tradingAccountBalanceList.map((item) => {
+                    if (item.applicationId === applicationId) {
+                        return {
+                            applicationId: applicationId,
+                            tradingAccountBalance: data.result?.tradingAccountBalance,
+                        }
+                    } else {
+                        return item;
+                    }
+                })
+            );
+
+            toast.success("거래 계정 잔고가 확인되었습니다.");
+        } else {
+            toast.error("거래 계정 잔고를 확인할 수 없습니다.");
+        }
+
+        setCheckingTradingAccountBalanceList(
+            checkingTradingAccountBalanceList.map((item) => {
+                if (item.applicationId === applicationId) {
+                    return {
+                        applicationId: applicationId,
+                        checking: false,
+                    }
+                } else {
+                    return item;
+                }
+            }
+        ));
+
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+    // check htx asset valuation for each htxUid
+    const [checkingHtxAssetValuationForAgent, setCheckingHtxAssetValuationForAgent] = useState([] as any[]);
+    const [htxAssetValuationForAgent, setHtxAssetValuationForAgent] = useState([] as any[]);
+
+    useEffect(() => {
+        setCheckingHtxAssetValuationForAgent(
+            applications.map((item) => {
+                return {
+                    applicationId: item.id,
+                    checking: false,
+                }
+            })
+        );
+
+        setHtxAssetValuationForAgent(
+            applications.map((item) => {
+                return {
+                    applicationId: item.id,
+                    assetValuation: item.assetValuation,
+                };
+            })
+        );
+    } , [applications]);
+
+    const checkOkxAssetValuation = async (
+        applicationId: number,
+        okxAccessKey: string,
+        okxSecretKey: string,
+        okxPassword: string,
+    ) => {
+
+        if (!okxAccessKey) {
+            toast.error("OKXAccess Key를 입력해 주세요.");
+            return;
+        }
+
+        if (!okxSecretKey) {
+            toast.error("OKXSecret Key를 입력해 주세요.");
+            return;
+        }
+
+        if (!okxPassword) {
+            toast.error("OKXPassword를 입력해 주세요.");
+            return;
+        }
+
+        if (!applicationId) {
+            toast.error("신청 ID를 입력해 주세요.");
+            return;
+        }
+
+        setCheckingHtxAssetValuationForAgent(
+            checkingHtxAssetValuationForAgent.map((item) => {
+                if (item.applicationId === applicationId) {
+                    return {
+                        applicationId: applicationId,
+                        checking: true,
+                    }
+                } else {
+                    return item;
+                }
+            }
+        ));
+
+
+        const response = await fetch("/api/okx/getAssetValuation", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                apiAccessKey: okxAccessKey,
+                apiSecretKey: okxSecretKey,
+                apiPassword: okxPassword,
+                applicationId: applicationId,
+            }),
+        });
+
+        const data = await response.json();
+
+        
+
+        ///console.log("getAssetValuation data.result", data.result);
+
+
+        if (data.result?.status === "ok") {
+
+            setHtxAssetValuationForAgent(
+                htxAssetValuationForAgent.map((item) => {
+                    if (item.applicationId === applicationId) {
+                        return {
+                            applicationId: applicationId,
+                            assetValuation: data.result?.assetValuation,
+                        }
+                    } else {
+                        return item;
+                    }
+                })
+            );
+
+            toast.success("OKX자산 가치가 확인되었습니다.");
+        } else {
+            toast.error("OKX자산 가치를 확인할 수 없습니다.");
+        }
+
+        setCheckingHtxAssetValuationForAgent(
+            checkingHtxAssetValuationForAgent.map((item) => {
+                if (item.applicationId === applicationId) {
+                    return {
+                        applicationId: applicationId,
+                        checking: false,
+                    }
+                } else {
+                    return item;
+                }
+            }
+        ));
+
+    };
 
 
 
@@ -654,7 +934,6 @@ export default function AgentPage({ params }: any) {
 
             <div className='flex flex-col items-start justify-center'>
 
-
               {!address && (
 
                 <ConnectButton
@@ -667,11 +946,11 @@ export default function AgentPage({ params }: any) {
                 }}
                 theme={"light"}
                 connectButton={{
-                  label: "Sign in with OWIN Magic Wallet",
+                  label: "Sign in with AGENT Wallet",
                 }}
                 connectModal={{
                   size: "wide", 
-                  titleIcon: "https://owinwallet.com/icon-tbot.png",                           
+                  titleIcon: "https://owinwallet.com/icon-tbot.png",                         
                   showThirdwebBranding: false,
 
                 }}
@@ -713,7 +992,7 @@ export default function AgentPage({ params }: any) {
 
 
 
-        <div className="mt-10 flex flex-col items-start justify-center gap-5">
+        <div className="mt-10 flex flex-col items-start justify-center space-y-4">
 
 
           <div className='flex flex-row items-center gap-2'>
@@ -729,12 +1008,22 @@ export default function AgentPage({ params }: any) {
               </span>
           </div>
 
+
           {/* agent nft info */}
-          <div className='w-full flex flex-col gap-5
-            border border-gray-300 p-4 rounded-lg bg-gray-100
-          '>
+          <div className={`w-full flex flex-col gap-5 p-4 rounded-lg border bg-gray-100
+            ${address && ownerWalletAddress && address === ownerWalletAddress ? 'border-green-500' : 'border-gray-300'}
+          `}>
 
 
+            {address && ownerWalletAddress && address === ownerWalletAddress && (
+              <div className='flex flex-row items-center gap-2'>
+                {/* dot */}
+                <div className='w-3 h-3 bg-red-500 rounded-full'></div>
+                <span className='text-lg text-green-500 font-semibold'>
+                    당신은 이 AI 에이전트 NFT의 소유자입니다.
+                </span>
+              </div>
+            )}
 
 
 
@@ -744,7 +1033,8 @@ export default function AgentPage({ params }: any) {
               <div className='w-full flex flex-col gap-5'>
 
 
-                <div className='w-full flex flex-row gap-2 items-center justify-between'>                
+                <div className='w-full flex flex-row gap-2 items-center justify-between'>
+                    
 
                     {/* opensea */}
                     <button
@@ -777,7 +1067,7 @@ export default function AgentPage({ params }: any) {
                     />
 
                   <div className='w-full flex flex-col xl:flex-row items-start justify-start gap-2'>
-                      <div className='flex flex-col items-center justify-between gap-2'>
+                      <div className='flex flex-col items-start justify-between gap-2'>
                         <span className='text-sm text-yellow-500'>
                           AI 에이전트 NFT 계약주소
                         </span>
@@ -812,7 +1102,7 @@ export default function AgentPage({ params }: any) {
                         <span className='text-sm text-yellow-500'>
                             AI 에이전트 NFT 이름
                         </span>
-                        <span className='text-lg text-gray-800'>
+                        <span className='text-xl font-semibold text-gray-800'>
                             {agent.name}
                         </span>
                       </div>
@@ -827,18 +1117,31 @@ export default function AgentPage({ params }: any) {
                       </div>
 
                     </div>
-            
+
+
+
+
+
+
 
                     <div className='mt-5 w-full flex flex-col items-start justify-between gap-2
                       border-b border-gray-300 pb-2
                     '>
                       {/* owner info */}
+                      
                       <div className='w-full flex flex-col items-start justify-between gap-2'>
                         
                         <span className='text-sm text-yellow-500'>
                             AI 에이전트 NFT 소유자 정보
                         </span>
-                        <div className='flex flex-row items-center justify-between gap-2'>
+                        <span className='text-xs text-gray-800'>
+                            소유자 지갑주소: {ownerWalletAddress?.slice(0, 10) + '...' + ownerWalletAddress?.slice(-10)}
+                        </span>
+
+                        <div className='w-full flex flex-row items-center justify-start gap-2
+                          border-b border-gray-300 pb-2
+                        '>
+
                           <Image
                             src={ownerInfo?.avatar || '/profile-default.png'}
                             width={60}
@@ -853,16 +1156,11 @@ export default function AgentPage({ params }: any) {
                             <span className='text-xs text-gray-800'>
                                 {ownerInfo?.mobile && ownerInfo?.mobile?.slice(0, 3) + '****' + ownerInfo?.mobile?.slice(-4)}
                             </span>
-                            <span className='text-xs text-gray-800'>
-                                {ownerInfo?.walletAddress && ownerInfo?.walletAddress.slice(0, 10) + '...' + ownerInfo?.walletAddress.slice(-10)}
-                            </span>
                           </div>
                         </div>
 
-
-
-
                         {/* button for transfer owner */}
+                        {/*
                         {address && ownerInfo?.walletAddress && address === ownerInfo?.walletAddress && (
                           <div className='w-full flex flex-col items-center justify-between gap-2'>
                             
@@ -908,13 +1206,11 @@ export default function AgentPage({ params }: any) {
                             </button>
                           </div>
                         )}
-
+                        */}
 
 
 
                       </div>
-
-                      
 
                     </div>
                     
@@ -952,31 +1248,20 @@ export default function AgentPage({ params }: any) {
 
 
           {/* application list */}
-          <div className='mt-5  w-full flex flex-col gap-5'>
+          <div className='mt-10 w-full flex flex-col gap-5'>
 
             <div className='flex flex-row items-center gap-2'>
                 <Image
                     src='/logo-exchange-okx.png'
                     width={60}
                     height={60}
-                    alt='htx'
+                    alt='OKX'
                     className='rounded-lg animate-pulse'
                 />
                 
                 <div className='flex flex-col items-start justify-center gap-2'>
-                  {/*
-                  <button
-                    onClick={() => {
-                      window.open('https://futures.htx.com.pk/futures/copy_trading/following/trader/NTA1MDk1Njk');
-                    }}
-                    className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                  >
-                    트레이더 퍼포먼스 보러가기
-                  </button>
-                  */}
-
                   <span className='text-lg font-semibold text-gray-800'>
-                      OKX신청목록
+                      OKX 신청목록
                   </span>
                 </div>
 
@@ -1069,16 +1354,16 @@ export default function AgentPage({ params }: any) {
                         <div className='w-full flex flex-col items-start justify-between gap-2
                           border-b border-gray-300 pb-2
                         '>
-                          {/* walletAddress */}
-                          <div className='w-full flex flex-row items-center justify-between gap-2'>
-                              <span className='text-sm text-gray-800'>
-                                  회원 지갑주소: {application.walletAddress.slice(0, 10) + '...' + application.walletAddress.slice(-10)}  
-                              </span>
-                          </div>
                           <div className='w-full flex flex-row items-center justify-between gap-2'>
                               <span className='text-sm text-gray-800'>
                                   OKX UID: {application.okxUid}
                               </span>
+                              <Image
+                                src="/verified.png"
+                                width={20}
+                                height={20}
+                                alt="Verified"
+                              />
                           </div>
 
                           <div className='w-full flex flex-row items-center justify-between gap-2'>
@@ -1099,11 +1384,17 @@ export default function AgentPage({ params }: any) {
                               </span>
                           </div>
 
-
-                          {/*
                           <div className='w-full flex-row items-center justify-between gap-2'>
                               <span className='text-xs text-gray-800'>
-                                  OKXUSDT(TRON) 지갑주소: {application.htxUsdtWalletAddress}
+                                  매직월렛 USDT 지갑주소: {application.walletAddress.slice(0, 5) + '****' + application.walletAddress.slice(-5)}
+                              </span>
+                          </div>
+
+
+                          {/*
+                          <div className='w-full hidden flex-row items-center justify-between gap-2'>
+                              <span className='text-xs text-gray-800'>
+                                  HTX USDT(TRON) 지갑주소: {application.htxUsdtWalletAddress}
                               </span>
                           </div>
 
@@ -1118,148 +1409,226 @@ export default function AgentPage({ params }: any) {
                                   API Secret Key: {application.apiSecretKey.slice(0, 3) + '****' + application.apiSecretKey.slice(-4)}
                               </span>
                           </div>
+
                           */}
+                          
+                        </div>
+                        
 
 
-                          {/* getPositionList */}
-                          <div className='w-full flex flex-col items-start justify-between gap-2'>
-                              
-                              <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                  <span className='text-xs text-yellow-800'>
-                                      OKX포지션 리스트
-                                  </span>
-                                  <button
-                                      onClick={() => {
-                                          getPositionList(
-                                              application.id,
-                                              application.apiAccessKey,
-                                              application.apiSecretKey,
-                                          );
-                                      }}
-                                      disabled={
-                                          checkingPositionList.find((item) => item.applicationId === application.id)?.checking
-                                      }
-                                      className={`${checkingPositionList.find((item) => item.applicationId === application.id)?.checking ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
-                                          hover:bg-blue-600
-                                      `}
-                                  >
-                                      {checkingPositionList.find((item) => item.applicationId === application.id)?.checking ? "Checking..." : "Check"}
-                                  </button>
-
-                              </div>
-
-                              {/* timestamp */}
-                              <span className='text-xs text-gray-800'>
-                                  {positionList.find((item) => item.applicationId === application.id)?.timestamp
-                                  ? new Date(positionList.find((item) => item.applicationId === application.id)?.timestamp).toLocaleString()
-                                  : ""
-                                  }
-                              </span>
-
-                              {/* check status */}
-                              {positionList.find((item) => item.applicationId === application.id)?.status
-                              ? (
-
-                                  <table className='w-full text-xs text-gray-800
-                                      border border-gray-300 rounded-lg p-2 shadow-md bg-white divide-y divide-gray-300
-                                  '>
-                                      <thead
-                                          className='bg-gray-200 text-xs
-                                          w-full rounded-lg
-                                          '
-                                      >
-
-                                          <tr className='bg-gray-200 
-                                              border border-gray-300
-                                          '>
-                                              <th className='text-center
-                                                  border border-gray-300
-                                              '>
-                                                  Contract<br/>Side
-                                              </th>
-                                              <th className='text-center
-                                                  border border-gray-300
-                                              '>
-                                                  Volumn<br/>Margin<br/>Profit<br/>Rate
-                                              </th>
-                                              <th className='text-center
-                                                  border border-gray-300
-                                              '>
-                                                  Price
-                                              </th>
-                                          </tr>
-                                      </thead>
-
-                                      <tbody
-                                          className='divide-y divide-gray-300'
-                                      >
-                                          {positionList.find((item) => item.applicationId === application.id)?.positions.map((position : any) => (
-                                              <tr key={position.contract_code}
-                                                  className='border border-gray-300 bg-white
-                                                  hover:bg-gray-100
-                                                  '
-                                              >
-                                                  <td className='text-right
-                                                      border border-gray-300
-                                                      p-2
-                                                  '>
-                                                      <span className='text-xs text-gray-800 font-semibold'>
-                                                      {/// ETH-USDT  delete -USDT
-                                                          position.contract_code.replace("-USDT", "")
-                                                      }
-                                                      </span><br/>
-
-                                                      {
-                                                          position.position_side === "long" ? (
-                                                              <span className='text-green-500 font-semibold'>
-                                                                  Long
-                                                              </span>
-                                                          ) : (
-                                                              <span className='text-red-500 font-semibold'>
-                                                                  Short
-                                                              </span>
-                                                          )
-                                                      }
-                                                      
-                                                  </td>
-                                                  <td className='text-right
-                                                      border border-gray-300
-                                                      p-2
-                                                  '>
-                                                      {position.volume}<br/>
-
-                                                      {Number(position.position_margin).toFixed(2)}<br/>
-                                              
-                                                      {Number(position.profit).toFixed(2)}<br/>
-
-                                                      {Number(position.profit_rate).toFixed(2)}%
-                                                  </td>
-                                                  <td className='text-right
-                                                      border border-gray-300
-                                                      p-2
-                                                  '>
-                                                      {position.liquidation_price}
-                                                  </td>
-                                              </tr>
-                                          ))}
-                                      </tbody>
-                                  </table>
-
-                              ) : (
-
-                                  <span className='text-lg text-red-500 font-semibold'>
-                                      
-                                  </span>
-
-                              )}
-
-                          </div>
+                        {/* tradingAccountBalance */}
+                        <div className='w-full flex flex-row items-center justify-between gap-2'>
+                            <div className='flex flex-col gap-2'>
+                                <span className='text-xs text-yellow-800'>
+                                    OKX Trading Balance
+                                </span>
+                                <span className='text-sm text-gray-800'>
+                                    {tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.balance} $(USD)
+                                </span>
+                                {/* convert timestamp to date */}
+                                <span className='text-xs text-gray-800'>
+                                    {tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.timestamp
+                                    ? new Date(tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.timestamp).toLocaleString()
+                                    : ""
+                                    }
+                                </span>
+                            </div>
+                            <button
+                                onClick={() => {
+                                    checkTradingAccountBalance(
+                                        application.id,
+                                        application.apiAccessKey,
+                                        application.apiSecretKey,
+                                        application.apiPassword,
+                                    );
+                                }}
+                                disabled={
+                                    checkingTradingAccountBalanceList.find((item) => item.applicationId === application.id)?.checking
+                                }
+                                className={`${checkingTradingAccountBalanceList.find((item) => item.applicationId === application.id)?.checking ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
+                                    hover:bg-blue-600
+                                `}
+                            >
+                                {checkingTradingAccountBalanceList.find((item) => item.applicationId === application.id)?.checking ? "Updating..." : "Update"}
+                            </button>
+                        </div>
 
 
 
+                        {/* asset valuation */}
+                        <div className='w-full flex flex-row items-center justify-between gap-2'>
+                            <div className='flex flex-col gap-2'>
+                                <span className='text-xs text-yellow-800'>
+                                    OKX Funding Balance
+                                </span>
+                                <span className='text-sm text-gray-800'>
+                                    {htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.balance || 0} $(USD)
+                                </span>
+                                {/* convert timestamp to date */}
+                                <span className='text-xs text-gray-800'>
+                                    {htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.timestamp
+                                    ? new Date(htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.timestamp).toLocaleString()
+                                    : ""
+                                    }
+                                </span>
+                            </div>
+                            <button
+                                onClick={() => {
+                                    checkOkxAssetValuation(
+                                        application.id,
+                                        application.apiAccessKey,
+                                        application.apiSecretKey,
+                                        application.apiPassword,
+                                    );
+                                }}
+                                disabled={
+                                    checkingHtxAssetValuationForAgent.find((item) => item?.applicationId === application.id)?.checking
+                                }
+                                className={`${checkingHtxAssetValuationForAgent.find((item) => item?.applicationId === application.id)?.checking ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
+                                    hover:bg-blue-600
+                                `}
+                            >
+                                {checkingHtxAssetValuationForAgent.find((item) => item?.applicationId === application.id)?.checking ? "Updating..." : "Update"}
+                            </button>
+                        </div>
+                  
 
+
+
+                        {/* getPositionList */}
+                        {/*
+                        <div className='w-full flex flex-col items-start justify-between gap-2'>
+                            
+                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                <span className='text-xs text-yellow-800'>
+                                    HTX 포지션 리스트
+                                </span>
+                                <button
+                                    onClick={() => {
+                                        getPositionList(
+                                            application.id,
+                                            application.apiAccessKey,
+                                            application.apiSecretKey,
+                                        );
+                                    }}
+                                    disabled={
+                                        checkingPositionList.find((item) => item.applicationId === application.id)?.checking
+                                    }
+                                    className={`${checkingPositionList.find((item) => item.applicationId === application.id)?.checking ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
+                                        hover:bg-blue-600
+                                    `}
+                                >
+                                    {checkingPositionList.find((item) => item.applicationId === application.id)?.checking ? "Checking..." : "Check"}
+                                </button>
+
+                            </div>
+
+                            <span className='text-xs text-gray-800'>
+                                {positionList.find((item) => item.applicationId === application.id)?.timestamp
+                                ? new Date(positionList.find((item) => item.applicationId === application.id)?.timestamp).toLocaleString()
+                                : ""
+                                }
+                            </span>
+
+                            {positionList.find((item) => item.applicationId === application.id)?.status
+                            ? (
+
+                                <table className='w-full text-xs text-gray-800
+                                    border border-gray-300 rounded-lg p-2 shadow-md bg-white divide-y divide-gray-300
+                                '>
+                                    <thead
+                                        className='bg-gray-200 text-xs
+                                        w-full rounded-lg
+                                        '
+                                    >
+
+                                        <tr className='bg-gray-200 
+                                            border border-gray-300
+                                        '>
+                                            <th className='text-center
+                                                border border-gray-300
+                                            '>
+                                                Contract<br/>Side
+                                            </th>
+                                            <th className='text-center
+                                                border border-gray-300
+                                            '>
+                                                Volumn<br/>Margin<br/>Profit<br/>Rate
+                                            </th>
+                                            <th className='text-center
+                                                border border-gray-300
+                                            '>
+                                                Price
+                                            </th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody
+                                        className='divide-y divide-gray-300'
+                                    >
+                                        {positionList.find((item) => item.applicationId === application.id)?.positions.map((position : any) => (
+                                            <tr key={position.contract_code}
+                                                className='border border-gray-300 bg-white
+                                                hover:bg-gray-100
+                                                '
+                                            >
+                                                <td className='text-right
+                                                    border border-gray-300
+                                                    p-2
+                                                '>
+                                                    <span className='text-xs text-gray-800 font-semibold'>
+                                                    {/// ETH-USDT  delete -USDT
+                                                        position.contract_code.replace("-USDT", "")
+                                                    }
+                                                    </span><br/>
+
+                                                    {
+                                                        position.position_side === "long" ? (
+                                                            <span className='text-green-500 font-semibold'>
+                                                                Long
+                                                            </span>
+                                                        ) : (
+                                                            <span className='text-red-500 font-semibold'>
+                                                                Short
+                                                            </span>
+                                                        )
+                                                    }
+                                                    
+                                                </td>
+                                                <td className='text-right
+                                                    border border-gray-300
+                                                    p-2
+                                                '>
+                                                    {position.volume}<br/>
+
+                                                    {Number(position.position_margin).toFixed(2)}<br/>
+                                            
+                                                    {Number(position.profit).toFixed(2)}<br/>
+
+                                                    {Number(position.profit_rate).toFixed(2)}%
+                                                </td>
+                                                <td className='text-right
+                                                    border border-gray-300
+                                                    p-2
+                                                '>
+                                                    {position.liquidation_price}
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+
+                            ) : (
+
+                                <span className='text-lg text-red-500 font-semibold'>
+                                    
+                                </span>
+
+                            )}
 
                         </div>
+                        */}
+                                            
 
                         {/* masterBot */}
                         {application?.masterBotInfo ? (

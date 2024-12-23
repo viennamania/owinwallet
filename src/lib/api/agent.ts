@@ -451,6 +451,7 @@ export async function getOneByWalletAddress(walletAddress: string) {
       walletAddress: result.walletAddress,
       agentBot: result.agentBot,
       agentBotNumber: result.agentBotNumber,
+
       userName: result.userName,
       userPhoneNumber: result.userPhoneNumber,
       userEmail: result.userEmail,
