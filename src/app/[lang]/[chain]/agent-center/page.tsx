@@ -2475,7 +2475,7 @@ export default function AIPage({ params }: any) {
                                 
                                 <Image
                                     src="/logo-exchange-okx.png"
-                                    alt="HTX"
+                                    alt="OKX"
                                     width={50}
                                     height={50}
                                 />

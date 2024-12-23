@@ -229,9 +229,28 @@ export async function getAllAgents({
       },
     ).toArray();
 
+
+
+    const totalTradingAccountBalance = await collection.aggregate([
+      {
+        $match: {
+          marketingCenter: marketingCenter,
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: { $toDouble: "$tradingAccountBalance.balance" } },
+        }
+      }
+    ]).toArray();
+
+
+
     if (result) {
       return {
         totalCount: result.length,
+        totalTradingAccountBalance: totalTradingAccountBalance[0].total,
         applications: result,
       };
     } else {
