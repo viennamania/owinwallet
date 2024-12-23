@@ -2579,10 +2579,7 @@ export default function AIPage({ params }: any) {
                                             총 {applications.length}개의 신청이 있습니다.
                                         </span>
 
-                                        {/* startTrading is exist count */}
-                                        <span className='text-lg text-gray-800'>
-                                            시작된 Bot: {applications.filter((item) => item.startTrading).length}개
-                                        </span>
+
 
 
                                     </div>
@@ -2608,7 +2605,14 @@ export default function AIPage({ params }: any) {
 
                                 {/* totalTradingAccountBalance */}
                                 {totalTradingAccountBalance > 0 && (
-                                    <div className='w-full flex flex-col gap-2'>
+                                    <div className='w-full flex flex-row gap-2'>
+                                        {/* startTrading is exist count */}
+                                        <span className='text-2xl text-gray-800 font-semibold'>
+                                            시작된 Bot: {
+                                                applications.filter((item) => item.accountConfig?.data.roleType === "2").length
+                                            }개
+                                        </span>
+                                        {' '}/{' '}
                                         <span className='text-2xl font-semibold text-gray-800'>
                                             총 거래 계정 잔고: {
                                             Number(totalTradingAccountBalance).toLocaleString('en-US', {
@@ -2616,8 +2620,6 @@ export default function AIPage({ params }: any) {
                                                 currency: 'USD'
                                             })
                                             }
-
-
                                         </span>
                                     </div>
                                 )}
