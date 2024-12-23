@@ -961,6 +961,7 @@ export default function AIPage({ params }: any) {
                         return {
                             ...item,
                             okxUid: data.result?.okxUid,
+                            accountConfig: data.result?.accountConfig,
                         }
                     } else {
                         return item;
