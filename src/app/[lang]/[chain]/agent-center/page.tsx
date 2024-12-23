@@ -2665,6 +2665,31 @@ export default function AIPage({ params }: any) {
                                             </div>
 
 
+                                            {/* application?.center */}
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                {/* 'https://t.me/' */}
+                                                <button
+                                                    onClick={() => {
+                                                        window.open('https://t.me/' + application.center, '_blank');
+                                                    }}
+                                                    className="p-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
+                                                >
+                                                    <div className='flex flex-row items-center gap-2'>
+                                                        <Image
+                                                            src="/logo-telegram.webp"
+                                                            alt="Telegram"
+                                                            width={30}
+                                                            height={30}
+                                                            className='rounded-lg'
+                                                        />
+                                                        <span className='text-sm font-semibold'>
+                                                            {application.center}
+                                                        </span>
+                                                    </div>
+                                                </button>
+
+                                            </div>
+
 
 
                                             {/* agentBot and agentBotNumber */}
