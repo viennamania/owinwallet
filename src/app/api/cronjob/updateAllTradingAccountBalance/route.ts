@@ -5,9 +5,13 @@ import moment from 'moment';
 
 import {
   getAllAgentsForAILabs,
+  //getAllAgentsForLive,
 	updateTradingAccountBalance,
   updateAssetBalance,
 } from '@lib/api/agent';
+
+
+import twilio from "twilio";
 
 
 
@@ -58,6 +62,29 @@ export const dynamic = 'force-dynamic';
 export async function GET(request: NextRequest) {
 
 
+  // check each hour is on the hour
+  // exclude from 20 hours to 24 hours and 0 hours to 8 hours
+
+  let sendSms = false;
+  if (moment().minute() === 0) {
+    sendSms = true;
+  }
+
+  if (moment().hour() >= 20) {
+    sendSms = false;
+  }
+
+  if (moment().hour() <= 8) {
+    sendSms = false;
+  }
+
+
+
+  const accountSid = process.env.TWILIO_ACCOUNT_SID;
+  const authToken = process.env.TWILIO_AUTH_TOKEN;
+  const client = twilio(accountSid, authToken);
+
+  
 
   const result = await getAllAgentsForAILabs({
     limit: 200,
@@ -69,7 +96,7 @@ export async function GET(request: NextRequest) {
 
   for (let i = 0; i < applications.length; i++) {
     const application = applications[i];
-    const { id, apiAccessKey, apiSecretKey, apiPassword } = application;
+    const { id, apiAccessKey, apiSecretKey, apiPassword, userPhoneNumber } = application;
 
     if (apiAccessKey && apiSecretKey && apiPassword) {
 
@@ -95,6 +122,52 @@ export async function GET(request: NextRequest) {
               applicationId: id,
               tradingAccountBalance: tradingAccountBalance,
             });
+
+            
+
+            //console.log(`\nTrading account: $${balance}`);
+
+            // check each hour is on the hour
+
+            //if (moment.valueOf() % 3600000 === 0) {
+
+            if (sendSms) {
+
+
+              if (balance > 0 && userPhoneNumber.length > 10 && userPhoneNumber.startsWith("+")) {
+
+
+                try {
+
+
+                  const balanceStr = Number(balance).toFixed(2);
+
+
+
+
+
+                  const msgBody = `[TBOT] Your trading account balance is $${balanceStr}`;
+              
+                  const message = await client.messages.create({
+                    body: msgBody,
+                    from: "+17622254217",
+                    to: userPhoneNumber
+                  });
+              
+                  //console.log(message.sid);
+            
+                } catch (error) {
+                    
+                  console.log("error", error);
+              
+                }
+
+
+              }
+
+            } else {
+              //console.log("skip sending sms");
+            }
 
 
         }

@@ -352,6 +352,98 @@ export async function getAllAgentsForAILabs({ page = 1, limit = 100 }) {
 
 
 
+// getAllAgents
+// sort by createdAt desc
+// where tradingAccountBalance.balance > 0
+export async function getAllAgentsForLive({ page = 1, limit = 100 }) {
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('agents');
+
+  try {
+
+
+    // check apiPassword is exists
+
+    const result = await collection.aggregate([
+      {
+        $match: {
+          ///apiPassword: { $exists: true },
+          exchange: 'okx',
+          tradingAccountBalance: { $exists: true },
+          $expr: { $gt: [{ $toDouble: "$tradingAccountBalance.balance" }, 0] },
+        }
+      },
+      {
+        $sort: {
+          createdAt: -1,
+        }
+      },
+      {
+        $skip: (page - 1) * limit,
+      },
+      {
+        $limit: limit,
+      },
+    
+    ]).toArray();
+
+
+    if (result) {
+
+
+      // total count
+      const totalCount = await collection.find(
+        {
+          ///apiPassword: { $exists: true },
+          exchange: 'okx',
+          tradingAccountBalance: { $exists: true },
+          $expr: { $gt: [{ $toDouble: "$tradingAccountBalance.balance" }, 0] },
+        },
+      ).count();
+
+
+      // sum of total trandingAccountBalance.balance is string convert to number
+
+      const totalTradingAccountBalance = await collection.aggregate([
+        {
+          $match: {
+            ///apiPassword: { $exists: true },
+            exchange: 'okx',
+            tradingAccountBalance: { $exists: true },
+            $expr: { $gt: [{ $toDouble: "$tradingAccountBalance.balance" }, 0] },
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            total: { $sum: { $toDouble: "$tradingAccountBalance.balance" } },
+          }
+        }
+      ]).toArray();
+
+      ///console.log('totalTradingAccountBalance: ' + JSON.stringify(totalTradingAccountBalance));
+
+     
+      return {
+        totalCount: totalCount,
+        totalTradingAccountBalance: totalTradingAccountBalance[0].total,
+        applications: result,
+      };
+    } else {
+      return null;
+    }
+
+  } catch (e) {
+    console.log('getAllAgentsForAILabs error: ' + e);
+    return null;
+  }
+
+}
+
+
+
+
 
 
 
