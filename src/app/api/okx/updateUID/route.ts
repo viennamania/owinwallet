@@ -255,7 +255,7 @@ export async function POST(request: NextRequest) {
 
           };
 
-          
+
 
           await updateAccountConfig({
             applicationId,
@@ -275,6 +275,62 @@ export async function POST(request: NextRequest) {
                 okxUid: uid,
               });
 
+
+
+
+
+
+                // /api/v5/affiliate/invitee/detail
+                /*
+                {
+                  "msg": "",
+                  "code": "0",
+                  "data": [
+                      {
+                          "accFee": "0",
+                          "affiliateCode": "HIIIIII",
+                          "depAmt": "0",
+                          "firstTradeTime": "",
+                          "inviteeLevel": "2",
+                          "inviteeRebateRate": "0.39",
+                          "joinTime": "1712546713000",
+                          "kycTime": "",
+                          "level": "Lv1",
+                          "region": "Vietnam",
+                          "totalCommission": "0",
+                          "volMonth": "0"
+                      }
+                  ]
+              }
+
+                */
+
+              const affiliateInfo = await makeRequest(
+                '/api/v5/affiliate/invitee/detail?uid=' + uid,
+                apiAccessKey,
+                apiSecretKey,
+                apiPassword,
+              );
+
+              //console.log(affiliateInfo);
+              /*
+              {
+                msg: 'Only affiliates can perform this action',
+                code: '51620',
+                data: []
+              }
+              */
+
+
+              if (affiliateInfo && affiliateInfo.code === '0') {
+                  console.log(`\naffiliateInfo: ${affiliateInfo.data}`);
+              }
+
+
+
+
+
+
               return NextResponse.json({
                 result: {
                   status: "ok",
@@ -286,6 +342,16 @@ export async function POST(request: NextRequest) {
 
           }
       }
+
+
+
+
+
+
+
+
+
+
 
 
 

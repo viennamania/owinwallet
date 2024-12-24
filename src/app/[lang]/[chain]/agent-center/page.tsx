@@ -2652,7 +2652,7 @@ export default function AIPage({ params }: any) {
                                                     {application?.accountConfig?.data.roleType === "2" && (
                                                         <Image
                                                             src="/icon-trading-live.gif"
-                                                            alt="Admin"
+                                                            alt="Trading"
                                                             width={80}
                                                             height={30}
                                                         />
