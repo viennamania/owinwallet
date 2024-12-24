@@ -6,7 +6,15 @@ import React, { use, useEffect, useState } from 'react';
 
 import { toast } from 'react-hot-toast';
 
-import { client } from "../../../client";
+import {
+    client,
+} from "../../../client";
+
+/*
+import {
+    marketingCenter,
+} from "../../../config";
+*/
 
 
 import {
@@ -36,8 +44,12 @@ import { inAppWallet } from "thirdweb/wallets";
 
 
 
-import { getUserPhoneNumber } from "thirdweb/wallets/in-app";
-
+import {
+    getUserPhoneNumber,
+    getProfiles,
+    getSocialIcon,
+    getUserEmail,
+  } from "thirdweb/wallets/in-app";
 
 import Image from 'next/image';
 
@@ -75,16 +87,8 @@ import {
 import { getContractMetadata } from "thirdweb/extensions/common";
 
 
-import { Alert, useForkRef } from '@mui/material';
+const marketingCenter = "owin";
 
-
-import thirdwebIcon from "@public/thirdweb.svg";
-import { time } from 'console';
-import { min } from 'moment';
-import { Timestamp } from 'mongodb';
-
-
-import * as XLSX from "xlsx";
 
 
 const wallets = [
@@ -92,7 +96,6 @@ const wallets = [
       auth: {
         options: [
             "phone",
-             
         ],
       },
     }),
@@ -143,7 +146,7 @@ const contractErc1155 = getContract({
 export default function AIPage({ params }: any) {
 
 
-    ////console.log("SettingsPage params", params);
+    console.log("SettingsPage params", params);
     
     
     // get params from the URL
@@ -420,7 +423,7 @@ export default function AIPage({ params }: any) {
 
 
     
-
+    /*
     const [phoneNumber, setPhoneNumber] = useState("");
 
     useEffect(() => {
@@ -441,6 +444,56 @@ export default function AIPage({ params }: any) {
       }
   
     } , [activeAccount]);
+    */
+
+
+
+    const [userType, setUserType] = useState("");
+    const [userTelegramId, setUserTelegramId] = useState("");
+    const [userAvatar, setUserAvatar] = useState("");
+    const [userNickname, setUserNickname] = useState("");
+    const [userPhoneNumber, setUserPhoneNumber] = useState("");
+  
+  
+  
+    useEffect(() => {
+  
+      const fetchData = async () => {
+  
+        getProfiles({ client }).then((profiles) => {
+          
+          ///console.log("profiles======", profiles);
+  
+          if (profiles) {
+            profiles.forEach((
+              profile  // { type: "phone", details: { phone: "+8201098551647", id: "30e2276d8030b0bb9c27b4b7410d9de8960bab3d632f34d23d6e089182625506" } }
+            ) => {
+              if (profile.type === "phone") {
+                setUserType("phone");
+                setUserPhoneNumber(profile.details.phone || "");
+              } else if (profile.type === "telegram") {
+                setUserType("telegram");
+                const details = profile.details as any;
+                setUserAvatar(details.picture || "");
+                setUserNickname(details.username || "");
+                setUserTelegramId(details.id || "");
+              }
+            });
+          }
+  
+        } );
+  
+      }
+  
+  
+      client && fetchData();
+  
+    } , []);
+
+
+
+
+
 
 
     const { connect, isConnecting } = useConnectModal();
@@ -453,7 +506,7 @@ export default function AIPage({ params }: any) {
   
         accountAbstraction: {
             chain: params.chain === "arbitrum" ? arbitrum : polygon,
-            factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+              
             sponsorGas: true
         },
 
@@ -504,8 +557,7 @@ export default function AIPage({ params }: any) {
 
     const [userCode, setUserCode] = useState("");
 
-    const [userAvatar, setUserAvatar] = useState("");
-
+ 
 
     const [userMasterBotContractAddress, setUserMasterBotContractAddress] = useState("");
 
@@ -532,7 +584,7 @@ export default function AIPage({ params }: any) {
 
             const data = await response.json();
 
-            ////console.log("data", data);
+            console.log("data", data);
 
 
             if (data.result) {
@@ -550,8 +602,8 @@ export default function AIPage({ params }: any) {
 
 
 
-    const [totalTradingAccountBalance, setTotalTradingAccountBalance] = useState(0);
 
+    const [totalTradingAccountBalance, setTotalTradingAccountBalance] = useState(0);
 
     // get all applications
     const [isAdmin, setIsAdmin] = useState(false);
@@ -568,7 +620,7 @@ export default function AIPage({ params }: any) {
                 },
                 body: JSON.stringify({
                     walletAddress: address,
-                    marketingCenter: 'owin',
+                    marketingCenter: marketingCenter,
                 }),
             });
 
@@ -582,12 +634,10 @@ export default function AIPage({ params }: any) {
 
             ///const total = data.result.totalCount;
 
-            //console.log("applications", data.result.applications);
 
             setApplications(data.result.applications);
 
-            setTotalTradingAccountBalance(data.result.totalTradingAccountBalance);
-
+            setTotalTradingAccountBalance( data.result.totalTradingAccountBalance );
 
             setLoadingApplications(false);
 
@@ -595,11 +645,12 @@ export default function AIPage({ params }: any) {
 
         };
 
-        if (address) {
+        if (address && marketingCenter) {
             fetchData();
         }
-    }, [address]);
+    }, [address, marketingCenter]);
 
+    console.log("marketingCenter", marketingCenter);
 
     //console.log("applications", applications);
 
@@ -644,7 +695,7 @@ export default function AIPage({ params }: any) {
 
             const metadata = await getContractMetadata({ contract });
 
-            //console.log("metadata======", metadata);
+            console.log("metadata======", metadata);
                 
 
             //setAgentBotErc721(nft721);
@@ -688,7 +739,7 @@ export default function AIPage({ params }: any) {
 
             const data = await response.json();
 
-            ///console.log("data", data);
+            //console.log("data", data);
 
             setMyAgent(data.result);
 
@@ -799,7 +850,7 @@ export default function AIPage({ params }: any) {
 
         const data = await response.json();
 
-        ///console.log("data", data);
+        console.log("data", data);
 
         setAgentBotNftList(
             agentBotNftList.map((item) => {
@@ -864,9 +915,6 @@ export default function AIPage({ params }: any) {
     , [applications]);
 
 
-
-    
-
     const checkApiAccessKey = async (
         applicationId: number,
         apiAccessKey: string,
@@ -907,23 +955,9 @@ export default function AIPage({ params }: any) {
             }
         ));
 
-        /*
-        // api getAccount
-        const response = await fetch("/api/agent/getAccountAndUpdateApplication", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                applicationId: applicationId,
-                htxAccessKey: apiAccessKey,
-                htxSecretKey: apiSecretKey,
-            }),
-        });
-        */
-       // api updateHtxUID
-       //const response = await fetch("/api/agent/updateHtxUID", {
-        const response = await fetch("/api/okx/updateUID", {
+
+       // api updateUID
+       const response = await fetch("/api/okx/updateUID", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -933,7 +967,7 @@ export default function AIPage({ params }: any) {
                 apiAccessKey: apiAccessKey,
                 apiSecretKey: apiSecretKey,
                 apiPassword: apiPassword,
-            
+
             }),
         });
 
@@ -957,8 +991,6 @@ export default function AIPage({ params }: any) {
 
             //console.log("data.result", data.result);
 
-
-
             // update application
             setApplications(
                 applications.map((item) => {
@@ -977,6 +1009,7 @@ export default function AIPage({ params }: any) {
         } else {
             toast.error("API Access Key를 확인할 수 없습니다.");
         }
+        
 
         setCheckingApiAccessKeyList(
             checkingApiAccessKeyList.map((item) => {
@@ -993,6 +1026,21 @@ export default function AIPage({ params }: any) {
 
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1076,7 +1124,7 @@ export default function AIPage({ params }: any) {
 
         const data = await response.json();
 
-        ////console.log("data.result", data.result);
+        //console.log("data.result", data.result);
 
         if (data.result?.status === "ok") {
 
@@ -1251,6 +1299,8 @@ export default function AIPage({ params }: any) {
 
 
 
+
+
     // check account balance for each accountId
 
     //const [accountBalanceList, setAccountBalanceList] = useState([] as any[]);
@@ -1270,12 +1320,12 @@ export default function AIPage({ params }: any) {
     ) => {
 
         if (htxAccessKey === "") {
-            toast.error("OKXAccess Key를 입력해 주세요.");
+            toast.error("OKX Access Key를 입력해 주세요.");
             return;
         }
 
         if (htxSecretKey === "") {
-            toast.error("OKXSecret Key를 입력해 주세요.");
+            toast.error("OKX Secret Key를 입력해 주세요.");
             return;
         }
 
@@ -1323,9 +1373,9 @@ export default function AIPage({ params }: any) {
 
 
 
-            toast.success("OKX계정 잔고가 확인되었습니다.");
+            toast.success("OKX 계정 잔고가 확인되었습니다.");
         } else {
-            toast.error("OKX계정 잔고를 확인할 수 없습니다.");
+            toast.error("OKX 계정 잔고를 확인할 수 없습니다.");
         }
 
         setCheckingAccountBalanceForAgent(
@@ -1358,12 +1408,12 @@ export default function AIPage({ params }: any) {
     ) => {
 
         if (htxAccessKey === "") {
-            toast.error("OKXAccess Key를 입력해 주세요.");
+            toast.error("OKX Access Key를 입력해 주세요.");
             return;
         }
 
         if (htxSecretKey === "") {
-            toast.error("OKXSecret Key를 입력해 주세요.");
+            toast.error("OKX Secret Key를 입력해 주세요.");
             return;
         }
 
@@ -1394,9 +1444,9 @@ export default function AIPage({ params }: any) {
 
 
 
-            toast.success("OKX매치 결과가 확인되었습니다.");
+            toast.success("OKX 매치 결과가 확인되었습니다.");
         } else {
-            toast.error("OKX매치 결과를 확인할 수 없습니다.");
+            toast.error("OKX 매치 결과를 확인할 수 없습니다.");
         }
 
         setSearchingMatchResults(false);
@@ -1770,7 +1820,7 @@ export default function AIPage({ params }: any) {
                 },
                 body: JSON.stringify({
                     walletAddress: address,
-                    marketingCenter: 'owin',
+                    center: marketingCenter,
                 }),
             });
 
@@ -1813,8 +1863,6 @@ export default function AIPage({ params }: any) {
 
 
 
-
-
     // queryUnifiedAccountAssets
     const [checkingUnifiedAccountAssets, setCheckingUnifiedAccountAssets] = useState([] as any[]);
     const [unifiedAccountAssets, setUnifiedAccountAssets] = useState([] as any[]);
@@ -1845,12 +1893,12 @@ export default function AIPage({ params }: any) {
     ) => {
 
         if (!htxAccessKey) {
-            toast.error("OKXAccess Key를 입력해 주세요.");
+            toast.error("OKX Access Key를 입력해 주세요.");
             return;
         }
 
         if (!htxSecretKey) {
-            toast.error("OKXSecret Key를 입력해 주세요.");
+            toast.error("OKX Secret Key를 입력해 주세요.");
             return;
         }
 
@@ -1872,24 +1920,7 @@ export default function AIPage({ params }: any) {
             })
         );
 
-        ////const response = await fetch("/api/htx/queryUnifiedAccountAssets", {
-        
-        ///const response = await fetch("/api/htx/copyTradingPositionList", {
-
-        //const response = await fetch("/api/htx/totalProfitHistory", {
-
-        // swap_cross_account_position_info
-        //const response = await fetch("/api/htx/swap_cross_account_position_info", {
-
-        // total_profit_history
-       // const response = await fetch("/api/htx/total_profit_history", {
-
-        // position_list
-        const response = await fetch("/api/htx/position_list", {
-
-
-
-
+        const response = await fetch("/api/htx/queryUnifiedAccountAssets", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -1920,9 +1951,9 @@ export default function AIPage({ params }: any) {
                 })
             );
 
-            toast.success("OKX통합 계정 자산이 확인되었습니다.");
+            toast.success("OKX 통합 계정 자산이 확인되었습니다.");
         } else {
-            toast.error("OKX통합 계정 자산을 확인할 수 없습니다.");
+            toast.error("OKX 통합 계정 자산을 확인할 수 없습니다.");
         }
 
         setCheckingUnifiedAccountAssets(
@@ -1941,27 +1972,7 @@ export default function AIPage({ params }: any) {
     }
 
 
-    // copyTradingPositionList
-    /*
-            "data": {
-          "positions": [
-            {
-              "lever": "5",
-              "position_side": "long",
-              "contract_code": "ETH-USDT",
-              "open_avg_price": "3224.31",
-              "volume": "7",
-              "margin_mode": "cross",
-              "position_margin": "43.52558",
-              "margin_rate": "0.011323183353133195",
-              "unreal_profit": "-8.0738",
-              "profit": "-8.0738",
-              "profit_rate": "-0.178859973141540365",
-              "liquidation_price": "1744.86"
-            }
-          ]
-        },
-        */
+
 
 
     // getPositionList
@@ -2007,12 +2018,12 @@ export default function AIPage({ params }: any) {
     ) => {
 
         if (!htxAccessKey) {
-            toast.error("OKXAccess Key를 입력해 주세요.");
+            toast.error("OKX Access Key를 입력해 주세요.");
             return;
         }
 
         if (!htxSecretKey) {
-            toast.error("OKXSecret Key를 입력해 주세요.");
+            toast.error("OKX Secret Key를 입력해 주세요.");
             return;
         }
 
@@ -2067,9 +2078,9 @@ export default function AIPage({ params }: any) {
                 })
             );
 
-            toast.success("OKX포지션 리스트가 확인되었습니다.");
+            toast.success("OKX 포지션 리스트가 확인되었습니다.");
         } else {
-            toast.error("OKX포지션 리스트를 확인할 수 없습니다.");
+            toast.error("OKX 포지션 리스트를 확인할 수 없습니다.");
         }
 
         setCheckingPositionList(
@@ -2086,154 +2097,6 @@ export default function AIPage({ params }: any) {
         );
 
     }
-
-
-
-
-
-
-
-    const [isExporting, setIsExporting] = useState(false);
-
-    const exportToCSV = async (fileName: string) => {
-  
-        setIsExporting(true);
-      
-        /*
-  
-        const res = await fetch('/api/doingdoit/user/getAllForDownload', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            },
-          body: JSON.stringify({
-            sort: sortConfig.key,
-            order: sortConfig.direction,
-            q: searchTerm,
-            startDate: startDate,
-            endDate: endDate,
-            regTypeArray: regTypeArray,
-  
-            }),
-        });
-        */
-
-        const res = await fetch('/api/agent/getApplicationsCenter', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              },
-            body: JSON.stringify({
-                walletAddress: address,
-                marketingCenter: 'owin',
-            }),
-        });
-  
-        if (!res.ok) {
-            setIsExporting(false);
-            console.error('Error fetching data');
-            return;
-        }
-
-        const post = await res.json();
-  
-        const total = post.result.totalCount;
-
-        const items = post.result.applications as any[];
-  
-   
-        ///console.log('items', items);
-  
-  
-        
-  
-        const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-  
-        const fileExtension = '.xlsx';
-  
-        /*
-        const formattedData = items.map((item) => {
-            const { id, ...rest } = item;
-            return rest;
-        });
-        */
-  
-        const formattedData  = [] as any[];
-  
-        items.map((item, index ) => {
-  
-            /*
-            const { id, ...rest } = item;
-    
-            
-            
-            formattedData.push({
-            //'No': id,
-    
-            '회원번호': id,
-            '가입일시': new Date(rest.createdAt).toLocaleString(),
-            '이메일': rest.email,
-            '닉네임': rest.nickname,
-            '가입유형': rest.regType === 'email' ? '이메일' : rest.regType === 'kakao' ? '카카오' : rest.regType === 'naver' ? '네이버' : rest.regType === 'google' ? '구글' : '기타',
-            '생년월일': rest.birthDate,
-            '셩별': rest.gender,
-            '휴대전화': rest.mobile,
-            '식단기록 목적': rest.purpose,
-            '키': rest.height,
-            '몸무게': rest.weight,
-            
-    
-            });
-            */
-
-
-            formattedData.push({
-                '신청번호': item.id,
-                '신청일시': new Date(item.createdAt).toLocaleString(),
-                '신청자': item.nickname,
-                '신청자 이메일': item.email,
-                '신청자 전화번호': item.mobile,
-            });
-
-
-
-    
-        } );
-  
-  
-  
-      const ws = XLSX.utils.json_to_sheet(formattedData);
-  
-      const wb = { Sheets: { data: ws }, SheetNames: ['data'] };
-  
-      const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-  
-      const data = new Blob([excelBuffer], { type: fileType });
-  
-      const now = new Date();
-  
-      const date = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
-  
-      const time = `${now.getHours()}-${now.getMinutes()}-${now.getSeconds()}`;
-  
-      const dateTime = `${date}_${time}`;
-  
-      const fileNameExtension = `${fileName}_${dateTime}${fileExtension}`;
-  
-      ///XLSX.writeFile(data  , fileNameExtension);
-  
-      ///XLSX.writeFile(data, fileNameExtension);
-  
-      XLSX.writeFile(wb, fileNameExtension);
-        
-    
-      setIsExporting(false);
-  
-  
-    }
-  
-
-
 
 
 
@@ -2300,7 +2163,7 @@ export default function AIPage({ params }: any) {
                                     height={20}
                                     className="rounded-lg w-10 h-10"
                                     />
-                                    <span>Sign in with OWIN Magic Wallet</span>
+                                    <span>Sign in with AGENT Wallet</span>
                                 </div>
                                 </button>
                             */}
@@ -2316,11 +2179,11 @@ export default function AIPage({ params }: any) {
                                     }}
                                     theme={"light"}
                                     connectButton={{
-                                        label: "Sign in with OWIN Magic Wallet",
+                                        label: "Sign in with AGENT Wallet",
                                     }}
                                     connectModal={{
                                         size: "wide", 
-                                        titleIcon: "https://owinwallet.com/icon-tbot.png",                           
+                                        titleIcon: "https://ppump.me/icon-pump-bot.png",                           
                                         showThirdwebBranding: false,
 
                                     }}
@@ -2402,8 +2265,6 @@ export default function AIPage({ params }: any) {
                                 </div>
 
 
-
-
                             </div>
                         )}
 
@@ -2449,29 +2310,7 @@ export default function AIPage({ params }: any) {
                     )}
 
 
-                    {/*}
-                    <button
-                        onClick={() => {
-                        window.open('https://futures.htx.com.pk/futures/copy_trading/following/trader/NTA1MDk1Njk');
-                        }}
-                        className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 mt-5 "
-                    >
-                        <div className='flex flex-row items-center gap-2'>
-                            <Image
-                                src="/logo-exchange-okx.png"
-                                alt="HTX"
-                                width={20}
-                                height={20}
-                                className='rounded-full bg-white p-1 w-10 h-10'
-                            />
-                            <span className='text-sm font-semibold'>
-                                트레이더 퍼포먼스 보러가기
-                            </span>
-                        </div>
-                    </button>
-                    */}
 
-            
  
                     {/* applications table */}
 
@@ -2486,7 +2325,7 @@ export default function AIPage({ params }: any) {
                                     height={50}
                                 />
                                 <span className='text-lg font-semibold text-gray-800'>
-                                    OKX신청목록
+                                    OKX 신청목록
                                 </span>
 
                                 {/* reload button */}
@@ -2502,7 +2341,7 @@ export default function AIPage({ params }: any) {
                                                 },
                                                 body: JSON.stringify({
                                                     walletAddress: address,
-                                                    marketingCenter: 'owin',
+                                                    marketingCenter: marketingCenter,
                                                 }),
                                             });
 
@@ -2515,7 +2354,6 @@ export default function AIPage({ params }: any) {
                                             const data = await response.json();
 
                                             const total = data.result.totalCount;
-
 
                                             setApplications(data.result.applications);
 
@@ -2533,23 +2371,6 @@ export default function AIPage({ params }: any) {
                                 >
                                     {loadingApplications ? "Loading..." : "Reload"}
                                 </button>
-
-                                {/* excel download button */}
-                                {/*
-                                <button
-                                    onClick={() => {
-                                        exportToCSV("HTX-Applications");
-                                    }}
-                                    disabled={isExporting}
-                                    className={`${isExporting ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
-                                        hover:bg-blue-600
-                                    `}
-                                >
-                                    {isExporting ? "Exporting..." : "Export to Excel"}
-                                </button>
-                                */}
-
-
                             </div>
 
                             {loadingApplications && (
@@ -2579,12 +2400,10 @@ export default function AIPage({ params }: any) {
                                             총 {applications.length}개의 신청이 있습니다.
                                         </span>
 
-
-
-
                                     </div>
 
                                 )}
+
 
 
 
@@ -2635,13 +2454,13 @@ export default function AIPage({ params }: any) {
                                             className={`w-full flex flex-col gap-5
                                             border border-gray-300 p-4 rounded-lg bg-gray-100
 
-                                            ${application?.accountConfig?.data.roleType === "2" ? "border border-green-500" : ""}
+                                            ${application?.accountConfig?.data.roleType === "2" ? "border-2 border-green-500" : ""}
 
                                             `}
                                         >
 
-                                            {/* 신청번호, 신청일자 */}
-                                            <div className='w-full flex flex-col items-start justify-between gap-2
+                                           {/* 신청번호, 신청일자 */}
+                                           <div className='w-full flex flex-col items-start justify-between gap-2
                                                 border-b border-gray-300 pb-2
                                             '>
                                                 <div className='w-full flex flex-row items-center justify-between gap-2'>
@@ -2713,11 +2532,11 @@ export default function AIPage({ params }: any) {
 
 
                                             {/* agentBot and agentBotNumber */}
-                                            <div className='flex flex-row items-start justify-between gap-2
+                                            <div className='w-full flex flex-row items-start justify-between gap-2
                                                 border-b border-gray-300 pb-2
                                             '>
 
-                                                <div className='flex flex-col gap-2'>
+                                                <div className='w-full flex flex-col gap-2'>
 
                                                     {/* goto button for detail page */}
                                                     <button
@@ -2738,19 +2557,15 @@ export default function AIPage({ params }: any) {
                                                         </span>
                                                     </button>
 
-                                                    <div className='flex flex-col gap-2'>
-
+                                                    <div className='mt-5 flex flex-col gap-2'>
                                                         <span className='text-xs text-yellow-800'>
-                                                            AI Agent Bot Code
+                                                            AI 에이전트 계약주소
                                                         </span>
                                                         <span className='text-xs text-gray-800'>
-                                                            {application.agentBot.slice(0, 10)}...{application.agentBot.slice(-10)}
+                                                            {application.agentBot.slice(0, 6)}...{application.agentBot.slice(-4)}
                                                         </span>
-                                                    </div>
-
-                                                    <div className='flex flex-col gap-2'>
                                                         <span className='text-xs text-yellow-800'>
-                                                            AI Agent Bot Number
+                                                            AI 에이전트 계약번호
                                                         </span>
                                                         <span className='text-lg text-gray-800'>
                                                             #{application.agentBotNumber}
@@ -2772,7 +2587,7 @@ export default function AIPage({ params }: any) {
                                                         {checkingAgentBotNftList.find((item) => item.applicationId === application.id)?.checking ? "Checking..." : "Check NFT"}
                                                     </button>
                                                 ) : (
-                                                    <div className='w-full flex flex-col gap-2
+                                                    <div className='w-full flex flex-col gap-1
                                                         items-center justify-center
                                                         bg-gray-200 p-2 rounded-lg border border-gray-300
                                                     '>
@@ -2793,26 +2608,25 @@ export default function AIPage({ params }: any) {
                                                             />
                                                         </button>
 
-                                                        <span className='text-sm text-yellow-800'>
+                                                        <span className='text-lg text-yellow-800'>
                                                             {agentBotNftList.find((item) => item.applicationId === application.id)?.agentBotNft?.name || ""}
                                                         </span>
                                                         <span className='text-xs text-gray-800'>
                                                             {agentBotNftList.find((item) => item.applicationId === application.id)?.agentBotNft?.description || ""}
                                                         </span>
                                                         <Image
-                                                            src={agentBotNftList.find((item) => item.applicationId === application.id)?.agentBotNft?.image?.thumbnailUrl
-                                                                || "/logo-aiagent.png"
-                                                            }
+                                                            src={agentBotNftList.find((item) => item.applicationId === application.id)?.agentBotNft?.image?.thumbnailUrl || ""}
                                                             alt="NFT"
-                                                            width={50}
-                                                            height={50}
-                                                            className='rounded-lg object-cover w-10 h-10'
+                                                            width={100}
+                                                            height={100}
+                                                            className='rounded-lg w-full h-full'
                                                         />
                                                     </div>
                                                 )}
 
 
                                             </div>
+
 
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                 <div className='flex flex-col gap-2'>
@@ -2893,6 +2707,7 @@ export default function AIPage({ params }: any) {
                                                     </div>
                                                 )}
                                             </div>
+
 
                                             {/* accountConfig */}
                                             {application?.accountConfig && (
@@ -3025,140 +2840,6 @@ export default function AIPage({ params }: any) {
                                                 </div>
                                             )}
 
-                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                                <div className='flex flex-col gap-2'>
-                                                    <span className='text-xs text-yellow-800'>
-                                                        닉네임
-                                                    </span>
-                                                    <span className='text-sm text-gray-800'>
-                                                        {application.userName}
-                                                    </span>
-                                                </div>
-                                                {/* copy button */}
-                                                <button
-                                                    onClick={() => {
-                                                        navigator.clipboard.writeText(application.userPhoneNumber);
-                                                        toast.success("Copied to clipboard");
-                                                    }}
-                                                    className="bg-gray-500 text-white p-2 rounded-lg
-                                                        hover:bg-gray-600
-                                                    "
-                                                >  
-                                                    Copy
-                                                </button>
-                                            </div>
-
-                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                                <div className='flex flex-col gap-2'>
-                                                    <span className='text-xs text-yellow-800'>
-                                                        핸드폰번호
-                                                    </span>
-                                                    <span className='text-sm text-gray-800'>
-                                                        {application.userPhoneNumber}
-                                                    </span>
-                                                </div>
-                                                {/* copy button */}
-                                                <button
-                                                    onClick={() => {
-                                                        navigator.clipboard.writeText(application.userPhoneNumber);
-                                                        toast.success("Copied to clipboard");
-                                                    }}
-                                                    className="bg-gray-500 text-white p-2 rounded-lg
-                                                        hover:bg-gray-600
-                                                    "
-                                                >
-                                                    Copy
-                                                </button>
-                                            </div>
-
-                                            
-                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                                <div className='flex flex-col gap-2'>
-                                                    <span className='text-xs text-yellow-800'>
-                                                        이메일주소
-                                                    </span>
-                                                    <span className='text-sm text-gray-800'>
-                                                        {application.userEmail}
-                                                    </span>
-                                                </div>
-                                                <button
-                                                    onClick={() => {
-                                                        navigator.clipboard.writeText(application.userEmail);
-                                                        toast.success("Copied to clipboard");
-                                                    }}
-                                                    className="bg-gray-500 text-white p-2 rounded-lg
-                                                        hover:bg-gray-600
-                                                    "
-                                                >
-                                                    Copy
-                                                </button>
-                                            </div>
-                                            
-
-
-                                            {/*}
-                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                                <div className='flex flex-col gap-2'>
-                                                    <span className='text-xs text-yellow-800'>
-                                                        OKXUSDT(TRON) 지갑주소
-                                                    </span>
-                                                    <span className='text-xs text-gray-800'>
-                                                        {application.htxUsdtWalletAddress.slice(0, 10)}...{application.htxUsdtWalletAddress.slice(-10)}
-                                                    </span>
-                                                </div>
-                                                <button
-                                                    onClick={() => {
-                                                        navigator.clipboard.writeText(application.htxUsdtWalletAddress);
-                                                        toast.success("Copied to clipboard");
-                                                    }}
-                                                    className="bg-gray-500 text-white p-2 rounded-lg
-                                                        hover:bg-gray-600
-                                                    "
-                                                >
-                                                    Copy
-                                                </button>
-                                            </div>
-                                            */}
-
-                                            {/*
-                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                                <span className='text-sm text-gray-800'>
-                                                    API Access Key: {application.apiAccessKey}
-                                                </span>
-                                                <button
-                                                    onClick={() => {
-                                                        navigator.clipboard.writeText(application.apiAccessKey);
-                                                        toast.success("Copied to clipboard");
-                                                    }}
-                                                    className="bg-gray-500 text-white p-2 rounded-lg
-                                                        hover:bg-gray-600
-                                                    "
-                                                >
-                                                    Copy
-                                                </button>
-                                            </div>
-                                        
-
-                                            
-
-                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                                <span className='text-sm text-gray-800'>
-                                                    API Secret Key: {application.apiSecretKey}
-                                                </span>
-                                                <button
-                                                    onClick={() => {
-                                                        navigator.clipboard.writeText(application.apiSecretKey);
-                                                        toast.success("Copied to clipboard");
-                                                    }}
-                                                    className="bg-gray-500 text-white p-2 rounded-lg
-                                                        hover:bg-gray-600
-                                                    "
-                                                >
-                                                    Copy
-                                                </button>
-                                            </div>
-                                            */}
-
 
 
                                             {/* tradingAccountBalance */}
@@ -3168,7 +2849,13 @@ export default function AIPage({ params }: any) {
                                                         OKX Trading Balance
                                                     </span>
                                                     <span className='text-sm text-gray-800'>
-                                                        {tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.balance} $(USD)
+                                                        {
+                                                            Number(tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.balance)
+                                                            .toLocaleString('en-US', {
+                                                                style: 'currency',
+                                                                currency: 'USD'
+                                                            })
+                                                        }
                                                     </span>
                                                     {/* convert timestamp to date */}
                                                     <span className='text-xs text-gray-800'>
@@ -3241,50 +2928,178 @@ export default function AIPage({ params }: any) {
 
 
 
-
-
-
-                                      
-                                            {/* queryUnifiedAccountAssets */}
-                                            {/*
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                 <div className='flex flex-col gap-2'>
                                                     <span className='text-xs text-yellow-800'>
-                                                        OKX통합계정 자산
+                                                        닉네임
                                                     </span>
                                                     <span className='text-sm text-gray-800'>
-                                                        {unifiedAccountAssets.find((item) => item.applicationId === application.id)?.assets?.length || 0}
+                                                        {application.userName}
+                                                    </span>
+                                                </div>
+                                                {/* copy button */}
+                                                <button
+                                                    onClick={() => {
+                                                        navigator.clipboard.writeText(application.userPhoneNumber);
+                                                        toast.success("Copied to clipboard");
+                                                    }}
+                                                    className="bg-gray-500 text-white p-2 rounded-lg
+                                                        hover:bg-gray-600
+                                                    "
+                                                >  
+                                                    Copy
+                                                </button>
+                                            </div>
+
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <div className='flex flex-col gap-2'>
+                                                    <span className='text-xs text-yellow-800'>
+                                                        핸드폰번호
+                                                    </span>
+                                                    <span className='text-sm text-gray-800'>
+                                                        {application.userPhoneNumber}
+                                                    </span>
+                                                </div>
+                                                {/* copy button */}
+                                                <button
+                                                    onClick={() => {
+                                                        navigator.clipboard.writeText(application.userPhoneNumber);
+                                                        toast.success("Copied to clipboard");
+                                                    }}
+                                                    className="bg-gray-500 text-white p-2 rounded-lg
+                                                        hover:bg-gray-600
+                                                    "
+                                                >
+                                                    Copy
+                                                </button>
+                                            </div>
+
+                                            
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <div className='flex flex-col gap-2'>
+                                                    <span className='text-xs text-yellow-800'>
+                                                        이메일주소
+                                                    </span>
+                                                    <span className='text-sm text-gray-800'>
+                                                        {application.userEmail}
                                                     </span>
                                                 </div>
                                                 <button
                                                     onClick={() => {
-                                                        queryUnifiedAccountAssets(
-                                                            application.id,
-                                                            application.apiAccessKey,
-                                                            application.apiSecretKey,
-                                                        );
+                                                        navigator.clipboard.writeText(application.userEmail);
+                                                        toast.success("Copied to clipboard");
                                                     }}
-                                                    disabled={
-                                                        checkingUnifiedAccountAssets.find((item) => item.applicationId === application.id)?.checking
-                                                    }
-                                                    className={`${checkingUnifiedAccountAssets.find((item) => item.applicationId === application.id)?.checking ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
-                                                        hover:bg-blue-600
-                                                    `}
+                                                    className="bg-gray-500 text-white p-2 rounded-lg
+                                                        hover:bg-gray-600
+                                                    "
                                                 >
-                                                    {checkingUnifiedAccountAssets.find((item) => item.applicationId === application.id)?.checking ? "Checking..." : "Check"}
+                                                    Copy
+                                                </button>
+                                            </div>
+                                            
+
+
+                                            {/*
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <div className='flex flex-col gap-2'>
+                                                    <span className='text-xs text-yellow-800'>
+                                                        OKX USDT(TRON) 지갑주소
+                                                    </span>
+                                                    <span className='text-xs text-gray-800'>
+                                                        {application.htxUsdtWalletAddress.slice(0, 10)}...{application.htxUsdtWalletAddress.slice(-10)}
+                                                    </span>
+                                                </div>
+                                                <button
+                                                    onClick={() => {
+                                                        navigator.clipboard.writeText(application.htxUsdtWalletAddress);
+                                                        toast.success("Copied to clipboard");
+                                                    }}
+                                                    className="bg-gray-500 text-white p-2 rounded-lg
+                                                        hover:bg-gray-600
+                                                    "
+                                                >
+                                                    Copy
+                                                </button>
+                                            </div>
+                                            */}
+
+                                            
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <div className='flex flex-col gap-2'>
+                                                    <span className='text-xs text-yellow-800'>
+                                                        매직월렛 USDT 지갑주소
+                                                    </span>
+                                                    <span className='text-xs text-gray-800'>
+                                                        {application.walletAddress.slice(0, 10)}...{application.walletAddress.slice(-10)}
+                                                    </span>
+                                                </div>
+                                                {/* copy button */}
+                                                <button
+                                                    onClick={() => {
+                                                        navigator.clipboard.writeText(application.walletAddress);
+                                                        toast.success("Copied to clipboard");
+                                                    }}
+                                                    className="bg-gray-500 text-white p-2 rounded-lg
+                                                        hover:bg-gray-600
+                                                    "
+                                                >
+                                                    Copy
+                                                </button>
+                                            </div>
+
+
+                                            {/*
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <span className='text-sm text-gray-800'>
+                                                    API Access Key: {application.apiAccessKey}
+                                                </span>
+                                                <button
+                                                    onClick={() => {
+                                                        navigator.clipboard.writeText(application.apiAccessKey);
+                                                        toast.success("Copied to clipboard");
+                                                    }}
+                                                    className="bg-gray-500 text-white p-2 rounded-lg
+                                                        hover:bg-gray-600
+                                                    "
+                                                >
+                                                    Copy
+                                                </button>
+                                            </div>
+                                        
+
+                                            
+
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <span className='text-sm text-gray-800'>
+                                                    API Secret Key: {application.apiSecretKey}
+                                                </span>
+                                                <button
+                                                    onClick={() => {
+                                                        navigator.clipboard.writeText(application.apiSecretKey);
+                                                        toast.success("Copied to clipboard");
+                                                    }}
+                                                    className="bg-gray-500 text-white p-2 rounded-lg
+                                                        hover:bg-gray-600
+                                                    "
+                                                >
+                                                    Copy
                                                 </button>
                                             </div>
                                             */}
 
 
 
-                                            {/* getPositionList */}
+
+
+
+
+
                                             {/*
                                             <div className='w-full flex flex-col items-start justify-between gap-2'>
                                                 
                                                 <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                     <span className='text-xs text-yellow-800'>
-                                                        OKX포지션 리스트
+                                                        OKX 포지션 리스트
                                                     </span>
                                                     <button
                                                         onClick={() => {
@@ -3306,7 +3121,7 @@ export default function AIPage({ params }: any) {
 
                                                 </div>
 
-                                        
+
                                                 <span className='text-xs text-gray-800'>
                                                     {positionList.find((item) => item.applicationId === application.id)?.timestamp
                                                     ? new Date(positionList.find((item) => item.applicationId === application.id)?.timestamp).toLocaleString()
@@ -3314,7 +3129,6 @@ export default function AIPage({ params }: any) {
                                                     }
                                                 </span>
 
-                                            
                                                 {positionList.find((item) => item.applicationId === application.id)?.status
                                                 ? (
 
@@ -3416,102 +3230,6 @@ export default function AIPage({ params }: any) {
                                             
 
 
-                                            {/*
-                                            <div className='w-full flex flex-row items-center justify-between gap-2
-                                                border-t border-gray-300 pt-2
-                                            '>
-                                                {application?.startTrading?.status ? (
-                                                    <div className='flex flex-col gap-2'>
-                                                        <span className='text-xs text-yellow-800'>
-                                                            AI 트레이딩 상태
-                                                        </span>
-
-                                                        <div className='flex flex-row items-center gap-2'>
-                                                            <span className='text-sm text-gray-800'>
-                                                                러닝타임:
-                                                            </span>                                            
-                                                            <span className='text-sm text-gray-800'>
-                                                                {
-                                                                    new Date().getTime() - new Date(application?.startTrading?.timestamp).getTime() < 1000 * 60 ? (
-                                                                    ' ' + Math.floor((new Date().getTime() - new Date(application?.startTrading?.timestamp).getTime()) / 1000) + ' ' + '초'
-                                                                    ) :
-                                                                    new Date().getTime() - new Date(application?.startTrading?.timestamp).getTime() < 1000 * 60 * 60 ? (
-                                                                    ' ' + Math.floor((new Date().getTime() - new Date(application?.startTrading?.timestamp).getTime()) / 1000 / 60) + ' ' + '분'
-                                                                    ) : (
-                                                                    ' ' + Math.floor((new Date().getTime() - new Date(application?.startTrading?.timestamp).getTime()) / 1000 / 60 / 60) + ' ' + '시간'
-                                                                    )
-                                                                }
-                                                            </span>
-                                                        </div>
-                                                        <div className='flex flex-row items-center gap-2'>
-                                                            <span className='text-sm text-gray-800'>
-                                                                시작시간:
-                                                            </span>
-                                                            <span className='text-sm text-gray-800'>
-                                                                {application?.startTrading?.timestamp
-                                                                ? new Date(application?.startTrading?.timestamp).toLocaleString()
-                                                                : ""
-                                                                }
-                                                            </span>
-                                                        </div>
-
-
-                                                        {application?.masterBotInfo ? (
-
-                                                            <div className='flex flex-col gap-2'>
-                                                                <span className='text-xs text-yellow-800'>
-                                                                    MasterBot NFT
-                                                                </span>
-                                                                <Image
-                                                                    src={application?.masterBotInfo?.imageUrl}
-                                                                    alt="MasterBot NFT"
-                                                                    width={200}
-                                                                    height={200}
-                                                                    className='rounded-lg border border-gray-300 object-cover animate-pulse
-                                                                    w-40 h-40
-                                                                    '
-                                                                />
-                                                            </div>
-
-                                                        ) : (
-
-                                                            <>
-
-                                                            {userMasterBotContractAddress && (
-                                                                
-                                                                <button
-                                                                    onClick={() => {
-                                                                        mintMasterBotNft(application?.id);
-                                                                    }}
-                                                                    disabled={mintingMasterBotNft.find((item) => item.applicationId === application.id)?.minting}
-                                                                    className={`${mintingMasterBotNft.find((item) => item.applicationId === application.id)?.minting ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
-                                                                        hover:bg-blue-600
-                                                                    `}
-                                                                >
-                                                                    {mintingMasterBotNft.find((item) => item.applicationId === application.id)?.minting ? "Minting..." : "Mint MasterBot NFT"}
-                                                                </button>
-                                                                
-                                                            )}  
-
-                                                            </>
-                                                        )}
-
-                                                    </div>
-                                                ) : (
-                                                    <div className='flex flex-col gap-2'>
-                                                        <span className='text-xs text-yellow-800'>
-                                                            AI 트레이딩 상태
-                                                        </span>
-                                                        <span className='text-sm text-gray-800'>
-                                                            준비중...
-                                                        </span>
-                                                    </div>
-                                                )}
-
-                                            
-                                            </div>
-                                            */}
-
                 
                                         </div>
                                     ))}
@@ -3574,14 +3292,15 @@ function Header(
             >            
                 <div className="flex flex-row gap-2 items-center">
                     <Image
-                    src="/logo-owin.webp"
+                    src="/logo-pump.webp"
                     alt="Circle Logo"
                     width={35}
                     height={35}
                     className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
                     />
                     <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
-                    OWIN AI Agent Center
+                    {marketingCenter.toUpperCase()}{` `}
+                    AI Agent Center
                     </span>
                 </div>
                 
