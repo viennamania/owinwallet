@@ -113,8 +113,8 @@ export default function AgentPage({ params }: any) {
   const agentContractAddress = params.contract;
   const agentTokenId = params.tokenId;
 
-  console.log("agentContractAddress", agentContractAddress);
-  console.log("agentTokenId", agentTokenId);
+  //console.log("agentContractAddress", agentContractAddress);
+  //console.log("agentTokenId", agentTokenId);
 
   //console.log("params", params);
 
@@ -122,11 +122,15 @@ export default function AgentPage({ params }: any) {
  
  
 
-  console.log("agentContractAddress", agentContractAddress);
+  //console.log("agentContractAddress", agentContractAddress);
 
   
   const [agent, setAgent] = useState({} as any);
-  const [ownerWalletAddress, setOwnerWalletAddress] = useState("");
+  
+ 
+  const [holderWalletAddress, setHolderWalletAddress] = useState("");
+
+
   const [ownerInfo, setOwnerInfo] = useState({} as any);
 
   const [loadingAgent, setLoadingAgent] = useState(false);
@@ -154,14 +158,14 @@ export default function AgentPage({ params }: any) {
   
         const data = await response.json();
 
-        //console.log("getAgentNFTByContractAddressAndTokenId data", data);
+        console.log("getAgentNFTByContractAddressAndTokenId data", data);
 
   
         setAgent(data.result);
 
-        setOwnerWalletAddress(data?.ownerWalletAddress);
-
         setOwnerInfo(data?.ownerInfo);
+        setHolderWalletAddress(data?.ownerInfo?.walletAddress);
+
 
         ////console.log("agent======", data.result);
 
@@ -386,7 +390,7 @@ export default function AgentPage({ params }: any) {
 
           const data = await response.json();
 
-          console.log("getReferApplications data", data);
+          ///console.log("getReferApplications data", data);
 
 
 
@@ -1078,11 +1082,11 @@ export default function AgentPage({ params }: any) {
 
           {/* agent nft info */}
           <div className={`w-full flex flex-col gap-5 p-4 rounded-lg border bg-gray-100
-            ${address && ownerWalletAddress && address === ownerWalletAddress ? 'border-green-500' : 'border-gray-300'}
+            ${address && holderWalletAddress && address === holderWalletAddress ? 'border-green-500' : 'border-gray-300'}
           `}>
 
 
-            {address && ownerWalletAddress && address === ownerWalletAddress && (
+            {address && holderWalletAddress && address === holderWalletAddress && (
               <div className='flex flex-row items-center gap-2'>
                 {/* dot */}
                 <div className='w-3 h-3 bg-red-500 rounded-full'></div>
@@ -1161,6 +1165,9 @@ export default function AgentPage({ params }: any) {
 
                   <div className='w-full flex flex-col items-start justify-start gap-2'>
 
+
+
+
                     <div className='w-full flex flex-col items-start justify-between gap-2
                       border-b border-gray-300 pb-2
                     '>
@@ -1194,9 +1201,25 @@ export default function AgentPage({ params }: any) {
                         <span className='text-sm text-yellow-500'>
                             AI 에이전트 NFT 소유자 정보
                         </span>
-                        <span className='text-xs text-gray-800'>
-                            소유자 지갑주소: {ownerWalletAddress?.slice(0, 10) + '...' + ownerWalletAddress?.slice(-10)}
-                        </span>
+                        
+                        <div className='w-full flex flex-row items-center justify-start gap-2'>
+                            <span className='text-xs text-gray-800'>
+                                소유자 지갑주소: {holderWalletAddress?.slice(0, 5) + '...' + holderWalletAddress?.slice(-5)}
+                            </span>
+                            {/* copy button */}
+                            <button
+                              onClick={() => {
+                                navigator.clipboard.writeText(holderWalletAddress);
+                                toast.success("Copied");
+                              }}
+                              className='bg-gray-500 text-white p-2 rounded-lg
+                                hover:bg-gray-600
+                              '
+                            >
+                                Copy
+                            </button>
+                        </div>
+                        
 
                         <div className='w-full flex flex-row items-center justify-start gap-2
                           border-b border-gray-300 pb-2
