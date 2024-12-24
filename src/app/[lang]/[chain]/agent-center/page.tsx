@@ -2183,7 +2183,7 @@ export default function AIPage({ params }: any) {
                                     }}
                                     connectModal={{
                                         size: "wide", 
-                                        titleIcon: "https://ppump.me/icon-pump-bot.png",                           
+                                        titleIcon: "https://ppump.me/logo-marketing-center.webp",                           
                                         showThirdwebBranding: false,
 
                                     }}
@@ -2542,12 +2542,6 @@ export default function AIPage({ params }: any) {
                                                     <button
                                                         onClick={() => {
                                                             router.push('/' + params.lang + '/' + params.chain + '/agent/' + application.agentBot + '/' + application.agentBotNumber);
-
-                                                            // open new window
-
-                                                            //window.open('https://owinwallet.com/' + params.lang + '/' + params.chain + '/agent/' + nft.contract.address + '/' + nft.tokenId);
-
-
                                                         }}
                                                         className="p-2 bg-blue-500 text-zinc-100 rounded
                                                         hover:bg-blue-600"
@@ -3292,7 +3286,7 @@ function Header(
             >            
                 <div className="flex flex-row gap-2 items-center">
                     <Image
-                    src="/logo-pump.webp"
+                    src="/logo-marketing-center.webp"
                     alt="Circle Logo"
                     width={35}
                     height={35}
