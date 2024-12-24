@@ -471,6 +471,10 @@ export async function getOneByWalletAddress(walletAddress: string) {
       
       okxUid: result.okxUid,
       accountConfig: result.accountConfig,
+      tradingAccountBalance: result.tradingAccountBalance,
+      assetBalance: result.assetBalance,
+
+
 
       htxUsdtWalletAddress: result.htxUsdtWalletAddress,
       
