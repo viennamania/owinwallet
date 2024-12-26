@@ -136,7 +136,7 @@ const contractAddressArbitrum = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"; //
 export default function SettingsPage({ params }: any) {
 
 
-    const center = 'owin';
+    const center = params.center;
 
     //console.log("params", params);
     

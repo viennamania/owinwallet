@@ -1162,29 +1162,10 @@ export default function AIPage({ params }: any) {
         setApplyingMintNFT(true);
 
 
-        if (center && center.length < 5) {
-            setApplyingMintNFT(false);
-            toast.error("Marketing Center를 선택해 주세요.");
-            return;
-        }
 
         // api call
 
         let marketingCenter = "owin";
-
-
-        if (center && center.length < 5) {
-            setApplyingMintNFT(false);
-            toast.error("Marketing Center를 선택해 주세요.");
-            return;
-        }
-
-        if (center?.substring(0, 4) !== "owin") {
-            setApplyingMintNFT(false);
-            toast.error("Marketing Center를 선택해 주세요.");
-            return;
-        }
-
 
 
         const response = await fetch("/api/agent/applyMintNFT", {
