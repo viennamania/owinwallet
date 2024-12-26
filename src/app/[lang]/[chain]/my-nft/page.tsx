@@ -136,11 +136,17 @@ const contractAddressArbitrum = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"; //
 export default function SettingsPage({ params }: any) {
 
 
+    const center = 'owin';
+
     //console.log("params", params);
     
     const searchParams = useSearchParams();
 
-    const center = searchParams.get('center');
+    ////const center = searchParams.get('center');
+
+
+
+
  
     const wallet = searchParams.get('wallet');
 
@@ -1835,7 +1841,7 @@ export default function SettingsPage({ params }: any) {
                                                     <button
                                                         onClick={() => {
                                                             //router.push('/agent/' + nft.contract.address + '/' + nft.tokenId);
-                                                            router.push('/kr/polygon/agent/' + nft.contract.address + '/' + nft.tokenId + '/?center=' + params.center);
+                                                            router.push('/kr/polygon/agent/' + nft.contract.address + '/' + nft.tokenId + '/?center=' + center);
                                                         }}
                                                         className="p-2 bg-blue-500 text-zinc-100 rounded
                                                         hover:bg-blue-600 text-xs xl:text-lg font-semibold"
@@ -1851,7 +1857,7 @@ export default function SettingsPage({ params }: any) {
                                                         onClick={() => {
                                                             
                                                             navigator.clipboard.writeText(
-                                                                'https://owinwallet.com/kr/polygon/tbot' + '/?center=' + params.center +
+                                                                'https://owinwallet.com/kr/polygon/tbot' + '/?center=' + center +
                                                                 '&agent=' + nft.contract.address + 
                                                                 '&tokenId=' + nft.tokenId
                                                             );
