@@ -539,6 +539,7 @@ export async function getMyReferAgents(
         agentBot: agentBot,
         //agentBotNumber: agentBotNumber,
         agentBotNumber: parseInt(agentBotNumber),
+        exchange: 'okx',
       }
     },
     {
@@ -562,6 +563,7 @@ export async function getMyReferAgents(
         agentBot: agentBot,
         //agentBotNumber: agentBotNumber,
         agentBotNumber: parseInt(agentBotNumber),
+        exchange: 'okx',
       }
     },
     {
