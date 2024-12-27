@@ -73,7 +73,11 @@ export async function GET(request: NextRequest) {
 
   if (moment().minute() === 0) {
 
-    if (moment().hour() === 10 || moment().hour() === 12 || moment().hour() === 14 || moment().hour() === 16 || moment().hour() === 18 || moment().hour() === 20 ) {
+    const hour = moment().hour() + 9;
+
+    if (
+      hour === 10 || hour === 12 || hour === 14 || hour === 16 || hour === 18 || hour === 20
+    ) {
       sendSms = true;
     }
 
