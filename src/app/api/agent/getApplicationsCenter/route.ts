@@ -4,6 +4,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import {
 	getAllAgents,
+  getAgentCenterSummary,
 } from '@lib/api/agent';
 
 
@@ -59,10 +60,15 @@ export async function POST(request: NextRequest) {
       const result = await getAllAgents({
         marketingCenter,
       });
+
+      const result2 = await getAgentCenterSummary({
+        marketingCenter,
+      });
  
       return NextResponse.json({
     
         result,
+        summary: result2,
         
       });
 

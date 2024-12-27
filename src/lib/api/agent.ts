@@ -170,6 +170,10 @@ export async function insertOne(data: any) {
 
 
 
+
+
+
+
 // getAllAgents
 // sort by createdAt desc
 export async function getAllAgents({
@@ -261,6 +265,54 @@ export async function getAllAgents({
   
 }
 
+
+
+
+// get count, and sum of tradingAccountBalance.balance
+// group by center
+// where accountConfig.data.roleType = "2"
+export async function getAgentCenterSummary(
+  {
+    marketingCenter,
+  }
+  :
+  {
+    marketingCenter: string,
+  },
+) {
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('agents');
+
+  const result = await collection.aggregate([
+    {
+      $match: {
+        marketingCenter: marketingCenter,
+        
+        $and: [
+          { "accountConfig.data.roleType": "2" },
+          { "accountConfig.data.roleType": { $exists: true } },
+        ]
+      }
+    },
+    {
+      $group: {
+        _id: "$center",
+        tradingAccountBalanceCount: { $sum: 1 },
+        tradingAccountBalanceSum: { $sum: { $toDouble: "$tradingAccountBalance.balance" } },
+      }
+    }
+  ]).toArray();
+
+  if (result) {
+    return {
+      result: result,
+    };
+  } else {
+    return null;
+  }
+
+}
 
 
 
