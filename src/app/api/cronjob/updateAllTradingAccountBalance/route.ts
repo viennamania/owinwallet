@@ -65,6 +65,8 @@ export async function GET(request: NextRequest) {
  // when 10, 12, 14, 16, 18, 20 hours
 
 
+
+ 
   let sendSms = false;
 
   if (moment().minute() === 0) {
