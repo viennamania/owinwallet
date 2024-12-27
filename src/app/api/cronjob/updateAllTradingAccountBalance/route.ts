@@ -62,22 +62,21 @@ export const dynamic = 'force-dynamic';
 export async function GET(request: NextRequest) {
 
 
-  // check each hour is on the hour
-  // exclude from 20 hours to 24 hours and 0 hours to 8 hours
+ // when 10, 12, 14, 16, 18, 20, 22 hours
+
 
   let sendSms = false;
+
   if (moment().minute() === 0) {
-    sendSms = true;
+
+    if (moment().hour() === 10 || moment().hour() === 12 || moment().hour() === 14 || moment().hour() === 16 || moment().hour() === 18 || moment().hour() === 20 || moment().hour() === 22) {
+      sendSms = true;
+    }
+
   }
 
-  if (moment().hour() >= 20) {
-    sendSms = false;
-  }
 
-  if (moment().hour() <= 8) {
-    sendSms = false;
-  }
-
+  
 
 
   const accountSid = process.env.TWILIO_ACCOUNT_SID;
