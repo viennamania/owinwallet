@@ -10,13 +10,6 @@ import {
     client,
 } from "../../../../client";
 
-/*
-import {
-    marketingCenter,
-} from "../../../config";
-*/
-
-
 import {
     getContract,
     //readContract,
@@ -85,10 +78,6 @@ import {
 
 
 import { getContractMetadata } from "thirdweb/extensions/common";
-
-
-const marketingCenter = "owin";
-
 
 
 const wallets = [
@@ -646,14 +635,10 @@ export default function CenterPage({ params }: any) {
 
         };
 
-        if (address && marketingCenter) {
+        if (address && center) {
             fetchData();
         }
     }, [address, center]);
-
-    //console.log("marketingCenter", marketingCenter);
-
-    //console.log("applications", applications);
 
 
 
@@ -1615,24 +1600,6 @@ export default function CenterPage({ params }: any) {
   
     };
 
-
-
-
-
-    /*
-    const [agentName, setAgentName] = useState("");
-    const [agentDescription, setAgentDescription] = useState("");
-
-
-    const [agentImage, setAgentImage] = useState("https://owinwallet.com/logo-aiagent.png");
-    const [ganeratingAgentImage, setGeneratingAgentImage] = useState(false);
-
-
-    const [mintingAgentNft, setMintingAgentNft] = useState(false);
-    const [messageMintingAgentNft, setMessageMintingAgentNft] = useState("");
-    */
-
-
     const [masterBotImageUrl, setMasterBotImageUrl] = useState([] as any[]);
 
     const [mintingMasterBotNft, setMintingMasterBotNft] = useState([] as any[]);
@@ -2495,24 +2462,6 @@ export default function CenterPage({ params }: any) {
                                     </div>
                                 )}
 
-
-
-                                {/* centerBotSummaryList */}
-                                {/*
-                                [
-
-                                    {
-                                        "_id": "",
-                                        "tradingAccountBalanceCount": 6,
-                                        "tradingAccountBalanceSum": 348.71666196092025
-                                    },
-                                    {
-                                        "_id": "owin_drosi_bot",
-                                        "tradingAccountBalanceCount": 2,
-                                        "tradingAccountBalanceSum": 112.40018756164966
-                                    }
-                                ]
-                                */}
 
                                 {address && agentBotSummaryList.length > 0 && (
                                     <div className='w-full flex flex-col gap-5'>

@@ -638,76 +638,6 @@ export default function AIPage({ params }: any) {
             const summary = data?.summary?.result;
             setCenterBotSummaryList(summary);
 
-            /*
-            {
-                "result": [
-                    {
-                        "_id": null,
-                        "tradingAccountBalanceCount": 3,
-                        "tradingAccountBalanceSum": 262.85585683519264
-                    },
-                    {
-                        "_id": "ppump_joajoa_bot",
-                        "tradingAccountBalanceCount": 2,
-                        "tradingAccountBalanceSum": 55.897416175685116
-                    },
-                    {
-                        "_id": "owin_nyong_bot",
-                        "tradingAccountBalanceCount": 1,
-                        "tradingAccountBalanceSum": 50.19295545525928
-                    },
-                    {
-                        "_id": "owin_young_bot",
-                        "tradingAccountBalanceCount": 2,
-                        "tradingAccountBalanceSum": 106.36401628955292
-                    },
-                    {
-                        "_id": "owin_shingyu_bot",
-                        "tradingAccountBalanceCount": 10,
-                        "tradingAccountBalanceSum": 328.18935052884643
-                    },
-                    {
-                        "_id": "undefined",
-                        "tradingAccountBalanceCount": 1,
-                        "tradingAccountBalanceSum": 98.8933513865107
-                    },
-                    {
-                        "_id": "owin_kek_bot",
-                        "tradingAccountBalanceCount": 2,
-                        "tradingAccountBalanceSum": 81.46688723857929
-                    },
-                    {
-                        "_id": "owin_kok_bot",
-                        "tradingAccountBalanceCount": 1,
-                        "tradingAccountBalanceSum": 99.96534324128937
-                    },
-                    {
-                        "_id": "owin_anawin_bot",
-                        "tradingAccountBalanceCount": 7,
-                        "tradingAccountBalanceSum": 404.31551320377827
-                    },
-                    {
-                        "_id": "ppump_koko_bot",
-                        "tradingAccountBalanceCount": 3,
-                        "tradingAccountBalanceSum": 1524.2529431690043
-                    },
-                    {
-                        "_id": "",
-                        "tradingAccountBalanceCount": 6,
-                        "tradingAccountBalanceSum": 348.71666196092025
-                    },
-                    {
-                        "_id": "owin_drosi_bot",
-                        "tradingAccountBalanceCount": 2,
-                        "tradingAccountBalanceSum": 112.40018756164966
-                    }
-                ]
-            }
-            */
-
-
-
-
 
             setApplications(data.result.applications);
 
@@ -1691,21 +1621,6 @@ export default function AIPage({ params }: any) {
 
 
 
-
-    /*
-    const [agentName, setAgentName] = useState("");
-    const [agentDescription, setAgentDescription] = useState("");
-
-
-    const [agentImage, setAgentImage] = useState("https://owinwallet.com/logo-aiagent.png");
-    const [ganeratingAgentImage, setGeneratingAgentImage] = useState(false);
-
-
-    const [mintingAgentNft, setMintingAgentNft] = useState(false);
-    const [messageMintingAgentNft, setMessageMintingAgentNft] = useState("");
-    */
-
-
     const [masterBotImageUrl, setMasterBotImageUrl] = useState([] as any[]);
 
     const [mintingMasterBotNft, setMintingMasterBotNft] = useState([] as any[]);
@@ -2520,24 +2435,6 @@ export default function AIPage({ params }: any) {
                                     </div>
                                 )}
 
-
-
-                                {/* centerBotSummaryList */}
-                                {/*
-                                [
-
-                                    {
-                                        "_id": "",
-                                        "tradingAccountBalanceCount": 6,
-                                        "tradingAccountBalanceSum": 348.71666196092025
-                                    },
-                                    {
-                                        "_id": "owin_drosi_bot",
-                                        "tradingAccountBalanceCount": 2,
-                                        "tradingAccountBalanceSum": 112.40018756164966
-                                    }
-                                ]
-                                */}
 
                                 {address && centerBotSummaryList.length > 0 && (
                                     <div className='w-full flex flex-col gap-5'>
