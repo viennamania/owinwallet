@@ -267,6 +267,100 @@ export async function getAllAgents({
 
 
 
+// get All Applications for Center
+// sort by createdAt desc
+export async function getAllApplicationsForCenter({
+  center = '',
+  page = 1,
+  limit = 200,
+}) {
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('agents');
+
+  const result = await collection.find(
+    {
+      center: center,
+    },
+    {
+      sort: { createdAt: -1 },
+      skip: (page - 1) * limit,
+      limit: limit,
+    },
+  ).toArray();
+
+  const totalTradingAccountBalance = await collection.aggregate([
+    {
+      $match: {
+        center: center,
+      }
+    },
+    {
+      $group: {
+        _id: null,
+        total: { $sum: { $toDouble: "$tradingAccountBalance.balance" } },
+      }
+    }
+  ]).toArray();
+  
+
+  if (result) {
+    return {
+      totalCount: result.length,
+      totalTradingAccountBalance: totalTradingAccountBalance[0].total,
+      applications: result,
+    };
+  } else {
+    return null;
+  }
+
+}
+
+
+
+
+
+// get summary of Applications for Center
+// group by agentBot, agentBotNumber
+export async function getSummaryApplicationsForCenter({
+  center = '',
+}) {
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('agents');
+
+  const result = await collection.aggregate([
+    {
+      $match: {
+        center: center,
+
+        $and: [
+          { "accountConfig.data.roleType": "2" },
+          { "accountConfig.data.roleType": { $exists: true } },
+        ]
+      }
+    },
+    {
+      $group: {
+        _id: { agentBot: "$agentBot", agentBotNumber: "$agentBotNumber" },
+        tradingAccountBalanceCount: { $sum: 1 },
+        tradingAccountBalanceSum: { $sum: { $toDouble: "$tradingAccountBalance.balance" } },
+      }
+    }
+  ]).toArray();
+
+  if (result) {
+    return {
+      totalCount: result[0].total,
+    };
+  } else {
+    return null;
+  }
+
+}
+
+
+
 
 // get count, and sum of tradingAccountBalance.balance
 // group by center

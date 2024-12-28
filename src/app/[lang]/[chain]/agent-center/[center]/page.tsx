@@ -8,7 +8,7 @@ import { toast } from 'react-hot-toast';
 
 import {
     client,
-} from "../../../client";
+} from "../../../../client";
 
 /*
 import {
@@ -67,7 +67,7 @@ import {
   }from "next//navigation";
 
 import AppBarComponent from "@/components/Appbar/AppBar";
-import { getDictionary } from "../../../dictionaries";
+import { getDictionary } from "../../../../dictionaries";
 
 
 import { deployERC721Contract } from 'thirdweb/deploys';
@@ -143,17 +143,15 @@ const contractErc1155 = getContract({
 });
 
 
-export default function AIPage({ params }: any) {
+export default function CenterPage({ params }: any) {
 
 
-    ///console.log("SettingsPage params", params);
-    
+
+    const center = params.center;
     
     // get params from the URL
 
     const searchParams = useSearchParams();
-
-    const wallet = searchParams.get('wallet');
 
     const agent = searchParams.get('agent');
 
@@ -601,7 +599,8 @@ export default function AIPage({ params }: any) {
 
 
 
-    const [centerBotSummaryList, setCenterBotSummaryList] = useState([] as any[]);
+    const [agentBotSummaryList, setAgentBotSummaryList] = useState([] as any[]);
+
 
 
     const [totalTradingAccountBalance, setTotalTradingAccountBalance] = useState(0);
@@ -614,14 +613,14 @@ export default function AIPage({ params }: any) {
     useEffect(() => {
         const fetchData = async () => {
             setLoadingApplications(true);
-            const response = await fetch("/api/agent/getApplicationsCenter", {
+            const response = await fetch("/api/agent/getApplicationsForCenter", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
                     walletAddress: address,
-                    marketingCenter: marketingCenter,
+                    center: center,
                 }),
             });
 
@@ -633,80 +632,8 @@ export default function AIPage({ params }: any) {
 
             const data = await response.json();
 
-            //console.log("getApplicationsCenter data.summary", data.summary);
-
-            const summary = data?.summary?.result;
-            setCenterBotSummaryList(summary);
-
-            /*
-            {
-                "result": [
-                    {
-                        "_id": null,
-                        "tradingAccountBalanceCount": 3,
-                        "tradingAccountBalanceSum": 262.85585683519264
-                    },
-                    {
-                        "_id": "ppump_joajoa_bot",
-                        "tradingAccountBalanceCount": 2,
-                        "tradingAccountBalanceSum": 55.897416175685116
-                    },
-                    {
-                        "_id": "owin_nyong_bot",
-                        "tradingAccountBalanceCount": 1,
-                        "tradingAccountBalanceSum": 50.19295545525928
-                    },
-                    {
-                        "_id": "owin_young_bot",
-                        "tradingAccountBalanceCount": 2,
-                        "tradingAccountBalanceSum": 106.36401628955292
-                    },
-                    {
-                        "_id": "owin_shingyu_bot",
-                        "tradingAccountBalanceCount": 10,
-                        "tradingAccountBalanceSum": 328.18935052884643
-                    },
-                    {
-                        "_id": "undefined",
-                        "tradingAccountBalanceCount": 1,
-                        "tradingAccountBalanceSum": 98.8933513865107
-                    },
-                    {
-                        "_id": "owin_kek_bot",
-                        "tradingAccountBalanceCount": 2,
-                        "tradingAccountBalanceSum": 81.46688723857929
-                    },
-                    {
-                        "_id": "owin_kok_bot",
-                        "tradingAccountBalanceCount": 1,
-                        "tradingAccountBalanceSum": 99.96534324128937
-                    },
-                    {
-                        "_id": "owin_anawin_bot",
-                        "tradingAccountBalanceCount": 7,
-                        "tradingAccountBalanceSum": 404.31551320377827
-                    },
-                    {
-                        "_id": "ppump_koko_bot",
-                        "tradingAccountBalanceCount": 3,
-                        "tradingAccountBalanceSum": 1524.2529431690043
-                    },
-                    {
-                        "_id": "",
-                        "tradingAccountBalanceCount": 6,
-                        "tradingAccountBalanceSum": 348.71666196092025
-                    },
-                    {
-                        "_id": "owin_drosi_bot",
-                        "tradingAccountBalanceCount": 2,
-                        "tradingAccountBalanceSum": 112.40018756164966
-                    }
-                ]
-            }
-            */
-
-
-
+            console.log("getApplicationsForCenter data", data);
+            //setAgentBotSummaryList(data.resultSummany);
 
 
             setApplications(data.result.applications);
@@ -722,7 +649,7 @@ export default function AIPage({ params }: any) {
         if (address && marketingCenter) {
             fetchData();
         }
-    }, [address]);
+    }, [address, center]);
 
     //console.log("marketingCenter", marketingCenter);
 
@@ -1887,14 +1814,14 @@ export default function AIPage({ params }: any) {
             });
             */
            // reload applications
-              const responseApplications = await fetch("/api/agent/getApplicationsCenter", {
+              const responseApplications = await fetch("/api/agent/getApplicationsForCenter", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
                     walletAddress: address,
-                    marketingCenter: marketingCenter,
+                    center: center,
                 }),
             });
 
@@ -2188,11 +2115,26 @@ export default function AIPage({ params }: any) {
 
                 <AppBarComponent />
 
-                <Header
-                    agent={agent || ""}
-                    tokenId={agentNumber || ""}
-                />
-                
+
+                {/* history back */}
+                <div className='mt-5 flex flex-row items-center gap-2'>
+                <button
+                    onClick={() => router.back()}
+                    className="flex flex-row items-center gap-2 bg-gray-500 text-white p-2 rounded-lg
+                    hover:bg-gray-600
+                    "
+                >
+                    <Image
+                    src="/icon-back.png"
+                    width={24}
+                    height={24}
+                    alt="Back"
+                    />
+                    <span className='text-sm text-white'>
+                    뒤로가기
+                    </span>
+                </button>
+                </div>
 
 
                 <div className="flex flex-col items-start justify-center space-y-4">
@@ -2393,6 +2335,36 @@ export default function AIPage({ params }: any) {
 
                         <div className='mt-10 w-full flex flex-col gap-5'>
 
+
+
+                            {/* center */}
+                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                {/* 'https://t.me/' */}
+                                <button
+                                    onClick={() => {
+                                        window.open('https://t.me/' + center, '_blank');
+                                    }}
+                                    className="p-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
+                                >
+                                    <div className='flex flex-row items-center gap-2'>
+                                        <Image
+                                            src="/logo-telegram.webp"
+                                            alt="Telegram"
+                                            width={30}
+                                            height={30}
+                                            className='rounded-lg'
+                                        />
+                                        <span className='text-sm font-semibold'>
+                                            {center}
+                                        </span>
+                                    </div>
+                                </button>
+
+                            </div>
+
+
+
+
                             <div className='flex flex-row items-center gap-2'>
                                 
                                 <Image
@@ -2411,14 +2383,14 @@ export default function AIPage({ params }: any) {
                                         const fetchData = async () => {
 
                                             setLoadingApplications(true);
-                                            const response = await fetch("/api/agent/getApplicationsCenter", {
+                                            const response = await fetch("/api/agent/getApplicationsForCenter", {
                                                 method: "POST",
                                                 headers: {
                                                     "Content-Type": "application/json",
                                                 },
                                                 body: JSON.stringify({
                                                     walletAddress: address,
-                                                    marketingCenter: marketingCenter,
+                                                    center: center,
                                                 }),
                                             });
 
@@ -2449,6 +2421,9 @@ export default function AIPage({ params }: any) {
                                     {loadingApplications ? "Loading..." : "Reload"}
                                 </button>
                             </div>
+
+
+  
 
                             {loadingApplications && (
                                 <div className='w-full flex flex-col items-center justify-center'>
@@ -2539,7 +2514,7 @@ export default function AIPage({ params }: any) {
                                 ]
                                 */}
 
-                                {address && centerBotSummaryList.length > 0 && (
+                                {address && agentBotSummaryList.length > 0 && (
                                     <div className='w-full flex flex-col gap-5'>
 
                                         <div className='flex flex-row items-center gap-2'>
@@ -2550,7 +2525,7 @@ export default function AIPage({ params }: any) {
 
                                         <div className='w-full grid grid-cols-2 xl:grid-cols-5 gap-5'>
 
-                                            {centerBotSummaryList.map((item) => (
+                                            {agentBotSummaryList.map((item) => (
                                                 <div
                                                     key={item._id}
                                                     className={`w-full flex flex-col gap-5
@@ -2562,11 +2537,11 @@ export default function AIPage({ params }: any) {
                                                             {item._id}
                                                         </span>
                                                         <span className='text-sm text-gray-800'>
-                                                            거래 계정 수: {item.tradingAccountBalanceCount}개
+                                                            거래 계정 수: {item?.tradingAccountBalanceCount}개
                                                         </span>
                                                         <span className='text-sm text-gray-800'>
                                                             총 잔고: {
-                                                                Number(item.tradingAccountBalanceSum).toLocaleString('en-US', {
+                                                                Number(item?.tradingAccountBalanceSum).toLocaleString('en-US', {
                                                                     style: 'currency',
                                                                     currency: 'USD'
                                                                 })
@@ -2639,32 +2614,6 @@ export default function AIPage({ params }: any) {
                                                     )
                                                 }
                                                 </span>                                              
-
-                                            </div>
-
-
-                                            {/* application?.center */}
-                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                                {/* 'https://t.me/' */}
-                                                <button
-                                                    onClick={() => {
-                                                        window.open('https://t.me/' + application.center, '_blank');
-                                                    }}
-                                                    className="p-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
-                                                >
-                                                    <div className='flex flex-row items-center gap-2'>
-                                                        <Image
-                                                            src="/logo-telegram.webp"
-                                                            alt="Telegram"
-                                                            width={30}
-                                                            height={30}
-                                                            className='rounded-lg'
-                                                        />
-                                                        <span className='text-sm font-semibold'>
-                                                            {application.center}
-                                                        </span>
-                                                    </div>
-                                                </button>
 
                                             </div>
 
@@ -3397,74 +3346,3 @@ export default function AIPage({ params }: any) {
           
 
 
-
-
-function Header(
-    {
-        agent,
-        tokenId,
-    } : {
-        agent: string,
-        tokenId: string,
-    }
-) {
-
-    const router = useRouter();
-  
-  
-    return (
-      <header className="flex flex-col items-center mb-5 md:mb-10">
-  
-        {/* header menu */}
-        <div className="w-full flex flex-row justify-between items-center gap-2
-          bg-black bg-opacity-10 p-4 rounded-lg  md:p-6
-        ">
-            {/* logo */}
-            <button
-                onClick={() => {
-                    router.push('/kr/polygon/agent-center');
-                }}
-            >            
-                <div className="flex flex-row gap-2 items-center">
-                    <Image
-                    src="/logo-marketing-center.webp"
-                    alt="Circle Logo"
-                    width={35}
-                    height={35}
-                    className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
-                    />
-                    <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
-                    {marketingCenter.toUpperCase()}{` `}
-                    AI Agent Center
-                    </span>
-                </div>
-                
-            </button>
-
-            <div className="flex flex-row gap-2 items-center">
-                <button
-                onClick={() => {
-                    router.push(
-                        "/kr/polygon/agent-center?agent=" + agent + "&tokenId=" + tokenId
-                    );
-                }}
-                className="text-gray-600 hover:underline text-xs xl:text-lg"
-                >
-                    마스터봇 NFT 목록
-                </button>
-                <button
-                onClick={() => {
-                    router.push('/kr/polygon/agent-list?agent=' + agent + "&tokenId=" + tokenId);
-                }}
-                className="text-gray-600 hover:underline text-xs xl:text-lg"
-                >
-                    AI 에이전트 NFT 목록
-                </button>
-            </div>
-
-
-        </div>
-        
-      </header>
-    );
-  }
