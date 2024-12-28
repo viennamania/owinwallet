@@ -2563,7 +2563,7 @@ export default function AIPage({ params }: any) {
                                                     }}
                                                 >
                                                     <div className='w-full flex flex-col items-start justify-between gap-2'>
-                                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                        <div className='w-full flex flex-row items-center justify-start gap-2'>
                                                             <Image
                                                                 src='/logo-telegram.webp'
                                                                 alt='Telegram'

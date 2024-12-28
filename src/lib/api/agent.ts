@@ -364,6 +364,7 @@ export async function getSummaryApplicationsForCenter({
 
 // get count, and sum of tradingAccountBalance.balance
 // group by center
+// order by center asc
 // where accountConfig.data.roleType = "2"
 export async function getAgentCenterSummary(
   {
@@ -395,7 +396,13 @@ export async function getAgentCenterSummary(
         tradingAccountBalanceCount: { $sum: 1 },
         tradingAccountBalanceSum: { $sum: { $toDouble: "$tradingAccountBalance.balance" } },
       }
+    },
+    {
+      $sort: {
+        _id: 1,
+      }
     }
+
   ]).toArray();
 
   if (result) {
