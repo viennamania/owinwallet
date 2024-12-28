@@ -9,6 +9,11 @@
         {
             "path": "/api/cronjob/updateAllTradingAccountBalance",
             "schedule": "* * * * *"
+        },
+
+        {
+            "path": "/api/cronjob/updateAllUID",
+            "schedule": "* * * * *"
         }
 
 

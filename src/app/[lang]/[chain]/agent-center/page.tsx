@@ -2555,12 +2555,26 @@ export default function AIPage({ params }: any) {
                                                     key={item._id}
                                                     className={`w-full flex flex-col gap-5
                                                     border border-gray-300 p-4 rounded-lg bg-gray-100
+                                                    hover:bg-gray-200 cursor-pointer
                                                     `}
+                                                    // goto /{item._id}
+                                                    onClick={() => {
+                                                        router.push('/' + params.lang + '/' + params.chain + '/agent-center/' + item._id);
+                                                    }}
                                                 >
                                                     <div className='w-full flex flex-col items-start justify-between gap-2'>
-                                                        <span className='text-sm font-semibold text-gray-800'>
-                                                            {item._id}
-                                                        </span>
+                                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                            <Image
+                                                                src='/logo-telegram.webp'
+                                                                alt='Telegram'
+                                                                width={15}
+                                                                height={15}
+                                                                className='rounded-lg'
+                                                            />
+                                                            <span className='text-sm font-semibold text-gray-800'>
+                                                                {item._id}
+                                                            </span>
+                                                        </div>
                                                         <span className='text-sm text-gray-800'>
                                                             거래 계정 수: {item.tradingAccountBalanceCount}개
                                                         </span>
@@ -2819,6 +2833,8 @@ export default function AIPage({ params }: any) {
                                                         >
                                                             Copy
                                                         </button>
+
+                                                        {/*}
                                                         <button
                                                             onClick={() => {
                                                                 checkApiAccessKey(
@@ -2835,6 +2851,7 @@ export default function AIPage({ params }: any) {
                                                         >
                                                             {checkingApiAccessKeyList.find((item) => item.applicationId === application.id)?.checking ? "Updating..." : "Update UID"}
                                                         </button>
+                                                        */}
 
 
                                                     </div>

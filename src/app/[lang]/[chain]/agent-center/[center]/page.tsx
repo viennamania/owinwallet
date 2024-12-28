@@ -2768,6 +2768,7 @@ export default function CenterPage({ params }: any) {
                                                         >
                                                             Copy
                                                         </button>
+                                                        {/*
                                                         <button
                                                             onClick={() => {
                                                                 checkApiAccessKey(
@@ -2784,6 +2785,7 @@ export default function CenterPage({ params }: any) {
                                                         >
                                                             {checkingApiAccessKeyList.find((item) => item.applicationId === application.id)?.checking ? "Updating..." : "Update UID"}
                                                         </button>
+                                                        */}
 
 
                                                     </div>
