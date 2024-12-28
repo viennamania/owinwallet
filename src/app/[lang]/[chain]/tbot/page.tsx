@@ -2737,6 +2737,7 @@ export default function AIPage({ params }: any) {
                                                     />
                                                 </div>
 
+                                                {/*
                                                 <div className='flex flex-row items-center justify-between gap-2'>
                                                     <span className='text-sm font-semibold text-gray-500'>
                                                         API Access Key: {myAgent.apiAccessKey.substring(0, 10) + "..."}
@@ -2761,7 +2762,6 @@ export default function AIPage({ params }: any) {
                                                     />
                                                 </div>
 
-                                                {/* apiPassword */}
                                                 <div className='flex flex-row items-center justify-between gap-2'>
                                                     <span className='text-sm font-semibold text-gray-500'>
                                                         API Password: {myAgent?.apiPassword?.substring(0, 10) + "..."}
@@ -2773,6 +2773,8 @@ export default function AIPage({ params }: any) {
                                                         height={20}
                                                     />
                                                 </div>
+                                                */}
+
 
                                                 {/* KYC Level */}
                                                 {/* myAgent.accountConfig.data.kycLv */}
