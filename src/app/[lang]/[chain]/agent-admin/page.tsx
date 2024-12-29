@@ -1796,7 +1796,8 @@ export default function AIPage({ params }: any) {
                 to: application.walletAddress,
                 nft: {
                     name: "MasterBot",
-                    description: application.agentBot + "/" + application.agentBotNumber,
+                    ///description: application.agentBot + "/" + application.agentBotNumber,
+                    description: application.center,
 
                     ////image: agentImage,
                     image: imageUrl,
