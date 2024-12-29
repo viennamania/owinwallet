@@ -2340,7 +2340,7 @@ export default function AIPage({ params }: any) {
 
  
                     {/* applications table */}
-                    {address && isAdmin && (
+                    {address && (
 
                         <div className='w-full flex flex-col gap-5'>
 
