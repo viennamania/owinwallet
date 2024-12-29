@@ -2260,7 +2260,7 @@ export default function AIPage({ params }: any) {
                     </div>
 
                     {/* deploy ERC721 contract for MasterBot */}
-                    {address && isAdmin && (
+                    {address && (
                         <div className='w-full flex flex-col gap-5'>
 
                             {!userMasterBotContractAddress ? (
@@ -3297,6 +3297,47 @@ export default function AIPage({ params }: any) {
 
                                             </div>
                                             */}
+
+                                            {/* if masterBotNft exist then show masterBotNft */}
+                                            {/* if masterBotNft not exist then mintMasterBotNft button */}
+                                            {/*
+                                            { applications.find((item) => item.id === application.id)?.masterBotInfo ? (
+                                                <div className='w-full flex flex-col items-start justify-between gap-2'>
+                                                    <div className='w-full flex flex-col items-start justify-between gap-2'>
+                                                        <span className='text-xs text-yellow-800'>
+                                                            마스터봇 NFT
+                                                        </span>
+                                                        <Image
+                                                            src={applications.find((item) => item.id === application.id)?.masterBotInfo.imageUrl}
+                                                            alt="MasterBot"
+                                                            width={200}
+                                                            height={200}
+                                                            className='rounded-lg'
+                                                        />
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <>
+                                                {application?.startTrading?.status && (
+                                                <div className='w-full flex flex-col items-start justify-between gap-2'>
+                                                    <button
+                                                        onClick={() => {
+                                                            mintMasterBotNft(application.id);
+                                                        }}
+                                                        disabled={mintingMasterBotNft.find((item) => item.applicationId === application.id)?.minting}
+                                                        className={`${mintingMasterBotNft.find((item) => item.applicationId === application.id)?.minting ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
+                                                            hover:bg-blue-600
+                                                        `}
+                                                    >
+                                                        {mintingMasterBotNft.find((item) => item.applicationId === application.id)?.minting ? "민팅중..." : "마스터봇 NFT 발행하기"}
+                                                    </button>
+                                                </div>
+                                                )}
+                                                </>
+                                            )}
+                                            */}
+
+                                            
                                             
 
 

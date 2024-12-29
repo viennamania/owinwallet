@@ -352,9 +352,9 @@ export default function AIPage({ params }: any) {
 
 
 
-    const smartAccount = useActiveAccount();
+    const activeAccount = useActiveAccount();
 
-    const address = smartAccount?.address || "";
+    const address = activeAccount?.address || "";
 
 
 
@@ -435,7 +435,7 @@ export default function AIPage({ params }: any) {
     useEffect(() => {
   
   
-      if (smartAccount) {
+      if (activeAccount) {
   
         //const phoneNumber = await getUserPhoneNumber({ client });
         //setPhoneNumber(phoneNumber);
@@ -449,7 +449,7 @@ export default function AIPage({ params }: any) {
   
       }
   
-    } , [smartAccount]);
+    } , [activeAccount]);
 
 
     const { connect, isConnecting } = useConnectModal();
@@ -514,6 +514,9 @@ export default function AIPage({ params }: any) {
     const [userCode, setUserCode] = useState("");
 
 
+    const [userMasterBotContractAddress, setUserMasterBotContractAddress] = useState("");
+    
+    
 
 
 
@@ -544,6 +547,9 @@ export default function AIPage({ params }: any) {
             if (data.result) {
                 setNickname(data.result.nickname);
                 setUserCode(data.result.id);
+
+
+                setUserMasterBotContractAddress(data.result.masterBotContractAddress);
 
             }
         };
@@ -658,7 +664,7 @@ export default function AIPage({ params }: any) {
 
             try {
                 const result = await sendAndConfirmTransaction({
-                    account: smartAccount as any,
+                    account: activeAccount as any,
                     transaction: transaction,
                 });
 
@@ -1698,6 +1704,372 @@ export default function AIPage({ params }: any) {
 
 
 
+
+    const [loadingDeployErc721Contract, setLoadingDeployErc721Contract] = useState(false);
+
+    
+    const deployErc721ContractForMasterBot = async () => {
+
+        ///console.log("deployErc721Contract=====================");
+
+  
+        if (!address) {
+            toast.error('지갑을 먼저 연결해주세요');
+            return;
+        }
+
+        if (!userCode) {
+            //console.log("userCode=====", userCode);
+            toast.error('닉네임을 먼저 설정해주세요');
+            return;
+        }
+
+        if (loadingDeployErc721Contract) {
+            toast.error('이미 실행중입니다');
+            return;
+        }
+        
+        //if (confirm("Are you sure you want to deploy ERC721 contract?")) {
+        // chinese confirm
+        if (confirm("마스트봇 NFT 계약주소를 생성하시겠습니까?")) {
+
+            setLoadingDeployErc721Contract(true);
+
+
+            try {
+
+
+
+                /*
+                // send USDT
+                // Call the extension function to prepare the transaction
+                const transaction = transfer({
+                    contract: contract,
+                    to: "0xe38A3D8786924E2c1C427a4CA5269e6C9D37BC9C",
+                    amount: 0.1,
+                });
+                
+                const { transactionHash } = await sendTransaction({
+                    account: activeAccount as any,
+                    transaction,
+                });
+
+
+                console.log("transactionHash", transactionHash);
+
+                if (!transactionHash) {
+                    throw new Error('Failed to send USDT');
+                }
+
+                //toast.success('USDT sent successfully');
+                */
+
+                const masterBotContractAddress = await deployERC721Contract({
+                    chain: polygon,
+                    client: client,
+                    account: activeAccount as any,
+            
+                    /*  type ERC721ContractType =
+                    | "DropERC721"
+                    | "TokenERC721"
+                    | "OpenEditionERC721";
+                    */
+            
+                    ///type: "DropERC721",
+            
+                    type: "TokenERC721",
+                    
+                    
+                    params: {
+                        name: "MasterBot",
+                        description: "This is MasterBot",
+                        symbol: "MBOT",
+                    },
+            
+                });
+
+                ///console.log("masterBotContractAddress", masterBotContractAddress);
+
+                // save the contract address to the database
+                // /api/user/updateUser
+                // walletAddress, erc721ContractAddress
+
+                if (!masterBotContractAddress) {
+                    throw new Error('Failed to deploy ERC721 contract');
+                }
+
+
+                const response = await fetch('/api/user/updateUserMasterBotContractAddress', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        walletAddress: address,
+                        masterBotContractAddress: masterBotContractAddress,
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to save ERC721 contract address');
+                }
+
+                setUserMasterBotContractAddress(masterBotContractAddress);
+
+
+                toast.success('MasterBot ERC721 contract deployed successfully');
+
+            } catch (error) {
+                console.error("deployErc721Contract error", error);
+            }
+
+            setLoadingDeployErc721Contract(false);
+
+      
+        }
+  
+    };
+
+
+
+    const [masterBotImageUrl, setMasterBotImageUrl] = useState([] as any[]);
+
+    const [mintingMasterBotNft, setMintingMasterBotNft] = useState([] as any[]);
+
+    useEffect(() => {
+
+        setMintingMasterBotNft(
+            applications.map((item) => {
+                return {
+                    applicationId: item.id,
+                    minting: false,
+                }
+            })
+        );
+
+        setMasterBotImageUrl(
+            applications.map((item) => {
+                return {
+                    applicationId: item.id,
+                    masterBotImageUrl: item.masterBotImageUrl,
+                }
+            })
+        );
+
+    } , [applications]);
+    
+
+
+
+    const mintMasterBotNft = async ( applicationId: number ) => {
+
+        if (!address) {
+            toast.error('지갑을 먼저 연결해주세요');
+            return;
+        }
+
+        ///console.log("mintMasterBotNft applicationId", applicationId);
+
+
+        const application = applications.find((item) => item.id === applicationId);
+
+
+        if (!application) {
+            toast.error('Application not found');
+            return;
+        }
+
+        if (application.masterBotImageUrl) {
+            toast.error('이미 NFT가 발행되었습니다');
+            return;
+        }
+
+        setMintingMasterBotNft(
+            mintingMasterBotNft.map((item) => {
+                if (item.applicationId === applicationId) {
+                    return {
+                        applicationId: applicationId,
+                        minting: true,
+                    }
+                } else {
+                    return item;
+                }
+            })
+        );
+
+
+
+
+        
+        try {
+
+
+            // genrate image from api
+            // /api/ai/generateImage
+
+            const responseGenerateImage = await fetch("/api/ai/generateImageForMasterBot", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    englishPrompt: "",
+                }),
+            });
+
+            const dataGenerateImage = await responseGenerateImage.json();
+
+
+            const imageUrl = dataGenerateImage?.result?.imageUrl;
+
+            ///console.log("imageUrl", imageUrl);
+
+        
+            if (!imageUrl) {
+
+                throw new Error('Failed to generate image');
+            }
+
+            //setAgentImage(imageUrl);
+
+
+            ///setMessageMintingAgentNft('AI 에이전트 NFT 발행중입니다');
+
+            const contract = getContract({
+                client,
+                chain: polygon,
+                address: userMasterBotContractAddress,
+
+              });
+
+
+            const transaction = mintTo({
+                contract: contract,
+                to: application.walletAddress,
+                nft: {
+                    name: application.agentBot,
+                    description: application.agentBotNumber,
+
+                    ////image: agentImage,
+                    image: imageUrl,
+
+                },
+            });
+
+            //await sendTransaction({ transaction, account: activeAccount as any });
+
+
+
+            //setActiveAccount(smartConnectWallet);
+
+            const transactionResult = await sendAndConfirmTransaction({
+                transaction: transaction,
+                account: activeAccount as any,
+
+                ///////account: smartConnectWallet as any,
+            });
+
+            //console.log("transactionResult", transactionResult);
+
+
+            if (!transactionResult) {
+                throw new Error('AI 에이전트 NFT 발행 실패. 관리자에게 문의해주세요');
+            }
+
+
+
+            // update user MasterBot NFT
+            const response = await fetch('/api/agent/updateApplicationMasterBotInfo', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    applicationId: applicationId,
+                    masterBotInfo: {
+                        contractAddress: userMasterBotContractAddress,
+                        imageUrl: imageUrl,
+                    }
+
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to save MasterBot NFT');
+            }
+
+
+            /*
+            applications.map((item) => {
+                if (item.id === applicationId) {
+                    return {
+                        ...item,
+                        masterBotInfo: {
+                            contractAddress: userMasterBotContractAddress,
+                            imageUrl: imageUrl,
+                        }
+                    }
+                }
+            });
+            */
+           // reload applications
+              const responseApplications = await fetch("/api/agent/getApplications", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    walletAddress: address,
+                }),
+            });
+
+            if (responseApplications.ok) {
+                const dataApplications = await responseApplications.json();
+                setApplications(dataApplications.result.applications);
+            }
+
+
+            
+
+            toast.success('AI 에이전트 NFT 발행 완료');
+
+
+
+
+        } catch (error) {
+            console.error("mintAgentNft error", error);
+
+            toast.error('AI 에이전트 NFT 발행 실패');
+
+            //setMessageMintingAgentNft('AI 에이전트 NFT 발행 실패');
+        }
+        
+
+        setMintingMasterBotNft(
+            mintingMasterBotNft.map((item) => {
+                if (item.applicationId === applicationId) {
+                    return {
+                        applicationId: applicationId,
+                        minting: false,
+                    }
+                } else {
+                    return item;
+                }
+            })
+        );
+
+    }
+
+
+
+
+
+
+
+
+
+
+
     const [isExporting, setIsExporting] = useState(false);
 
     const exportToCSV = async (fileName: string) => {
@@ -2076,6 +2448,48 @@ export default function AIPage({ params }: any) {
                         )}
 
                     </div>
+
+
+
+
+
+                    {/* deploy ERC721 contract for MasterBot */}
+                    {address && (
+                        <div className='w-full flex flex-col gap-5'>
+
+                            {!userMasterBotContractAddress ? (
+                                    
+                                <div className='flex flex-row items-center gap-2'>
+                                    {/* deploy button */}
+                                    <button
+                                        onClick={() => {
+                                            deployErc721ContractForMasterBot();
+                                        }}
+                                        disabled={loadingDeployErc721Contract}
+                                        className={`${loadingDeployErc721Contract ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
+                                            hover:bg-blue-600
+                                        `}
+                                    >
+                                        {loadingDeployErc721Contract ? "생성중..." : "마스트봇 NFT 계약주소 생성하기"}
+                                    </button>
+                                </div>
+
+                            ) : (
+                                <div className='w-full flex flex-col xl:flex-row items-start gap-2'>
+                                    <span className='text-sm text-gray-800'>
+                                        마스트봇 NFT 계약주소:
+                                    </span>
+                                    <span className='text-sm text-gray-800'>
+                                        {userMasterBotContractAddress.slice(0, 10)}...{userMasterBotContractAddress.slice(-10)}
+                                    </span>
+                                </div>
+                            )}
+
+                        </div>
+                    )}
+
+
+
 
  
                     {/* applications table */}
@@ -2908,7 +3322,7 @@ export default function AIPage({ params }: any) {
 
 
 
-                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                        <div className='w-full h-full flex flex-row items-end justify-between gap-2'>
 
                                             <div className='flex flex-col gap-2'>
                                                 <span className='text-lg font-semibold text-yellow-500'>
@@ -2977,6 +3391,53 @@ export default function AIPage({ params }: any) {
                                                 </button>
                                             )}
                                         </div>
+
+
+
+
+                                        {/* if masterBotNft exist then show masterBotNft */}
+                                        {/* if masterBotNft not exist then mintMasterBotNft button */}
+                                        
+                                            
+
+                                        { applications.find((item) => item.id === application.id)?.masterBotInfo ? (
+                                            <div className='w-full flex flex-col items-start justify-between gap-2'>
+                                                <div className='w-full flex flex-col items-start justify-between gap-2'>
+                                                    <span className='text-xs text-yellow-800'>
+                                                        마스터봇 NFT
+                                                    </span>
+                                                    <Image
+                                                        src={applications.find((item) => item.id === application.id)?.masterBotInfo.imageUrl}
+                                                        alt="MasterBot"
+                                                        width={200}
+                                                        height={200}
+                                                        className='rounded-lg'
+                                                    />
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <>
+                                            {application?.startTrading?.status && (
+                                            <div className='w-full flex flex-col items-start justify-between gap-2'>
+                                                <button
+                                                    onClick={() => {
+                                                        mintMasterBotNft(application.id);
+                                                    }}
+                                                    disabled={mintingMasterBotNft.find((item) => item.applicationId === application.id)?.minting}
+                                                    className={`${mintingMasterBotNft.find((item) => item.applicationId === application.id)?.minting ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
+                                                        hover:bg-blue-600
+                                                    `}
+                                                >
+                                                    {mintingMasterBotNft.find((item) => item.applicationId === application.id)?.minting ? "민팅중..." : "마스터봇 NFT 발행하기"}
+                                                </button>
+                                            </div>
+                                            )}
+                                            </>
+                                        )}
+
+                                
+
+
 
             
                                     </div>
