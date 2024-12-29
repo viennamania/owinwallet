@@ -662,8 +662,6 @@ export default function AIPage({ params }: any) {
 
             setLoadingApplications(false);
 
-            setIsAdmin(true);
-
         };
 
         if (address) {
@@ -2385,8 +2383,6 @@ export default function AIPage({ params }: any) {
                                             const total = data.result.totalCount;
 
                                             setApplications(data.result.applications);
-
-                                            setIsAdmin(true);
 
                                             setLoadingApplications(false);
 
