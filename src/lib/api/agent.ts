@@ -743,6 +743,30 @@ export async function getOneByWalletAddress(walletAddress: string) {
 }
 
 
+// get One By OkxUid
+export async function getOneByOkxUid(okxUid: string) {
+
+  //console.log('getOneByOkxUid okxUid: ' + okxUid);
+
+  if (!okxUid) {
+    return null;
+  }
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('agents');
+
+  const result = await collection.findOne({ okxUid: okxUid });
+
+  return result;
+
+}
+
+
+
+
+
+
+
 // update agent asset valuation
 export async function updateAssetValuation(
   {

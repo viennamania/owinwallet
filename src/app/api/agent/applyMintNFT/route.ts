@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import {
 	insertOne,
+  getOneByOkxUid,
 } from '@lib/api/agent';
 
 // getOneByContractAddress
@@ -103,6 +104,13 @@ export async function POST(request: NextRequest) {
   if (!uid) {
     return NextResponse.error();
   }
+
+  // if uid is already exists, return error
+  const resultByUid = await getOneByOkxUid(uid);
+  if (resultByUid) {
+    return NextResponse.error();
+  }
+
 
 
   const result = await insertOne({
