@@ -77,9 +77,7 @@ import { deployERC721Contract } from 'thirdweb/deploys';
 
 
 import {
-    
     getNFT,
-    getOwnedNFTs,
     mintTo
 } from "thirdweb/extensions/erc721";
 

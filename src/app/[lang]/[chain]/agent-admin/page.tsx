@@ -58,27 +58,15 @@ import { getDictionary } from "../../../dictionaries";
 
 import { deployERC721Contract } from 'thirdweb/deploys';
 
-import {
-    lazyMint,
-    claimTo,
-    mintTo,
- 
-    totalSupply,
-    nextTokenIdToMint,
-  
-    //nextTokenIdToClaim,
-
-    getOwnedNFTs,
-
-    getNFT,
-  
-} from "thirdweb/extensions/erc1155";
-
-
 
 import {
+    
     getNFT as getNFT721,
+    getOwnedNFTs,
+    mintTo
 } from "thirdweb/extensions/erc721";
+
+
 
 
 import { getContractMetadata } from "thirdweb/extensions/common";
@@ -561,151 +549,7 @@ export default function AIPage({ params }: any) {
 
 
 
-    console.log("nickname", nickname);
-    console.log("userCode", userCode);
 
-
-  
-
-
-
-
-
-
-
-
-
-    /* my NFTs */
-    const [myNfts, setMyNfts] = useState([] as any[]);
-
-    const [amountNft100, setAmountNft100] = useState(0);
-    const [amountNft1000, setAmountNft1000] = useState(0);
-    const [amountNft10000, setAmountNft10000] = useState(0);
-
-
-    
-    useEffect(() => {
-
-
-        const getMyNFTs = async () => {
-
-            try {
-
-
-                const nfts = await getOwnedNFTs({
-                    contract: contractErc1155,
-                    start: 0,
-                    count: 10,
-                    address: address,
-                });
-
-                setMyNfts( nfts );
-
-                // if id is 0n, then it is 100 TBOT
-                // if id is 1n, then it is 1000 TBOT
-                // if id is 2n, then it is 10000 TBOT
-
-
-                nfts.forEach((nft) => {
-                    if (Number(nft.id) === 0) {
-                        setAmountNft100( Number(nft.quantityOwned) );
-                    } else if (Number(nft.id) === 1) {
-                        setAmountNft1000( Number(nft.quantityOwned) );
-                    } else if (Number(nft.id) === 2) {
-                        setAmountNft10000( Number(nft.quantityOwned) );
-                    }
-                } );
-
-
-            } catch (error) {
-                console.error("Error getting NFTs", error);
-            }
-
-        };
-
-        if (address) {
-            getMyNFTs();
-        }
-
-    }
-    , [ address ]);
-    
-
-
-    console.log("myNfts", myNfts);
-
-    console.log("amountNft100", amountNft100);
-
-
-    // claim NFT (ERC1155) for the user
-    const [claimingNFT, setClaimingNFT] = useState(false);
-    const claimNFT = async () => {
-
-        if (claimingNFT) {
-            return;
-        }
-
-        if (address === "") {
-            toast.error(Please_connect_your_wallet_first);
-            return;
-        }
-
-        if (confirm("TBOT NFT를 구매하시겠습니까?")) {
-
-
-            setClaimingNFT(true);
-
-            const transaction = claimTo({
-                contract: contractErc1155,
-                to: address,
-                tokenId: 0n,
-                quantity: 1n,
-            });
-
-            try {
-                const result = await sendAndConfirmTransaction({
-                    account: activeAccount as any,
-                    transaction: transaction,
-                });
-
-                console.log("result", result);
-
-                toast.success(Alert_NFT_minted);
-
-
-                // get NFTs again
-                const nfts = await getOwnedNFTs({
-                    contract: contractErc1155,
-                    start: 0,
-                    count: 10,
-                    address: address,
-                });
-
-                setMyNfts( nfts );
-
-                nfts.forEach((nft) => {
-                    if (Number(nft.id) === 0) {
-                        setAmountNft100( Number(nft.quantityOwned) );
-                    } else if (Number(nft.id) === 1) {
-                        setAmountNft1000( Number(nft.quantityOwned) );
-                    } else if (Number(nft.id) === 2) {
-                        setAmountNft10000( Number(nft.quantityOwned) );
-                    }
-                } );
-
-
-
-
-            } catch (error) {
-                console.error("Error claiming NFT", error);
-            }
-
-            setClaimingNFT(false);
-            
-
-        }
-
-    }
 
 
 
