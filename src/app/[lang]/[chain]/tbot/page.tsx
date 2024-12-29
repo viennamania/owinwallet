@@ -160,17 +160,13 @@ export default function AIPage({ params }: any) {
 
     const searchParams = useSearchParams();
 
-    const center = searchParams.get('center');
+    const center = searchParams.get('center') || "owin_kingkong_bot";
 
-    const wallet = searchParams.get('wallet');
+    const agent = searchParams.get('agent') || "0xD146c66F924C8A1F533ddFFFD63abff11921DdcF";
 
-    const agent = searchParams.get('agent');
-
-    //console.log("agent", agent);
+    const agentNumber = searchParams.get('tokenId') || "0";
 
 
-
-    const agentNumber = searchParams.get('tokenId');
     
     
     const [data, setData] = useState({
@@ -2031,149 +2027,154 @@ export default function AIPage({ params }: any) {
                             AI 트레이딩 TBOT 서비스센터 입니다.
                         </span>
                     </div>
-                    <div className='flex flex-row items-center gap-2'>
 
-                        <div className='flex flex-col gap-2'>
+                    {!myAgent?.okxUid && (
+                        <>
 
+                            <div className='flex flex-row items-center gap-2'>
 
-
-                            {/* AI 트레이딩 TBOT 서비스센터 입니다. */}
-                            <span className="text-xs font-semibold text-gray-800">
-                                
-                                TBOT 센터는 본인 계좌로 운영자금을 디파짓하여 AI트레이딩을 제공합니다. <br />
-                                TBOT을 민팅하면 Master bot이 지원을 합니다. <br />
-                                코인선물투자 개념과 트레이딩에 대한 교육을 제공합니다.
-                            </span>
-                        </div>
-
-                        <Image
-                            src="/icon-tbot.png"
-                            alt="ChatGPT"
-                            width={100}
-                            height={40}
-                            className='bg-zinc-100 p-2 rounded'
-                        />
+                                <div className='flex flex-col gap-2'>
 
 
-                    </div>
 
-
-                    <div className='w-full  flex flex-col gap-5 '>
-
-                        <div className='flex flex-col gap-5 '>
-
-                            <div className='flex flex-col gap-5 '>
-                                <div className='flex flex-row items-center gap-2'>
-                                    {/* dot */}
-                                    <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
-                                    <span className='text-lg font-semibold'>
-                                        TBOT 특징
+                                    {/* AI 트레이딩 TBOT 서비스센터 입니다. */}
+                                    <span className="text-xs font-semibold text-gray-800">
+                                        
+                                        TBOT 센터는 본인 계좌로 운영자금을 디파짓하여 AI트레이딩을 제공합니다. <br />
+                                        TBOT을 민팅하면 Master bot이 지원을 합니다. <br />
+                                        코인선물투자 개념과 트레이딩에 대한 교육을 제공합니다.
                                     </span>
                                 </div>
-                                <span className='text-sm text-gray-500'>
-                                    1. 자금관리. 본인의 거래소 계정에서 직접 관리, 입출금 자류롭게 가능, 계좌 잔고 50% 이상 출금 시 서비스 중지
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    2. 계정제한. - 개인당 최대 10개 TBOT 운영가능, - 거래소별 최대 3개의 계정 생성 가능 (신분증 종류별 1개, 여권,주민,운전면서) .
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    3. TBOT 아카테미를 통해서 트레이딩 투자 개념을 교육시켜 드립니다. - AI트레이딩 로봇이 어떻게 작동하고, 실적을 보고 관리하는 등 트레이딩 개념을 이해하고 AI트레이딩 서비스를 사용 할 수 있도록 교육제공. - 유저별 사용을 위한 플랫폼의 설치와 세팅도 지원.
-                                </span>
+
+                                <Image
+                                    src="/icon-tbot.png"
+                                    alt="ChatGPT"
+                                    width={100}
+                                    height={40}
+                                    className='bg-zinc-100 p-2 rounded'
+                                />
+
                             </div>
 
-                            <div className='flex flex-col gap-5 '>
-                                <div className='flex flex-row items-center gap-2'>
-                                    {/* dot */}
-                                    <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
-                                    <span className='text-lg font-semibold'>
-                                        리스크 고지
-                                    </span>
+
+                            <div className='w-full  flex flex-col gap-5 '>
+
+                                <div className='flex flex-col gap-5 '>
+
+                                    <div className='flex flex-col gap-5 '>
+                                        <div className='flex flex-row items-center gap-2'>
+                                            {/* dot */}
+                                            <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
+                                            <span className='text-lg font-semibold'>
+                                                TBOT 특징
+                                            </span>
+                                        </div>
+                                        <span className='text-sm text-gray-500'>
+                                            1. 자금관리. 본인의 거래소 계정에서 직접 관리, 입출금 자류롭게 가능, 계좌 잔고 50% 이상 출금 시 서비스 중지
+                                        </span>
+                                        <span className='text-sm text-gray-500'>
+                                            2. 계정제한. - 개인당 최대 10개 TBOT 운영가능, - 거래소별 최대 3개의 계정 생성 가능 (신분증 종류별 1개, 여권,주민,운전면서) .
+                                        </span>
+                                        <span className='text-sm text-gray-500'>
+                                            3. TBOT 아카테미를 통해서 트레이딩 투자 개념을 교육시켜 드립니다. - AI트레이딩 로봇이 어떻게 작동하고, 실적을 보고 관리하는 등 트레이딩 개념을 이해하고 AI트레이딩 서비스를 사용 할 수 있도록 교육제공. - 유저별 사용을 위한 플랫폼의 설치와 세팅도 지원.
+                                        </span>
+                                    </div>
+
+                                    <div className='flex flex-col gap-5 '>
+                                        <div className='flex flex-row items-center gap-2'>
+                                            {/* dot */}
+                                            <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
+                                            <span className='text-lg font-semibold'>
+                                                리스크 고지
+                                            </span>
+                                        </div>
+                                        <span className='text-sm text-gray-500'>
+                                            1. 투자원금 손실 가능성 있음
+                                        </span>
+                                        <span className='text-sm text-gray-500'>
+                                            2. 과거 수익률이 미래 수익을 보장하지 않음
+                                        </span>
+                                        <span className='text-sm text-gray-500'>
+                                            3. 높은 레버리지 거래의 위험성 인지 필요
+                                        </span>
+                                    </div>
+
+                                    <div className='flex flex-col gap-5 '>
+                                        <div className='flex flex-row items-center gap-2'>
+                                            {/* dot */}
+                                            <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
+                                            <span className='text-lg font-semibold'>
+                                                FAQ
+                                            </span>
+                                        </div>
+                                        <span className='text-sm text-gray-500'>
+                                            1. 수익 반영 주기 . TBOT의 수익반영은 매일매일입니다. MASTER BOT의 수익반영은 주 단위 입니다.
+                                        </span>
+                                        <span className='text-sm text-gray-500'>
+                                            2. 본인 계좌에 인출과 마스터봇의 작동 거래소의 본인 계좌를 인출을 하면, Master bot의 작동은 중지합니다 .
+                                        </span>
+                                    </div>
+
                                 </div>
-                                <span className='text-sm text-gray-500'>
-                                    1. 투자원금 손실 가능성 있음
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    2. 과거 수익률이 미래 수익을 보장하지 않음
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    3. 높은 레버리지 거래의 위험성 인지 필요
-                                </span>
+
                             </div>
 
-                            <div className='flex flex-col gap-5 '>
-                                <div className='flex flex-row items-center gap-2'>
-                                    {/* dot */}
-                                    <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
-                                    <span className='text-lg font-semibold'>
-                                        FAQ
-                                    </span>
-                                </div>
-                                <span className='text-sm text-gray-500'>
-                                    1. 수익 반영 주기 . TBOT의 수익반영은 매일매일입니다. MASTER BOT의 수익반영은 주 단위 입니다.
-                                </span>
-                                <span className='text-sm text-gray-500'>
-                                    2. 본인 계좌에 인출과 마스터봇의 작동 거래소의 본인 계좌를 인출을 하면, Master bot의 작동은 중지합니다 .
-                                </span>
+
+
+                            {/* event */}
+                            {/*
+                            EVENT 1. 100 TBOT 100명 무료!  100-100-100 이벤트 
+
+                            > 100 TBOT을 무료로 제공합니다. 
+                            1. 100 TBOT을 무료 구매하고, 
+                            2. OKX를 가입하면  OKX 본인계죄로 100 USDT를 무상으로 지급 !
+                            3. 100 MASTER BOT 무료 민팅 !
+                            */}
+                            {/* impact text */}
+                            <div className='w-full flex flex-col gap-5 '>
+                                    
+                                    <div className='flex flex-col gap-5
+                                        border border-gray-300 p-4 rounded-lg bg-gray-100
+                                    '>
+                                        <div className='flex flex-row items-center gap-2'>
+                                            {/* dot */}
+                                            <div className='w-4 h-4 bg-red-500 rounded-full'></div>
+                                            <span className='text-lg font-semibold text-red-500'>
+                                                EVENT 1. 100 TBOT 100명 무료!  100-100-100 이벤트
+                                            </span>
+                                        </div>
+                                        <span className='text-sm text-gray-800
+                                            font-semibold
+                                            bg-yellow-200 p-2 rounded-lg
+                                        '>
+                                            * 100 TBOT을 무료로 제공합니다.
+                                        </span>
+
+                                        <span className='text-sm text-green-800
+                                            font-semibold
+                                            bg-yellow-200 p-2 rounded-lg
+                                        '>
+                                            1. 100 TBOT을 무료 구매하고, 
+                                        </span>
+                                        <span className='text-sm text-green-800
+                                            font-semibold
+                                            bg-yellow-200 p-2 rounded-lg
+                                        '>
+                                            2. OKX를 가입하면  OKX 본인계죄로 100 USDT를 무상으로 지급 !
+                                        </span>
+                                        <span className='text-sm text-green-800
+                                            font-semibold
+                                            bg-yellow-200 p-2 rounded-lg
+                                        '>
+                                            3. 100 MASTER BOT 무료 민팅 !
+                                        </span>
+                                    </div>
+
                             </div>
 
-                        </div>
-
-                    </div>
-
-
-
-                    {/* event */}
-                    {/*
-                    EVENT 1. 100 TBOT 100명 무료!  100-100-100 이벤트 
-
-                    > 100 TBOT을 무료로 제공합니다. 
-                    1. 100 TBOT을 무료 구매하고, 
-                    2. OKX를 가입하면  OKX 본인계죄로 100 USDT를 무상으로 지급 !
-                    3. 100 MASTER BOT 무료 민팅 !
-                    */}
-                    {/* impact text */}
-                    <div className='w-full flex flex-col gap-5 '>
-                            
-                            <div className='flex flex-col gap-5
-                                border border-gray-300 p-4 rounded-lg bg-gray-100
-                            '>
-                                <div className='flex flex-row items-center gap-2'>
-                                    {/* dot */}
-                                    <div className='w-4 h-4 bg-red-500 rounded-full'></div>
-                                    <span className='text-lg font-semibold text-red-500'>
-                                        EVENT 1. 100 TBOT 100명 무료!  100-100-100 이벤트
-                                    </span>
-                                </div>
-                                <span className='text-sm text-gray-800
-                                    font-semibold
-                                    bg-yellow-200 p-2 rounded-lg
-                                '>
-                                    * 100 TBOT을 무료로 제공합니다.
-                                </span>
-
-                                <span className='text-sm text-green-800
-                                    font-semibold
-                                    bg-yellow-200 p-2 rounded-lg
-                                '>
-                                    1. 100 TBOT을 무료 구매하고, 
-                                </span>
-                                <span className='text-sm text-green-800
-                                    font-semibold
-                                    bg-yellow-200 p-2 rounded-lg
-                                '>
-                                    2. OKX를 가입하면  OKX 본인계죄로 100 USDT를 무상으로 지급 !
-                                </span>
-                                <span className='text-sm text-green-800
-                                    font-semibold
-                                    bg-yellow-200 p-2 rounded-lg
-                                '>
-                                    3. 100 MASTER BOT 무료 민팅 !
-                                </span>
-                            </div>
-
-                    </div>
-
-
+                        </>
+                    )}
+                    
 
 
                     <div className='mt-10 w-full flex flex-col items-start gap-5'>
@@ -2360,34 +2361,65 @@ export default function AIPage({ params }: any) {
                         </div>
                     )}
 
+
+                    {/* masterBot */}
+                    {myAgent?.masterBotInfo ? (
+                        <div className='w-full flex flex-col gap-2
+                            border border-gray-300 p-4 rounded-lg
+                        '>
+                            <div className='flex flex-row items-center gap-2'>
+                                <Image
+                                    src="/logo-opensea.png"
+                                    alt="OpenSea"
+                                    width={20}
+                                    height={20}
+                                />
+                                <span className='text-sm font-semibold text-blue-500'>
+                                    Master Bot NFT
+                                </span>
+                            </div>
+
+                            <div className='flex flex-row items-center gap-2'>
+                                <Image
+                                    src={myAgent?.masterBotInfo?.imageUrl || "/logo-masterbot100.png"}
+                                    alt="Master Bot"
+                                    width={500}
+                                    height={500}
+                                    className='animate-pulse w-full rounded-lg'
+                                />
+
+                            </div>
+                        </div>
+                    ) : (
      
+                        <div className='w-full flex flex-col xl:flex-row items-center justify-between gap-2'>
+                            <button
+                                className='w-full bg-blue-500 text-zinc-100 p-2 rounded-lg text-sm font-semibold'
+                                onClick={() => {
+                                    //window.open("https://www.htx.com.pk/invite/en-us/1h?invite_code=z73y9223", "_blank");
+                                    // https://www.okx.com/join/69963198
+                                    window.open("https://www.okx.com/join/69963198", "_blank");
+                                }}
+                            >
+                                OKX 가입하러 가기
+                            </button>
+                            {/* OKX 가입 메뉴얼 */}
+                            {/* https://drive.google.com/file/d/1eK_1jIc1PmZxJ-JYnxJKYJohoVqe1Dw9/view */}
 
-                    <div className='w-full flex flex-col xl:flex-row items-center justify-between gap-2'>
-                        <button
-                            className='w-full bg-blue-500 text-zinc-100 p-2 rounded-lg text-sm font-semibold'
-                            onClick={() => {
-                                //window.open("https://www.htx.com.pk/invite/en-us/1h?invite_code=z73y9223", "_blank");
-                                // https://www.okx.com/join/69963198
-                                window.open("https://www.okx.com/join/69963198", "_blank");
-                            }}
-                        >
-                            OKX 가입하러 가기
-                        </button>
-                        {/* OKX 가입 메뉴얼 */}
-                        {/* https://drive.google.com/file/d/1eK_1jIc1PmZxJ-JYnxJKYJohoVqe1Dw9/view */}
+                            <button
+                                className='w-full bg-blue-500 text-zinc-100 p-2 rounded-lg text-sm font-semibold'
+                                onClick={() => {
+                                    ///window.open("https://drive.google.com/file/d/1eK_1jIc1PmZxJ-JYnxJKYJohoVqe1Dw9/view", "_blank");
 
-                        <button
-                            className='w-full bg-blue-500 text-zinc-100 p-2 rounded-lg text-sm font-semibold'
-                            onClick={() => {
-                                ///window.open("https://drive.google.com/file/d/1eK_1jIc1PmZxJ-JYnxJKYJohoVqe1Dw9/view", "_blank");
+                                    // https://drive.google.com/file/d/1tTDrHUodLWmQfUdjYDr3z21WJHKj6I2j/view
+                                    window.open("https://drive.google.com/file/d/1tTDrHUodLWmQfUdjYDr3z21WJHKj6I2j/view", "_blank");
+                                }}
+                            >
+                                OKX 가입 메뉴얼 보러 가기
+                            </button>
+                        </div>
 
-                                // https://drive.google.com/file/d/1tTDrHUodLWmQfUdjYDr3z21WJHKj6I2j/view
-                                window.open("https://drive.google.com/file/d/1tTDrHUodLWmQfUdjYDr3z21WJHKj6I2j/view", "_blank");
-                            }}
-                        >
-                            OKX 가입 메뉴얼 보러 가기
-                        </button>
-                    </div>
+                    )}
 
 
 
@@ -2657,24 +2689,26 @@ export default function AIPage({ params }: any) {
 
                                         {/* got to install htx */}
                                         {/* https://www.htx.com.pk/en-us/v/register/double-invite/web/?inviter_id=11343840&invite_code=z73y9223 */}
-                                        <div className='flex flex-col gap-2'>
-                                            <span className='text-sm font-semibold text-gray-500'>
-                                                OKX 계정이 없으신가요?
-                                            </span>
-                                            <button
-                                                className='bg-blue-500 text-zinc-100 p-2 rounded-lg text-lg font-semibold
-                                                    hover:bg-gray-300 hover:text-gray-500 hover:shadow-lg
-                                                '
-                                                onClick={() => {
-                                                    ///window.open('https://www.htx.com.pk/en-us/v/register/double-invite/web/?inviter_id=11343840&invite_code=z73y9223', "_blank");
+                                        {!myAgent?.startTrading?.status && (
+                                            <div className='flex flex-col gap-2'>
+                                                <span className='text-sm font-semibold text-gray-500'>
+                                                    OKX 계정이 없으신가요?
+                                                </span>
+                                                <button
+                                                    className='bg-blue-500 text-zinc-100 p-2 rounded-lg text-lg font-semibold
+                                                        hover:bg-gray-300 hover:text-gray-500 hover:shadow-lg
+                                                    '
+                                                    onClick={() => {
+                                                        ///window.open('https://www.htx.com.pk/en-us/v/register/double-invite/web/?inviter_id=11343840&invite_code=z73y9223', "_blank");
 
-                                                    // https://www.okx.com/join/69963198
-                                                    window.open('https://www.okx.com/join/69963198', "_blank");
-                                                }}
-                                            >
-                                                OKX 계정 만들기
-                                            </button>
-                                        </div>
+                                                        // https://www.okx.com/join/69963198
+                                                        window.open('https://www.okx.com/join/69963198', "_blank");
+                                                    }}
+                                                >
+                                                    OKX 계정 만들기
+                                                </button>
+                                            </div>
+                                        )}
 
                                         <div className='w-full flex flex-col gap-2
                                             border border-gray-300 p-4 rounded-lg
@@ -2712,124 +2746,146 @@ export default function AIPage({ params }: any) {
 
 
 
-                                            <span className='text-lg font-semibold text-blue-500 '>
-                                                Master Bot 정보
-                                            </span>
+                                            <div className='w-full flex flex-col gap-2
+                                                border border-gray-300 p-4 rounded-lg
+                                                bg-green-100
+                                            '>
 
-                                            {/* 신청번호 */}
-                                            <span className='text-xl font-semibold text-red-500'>
-                                                신청번호: #{myAgent?.id}
-                                            </span>
+                                                <span className='text-lg font-semibold text-blue-500 '>
+                                                    Master Bot 정보
+                                                </span>
 
-
-
-                                            <div className='flex flex-col gap-2'>
-                                                
-                                                <div className='flex flex-row items-center justify-between gap-2'>
-                                                    <span className='text-sm font-semibold text-gray-500'>
-                                                        OKX UID: {myAgent?.okxUid}
-                                                    </span>
-                                                    <Image
-                                                        src="/verified.png"
-                                                        alt="verified"
-                                                        width={20}
-                                                        height={20}
-                                                    />
-                                                </div>
-
-                                                {/*
-                                                <div className='flex flex-row items-center justify-between gap-2'>
-                                                    <span className='text-sm font-semibold text-gray-500'>
-                                                        API Access Key: {myAgent.apiAccessKey.substring(0, 10) + "..."}
-                                                    </span>
-                                                    <Image
-                                                        src="/verified.png"
-                                                        alt="verified"
-                                                        width={20}
-                                                        height={20}
-                                                    />
-                                                </div>
-
-                                                <div className='flex flex-row items-center justify-between gap-2'>
-                                                    <span className='text-sm font-semibold text-gray-500'>
-                                                        API Secret Key: {myAgent.apiSecretKey.substring(0, 10) + "..."}
-                                                    </span>
-                                                    <Image
-                                                        src="/verified.png"
-                                                        alt="verified"
-                                                        width={20}
-                                                        height={20}
-                                                    />
-                                                </div>
-
-                                                <div className='flex flex-row items-center justify-between gap-2'>
-                                                    <span className='text-sm font-semibold text-gray-500'>
-                                                        API Password: {myAgent?.apiPassword?.substring(0, 10) + "..."}
-                                                    </span>
-                                                    <Image
-                                                        src="/verified.png"
-                                                        alt="verified"
-                                                        width={20}
-                                                        height={20}
-                                                    />
-                                                </div>
-                                                */}
+                                                {/* 신청번호 */}
+                                                <span className='text-xl font-semibold text-red-500
+                                                    bg-yellow-200 p-2 rounded-lg
+                                                '>
+                                                    신청번호: #{myAgent?.id}
+                                                </span>
 
 
-                                                {/* KYC Level */}
-                                                {/* myAgent.accountConfig.data.kycLv */}
-                                                <div className='flex flex-row items-center justify-between gap-2'>
-                                                    <span className='text-sm font-semibold text-gray-500'>
-                                                        KYC Level: {myAgent?.accountConfig?.data?.kycLv}
-                                                    </span>
-
-                                                    {myAgent?.accountConfig?.data?.kycLv < 2 ? (
-                                                        <div className='flex flex-row items-center gap-2'>
-                                                            <span className='text-sm font-semibold text-red-500'>
-                                                                KYC 레벨이 낮습니다.
+                                            {/* tradingAccountBalance */}
+                                            {myAgent?.okxUid && (
+                                                <div className='w-full flex flex-row items-center justify-between gap-2
+                                                        border border-gray-300 p-4 rounded-lg
+                                                    '>
+                                                        <div className='flex flex-col gap-2'>
+                                                            <span className='text-xs text-yellow-800'>
+                                                                OKX Trading Balance
+                                                            </span>
+                                                            <span className='text-4xl text-green-500 font-semibold'>
+                                                                {
+                                                                    Number(myAgent?.tradingAccountBalance?.balance).toLocaleString('en-US', {
+                                                                        style: 'currency',
+                                                                        currency: 'USD',
+                                                                    })
+                                                                }
+                                                            </span>
+                                                            {/* convert timestamp to date */}
+                                                            <span className='text-xs text-gray-800'>
+                                                                {myAgent?.tradingAccountBalance?.timestamp &&
+                                                                    new Date(myAgent?.tradingAccountBalance?.timestamp).toLocaleString()
+                                                                }
                                                             </span>
                                                         </div>
+                                                        {/*
+                                                        <button
+                                                            onClick={() => {
+                                                                checkTradingAccountBalance(
+                                                                    myAgent.id,
+                                                                    myAgent.apiAccessKey,
+                                                                    myAgent.apiSecretKey,
+                                                                    myAgent.apiPassword,
+                                                                );
+                                                            }}
+                                                            disabled={
+                                                                checkingTradingAccountBalance
+                                                            }
+                                                            className={`${checkingTradingAccountBalance ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
+                                                                hover:bg-blue-600
+                                                            `}
+                                                        >
+                                                            {checkingTradingAccountBalance ? "Updating..." : "Update"}
+                                                        </button>
+                                                        */}
+                                                    </div>
+                                                )}
 
-                                                    ) : (
+
+
+                                                <div className='flex flex-col gap-2
+                                                    border border-gray-300 p-4 rounded-lg
+                                                '>
+                                                    
+                                                    <div className='flex flex-row items-start justify-between gap-2'>
+                                                        <div className='flex flex-col gap-2'>
+                                                            <span className='text-sm font-semibold text-gray-500'>
+                                                                OKX UID: {myAgent?.okxUid}
+                                                            </span>
+                                                            {/*
+                                                            <span className='text-sm font-semibold text-gray-500'>
+                                                                API Access Key: {myAgent.apiAccessKey.substring(0, 10) + "..."}
+                                                            </span>
+                                                            <span className='text-sm font-semibold text-gray-500'>
+                                                                API Secret Key: {myAgent.apiSecretKey.substring(0, 10) + "..."}
+                                                            </span>
+                                                            <span className='text-sm font-semibold text-gray-500'>
+                                                                API Password: {myAgent?.apiPassword?.substring(0, 10) + "..."}
+                                                            </span>
+                                                            */}
+                                                        </div>
                                                         <Image
                                                             src="/verified.png"
                                                             alt="verified"
                                                             width={20}
                                                             height={20}
                                                         />
-                                                    )}
-                                                </div>
+                                                    </div>
 
-                                           
+                                                    {/* KYC Level */}
+                                                    {/* myAgent.accountConfig.data.kycLv */}
+                                                    <div className='w-full flex flex-row items-center justify-between gap-2'>
+
+
+                                                        {myAgent?.accountConfig?.data?.kycLv < 2 ? (
+                                                            <div className='flex flex-row items-center gap-2'>
+                                                                <span className='text-sm font-semibold text-red-500'>
+                                                                    본인 인증 필요
+                                                                </span>
+                                                            </div>
+
+                                                        ) : (
+                                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                                <span className='text-sm font-semibold text-green-500'>
+                                                                    본인 인증 완료
+                                                                </span>
+                                                                <Image
+                                                                    src="/verified.png"
+                                                                    alt="verified"
+                                                                    width={20}
+                                                                    height={20}
+                                                                />
+                                                            </div>
+                                                        )}
+                                                    </div>
 
 
 
 
-                                                {/*
-                                                <div className='hidden flex-row items-center justify-between gap-2'>
                                                     <span className='text-sm font-semibold text-gray-500'>
-                                                        OKX USDT(TRON) 지갑주소: {myAgent.htxUsdtWalletAddress.substring(0, 10) + "..."}
+                                                        닉네임: {myAgent.userName}
                                                     </span>
-                                                    <Image
-                                                        src="/verified.png"
-                                                        alt="verified"
-                                                        width={20}
-                                                        height={20}
-                                                    />
-                                                </div>
-                                                */}
+                                                    <span className='text-sm font-semibold text-gray-500'>
+                                                        핸드폰번호: {myAgent.userPhoneNumber}
+                                                    </span>
+                                                    <span className='text-sm font-semibold text-gray-500'>
+                                                        이메일주소: {myAgent.userEmail}
+                                                    </span>
 
-                                                <span className='text-sm font-semibold text-gray-500'>
-                                                    닉네임: {myAgent.userName}
-                                                </span>
-                                                <span className='text-sm font-semibold text-gray-500'>
-                                                    핸드폰번호: {myAgent.userPhoneNumber}
-                                                </span>
-                                                <span className='text-sm font-semibold text-gray-500'>
-                                                    이메일주소: {myAgent.userEmail}
-                                                </span>
+                                                </div>
+
 
                                             </div>
+
 
 
                                             {/* checkHtxAssetValuation */}
@@ -2878,27 +2934,7 @@ export default function AIPage({ params }: any) {
 
                                         </div>
 
-                                        {/* masterBot */}
-                                        {myAgent?.masterBotInfo && (
-                                            <div className='w-full flex flex-col gap-2
-                                                border border-gray-300 p-4 rounded-lg
-                                            '>
-                                                <span className='text-lg font-semibold text-blue-500'>
-                                                    Master Bot NFT
-                                                </span>
 
-                                                <div className='flex flex-row items-center gap-2'>
-                                                    <Image
-                                                        src={myAgent?.masterBotInfo?.imageUrl || "/logo-masterbot100.png"}
-                                                        alt="Master Bot"
-                                                        width={200}
-                                                        height={200}
-                                                        className='animate-pulse w-full rounded-lg'
-                                                    />
-
-                                                </div>
-                                            </div>
-                                        )}
                                         
 
 
@@ -3961,39 +3997,10 @@ function Header(
             </button>
 
 
-          <div className="flex flex-row gap-2 items-center">
+            <div className="flex flex-row gap-2 items-center">
 
-            <button
-              onClick={() => {
-                router.push(
-                    "/kr/polygon/tbot?agent=" + agent + "&tokenId=" + tokenId + "&center=" + center
-                  );
-              }}
-              className="text-gray-600 hover:underline text-xs xl:text-lg"
-            >
-              TBOT
-            </button>
-            <button
-              onClick={() => {
-                router.push(
-                    '/kr/polygon/profile-settings?agent=' + agent + '&tokenId=' + tokenId + '&center=' + center
-                );
-              }}
-              className="text-gray-600 hover:underline text-xs xl:text-lg"
-            >
-              SETTINGS
-            </button>
-            <button
-                onClick={() => {
-                    router.push(
-                        '/kr/polygon/my-nft?agent=' + agent + '&tokenId=' + tokenId + '&center=' + center
-                    );
-                }}
-                className="text-gray-600 hover:underline text-xs xl:text-lg"
-              >
-                NFT
-              </button>
-          </div>
+            </div>
+
         </div>
         
       </header>
