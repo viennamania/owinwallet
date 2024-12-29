@@ -621,7 +621,11 @@ export default function AIPage({ params }: any) {
 
 
     // get all applications
-    const [isAdmin, setIsAdmin] = useState(true);
+    //const [isAdmin, setIsAdmin] = useState(false);
+
+    // if address is 0x0d2846FDbaAc5e9526f9409aE18d3e2c9CdC9466
+    // then it is admin
+    const isAdmin = address === "0x0d2846FDbaAc5e9526f9409aE18d3e2c9CdC9466";
 
 
     const [totalTradingAccountBalance, setTotalTradingAccountBalance] = useState(0);
@@ -2298,7 +2302,7 @@ export default function AIPage({ params }: any) {
 
 
                     {/* deploy ERC721 contract for MasterBot */}
-                    {address && (
+                    {address && isAdmin && (
                         <div className='w-full flex flex-col gap-5'>
 
                             {!userMasterBotContractAddress ? (
@@ -3261,7 +3265,7 @@ export default function AIPage({ params }: any) {
                                             </div>
                                         ) : (
                                             <>
-                                            {application?.startTrading?.status && (
+                                            {isAdmin && application?.startTrading?.status && (
                                             <div className='w-full flex flex-col items-start justify-between gap-2'>
                                                 <button
                                                     onClick={() => {
