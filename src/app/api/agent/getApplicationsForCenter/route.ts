@@ -32,6 +32,9 @@ export async function POST(request: NextRequest) {
       center,
     });
 
+    //console.log("resultSummary", resultSummary);
+
+
     return NextResponse.json({
   
       result,

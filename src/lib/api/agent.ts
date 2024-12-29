@@ -349,9 +349,11 @@ export async function getSummaryApplicationsForCenter({
     }
   ]).toArray();
 
+  ///console.log('getSummaryApplicationsForCenter result: ' + JSON.stringify(result));
+
   if (result) {
     return {
-      totalCount: result[0].total,
+      result: result,
     };
   } else {
     return null;

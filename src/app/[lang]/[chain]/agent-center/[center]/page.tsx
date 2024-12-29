@@ -621,7 +621,7 @@ export default function CenterPage({ params }: any) {
 
             const data = await response.json();
 
-            console.log("getApplicationsForCenter data", data);
+            //console.log("getApplicationsForCenter data", data);
             //setAgentBotSummaryList(data.resultSummany);
 
 

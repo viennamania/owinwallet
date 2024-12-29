@@ -736,9 +736,37 @@ export default function AIPage({ params }: any) {
 
 
 
-    console.log("address", address);
-    console.log("agent", agent);
+    ///console.log("address", address);
+    //console.log("agent", agent);
     
+    // check box for marketing center
+    // owin, ppump, exms
+    // multiple check box
+    const [marketingCenter, setMarketingCenter] = useState([] as any[]);
+    useEffect(() => {
+        setMarketingCenter([
+            { name: "owin", checked: false },
+            { name: "ppump", checked: false },
+            { name: "exms", checked: false },
+        ]);
+    } , []);
+
+    const handleMarketingCenter = (name: string) => {
+        setMarketingCenter(
+            marketingCenter.map((item) => {
+                if (item.name === name) {
+                    return {
+                        name: name,
+                        checked: !item.checked,
+                    };
+                } else {
+                    return item;
+                }
+            })
+        );
+    };
+
+    console.log("marketingCenter", marketingCenter);
 
 
 
@@ -2174,20 +2202,88 @@ export default function AIPage({ params }: any) {
                                 </span>
                             </div>
 
+                            {/* check box for marketing center */}
+                            {/* owin, ppump, exms */}
+                            <div className='w-full flex flex-row items-center gap-5'>
+                                <div className='flex flex-row items-center gap-2'>
+                                    <input
+                                        type="checkbox"
+                                        id="ppump"
+                                        name="ppump"
+                                        value="ppump"
+                                        checked={
+                                            // if marketingCenter has "ppump" and checked is true or false
+                                            
+                                            marketingCenter.map((item) => item === "ppump").length > 0
+
+                                        }
+                                        onChange={(event) => {
+                                            handleMarketingCenter("ppump");
+                                        }}
+                                    />
+                                    <label htmlFor="ppump">PPUMP</label>
+                                </div>
+                                <div className='flex flex-row items-center gap-2'>
+                                    <input
+                                        type="checkbox"
+                                        id="owin"
+                                        name="owin"
+                                        value="owin"
+                                        checked={
+                                            marketingCenter.map((item) => item === "owin").length > 0
+                                        }
+                                        onChange={(event) => {
+                                            handleMarketingCenter("owin");
+                                        }}
+                                    />
+                                    <label htmlFor="owin">OWIN</label>
+                                </div>
+                                <div className='flex flex-row items-center gap-2'>
+                                    <input
+                                        type="checkbox"
+                                        id="exms"
+                                        name="exms"
+                                        value="exms"
+                                        checked={
+                                            marketingCenter.map((item) => item === "exms").length > 0
+                                        }
+                                        onChange={(event) => {
+                                            handleMarketingCenter("exms");
+                                        }}
+                                    />
+                                    <label htmlFor="exms">EXMS</label>
+                                </div>
+
+                            </div>
+
 
                             {/* totalTradingAccountBalance */}
                             {totalTradingAccountBalance > 0 && (
-                                <div className='w-full flex flex-col gap-2'>
-                                    <span className='text-2xl font-semibold text-gray-800'>
-                                        총 거래 계정 잔고: {
-                                        Number(totalTradingAccountBalance).toLocaleString('en-US', {
-                                            style: 'currency',
-                                            currency: 'USD'
-                                          })
-                                        }
-
-
-                                    </span>
+                                <div className='w-full flex flex-col xl:flex-row items-start justify-between gap-5'>
+                                    {/* startTrading is exist count */}
+                                    <div className='w-full flex flex-row items-center gap-2'>
+                                        <span className='text-lg text-gray-800 font-semibold'>
+                                            시작된 Bot:
+                                        </span>
+                                        <span className='text-4xl text-green-500 font-semibold'>
+                                            {
+                                                applications.filter((item) => item.accountConfig?.data.roleType === "2").length
+                                            }
+                                        </span>
+                                    </div>
+                                    <div className='w-full flex flex-row items-center gap-2'>
+                                        <span className='text-lg text-gray-800 font-semibold'>
+                                            총 거래 계정 잔고:
+                                        </span>
+                                        <span className='text-4xl text-green-500 font-semibold'>
+                                            {
+                                            Number(totalTradingAccountBalance).toLocaleString('en-US', {
+                                                style: 'currency',
+                                                currency: 'USD'
+                                            })
+                                            }
+                                        </span>
+                                    </div>
                                 </div>
                             )}
 
@@ -2201,9 +2297,13 @@ export default function AIPage({ params }: any) {
                                 {!loadingApplications && applications.map((application, index) => (
                                     <div
                                         key={application._id}
-                                        className='w-full flex flex-col gap-5
+                                        className={`w-full flex flex-col gap-5
                                         border border-gray-300 p-4 rounded-lg bg-gray-100
-                                    '>
+
+                                        ${application?.accountConfig?.data.roleType === "2" ? "border-2 border-green-500" : ""}
+
+                                        `}
+                                    >
 
                                         <div className='w-full flex flex-col gap-2
                                             border-b border-gray-300 pb-2
@@ -2451,6 +2551,7 @@ export default function AIPage({ params }: any) {
                                                 </span>
                                             </div>
                                             
+                                            {/*
                                             <button
                                                 onClick={() => {
                                                     checkTradingAccountBalance(
@@ -2469,6 +2570,8 @@ export default function AIPage({ params }: any) {
                                             >
                                                 {checkingTradingAccountBalanceList.find((item) => item.applicationId === application.id)?.checking ? "Checking..." : "Check"}
                                             </button>
+                                            */}
+
                                         </div>
 
 
@@ -2505,7 +2608,7 @@ export default function AIPage({ params }: any) {
                                                     hover:bg-blue-600
                                                 `}
                                             >
-                                                {checkingHtxAssetValuationForAgent.find((item) => item?.applicationId === application.id)?.checking ? "Checking..." : "Check"}
+                                                {checkingHtxAssetValuationForAgent.find((item) => item?.applicationId === application.id)?.checking ? "Updating..." : "Update"}
                                             </button>
                                         </div>
 
