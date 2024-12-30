@@ -2825,16 +2825,35 @@ export default function AIPage({ params }: any) {
                                                 <span className='text-xs text-yellow-800'>
                                                     OKX Funding Balance
                                                 </span>
-                                                <span className='text-sm text-gray-800'>
-                                                    {htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.balance || 0} $(USD)
-                                                </span>
-                                                {/* convert timestamp to date */}
-                                                <span className='text-xs text-gray-800'>
-                                                    {htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.timestamp
-                                                    ? new Date(htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.timestamp).toLocaleString()
-                                                    : ""
-                                                    }
-                                                </span>
+                                                <div className='flex flex-row items-center justify-start gap-2'>
+                                                    <span className='text-lg text-gray-800'>
+                                                        {
+                                                            Number(htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.balance || 0)
+                                                            .toLocaleString('en-US', {
+                                                                style: 'currency',
+                                                                currency: 'USD'
+                                                            })
+                                                        }
+                                                    </span>
+                                                    {/* time ago */}
+                                                    <span className='text-xs text-gray-800'>
+                                                        {htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.timestamp
+                                                        ?
+
+                                                        new Date().getTime() - new Date(htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.timestamp).getTime() < 1000 * 60 ? (
+                                                            ' ' + Math.floor((new Date().getTime() - new Date(htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.timestamp).getTime()) / 1000) + ' ' + '초 전'
+                                                        ) :
+                                                        new Date().getTime() - new Date(htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.timestamp).getTime() < 1000 * 60 * 60 ? (
+                                                            ' ' + Math.floor((new Date().getTime() - new Date(htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.timestamp).getTime()) / 1000 / 60) + ' ' + '분 전'
+                                                        ) : (
+                                                            ' ' + Math.floor((new Date().getTime() - new Date(htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.timestamp).getTime()) / 1000 / 60 / 60) + ' ' + '시간 전'
+                                                        )
+                                                        : ""
+                                                        }
+                                                    </span>
+
+                                                </div>
+
                                             </div>
                                             {/*
                                             <button

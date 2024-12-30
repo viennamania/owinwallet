@@ -2778,10 +2778,47 @@ export default function AIPage({ params }: any) {
                                             {/* accountConfig */}
                                             {application?.accountConfig && (
                                                 <div className='w-full flex flex-col items-start justify-between gap-2'>
-                                                    <div className='flex flex-col gap-2'>
-                                                        <span className='text-xs text-yellow-800'>
-                                                            KYC Level
-                                                        </span>
+                                                    <div className='w-full flex flex-col gap-2'>
+                                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                            <div className='flex flex-row items-center gap-2'>
+                                                                <span className='text-xs text-yellow-800'>
+                                                                    KYC Level
+                                                                </span>
+                                                                {/* time ago */}
+                                                                <span className='text-xs text-gray-800'>
+                                                                    {
+                                                                    new Date().getTime() - application.accountConfig.timestamp < 1000 * 60 ? (
+                                                                        ' ' + Math.floor((new Date().getTime() - application.accountConfig.timestamp) / 1000) + ' ' + '초 전'
+                                                                    ) :
+                                                                    new Date().getTime() - application.accountConfig.timestamp < 1000 * 60 * 60 ? (
+                                                                        ' ' + Math.floor((new Date().getTime() - application.accountConfig.timestamp) / 1000 / 60) + ' ' + '분 전'
+                                                                    ) : (
+                                                                        ' ' + Math.floor((new Date().getTime() - application.accountConfig.timestamp) / 1000 / 60 / 60) + ' ' + '시간 전'
+                                                                    )
+                                                                    }
+                                                                </span>
+                                                            </div>
+                                                            {/* update button */}
+                                                            {/*
+                                                            <button
+                                                                onClick={() => {
+                                                                    checkApiAccessKey(
+                                                                        application.id,
+                                                                        application.apiAccessKey,
+                                                                        application.apiSecretKey,
+                                                                        application.apiPassword,
+                                                                    );
+                                                                }}
+                                                                disabled={checkingApiAccessKeyList.find((item) => item.applicationId === application.id)?.checking}
+                                                                className={`${checkingApiAccessKeyList.find((item) => item.applicationId === application.id)?.checking ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
+                                                                    hover:bg-blue-600
+                                                                `}
+                                                            >
+                                                                {checkingApiAccessKeyList.find((item) => item.applicationId === application.id)?.checking ? "Updating..." : "Update"}
+                                                            </button>
+                                                            */}
+                                                        </div>
+
                                                         <div className='flex flex-row items-center gap-2'>
                                                             <span className='text-sm text-gray-800'>
                                                                 {application.accountConfig.data.kycLv}
@@ -2914,22 +2951,35 @@ export default function AIPage({ params }: any) {
                                                     <span className='text-xs text-yellow-800'>
                                                         OKX 거래 계정 잔고
                                                     </span>
-                                                    <span className='text-4xl text-green-800 font-semibold'>
-                                                        {
-                                                            Number(tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.balance)
-                                                            .toLocaleString('en-US', {
-                                                                style: 'currency',
-                                                                currency: 'USD'
-                                                            })
-                                                        }
-                                                    </span>
-                                                    {/* convert timestamp to date */}
-                                                    <span className='text-xs text-gray-800'>
-                                                        {tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.timestamp
-                                                        ? new Date(tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.timestamp).toLocaleString()
-                                                        : ""
-                                                        }
-                                                    </span>
+                                                    <div className='flex flex-row items-center gap-2'>
+                                                        <span className='text-4xl text-green-800 font-semibold'>
+                                                            {
+                                                                Number(tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.balance)
+                                                                .toLocaleString('en-US', {
+                                                                    style: 'currency',
+                                                                    currency: 'USD'
+                                                                })
+                                                            }
+                                                        </span>
+                                                        {/* convert timestamp to hours minutes ago */}
+                                                        {/* hours minutes ago */}
+                                                        <span className='text-xs text-gray-800'>
+                                                            {tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.timestamp
+                                                            ?
+                                                            new Date().getTime() - tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.timestamp < 1000 * 60 ? (
+                                                                ' ' + Math.floor((new Date().getTime() - tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.timestamp) / 1000) + ' ' + '초 전'
+                                                            ) :
+                                                            new Date().getTime() - tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.timestamp < 1000 * 60 * 60 ? (
+                                                                ' ' + Math.floor((new Date().getTime() - tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.timestamp) / 1000 / 60) + ' ' + '분 전'
+                                                            ) : (
+                                                                ' ' + Math.floor((new Date().getTime() - tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.timestamp) / 1000 / 60 / 60) + ' ' + '시간 전'
+                                                            )
+                                                            : ""
+                                                            }
+                                                        </span>
+
+                                                    </div>
+
                                                 </div>
                                                 {/*
                                                 <button
@@ -2961,17 +3011,39 @@ export default function AIPage({ params }: any) {
                                                     <span className='text-xs text-yellow-800'>
                                                         OKX Funding Balance
                                                     </span>
-                                                    <span className='text-sm text-gray-800'>
-                                                        {htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.balance || 0} $(USD)
-                                                    </span>
-                                                    {/* convert timestamp to date */}
-                                                    <span className='text-xs text-gray-800'>
-                                                        {htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.timestamp
-                                                        ? new Date(htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.timestamp).toLocaleString()
-                                                        : ""
-                                                        }
-                                                    </span>
+
+                                                    <div className='flex flex-row items-center gap-2'>
+                                                        <span className='text-lg text-green-800 font-semibold'>
+                                                            {
+                                                                Number(htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.balance || 0)
+                                                                .toLocaleString('en-US', {
+                                                                    style: 'currency',
+                                                                    currency: 'USD'
+                                                                })
+                                                            }
+                                                        </span>
+
+                                                        {/* convert timestamp to hours minutes ago */}
+                                                        {/* hours minutes ago */}
+                                                        <span className='text-xs text-gray-800'>
+                                                            {htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.timestamp
+                                                            ?
+                                                            new Date().getTime() - htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.timestamp < 1000 * 60 ? (
+                                                                ' ' + Math.floor((new Date().getTime() - htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.timestamp) / 1000) + ' ' + '초 전'
+                                                            ) :
+                                                            new Date().getTime() - htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.timestamp < 1000 * 60 * 60 ? (
+                                                                ' ' + Math.floor((new Date().getTime() - htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.timestamp) / 1000 / 60) + ' ' + '분 전'
+                                                            ) : (
+                                                                ' ' + Math.floor((new Date().getTime() - htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.timestamp) / 1000 / 60 / 60) + ' ' + '시간 전'
+                                                            )
+                                                            : ""
+                                                            }
+                                                        </span>
+                                                    </div>
+
+
                                                 </div>
+                                                {/*
                                                 <button
                                                     onClick={() => {
                                                         checkOkxAssetValuation(
@@ -2990,6 +3062,7 @@ export default function AIPage({ params }: any) {
                                                 >
                                                     {checkingHtxAssetValuationForAgent.find((item) => item?.applicationId === application.id)?.checking ? "Updating..." : "Update"}
                                                 </button>
+                                                */}
                                             </div>
 
 
