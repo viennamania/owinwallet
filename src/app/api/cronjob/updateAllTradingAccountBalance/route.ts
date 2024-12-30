@@ -7,7 +7,8 @@ import {
   getAllAgentsForAILabs,
   //getAllAgentsForLive,
 	updateTradingAccountBalance,
-  updateAssetBalance,
+  //updateAssetBalance,
+  updateAssetValuation
 } from '@lib/api/agent';
 
 
@@ -198,22 +199,53 @@ export async function GET(request: NextRequest) {
           apiSecretKey,
           apiPassword,
         );
-        if (fundingInfo && fundingInfo.code === '0') {
-            
-            //console.log('\nFunding account: ', fundingInfo);
 
-            const assetBalance = {
-              balanes: fundingInfo.data,
-              timestamp: moment().valueOf(),
-            } 
+        let data = {};
 
-            await updateAssetBalance({
-              applicationId: id,
-              assetBalance: assetBalance,
-            });
+          if (fundingInfo.data.length === 0) {
 
-  
-        }
+              data = {
+                balance: 0,
+                timestamp: moment().valueOf(),
+              };
+
+              await updateAssetValuation({
+                applicationId: id,
+                assetValuation: data,
+              });
+
+              return NextResponse.json({
+                  result: {
+                      status: "ok",
+                      assetValuation: data,
+                  }
+              });
+          }
+          
+          //fundingInfo.data.forEach((asset: any) => {
+          fundingInfo.data.forEach(async (asset: any) => {
+
+              if (parseFloat(asset.availBal || '0') > 0) {
+                  ///console.log(`  ${asset.ccy}: ${asset.availBal}`);
+
+
+                  data = {
+                    balance: asset.availBal,
+                    timestamp: moment().valueOf(),
+                  };
+
+                  // call updateAssetValuation
+                  await updateAssetValuation({
+                    applicationId: id,
+                    assetValuation: data,
+                  });
+
+
+
+              }
+
+          });
+
 
 
 

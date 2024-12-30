@@ -134,7 +134,7 @@ export async function POST(request: NextRequest) {
           fundingInfo.data.forEach(async (asset: any) => {
 
               if (parseFloat(asset.availBal || '0') > 0) {
-                  console.log(`  ${asset.ccy}: ${asset.availBal}`);
+                  ///console.log(`  ${asset.ccy}: ${asset.availBal}`);
 
 
                   data = {
