@@ -2398,6 +2398,7 @@ export default function AIPage({ params }: any) {
                                 </button>
 
                                 {/* export button */}
+                                {/*
                                 <button
                                     onClick={() => {
                                         exportToCSV('OKX_신청목록');
@@ -2409,6 +2410,7 @@ export default function AIPage({ params }: any) {
                                 >
                                     {isExporting ? "Exporting..." : "Export"}
                                 </button>
+                                */}
                             </div>
 
                             {loadingApplications && (
@@ -2872,7 +2874,7 @@ export default function AIPage({ params }: any) {
                                         </div>
 
 
-
+                                        {/*
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                                             <div className='flex flex-col gap-2'>
                                                 <span className='text-lg font-semibold text-yellow-500'>
@@ -2882,7 +2884,6 @@ export default function AIPage({ params }: any) {
                                                     {application.userName}
                                                 </span>
                                             </div>
-                                            {/* copy button */}
                                             <button
                                                 onClick={() => {
                                                     navigator.clipboard.writeText(application.userPhoneNumber);
@@ -2895,8 +2896,9 @@ export default function AIPage({ params }: any) {
                                                 {Copy}
                                             </button>
                                         </div>
+                                        */}
 
-
+                                        {/*
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                                             <div className='flex flex-col gap-2'>
                                                 <span className='text-lg font-semibold text-yellow-500'>
@@ -2906,7 +2908,6 @@ export default function AIPage({ params }: any) {
                                                     {application.userEmail.substring(0, 5)}...{application.userEmail.substring(application.userEmail.length - 5)}
                                                 </span>
                                             </div>
-                                            {/* copy button */}
                                             <button
                                                 onClick={() => {
                                                     navigator.clipboard.writeText(application.userEmail);
@@ -2919,10 +2920,12 @@ export default function AIPage({ params }: any) {
                                                 {Copy}
                                             </button>
                                         </div>
+                                        */}
 
 
 
-                                        <div className='w-full hidden flex-row items-center justify-between gap-2'>
+                                        {/*}
+                                        <div className='w-full flex-row items-center justify-between gap-2'>
                                             <div className='flex flex-col gap-2'>
                                                 <span className='text-lg font-semibold text-yellow-500'>
                                                     지갑주소
@@ -2931,7 +2934,6 @@ export default function AIPage({ params }: any) {
                                                     {application.htxUsdtWalletAddress}
                                                 </span>
                                             </div>
-                                            {/* copy button */}
                                             <button
                                                 onClick={() => {
                                                     navigator.clipboard.writeText(application.htxUsdtWalletAddress);
@@ -2944,6 +2946,8 @@ export default function AIPage({ params }: any) {
                                                 {Copy}
                                             </button>
                                         </div>
+                                        */}
+
 
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                                             <div className='flex flex-col gap-2'>
