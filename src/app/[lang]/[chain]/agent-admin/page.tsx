@@ -2853,6 +2853,7 @@ export default function AIPage({ params }: any) {
                                                     }
                                                 </span>
                                             </div>
+                                            {/*
                                             <button
                                                 onClick={() => {
                                                     checkOkxAssetValuation(
@@ -2871,6 +2872,7 @@ export default function AIPage({ params }: any) {
                                             >
                                                 {checkingHtxAssetValuationForAgent.find((item) => item?.applicationId === application.id)?.checking ? "Updating..." : "Update"}
                                             </button>
+                                            */}
                                         </div>
 
 
