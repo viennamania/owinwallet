@@ -1983,6 +1983,23 @@ export default function AIPage({ params }: any) {
     const [usdKrwExchangeRate, setUsdKrwExchangeRate] = useState(1437);
 
 
+    // disconnect
+    const disconnectWallet = () => {
+
+        activeWallet?.disconnect();
+
+        setNickname("");
+        setUserCode("");
+
+        setMasterBot({});
+
+        setMyAgent({});
+
+        
+
+    }
+
+
 
 
     return (
@@ -2196,7 +2213,7 @@ export default function AIPage({ params }: any) {
                                     {/* disconnect button */}
                                     <button
                                         onClick={() => {
-                                            confirm("지갑 연결을 해제하시겠습니까?") && activeWallet?.disconnect();
+                                            confirm("지갑 연결을 해제하시겠습니까?") && disconnectWallet();
                                         }}
                                         className="bg-zinc-800 text-white p-2 rounded-lg"
                                     >
