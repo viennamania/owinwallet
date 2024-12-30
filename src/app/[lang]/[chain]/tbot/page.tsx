@@ -3529,7 +3529,9 @@ export default function AIPage({ params }: any) {
                             `}
                             onClick={() => {
                                 setSelectedMasterBot(0);
-                                setMasterBotPrice(515460);
+                                setMasterBotPrice(
+                                    363 * usdKrwExchangeRate
+                                );
                             } }
                             >
                                 <Image
@@ -3563,7 +3565,9 @@ export default function AIPage({ params }: any) {
                             `}
                             onClick={() => {
                                 setSelectedMasterBot(1);
-                                setMasterBotPrice(859100);
+                                setMasterBotPrice(
+                                    605 * usdKrwExchangeRate
+                                );
                             } }
                             >
                                 <Image
@@ -3598,7 +3602,9 @@ export default function AIPage({ params }: any) {
                             `}
                             onClick={() => {
                                 setSelectedMasterBot(2);
-                                setMasterBotPrice(1718200);
+                                setMasterBotPrice(
+                                    1210 * usdKrwExchangeRate
+                                );
                             } }
                             >
                                 <Image
@@ -3634,7 +3640,9 @@ export default function AIPage({ params }: any) {
                             `}
                             onClick={() => {
                                 setSelectedMasterBot(3);
-                                setMasterBotPrice(8591000);
+                                setMasterBotPrice(
+                                    6050 * usdKrwExchangeRate
+                                );
                             } }
                             >
                                 <Image
@@ -3669,7 +3677,9 @@ export default function AIPage({ params }: any) {
                             `}
                             onClick={() => {
                                 setSelectedMasterBot(4);
-                                setMasterBotPrice(1718200);
+                                setMasterBotPrice(
+                                    12100 * usdKrwExchangeRate
+                                );
                             } }
                             >
 
