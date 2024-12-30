@@ -77,7 +77,7 @@ export async function GET(request: NextRequest) {
     const hour = moment().hour() + 9;
 
     if (
-      hour === 10 || hour === 12 || hour === 14 || hour === 16 || hour === 18 || hour === 20
+      hour === 10 || hour === 14 || hour === 18
     ) {
       sendSms = true;
     }
@@ -86,7 +86,7 @@ export async function GET(request: NextRequest) {
 
   console.log("sendSms", sendSms);
 
-  sendSms = false;
+  //sendSms = false;
   
 
 
