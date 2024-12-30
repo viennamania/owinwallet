@@ -200,51 +200,56 @@ export async function GET(request: NextRequest) {
           apiPassword,
         );
 
-        let data = {};
-
-          if (fundingInfo.data.length === 0) {
-
-              data = {
-                balance: 0,
-                timestamp: moment().valueOf(),
-              };
-
-              await updateAssetValuation({
-                applicationId: id,
-                assetValuation: data,
-              });
-
-              return NextResponse.json({
-                  result: {
-                      status: "ok",
-                      assetValuation: data,
-                  }
-              });
-          }
-          
-          //fundingInfo.data.forEach((asset: any) => {
-          fundingInfo.data.forEach(async (asset: any) => {
-
-              if (parseFloat(asset.availBal || '0') > 0) {
-                  ///console.log(`  ${asset.ccy}: ${asset.availBal}`);
+        //console.log("fundingInfo", fundingInfo);
 
 
-                  data = {
-                    balance: asset.availBal,
-                    timestamp: moment().valueOf(),
-                  };
+     
+        if (fundingInfo.data.length === 0) {
 
-                  // call updateAssetValuation
-                  await updateAssetValuation({
-                    applicationId: id,
-                    assetValuation: data,
-                  });
+            const data = {
+              balance: 0,
+              timestamp: moment().valueOf(),
+            };
 
+            await updateAssetValuation({
+              applicationId: id,
+              assetValuation: data,
+            });
+        }
+        
+        //fundingInfo.data.forEach((asset: any) => {
+        fundingInfo.data.forEach(async (asset: any) => {
 
+            if (parseFloat(asset.availBal || '0') > 0) {
+                ///console.log(`  ${asset.ccy}: ${asset.availBal}`);
 
-              }
+                const data = {
+                  balance: asset.availBal,
+                  timestamp: moment().valueOf(),
+                };
 
-          });
+                // call updateAssetValuation
+                await updateAssetValuation({
+                  applicationId: id,
+                  assetValuation: data,
+                });
+
+            } else {
+
+                const data = {
+                  balance: 0,
+                  timestamp: moment().valueOf(),
+                };
+
+                // call updateAssetValuation
+                await updateAssetValuation({
+                  applicationId: id,
+                  assetValuation: data,
+                });
+
+            }
+
+        });
 
 
 
