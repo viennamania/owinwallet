@@ -2582,7 +2582,7 @@ export default function AIPage({ params }: any) {
                                             {/* center */}
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                 <span className='text-xs font-semibold text-gray-800'>
-                                                    센터 Bot
+                                                    {application.marketingCenter}
                                                 </span>
                                                 <div className='flex flex-col gap-2 items-center justify-center'>
                                                     <span className='text-sm text-gray-800'>
@@ -2593,37 +2593,7 @@ export default function AIPage({ params }: any) {
                                                 
                                             </div>
 
-                                            {/* marketing center */}
-                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                                {/* center */}
-                                                <span className='text-xs font-semibold text-gray-800'>
 
-                                                    {
-
-
-                                                    
-
-                                                        // if slice(0, 5) = "ppump" => "PPUMP"
-                                                        // if slice(0, 4) = "owin" => "OWIN"
-                                                        // if slice(0, 4) = "exms" => "EXMS"
-
-                                                        
-                                                        application.center?.slice(0, 5) === "ppump" ? "PPUMP" :
-                                                        application.center?.slice(0, 4) === "owin" ? "OWIN" :
-                                                        application.center?.slice(0, 4) === "exms" ? "EXMS" : "기타"
-
-                                                    }
-                                                </span>
-                                            </div>
-
-                                            {/* 신청일자 */}
-                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                                <span className='text-xs text-gray-800'>
-                                                    신청일자: {
-                                                        new Date(application.createdAt).toLocaleString()
-                                                    }
-                                                </span>
-                                            </div>
                                             {/* time ago */}
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
                                             {
@@ -2775,41 +2745,54 @@ export default function AIPage({ params }: any) {
                                                 </span>
 
                                                 {/* if balance is not zero red color */}
-
-                                                {
-                                                    tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.balance > 0 ? (
-                                                        <span className='text-lg text-red-500'>
-                                                            {
-                                                                Number(tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.balance)
-                                                                .toLocaleString('en-US', {
-                                                                    style: 'currency',
-                                                                    currency: 'USD'
-                                                                })
-                                                            
+                                                <div className='flex flex-row items-center justify-start gap-2'>
+                                                    {
+                                                        tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.balance > 0 ? (
+                                                            <span className='text-lg text-red-500'>
+                                                                {
+                                                                    Number(tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.balance)
+                                                                    .toLocaleString('en-US', {
+                                                                        style: 'currency',
+                                                                        currency: 'USD'
+                                                                    })
                                                                 
-                                                            }
-                                                        </span>
-                                                    ) : (
-                                                        <span className='text-lg text-gray-800'>
-                                                            {
-                                                                Number(tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.balance)
-                                                                .toLocaleString('en-US', {
-                                                                    style: 'currency',
-                                                                    currency: 'USD'
-                                                                })
-                                                            }
-                                                        </span>
-                                                    )
-                                                }
-
-
-                                                {/* convert timestamp to date */}
-                                                <span className='text-xs text-gray-800'>
-                                                    {tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.timestamp
-                                                    ? new Date(tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.timestamp).toLocaleString()
-                                                    : ""
+                                                                    
+                                                                }
+                                                            </span>
+                                                        ) : (
+                                                            <span className='text-lg text-gray-800'>
+                                                                {
+                                                                    Number(tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.balance)
+                                                                    .toLocaleString('en-US', {
+                                                                        style: 'currency',
+                                                                        currency: 'USD'
+                                                                    })
+                                                                }
+                                                            </span>
+                                                        )
                                                     }
-                                                </span>
+
+                                                    {/* time ago */}
+                                                    {/* hours minutes ago */}
+                                                    <span className='text-xs text-gray-800'>
+                                                        {tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.timestamp
+                                                        ?
+
+                                                        new Date().getTime() - new Date(tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.timestamp).getTime() < 1000 * 60 ? (
+                                                            ' ' + Math.floor((new Date().getTime() - new Date(tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.timestamp).getTime()) / 1000) + ' ' + '초 전'
+                                                        ) :
+                                                        new Date().getTime() - new Date(tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.timestamp).getTime() < 1000 * 60 * 60 ? (
+                                                            ' ' + Math.floor((new Date().getTime() - new Date(tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.timestamp).getTime()) / 1000 / 60) + ' ' + '분 전'
+                                                        ) : (
+                                                            ' ' + Math.floor((new Date().getTime() - new Date(tradingAccountBalanceList.find((item) => item.applicationId === application.id)?.tradingAccountBalance?.timestamp).getTime()) / 1000 / 60 / 60) + ' ' + '시간 전'
+                                                        )
+                                                        : ""
+                                                        }
+                                                    </span>
+
+
+                                                </div>
+
                                             </div>
                                             
                                             {/*
