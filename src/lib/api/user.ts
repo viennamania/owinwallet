@@ -1229,7 +1229,7 @@ export async function getAllAgents(
         https://t.me/owin_sunoo_bot
         */
 
-        
+        /*
         $or: [
           { center: 'owin_kingkong_bot' },
           { center: 'owin_shingyu_bot' },
@@ -1243,6 +1243,10 @@ export async function getAllAgents(
           { center: 'owin_zzanga_bot' },
           { center: 'owin_sunoo_bot' },
         ]
+        */
+        // center is start with 'owin_'
+
+        center: { $regex: /^owin_/ },
           
         
 

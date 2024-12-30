@@ -1021,26 +1021,6 @@ export default function Index({ params }: any) {
                 </div>
               </button>
 
-              {address && userType === "telegram" && (
-                  <button
-                      onClick={() => {
-                          window.open("https://t.me/owin_chatbot", "_blank");
-                      }}
-                      className="p-2 bg-zinc-800 text-white rounded"
-                      >
-                      <div className="flex flex-row gap-2 items-center">
-                          <Image
-                          src="/logo-telegram.webp"
-                          alt="Telegram"
-                          width={50}
-                          height={50}
-                          className="rounded-lg w-10 h-10"
-                          />
-                          <span>Go to Telegram</span>
-                      </div>
-                  </button>
-              )}
-
             </div>
 
 
