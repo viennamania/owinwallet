@@ -1980,7 +1980,7 @@ export default function AIPage({ params }: any) {
 
 
     // usd / krw exchange rate
-    const [usdKrwExchangeRate, setUsdKrwExchangeRate] = useState(1437);
+    const [usdKrwExchangeRate, setUsdKrwExchangeRate] = useState(1470);
 
 
     // disconnect
@@ -1994,8 +1994,6 @@ export default function AIPage({ params }: any) {
         setMasterBot({});
 
         setMyAgent({});
-
-        
 
     }
 
