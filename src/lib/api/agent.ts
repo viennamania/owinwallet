@@ -335,8 +335,8 @@ export async function getSummaryApplicationsForCenter({
         center: center,
 
         $and: [
-          { "accountConfig.data.acctLv": "2" },
-          { "accountConfig.data.acctLv": { $exists: true } },
+          { "accountConfig.data.roleType": "2" },
+          { "accountConfig.data.roleType": { $exists: true } },
         ]
       }
     },
@@ -367,7 +367,7 @@ export async function getSummaryApplicationsForCenter({
 // get count, and sum of tradingAccountBalance.balance
 // group by center
 // order by center asc
-// where accountConfig.data.acctLv = "2"
+// where accountConfig.data.roleType = "2"
 export async function getAgentCenterSummary(
   {
     marketingCenter,
@@ -387,8 +387,8 @@ export async function getAgentCenterSummary(
         marketingCenter: marketingCenter,
         
         $and: [
-          { "accountConfig.data.acctLv": "2" },
-          { "accountConfig.data.acctLv": { $exists: true } },
+          { "accountConfig.data.roleType": "2" },
+          { "accountConfig.data.roleType": { $exists: true } },
         ]
       }
     },
