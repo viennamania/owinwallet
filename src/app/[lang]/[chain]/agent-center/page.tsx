@@ -746,7 +746,7 @@ export default function AIPage({ params }: any) {
             setMyAgent(data.result);
 
         };
-        fetchData();
+        address && fetchData();
     } , [address]);
 
 
@@ -2116,7 +2116,7 @@ export default function AIPage({ params }: any) {
                             src="/logo-agent-center.png"
                             alt="TBOT"
                             width={100}
-                            height={40}
+                            height={100}
                         />
                         <span className="text-sm font-semibold text-gray-500">
                             AI 트레이딩 TBOT 서비스센터 입니다.
@@ -2671,6 +2671,16 @@ export default function AIPage({ params }: any) {
                                                             />
                                                         </button>
 
+                                                        {/*
+                                                        <span className='text-xs text-yellow-800'>
+                                                            {
+                                                                agentBotNftList.find((item) => item.applicationId === application.id)?.agentBotNft?.contract.address.slice(0, 6)
+                                                            }...{
+                                                                agentBotNftList.find((item) => item.applicationId === application.id)?.agentBotNft?.contract.address.slice(-4)
+                                                            }
+                                                        </span>
+                                                        */}
+
                                                         <span className='text-lg text-yellow-800'>
                                                             {agentBotNftList.find((item) => item.applicationId === application.id)?.agentBotNft?.name || ""}
                                                         </span>
@@ -2678,7 +2688,9 @@ export default function AIPage({ params }: any) {
                                                             {agentBotNftList.find((item) => item.applicationId === application.id)?.agentBotNft?.description || ""}
                                                         </span>
                                                         <Image
-                                                            src={agentBotNftList.find((item) => item.applicationId === application.id)?.agentBotNft?.image?.thumbnailUrl || ""}
+                                                            src={agentBotNftList.find((item) => item.applicationId === application.id)?.agentBotNft?.image?.thumbnailUrl
+                                                                || "/logo-masterbot.png"
+                                                            }
                                                             alt="NFT"
                                                             width={100}
                                                             height={100}
