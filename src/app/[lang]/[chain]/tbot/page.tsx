@@ -486,7 +486,7 @@ export default function AIPage({ params }: any) {
 
         // check center substring 5 characters is ppump
         // then invalid referral
-
+        /*
         if (!center) {
             setIsValidReferral(false);
         } else if (center.length < 5) {
@@ -496,8 +496,10 @@ export default function AIPage({ params }: any) {
         } else {
             checkReferral();
         }
+        */
+       checkReferral();
 
-    } , [agent, agentNumber, center]);
+    } , [agent, agentNumber]);
 
     //console.log("isValidReferralLoading", isValidReferralLoading);
     //console.log("isValidReferral", isValidReferral);
