@@ -2047,7 +2047,7 @@ export default function AIPage({ params }: any) {
                 '지갑주소': item.walletAddress,
                 '신청자': item.userName,
                 '신청자 이메일': item.userEmail,
-                '신청자 휴대전화': item.userPhoneNumber,
+                /////'신청자 휴대전화': item.userPhoneNumber,
                 'API Access Key': item.apiAccessKey,
                 'API Secret Key': item.apiSecretKey,
                 'API Passphrase': item.apiPassword,
@@ -2398,7 +2398,7 @@ export default function AIPage({ params }: any) {
                                 </button>
 
                                 {/* export button */}
-                                {/*
+                                
                                 <button
                                     onClick={() => {
                                         exportToCSV('OKX_신청목록');
@@ -2408,9 +2408,9 @@ export default function AIPage({ params }: any) {
                                         hover:bg-green-600
                                     `}
                                 >
-                                    {isExporting ? "Exporting..." : "Export"}
+                                    {isExporting ? "Exporting..." : "엑셀 다운로드"}
                                 </button>
-                                */}
+                                
                             </div>
 
                             {loadingApplications && (

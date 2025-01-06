@@ -1169,7 +1169,6 @@ export default function Index({ params }: any) {
               wallets={wallets}
               accountAbstraction={{
                 chain: polygon,
-                 
                 sponsorGas: true
               }}
               theme={"light"}
