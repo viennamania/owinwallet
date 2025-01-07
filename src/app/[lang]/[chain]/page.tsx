@@ -134,6 +134,8 @@ export default function Index({ params }: any) {
 
   const agentNumber = searchParams.get('tokenId');
 
+  const center = searchParams.get('center');
+
 
 
   //console.log(wallet);
@@ -994,6 +996,7 @@ export default function Index({ params }: any) {
         <Header
           agent={agent || ""}
           tokenId={agentNumber || ""}
+          center={center || ""}
         />
 
         <div className="w-full flex flex-row gap-2 justify-between items-center">
@@ -1004,7 +1007,7 @@ export default function Index({ params }: any) {
               <button
                 onClick={() => {
                   router.push(
-                    "/" + params.lang + "/polygon/tbot?agent=" + agent
+                    "/" + params.lang + "/polygon/tbot?agent=" + agent + "&tokenId=" + agentNumber + "&center=" + center
                   );
                 }}
                 className="p-2 bg-zinc-800 text-white rounded"
@@ -1525,10 +1528,7 @@ export default function Index({ params }: any) {
 
                       // redirect to buy USDT page
                       router.push(
-                        params.chain === "tron" ?
-                        "/" + params.lang + "/" + params.chain + "/buy-tron-usdt"
-                        :
-                        "/" + params.lang + "/" + params.chain + "/buy-usdt"
+                        "/" + params.lang + "/" + params.chain + "/buy-usdt" + "?agent=" + agent + "&tokenId=" + agentNumber + "&center=" + center
                       );
 
                     }}
@@ -1536,7 +1536,7 @@ export default function Index({ params }: any) {
                   >
                     <div className="flex flex-row justify-between items-center gap-2">
                       <p className="text-lg font-semibold text-white">
-                        구매하기
+                        USDT 구매하기
                       </p>
                       <Image
                         src="/goto-icon.webp"
@@ -1784,11 +1784,7 @@ export default function Index({ params }: any) {
                         }
 
                         router.push(
-
-                          params.chain === "tron" ?
-                          "/" + params.lang + "/" + params.chain + "/profile-settings-tron" + "?agent=" + agent + "&tokenId=" + agentNumber
-                          :
-                          "/" + params.lang + "/" + params.chain + "/profile-settings" + "?agent=" + agent + "&tokenId=" + agentNumber
+                          "/" + params.lang + "/" + params.chain + "/profile-settings" + "?agent=" + agent + "&tokenId=" + agentNumber + "&center=" + center
                         );
 
                       }}
@@ -1867,13 +1863,7 @@ export default function Index({ params }: any) {
 
                       // redirect to sell trades page
                       router.push(
-                        //"/" + params.lang + "/" + params.chain + "/sell-usdt"
-
-                        params.chain === "tron" ?
-                        "/" + params.lang + "/" + params.chain + "/sell-tron-usdt"
-                        :
-                        "/" + params.lang + "/" + params.chain + "/sell-usdt"
-
+                        "/" + params.lang + "/" + params.chain + "/sell-usdt" + "?agent=" + agent + "&tokenId=" + agentNumber + "&center=" + center
                       );
 
                     }}
@@ -1881,7 +1871,7 @@ export default function Index({ params }: any) {
                   >
                     <div className="flex flex-row justify-between items-center gap-2">
                       <p className="text-lg font-semibold text-white">
-                        판매하기
+                        USDT 판매하기
                       </p>
                       <Image
                         src="/goto-icon.webp"
@@ -2005,11 +1995,13 @@ function Header(
   {
     agent,
     tokenId,
+    center,
   }
   :
   {
     agent: string;
     tokenId: string;
+    center: string;
   }
 
 ) {
@@ -2042,7 +2034,7 @@ function Header(
 
           <button
             onClick={() => {
-              router.push('/kr/polygon/my-nft/?agent=' + agent + '&tokenId=' + tokenId);
+              router.push('/kr/polygon/my-nft/?agent=' + agent + '&tokenId=' + tokenId + '&center=' + center);
             }}
             className="text-gray-600 hover:underline text-xs xl:text-lg"
           >

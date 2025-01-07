@@ -124,6 +124,17 @@ export default function AgentPage({ params }: any) {
 
   //console.log("agentContractAddress", agentContractAddress);
 
+
+
+    /*
+      const agentContractAddress = params.contract;
+  const agentTokenId = params.tokenId;
+    */
+
+
+
+
+
   
   const [agent, setAgent] = useState({} as any);
   
