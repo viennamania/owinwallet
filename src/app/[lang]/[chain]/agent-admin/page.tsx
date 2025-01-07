@@ -1962,7 +1962,11 @@ export default function AIPage({ params }: any) {
   
         const total = post.result.totalCount;
 
-        const items = post.result.applications as any[];
+        //const items = post.result.applications as any[];
+
+        // query startTrading.status is true
+
+        const items = post.result.applications.filter((item : any) => item.startTrading.status === true);
   
    
         ///console.log('items', items);
