@@ -1987,7 +1987,8 @@ export default function AIPage({ params }: any) {
   
         const formattedData  = [] as any[];
   
-        items.map((item, index ) => {
+        //items.map((item, index ) => {
+        items.map((item: any, index: number) => {
   
             /*
             const { id, ...rest } = item;
