@@ -56,6 +56,8 @@ export async function POST(request: NextRequest) {
       || walletAddress === "0xe2F5254c5493356E2EEB81e442e225E39a7E2350" // ppump center wallet address 곽준규
 
       || walletAddress === "0xfabB5F1BBcA9F2aE4ab48E994C474404cB4FEBBC" // 12월 19일 추가
+
+      || walletAddress === "0x59C0d2BED6A59E5099EFdFB60c3172B1acA51027" // 20250107 추가
     
     ) {
 
