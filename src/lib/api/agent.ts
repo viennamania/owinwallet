@@ -923,6 +923,7 @@ export async function updateTradingAccountBalance(
   }
 
   const client = await clientPromise;
+
   const collection = client.db('vienna').collection('agents');
 
   const result = await collection.updateOne(
@@ -934,14 +935,34 @@ export async function updateTradingAccountBalance(
     }
   );
 
-  if (result) {
-    return {
-      applicationId: applicationId,
-      tradingAccountBalance: tradingAccountBalance,
-    };
-  } else {
+  if (!result) {
     return null;
   }
+
+
+
+  // insert tradingAccountBalance to collection tradingAccountBalanceHistory
+
+  const collectionTradingAccountBalanceHistory = client.db('vienna').collection('tradingAccountBalanceHistory');
+
+  await collectionTradingAccountBalanceHistory.insertOne(
+    {
+      applicationId: applicationId,
+      tradingAccountBalance: tradingAccountBalance,
+      timestamp: new Date().toISOString(),
+    }
+  );
+
+
+
+
+
+
+
+  return {
+    applicationId: applicationId,
+    tradingAccountBalance: tradingAccountBalance,
+  };
 
 }
 
