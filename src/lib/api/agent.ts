@@ -47,7 +47,8 @@ export async function insertOne(data: any) {
 
 
   if (!data.walletAddress
-    || !data.agentBot
+    
+    ///|| !data.agentBot
     /////|| !data.agentBotNumber  => if agentBotNumber is 0, it will be false
     || !data.userName
     || !data.userEmail
@@ -1253,4 +1254,122 @@ export async function updateApplicationMasterBotInfo(
   }
 
 }
+
+
+
+
+
+//getStatisticsDaily
+// get statistics daily Trading Balance
+// from tradingAccountBalanceHistory
+// balance is tradingAccountBalance.balance
+//convert  "timestamp": "2025-01-07T09:44:40.065Z" to '20240107'
+// group by '20240107'
+
+// join tradingAccountBalance.applicationId with id of agents collection
+
+
+/*
+tradingAccountBalanceHistory
+{
+  "_id": {
+    "$oid": "677cf78837aa8c335b1c40ed"
+  },
+  "applicationId": 777460,
+  "tradingAccountBalance": {
+    "balance": "105.71926424278588",
+  },
+  "timestamp": "2025-01-07T09:44:40.065Z"
+}
+*/
+
+/* 
+agents
+{
+
+  "id": 294507,
+  "center": "ppump_orry_bot",
+}
+*/
+
+
+
+export async function getStatisticsDaily(
+  {
+    marketingCenter,
+  }
+  :
+  {
+    marketingCenter: string,
+  },
+) {
+
+  if (!marketingCenter) {
+    return null;
+  }
+
+  console.log('getStatisticsDaily marketingCenter: ' + marketingCenter);
+
+
+  try {
+
+    const client = await clientPromise;
+
+    const collection = client.db('vienna').collection('tradingAccountBalanceHistory');
+
+    // join with agents collection (agents.id = tradingAccountBalanceHistory.applicationId)
+    // match agents.center = center
+
+    const result = await collection.aggregate([
+      {
+        $lookup: {
+          from: "agents",
+          localField: "applicationId",
+          foreignField: "id",
+          as: "agent",
+        }
+      },
+      {
+        $match: {
+          "agent.marketingCenter": marketingCenter,
+        }
+      },
+      {
+        $group: {
+          _id: {
+            yearmonthday: { $dateToString: { format: "%Y%m%d", date: "$timestamp" } },
+          },
+          total: { $sum: { $toDouble: "$tradingAccountBalance.balance" } },
+        }
+      },
+      {
+        $sort: {
+          _id: 1,
+        }
+      }
+    ]).toArray();
+
+    console.log('getStatisticsDaily result: ' + JSON.stringify(result));
+
+    return result;
+
+  } catch (e) {
+
+    console.log('getStatisticsDaily error: ' + e);
+    return null;
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
 

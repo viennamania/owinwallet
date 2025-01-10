@@ -141,6 +141,7 @@ export async function POST(request: NextRequest) {
 
   //console.log("result", result);
 
+  /*
   const applicationId = result.id;
 
   // send sms to agent holder
@@ -189,6 +190,7 @@ export async function POST(request: NextRequest) {
     }
   
   }
+  */
 
  
   return NextResponse.json({
