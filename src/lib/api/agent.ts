@@ -1474,6 +1474,16 @@ export async function updateAccountAffiliateInvitee(
   const client = await clientPromise;
   const collection = client.db('vienna').collection('agents');
 
+  // insert affiliateInvitee to collection affiliateInviteeHistory
+  const collectionAffiliateInviteeHistory = client.db('vienna').collection('affiliateInviteeHistory');
+  await collectionAffiliateInviteeHistory.insertOne(
+    {
+      applicationId: applicationId,
+      affiliateInvitee: affiliateInvitee,
+      timestamp: new Date().toISOString(),
+    }
+  );
+
 
 
   const result = await collection.updateOne(
