@@ -2752,7 +2752,7 @@ export default function AIPage({ params }: any) {
                                                 </span>
                                                 <div className='flex flex-row items-center justify-start gap-2'>
                                                     <span className='text-lg text-red-500'>
-                                                        {application?.affiliateInvitee?.data?.totalCommission ? Number(application.affiliateInvitee.data.totalCommission).toFixed(0) : 0}
+                                                        {application?.affiliateInvitee?.data?.totalCommission ? Number(application.affiliateInvitee.data.totalCommission).toFixed(2) : 0}
                                                     </span>
                                                     <span className='text-xs text-gray-800'>
                                                         {application?.affiliateInvitee?.timestamp
