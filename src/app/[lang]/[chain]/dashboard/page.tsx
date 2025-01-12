@@ -2573,7 +2573,7 @@ export default function AIPage({ params }: any) {
                                                     지갑주소
                                                 </span>
                                                 <span className='text-sm text-gray-800'>
-                                                    {application.walletAddress.slice(0, 10)}...{application.walletAddress.slice(-10)}
+                                                    {application.walletAddress.slice(0, 5)}...{application.walletAddress.slice(-5)}
                                                 </span>
                                             </div>
 
