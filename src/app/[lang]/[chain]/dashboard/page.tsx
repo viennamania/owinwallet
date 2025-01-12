@@ -2847,6 +2847,80 @@ export default function AIPage({ params }: any) {
 
                                         </div>
 
+                                        <div className='w-full flex flex-col gap-2
+                                            border-t border-gray-300 pt-2
+                                        '>
+                                            {/* 수당 계산 */}
+                                            <div className='w-full flex flex-row items-center justify-start gap-2'>
+                                                <div className='w-2 h-2 bg-red-500 rounded-full'></div>
+                                                <span className='text-lg text-gray-800 font-semibold'>
+                                                    수당 계산
+                                                </span>
+                                            </div>
+
+                                            {/* 마스터 수당 */}
+                                            {/* 마스터 수당 = 수당 * 56% */}
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <div className='flex flex-col gap-2'>
+                                                    <span className='text-xs text-yellow-800'>
+                                                        마스터 수당(56%)
+                                                    </span>
+                                                    <div className='flex flex-row items-center justify-start gap-2'>
+                                                        <span className='text-lg text-red-500'>
+                                                            {application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth * 0.000455 * 0.23 * 0.56).toFixed(2) : 0}
+                                                        </span>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            {/* 에이전트 수당 */}
+                                            {/* 에이전트 수당 = 수당 * 28% */}
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <div className='flex flex-col gap-2'>
+                                                    <div className='flex flex-row items-center justify-start gap-2'>
+                                                        <span className='text-xs text-yellow-800'>
+                                                            에이전트 수당(28%)
+                                                        </span>
+                                                        <span className='text-xs text-green-500'>
+                                                            {application?.agentBotNft?.name || "Unknown"}
+                                                        </span>
+                                                    </div>
+                                                    <div className='flex flex-row items-center justify-start gap-2'>
+                                                        <span className='text-lg text-red-500'>
+                                                            {application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth * 0.000455 * 0.23 * 0.28).toFixed(2) : 0}
+                                                        </span>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            {/* 센터 수당 */}
+                                            {/* 센터 수당 = 수당 * 14% */}
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <div className='flex flex-col gap-2'>
+                                                    <div className='flex flex-row items-center justify-start gap-2'>
+                                                        <span className='text-xs text-yellow-800'>
+                                                            센터 수당(14%)
+                                                        </span>
+                                                        <span className='text-xs text-green-500'>
+                                                            {application.center}
+                                                        </span>
+                                                    </div>
+                                                    <div className='flex flex-row items-center justify-start gap-2'>
+                                                        <span className='text-lg text-red-500'>
+                                                            {application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth * 0.000455 * 0.23 * 0.14).toFixed(2) : 0}
+                                                        </span>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+
+
                                         {/* affliateInvitee.data.depAmt */}
                                         {/* affliateInvitee.timestamp */}
                                         {/* Deposit Amount */}
