@@ -2502,60 +2502,78 @@ export default function AIPage({ params }: any) {
                                             </div>
                                         </div>
 
-                                        {/* 수당 계산 23% */}
-                                        <div className='flex flex-col gap-2'>
-                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                        <div className='flex flex-col gap-2
+                                            border-t border-gray-300 pt-2
+                                        '>
+                                            <div className='w-full flex flex-row items-center justify-start gap-2'>
+                                                {/* dot */}
+                                                <div className='w-2 h-2 bg-red-500 rounded-full'></div>
                                                 <span className='text-lg text-gray-800 font-semibold'>
-                                                    이번달 전체 수당(23%):
+                                                    수당 계산
                                                 </span>
-                                                <span className='text-4xl text-green-500 font-semibold'>
-                                                    {
-                                                        (totalAffliliateInviteeVolMonth * 0.000455 * 0.23).toFixed(2)
-                                                    }
+                                                {/* 마스트봇 수 */}
+                                                <span className='text-lg text-green-500 font-semibold'>
+                                                    {applications.filter((item) => item.accountConfig?.data.roleType === "2").length}명
                                                 </span>
+                                                
                                             </div>
-                                        </div>
 
-                                        {/* 회원 수당 = 수당 * 56% */}
-                                        <div className='flex flex-col gap-2'>
-                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                                <span className='text-lg text-gray-800 font-semibold'>
-                                                    이번달 회원 수당(56%):
-                                                </span>
-                                                <span className='text-4xl text-green-500 font-semibold'>
-                                                    {
-                                                        (totalAffliliateInviteeVolMonth * 0.000455 * 0.23 * 0.56).toFixed(2)
-                                                    }
-                                                </span>
+                                            {/* 수당 계산 23% */}
+                                            <div className='flex flex-col gap-2'>
+                                                <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                    <span className='text-lg text-gray-800 font-semibold'>
+                                                        이번달 전체 수당(23%):
+                                                    </span>
+                                                    <span className='text-4xl text-green-500 font-semibold'>
+                                                        {
+                                                            (totalAffliliateInviteeVolMonth * 0.000455 * 0.23).toFixed(2)
+                                                        }
+                                                    </span>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        {/* 에이전트 수당 = 수당 * 28% */}
-                                        <div className='flex flex-col gap-2'>
-                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                                <span className='text-lg text-gray-800 font-semibold'>
-                                                    이번달 에이전트 수당(28%):
-                                                </span>
-                                                <span className='text-4xl text-green-500 font-semibold'>
-                                                    {
-                                                        (totalAffliliateInviteeVolMonth * 0.000455 * 0.23 * 0.28).toFixed(2)
-                                                    }
-                                                </span>
+                                            {/* 회원 수당 = 수당 * 56% */}
+                                            <div className='flex flex-col gap-2'>
+                                                <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                    <span className='text-lg text-gray-800 font-semibold'>
+                                                        이번달 마스터 수당(56%):
+                                                    </span>
+                                                    <span className='text-4xl text-green-500 font-semibold'>
+                                                        {
+                                                            (totalAffliliateInviteeVolMonth * 0.000455 * 0.23 * 0.56).toFixed(2)
+                                                        }
+                                                    </span>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        {/* 센터 수당 = 수당 * 14% */}
-                                        <div className='flex flex-col gap-2'>
-                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                                <span className='text-lg text-gray-800 font-semibold'>
-                                                    이번달 센터 수당(14%):
-                                                </span>
-                                                <span className='text-4xl text-green-500 font-semibold'>
-                                                    {
-                                                        (totalAffliliateInviteeVolMonth * 0.000455 * 0.23 * 0.14).toFixed(2)
-                                                    }
-                                                </span>
+                                            {/* 에이전트 수당 = 수당 * 28% */}
+                                            <div className='flex flex-col gap-2'>
+                                                <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                    <span className='text-lg text-gray-800 font-semibold'>
+                                                        이번달 에이전트 수당(28%):
+                                                    </span>
+                                                    <span className='text-4xl text-green-500 font-semibold'>
+                                                        {
+                                                            (totalAffliliateInviteeVolMonth * 0.000455 * 0.23 * 0.28).toFixed(2)
+                                                        }
+                                                    </span>
+                                                </div>
                                             </div>
+
+                                            {/* 센터 수당 = 수당 * 14% */}
+                                            <div className='flex flex-col gap-2'>
+                                                <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                    <span className='text-lg text-gray-800 font-semibold'>
+                                                        이번달 센터 수당(14%):
+                                                    </span>
+                                                    <span className='text-4xl text-green-500 font-semibold'>
+                                                        {
+                                                            (totalAffliliateInviteeVolMonth * 0.000455 * 0.23 * 0.14).toFixed(2)
+                                                        }
+                                                    </span>
+                                                </div>
+                                            </div>
+
                                         </div>
 
 
