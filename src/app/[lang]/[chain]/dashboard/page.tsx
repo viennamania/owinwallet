@@ -737,7 +737,7 @@ export default function AIPage({ params }: any) {
 
     
 
-
+    /*
     const [myAgent, setMyAgent] = useState({} as any);
     useEffect(() => {
         const fetchData = async () => {
@@ -765,6 +765,7 @@ export default function AIPage({ params }: any) {
         };
         fetchData();
     } , [address]);
+     */
 
 
 
@@ -2085,6 +2086,7 @@ export default function AIPage({ params }: any) {
   
 
     // getStatisticsDaily from api getStatisticsDaily
+    /*
     const [statisticsDaily, setStatisticsDaily] = useState([] as any[]);
     const [loadingStatisticsDaily, setLoadingStatisticsDaily] = useState(false);
     useEffect(() => {
@@ -2121,6 +2123,7 @@ export default function AIPage({ params }: any) {
         getStatisticsDaily();
 
     } , [address]);
+    */
 
 
     return (
@@ -2141,87 +2144,7 @@ export default function AIPage({ params }: any) {
 
                 <div className="flex flex-col items-start justify-center space-y-4">
 
-                    <div className='flex flex-row items-center gap-4'>
-                        
-                        <Image
-                            src="/tbot.png"
-                            alt="TBOT"
-                            width={100}
-                            height={40}
-                        />
-                        <span className="text-sm font-semibold text-gray-500">
-                            AI Agent Administration
-                        </span>
-                    </div>
-                    <div className='flex flex-row items-center gap-4'>
-                        {/* red dot */}
-                        <div className='w-4 h-4 bg-red-500 rounded-full'></div>
-                        <span className="text-lg font-semibold text-blue-500">
-                            AI 트레이딩 TBOT 서비스센터 입니다.
-                        </span>
-                    </div>
-
-
-
-
-
-                    <div className='flex flex-row items-center gap-2'>
-
-                        <div className='flex flex-col gap-2'>
-
-                            {/* AI 트레이딩 TBOT 서비스센터 입니다. */}
-                            <span className="text-xs font-semibold text-gray-800">
-                                
-                                TBOT 센터는 본인 계좌로 운영자금을 디파짓하여 AI트레이딩을 제공합니다. <br />
-                                TBOT을 민팅하면 Master bot이 지원을 합니다. <br />
-                                코인선물투자 개념과 트레이딩에 대한 교육을 제공합니다.
-                            </span>
-                        </div>
-
-                        <Image
-                            src="/icon-tbot.png"
-                            alt="ChatGPT"
-                            width={100}
-                            height={40}
-                            className='bg-zinc-100 p-2 rounded'
-                        />
-
-                        {/* balance */}
-                        {/*
-                        {address && (
-                            <div className="text-5xl font-semibold text-blue-500">
-                                {Number(balance).toFixed(2)} <span className="text-lg">USDT</span>
-                            </div>
-                        )}
-                        */}
-
-
-                    </div>
-
-                    {/*
-                    <button
-                        onClick={() => {
-                        window.open('https://futures.htx.com.pk/futures/copy_trading/following/trader/NTA1MDk1Njk');
-                        }}
-                        className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                    >
-                        <div className='flex flex-row items-center gap-2'>
-                            <Image
-                                src="/logo-exchange-okx.png"
-                                alt="HTX"
-                                width={20}
-                                height={20}
-                                className='rounded-full bg-white p-1'
-                            />
-                            <span className='text-sm font-semibold'>
-                                트레이더 퍼포먼스 보러가기
-                            </span>
-                        </div>
-                    </button>
-                    */}
-
-
-
+                
 
                     <div className='w-full flex flex-col gap-5 mt-5'>
 
@@ -2279,8 +2202,8 @@ export default function AIPage({ params }: any) {
 
 
                         {address && (
-                            <div className='w-full flex flex-col items-start gap-2'>
-                                <div className="mt-0 w-full flex items-center justify-start gap-5">
+                            <div className='w-full flex flex-col xl:flex-row items-start justify-between gap-2'>
+                                <div className="flex items-center justify-start gap-5">
                                     <Image
                                         src="/icon-wallet-live.gif"
                                         alt="Wallet"
@@ -2562,11 +2485,23 @@ export default function AIPage({ params }: any) {
                                             {/* 신청번호 */}
                                             <div className='w-full flex flex-row items-center justify-start gap-2'>
                                                 {/* dot */}
-                                                <div className='w-4 h-4 bg-red-500 rounded-full'></div>
-                                                <span className='text-lg font-semibold text-gray-800'>
-                                                    신청번호: #{application.id}
+                                                <div className='w-2 h-2 bg-red-500 rounded-full'></div>
+                                                <span className='text-sm font-semibold text-gray-800'>
+                                                    신청: #{application.id}
                                                 </span>
-
+                                                {/* time ago */}
+                                                <div className='flex flex-row items-center justify-between gap-2 text-xs text-gray-800'>
+                                                {
+                                                    new Date().getTime() - new Date(application.createdAt).getTime() < 1000 * 60 ? (
+                                                    ' ' + Math.floor((new Date().getTime() - new Date(application.createdAt).getTime()) / 1000) + ' ' + '초 전'
+                                                    ) :
+                                                    new Date().getTime() - new Date(application.createdAt).getTime() < 1000 * 60 * 60 ? (
+                                                    ' ' + Math.floor((new Date().getTime() - new Date(application.createdAt).getTime()) / 1000 / 60) + ' ' + '분 전'
+                                                    ) : (
+                                                    ' ' + Math.floor((new Date().getTime() - new Date(application.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + '시간 전'
+                                                    )
+                                                }
+                                                </div>
                                             </div>
 
                                             {/* center */}
@@ -2584,29 +2519,21 @@ export default function AIPage({ params }: any) {
                                             </div>
 
 
-                                            {/* time ago */}
-                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                            {
-                                                new Date().getTime() - new Date(application.createdAt).getTime() < 1000 * 60 ? (
-                                                ' ' + Math.floor((new Date().getTime() - new Date(application.createdAt).getTime()) / 1000) + ' ' + '초 전'
-                                                ) :
-                                                new Date().getTime() - new Date(application.createdAt).getTime() < 1000 * 60 * 60 ? (
-                                                ' ' + Math.floor((new Date().getTime() - new Date(application.createdAt).getTime()) / 1000 / 60) + ' ' + '분 전'
-                                                ) : (
-                                                ' ' + Math.floor((new Date().getTime() - new Date(application.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + '시간 전'
-                                                )
-                                            }
-                                            </div>
+
 
                                             {/* agentBotNft name */}
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                                <span className='text-xs font-semibold text-yellow-500'>
-                                                    AI Agent NFT
-                                                </span>
-                                                <div className='flex flex-col gap-2 items-center justify-center'>
+                                                <div className='flex flex-col gap-2'>
                                                     <span className='text-sm text-gray-800'>
                                                         {application?.agentBotNft?.name || "Unknown"}
                                                     </span>
+                                                    <span className='text-xs text-gray-800'>
+                                                        {application?.agentBotNft?.description || "Unknown"}
+                                                    </span>
+                                                </div>
+
+                                                <div className='flex flex-col gap-2 items-center justify-center'>
+
                                                     <Image
                                                         src={application?.agentBotNft?.image?.thumbnailUrl || "/logo-masterbot100.png"}
                                                         alt="Agent Bot"
@@ -2725,6 +2652,39 @@ export default function AIPage({ params }: any) {
                                                     복사
                                                 </button>
                                             </div>
+                                        </div>
+
+                                        {/* affliateInvitee.data.volMonth */}
+                                        {/* affliateInvitee.timestamp */}
+                                        {/* Trading Volume */}
+                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                            <div className='flex flex-col gap-2'>
+                                                <span className='text-xs text-yellow-800'>
+                                                    OKX Trading Volume
+                                                </span>
+                                                <div className='flex flex-row items-center justify-start gap-2'>
+                                                    <span className='text-lg text-red-500'>
+                                                        {application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth).toFixed(0) : 0} USDT
+                                                    </span>
+                                                    <span className='text-xs text-gray-800'>
+                                                        {application?.affiliateInvitee?.timestamp
+                                                        ?
+
+                                                        new Date().getTime() - new Date(application.affiliateInvitee.timestamp).getTime() < 1000 * 60 ? (
+                                                            ' ' + Math.floor((new Date().getTime() - new Date(application.affiliateInvitee.timestamp).getTime()) / 1000) + ' ' + '초 전'
+                                                        ) :
+                                                        new Date().getTime() - new Date(application.affiliateInvitee.timestamp).getTime() < 1000 * 60 * 60 ? (
+                                                            ' ' + Math.floor((new Date().getTime() - new Date(application.affiliateInvitee.timestamp).getTime()) / 1000 / 60) + ' ' + '분 전'
+                                                        ) : (
+                                                            ' ' + Math.floor((new Date().getTime() - new Date(application.affiliateInvitee.timestamp).getTime()) / 1000 / 60 / 60) + ' ' + '시간 전'
+                                                        )
+                                                        : ""
+                                                        }
+                                                    </span>
+                                                </div>
+
+                                            </div>
+
                                         </div>
 
                                         {/* tradingAccountBalance */}
@@ -2903,27 +2863,6 @@ export default function AIPage({ params }: any) {
                                                                 '>
                                                                 
                                                                     승인완료
-                                                                </span>
-                                                                <span className=' text-xs text-gray-800'>
-                                                                    승인자: {application?.startTrading?.approvedByWalletAddress?.slice(0, 5)}...{application?.startTrading?.approvedByWalletAddress?.slice(-5)}
-                                                                </span>
-                                                                <span className='text-xs text-gray-800'>
-                                                                    승인일자: {
-                                                                        new Date(application?.startTrading?.timestamp).toLocaleString()
-                                                                    }
-                                                                </span>
-                                                                {/* time ago */}
-                                                                <span className='text-xs text-gray-800'>
-                                                                {
-                                                                    new Date().getTime() - new Date(application?.startTrading?.timestamp).getTime() < 1000 * 60 ? (
-                                                                    ' ' + Math.floor((new Date().getTime() - new Date(application?.startTrading?.timestamp).getTime()) / 1000) + ' ' + '초 전'
-                                                                    ) :
-                                                                    new Date().getTime() - new Date(application?.startTrading?.timestamp).getTime() < 1000 * 60 * 60 ? (
-                                                                    ' ' + Math.floor((new Date().getTime() - new Date(application?.startTrading?.timestamp).getTime()) / 1000 / 60) + ' ' + '분 전'
-                                                                    ) : (
-                                                                    ' ' + Math.floor((new Date().getTime() - new Date(application?.startTrading?.timestamp).getTime()) / 1000 / 60 / 60) + ' ' + '시간 전'
-                                                                    )
-                                                                }
                                                                 </span>
                                                             </div>
 

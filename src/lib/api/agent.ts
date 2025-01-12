@@ -1320,26 +1320,84 @@ export async function getStatisticsDaily(
     // join with agents collection (agents.id = tradingAccountBalanceHistory.applicationId)
     // match agents.center = center
 
+    // project id, marketingCenter from agents collection
+
+
+
+
+
     const result = await collection.aggregate([
       {
         $lookup: {
+          
+          //from: "agents",
+
           from: "agents",
+
           localField: "applicationId",
           foreignField: "id",
           as: "agent",
         }
       },
+    
+      {
+        $unwind: "$agent"
+      },
+
       {
         $match: {
           "agent.marketingCenter": marketingCenter,
         }
       },
+
+      /* "timestamp": "2025-01-07T09:44:40.065Z" */
       {
         $group: {
           _id: {
-            yearmonthday: { $dateToString: { format: "%Y%m%d", date: "$timestamp" } },
+            ///yearmonthday: { $dateToString: { format: "%Y%m%d", date: "$timestamp" } },
+
+            //yearmonthday: { $dateToString: { format: "%Y%m%d", date: { $toDate: "$timestamp" } } },
+
+            // conver "2025-01-07T09:44:40.065Z" to '2025-01-07' by substr
+
+            yearmonthday: { $substr: ["$timestamp", 0, 10] },
+
+
+
+
           },
+          // average of tradingAccountBalance.balance
+          //total: { $sum: { $toDouble: "$tradingAccountBalance.balance" } },
+          
+          // average of tradingAccountBalance.balance
+          ///total: { $avg: { $toDouble: "$tradingAccountBalance.balance" } },
+
+          // sum of tradingAccountBalance.balance
+          // sum / count = average
+
           total: { $sum: { $toDouble: "$tradingAccountBalance.balance" } },
+
+          // count of tradingAccountBalance.balance
+
+          count: { $sum: 1 },
+
+          // count of distinct applicationId
+
+          ///countDistinct: { $sum: 1 },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         }
       },
       {
@@ -1373,3 +1431,44 @@ export async function getStatisticsDaily(
 
 
 
+// updateAccountAffiliateInvitee
+export async function updateAccountAffiliateInvitee(
+  {
+    applicationId,
+    affiliateInvitee,
+  }
+  :
+  {
+    applicationId: number,
+    affiliateInvitee: object,
+  },
+) {
+
+  if (!applicationId || !affiliateInvitee) {
+    return null;
+  }
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('agents');
+
+  
+
+  const result = await collection.updateOne(
+    { id: applicationId },
+    {
+      $set: {
+        affiliateInvitee: affiliateInvitee,
+      }
+    }
+  );
+
+  if (result) {
+    return {
+      applicationId: applicationId,
+      affiliateInvitee: affiliateInvitee,
+    };
+  } else {
+    return null;
+  }
+
+}
