@@ -628,7 +628,6 @@ export default function AIPage({ params }: any) {
     const [totalAffliliateInviteeVolMonth, setTotalAffliliateInviteeVolMonth] = useState(0);
 
 
-
     const [applications, setApplications] = useState([] as any[]);
     const [loadingApplications, setLoadingApplications] = useState(false);
     useEffect(() => {
@@ -2488,7 +2487,40 @@ export default function AIPage({ params }: any) {
                                             </span>
                                                         
                                         </div>
+
+                                        {/* 이번달 총 OKX 누적수수료 (totalAffliliateInviteeVolMonth * 0.000455) */}
+                                        <div className='flex flex-col gap-2'>
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <span className='text-lg text-gray-800 font-semibold'>
+                                                    이번달 OKX 총 수수료(0.0455%):
+                                                </span>
+                                                <span className='text-4xl text-green-500 font-semibold'>
+                                                    {
+                                                        (totalAffliliateInviteeVolMonth * 0.000455).toFixed(2)
+                                                    }
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        {/* 수당 계산 56% */}
+                                        <div className='flex flex-col gap-2'>
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <span className='text-lg text-gray-800 font-semibold'>
+                                                    이번달 수당 계산(56%):
+                                                </span>
+                                                <span className='text-4xl text-green-500 font-semibold'>
+                                                    {
+                                                        (totalAffliliateInviteeVolMonth * 0.000455 * 0.56).toFixed(2)
+                                                    }
+                                                </span>
+                                            </div>
+                                        </div>
+
+
+
                                     </div>
+
+
                                     
                                 </div>
                             )}
@@ -2534,6 +2566,15 @@ export default function AIPage({ params }: any) {
                                                     )
                                                 }
                                                 </div>
+                                            </div>
+                                            {/* wallet address */}
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <span className='text-xs font-semibold text-gray-800'>
+                                                    지갑주소
+                                                </span>
+                                                <span className='text-sm text-gray-800'>
+                                                    {application.walletAddress.slice(0, 10)}...{application.walletAddress.slice(-10)}
+                                                </span>
                                             </div>
 
                                             {/* center */}
@@ -2692,7 +2733,7 @@ export default function AIPage({ params }: any) {
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                                             <div className='flex flex-col gap-2'>
                                                 <span className='text-xs text-yellow-800'>
-                                                    이번달 거래량 / 수수료(0.005%)
+                                                    이번달 거래량 / 수수료(0.0455%)
                                                 </span>
                                                 <div className='flex flex-row items-center justify-start gap-2'>
                                                     <span className='text-lg text-red-500'>
@@ -2713,7 +2754,7 @@ export default function AIPage({ params }: any) {
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                                             <div className='flex flex-col gap-2'>
                                                 <span className='text-xs text-yellow-800'>
-                                                    이번달 수수료 / 수당(0.005)
+                                                    이번달 수수료 / 수당(56%)
                                                 </span>
                                                 <div className='flex flex-row items-center justify-start gap-2'>
                                                     <span className='text-lg text-red-500'>
