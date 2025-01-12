@@ -84,6 +84,8 @@ import { start } from 'repl';
 
 
 import * as XLSX from "xlsx";
+import { time } from 'console';
+import { ok } from 'assert';
 
 const wallets = [
     inAppWallet({
@@ -1914,6 +1916,132 @@ export default function AIPage({ params }: any) {
 
 
 
+    // claim settlement
+    const [claimingSettlementList, setClaimingSettlementList] = useState([] as any[]);
+    const [claimSettlementList, setClaimSettlementList] = useState([] as any[]);
+
+    useEffect(() => {
+
+        setClaimSettlementList(
+            applications.map((item) => {
+                return {
+                    applicationId: item.id,
+                    claimSettlement: {},
+                }
+            })
+        );
+
+        setClaimSettlementList(
+            applications.map((item) => {
+                return {
+                    applicationId: item.id,
+                    loading: false,
+                }
+            })
+        );
+
+    } , [applications]);
+
+    const claimSettlement = async (
+        applicationId: number,
+    ) => {
+
+        if (address === "") {
+            toast.error("먼저 지갑을 연결해주세요");
+            return;
+        }
+
+        const application = applications.find((item) => item.id === applicationId);
+
+        if (!application) {
+            toast.error("Application을 찾을 수 없습니다.");
+            return;
+        }
+
+        if (!confirm("정산을 요청하시겠습니까?")) {
+            return;
+        }
+
+        // loading start
+        setClaimingSettlementList(
+            claimingSettlementList.map((item) => {
+                if (item.applicationId === applicationId) {
+                    return {
+                        applicationId: applicationId,
+                        loading: true,
+                    };
+                } else {
+                    return item;
+                }
+            })
+        );
+
+
+        // update application status to "claimSettlement"
+        const response = await fetch("/api/settlement/claim", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                applicationId: applicationId,
+            }),
+        });
+
+        if (!response.ok) {
+            console.error("Error claiming settlement");
+            
+            alert("Error claiming settlement");
+
+            return;
+        }
+
+        const data = await response.json();
+
+        //console.log("data", data);
+
+        if (data?.result) {
+            toast.success("정산이 요청되었습니다.");
+
+            // reload applications
+            const response = await fetch("/api/agent/getApplications", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    walletAddress: address,
+                }),
+            });
+            if (!response.ok) {
+                console.error("Error fetching agents");
+                return;
+            }
+            const data = await response.json();
+            setApplications(data.result.applications);
+        } else {
+            alert("Error claiming settlement");
+        }
+
+        // loading end
+
+        setClaimingSettlementList(
+            claimingSettlementList.map((item) => {
+                if (item.applicationId === applicationId) {
+                    return {
+                        applicationId: applicationId,
+                        loading: false,
+                    };
+                } else {
+                    return item;
+                }
+            })
+        );
+
+    }
+
+
+
 
 
 
@@ -2845,6 +2973,59 @@ export default function AIPage({ params }: any) {
 
                                             </div>
 
+                                        </div>
+
+
+
+                                        {/* claimSettlement */}
+                                        <div className='w-full flex flex-col gap-2'>
+                                            {/* claimedTradingVolume */}
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <div className='flex flex-col gap-2'>
+                                                    <span className='text-xs text-yellow-800'>
+                                                        정산된 거래량
+                                                    </span>
+                                                    <div className='flex flex-row items-center justify-start gap-2'>
+                                                        <span className='text-lg text-red-500'>
+                                                            {application?.claimedTradingVolume ? Number(application.claimedTradingVolume).toFixed(0) : 0}
+                                                        </span>
+                                                    </div>
+
+                                                </div>
+                                                {/* 정산할 거래량 */}
+                                                <div className='flex flex-col gap-2'>
+                                                    <span className='text-xs text-yellow-800'>
+                                                        정산할 거래량
+                                                    </span>
+                                                    <div className='flex flex-row items-center justify-start gap-2'>
+                                                        <span className='text-lg text-red-500'>
+                                                            {application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth
+                                                                 - application?.claimedTradingVolume || 0).toFixed(0) : 0}
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            
+                                            <div className='flex flex-col gap-2'>
+                                                <span className='text-xs text-yellow-800'>
+                                                    정산요청
+                                                </span>
+                                                <div className='flex flex-row items-center justify-start gap-2'>
+                                                    <button
+                                                        onClick={() => {
+                                                            claimSettlement(application.id);
+                                                        }}
+                                                        disabled={claimingSettlementList.find((item) => item.applicationId === application.id)?.claiming}
+                                                        className={`${claimingSettlementList.find((item) => item.applicationId === application.id)?.claiming ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
+                                                            hover:bg-blue-600
+                                                        `}
+                                                    >
+                                                        {claimingSettlementList.find((item) => item.applicationId === application.id)?.claiming ? "처리중..." : "정산요청"}
+                                                    </button>
+                                                </div>
+
+                                            </div>
                                         </div>
 
                                         <div className='w-full flex flex-col gap-2

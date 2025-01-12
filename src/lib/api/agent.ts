@@ -1506,3 +1506,114 @@ export async function updateAccountAffiliateInvitee(
   }
 
 }
+
+
+
+
+// setSettlementClaim
+export async function setSettlementClaim(
+  {
+    applicationId,
+  }
+  :
+  {
+    applicationId: number,
+  },
+) {
+
+  if (!applicationId) {
+    return null;
+  }
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('agents');
+
+  // insert settlementClaim to collection settlementClaimHistory
+
+  const application = await collection.findOne({ id: applicationId });
+
+  if (!application) {
+    return null;
+  }
+
+
+  const okxUid = application.okxUid;
+  const tradingAccountBalance = application.tradingAccountBalance;
+
+
+  const claimedTradingVolume = application?.claimedTradingVolume || 0;
+
+  const tradingVolume = application.affiliateInvitee?.data?.volMonth || 0;
+
+  if (tradingVolume <= (claimedTradingVolume + 1000)) {
+    return null;
+  }
+
+
+
+  const settlementTradingVolume = tradingVolume - claimedTradingVolume;
+
+  const tradingFee = settlementTradingVolume * 0.000455;
+  const insentive = tradingFee * 0.23;
+
+  const masterInsentive = insentive * 0.56;
+  const masterWalletAddress = application.walletAddress;
+
+  const agentInsentive = insentive * 0.28;
+  const agentWalletAddress = "";
+
+  const centerInsentive = insentive * 0.14;
+  const centerWalletAddress = "";
+
+  const settlementClaim = {
+    okxUid: okxUid,
+    tradingAccountBalance: tradingAccountBalance,
+    tradingVolume: tradingVolume,
+    settlementTradingVolume: settlementTradingVolume,
+    tradingFee: tradingFee,
+    insentive: insentive,
+    masterInsentive: masterInsentive,
+    masterWalletAddress: masterWalletAddress,
+    agentInsentive: agentInsentive,
+    agentWalletAddress: agentWalletAddress,
+    centerInsentive: centerInsentive,
+    centerWalletAddress: centerWalletAddress,
+  };
+
+
+
+
+
+  const collectionSettlementClaimHistory = client.db('vienna').collection('settlementClaimHistory');
+  const result = await collectionSettlementClaimHistory.insertOne(
+    {
+      applicationId: applicationId,
+      timestamp: new Date().toISOString(),
+      settlementClaim: settlementClaim,
+    }
+  );
+
+  // update climedTradingVolume in agents collection
+  // climedTradingVolume = climedTradingVolume + settlementTradingVolume
+  // if claimedTradingVolume is empty, climedTradingVolume = settlementTradingVolume
+
+  const resultUpdate = await collection.updateOne(
+    { id: applicationId },
+    {
+      $set: {
+        claimedTradingVolume: claimedTradingVolume + settlementTradingVolume,
+      }
+    }
+  );
+
+
+
+  if (result) {
+    return {
+      applicationId: applicationId,
+      settlementClaim: settlementClaim,
+    };
+  }
+
+
+}
