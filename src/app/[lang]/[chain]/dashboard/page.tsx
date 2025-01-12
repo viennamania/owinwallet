@@ -2692,16 +2692,20 @@ export default function AIPage({ params }: any) {
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                                             <div className='flex flex-col gap-2'>
                                                 <span className='text-xs text-yellow-800'>
-                                                    이번달 거래량 / 수당(0.01%)(USDT)
+                                                    이번달 거래량 / 수수료(0.05%) / 수당(0.00115%)
                                                 </span>
                                                 <div className='flex flex-row items-center justify-start gap-2'>
                                                     <span className='text-lg text-red-500'>
                                                         {application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth).toFixed(0) : 0}
                                                     </span>
                                                     {'/'}
-                                                    {/* application?.affiliateInvitee?.data?.volMonth * 0.0001 */}
+                                                    {/* 수수료 application?.affiliateInvitee?.data?.volMonth * 0.00005 */}
                                                     <span className='text-lg text-red-500'>
-                                                        {application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth * 0.0001).toFixed(0) : 0}
+                                                        {application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth * 0.0005).toFixed(2) : 0}
+                                                    </span>
+                                                    {/* 수당: application?.affiliateInvitee?.data?.volMonth * 0.0000115 */}
+                                                    <span className='text-lg text-red-500'>
+                                                        {application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth * 0.000115).toFixed(2) : 0}
                                                     </span>
 
                                                 </div>
