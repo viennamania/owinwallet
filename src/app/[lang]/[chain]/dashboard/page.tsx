@@ -619,8 +619,16 @@ export default function AIPage({ params }: any) {
     // then it is admin
     const isAdmin = address === "0x0d2846FDbaAc5e9526f9409aE18d3e2c9CdC9466";
 
-
+    // 총 거래계정 잔고가치
+   
     const [totalTradingAccountBalance, setTotalTradingAccountBalance] = useState(0);
+
+    // 이번달 총 누적 거래량
+    // totalAffiliateInviteeVolMonth
+    const [totalAffliliateInviteeVolMonth, setTotalAffliliateInviteeVolMonth] = useState(0);
+
+
+
     const [applications, setApplications] = useState([] as any[]);
     const [loadingApplications, setLoadingApplications] = useState(false);
     useEffect(() => {
@@ -650,6 +658,14 @@ export default function AIPage({ params }: any) {
 
 
             setTotalTradingAccountBalance( data.result.totalTradingAccountBalance );
+
+
+            setTotalAffliliateInviteeVolMonth( data.result.totalAffiliateInviteeVolMonth );
+
+            
+
+
+
 
 
             setLoadingApplications(false);
@@ -2435,7 +2451,7 @@ export default function AIPage({ params }: any) {
                             {totalTradingAccountBalance > 0 && (
                                 <div className='w-full flex flex-col xl:flex-row items-start justify-between gap-5'>
                                     {/* startTrading is exist count */}
-                                    <div className='w-full flex flex-row items-center gap-2'>
+                                    <div className='flex flex-row items-center gap-2'>
                                         <span className='text-lg text-gray-800 font-semibold'>
                                             시작된 Bot:
                                         </span>
@@ -2445,19 +2461,37 @@ export default function AIPage({ params }: any) {
                                             }
                                         </span>
                                     </div>
-                                    <div className='w-full flex flex-row items-center gap-2'>
-                                        <span className='text-lg text-gray-800 font-semibold'>
-                                            총 거래 계정 잔고:
-                                        </span>
-                                        <span className='text-4xl text-green-500 font-semibold'>
-                                            {
-                                            Number(totalTradingAccountBalance).toLocaleString('en-US', {
-                                                style: 'currency',
-                                                currency: 'USD'
-                                            })
-                                            }
-                                        </span>
+                                    <div className='flex flex-col gap-2'>
+                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                            <span className='text-lg text-gray-800 font-semibold'>
+                                                총 거래계정 잔고가치($):
+                                            </span>
+                                            <span className='text-4xl text-green-500 font-semibold'>
+                                                {
+                                                Number(totalTradingAccountBalance).toLocaleString('en-US', {
+                                                    style: 'currency',
+                                                    currency: 'USD'
+                                                })
+                                                }
+                                            </span>
+                                        </div>
+
+                                        {/* totalAffliliateInviteeVolMonth 이번달 총 누적거래량 */}
+                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                            <span className='text-lg text-gray-800 font-semibold'>
+                                                이번달 총 누적거래량($):
+                                            </span>
+                                            <span className='text-4xl text-green-500 font-semibold'>
+                                                {
+                                                    Number(totalAffliliateInviteeVolMonth).toLocaleString('en-US', {
+                                                        style: 'currency',
+                                                        currency: 'USD'
+                                                    })
+                                                }
+                                            </span>
+                                        </div>
                                     </div>
+                                    
                                 </div>
                             )}
 
@@ -2660,7 +2694,7 @@ export default function AIPage({ params }: any) {
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                                             <div className='flex flex-col gap-2'>
                                                 <span className='text-xs text-yellow-800'>
-                                                    OKX Trading Volume
+                                                    이번달 누적 거래량(USDT)
                                                 </span>
                                                 <div className='flex flex-row items-center justify-start gap-2'>
                                                     <span className='text-lg text-red-500'>
@@ -2687,11 +2721,79 @@ export default function AIPage({ params }: any) {
 
                                         </div>
 
+                                        {/* affliateInvitee.data.depAmt */}
+                                        {/* affliateInvitee.timestamp */}
+                                        {/* Deposit Amount */}
+                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                            <div className='flex flex-col gap-2'>
+                                                <span className='text-xs text-yellow-800'>
+                                                    누적 입금액(USDT)
+                                                </span>
+                                                <div className='flex flex-row items-center justify-start gap-2'>
+                                                    <span className='text-lg text-red-500'>
+                                                        {application?.affiliateInvitee?.data?.depAmt ? Number(application.affiliateInvitee.data.depAmt).toFixed(0) : 0} USDT
+                                                    </span>
+                                                    <span className='text-xs text-gray-800'>
+                                                        {application?.affiliateInvitee?.timestamp
+                                                        ?
+
+                                                        new Date().getTime() - new Date(application.affiliateInvitee.timestamp).getTime() < 1000 * 60 ? (
+                                                            ' ' + Math.floor((new Date().getTime() - new Date(application.affiliateInvitee.timestamp).getTime()) / 1000) + ' ' + '초 전'
+                                                        ) :
+                                                        new Date().getTime() - new Date(application.affiliateInvitee.timestamp).getTime() < 1000 * 60 * 60 ? (
+                                                            ' ' + Math.floor((new Date().getTime() - new Date(application.affiliateInvitee.timestamp).getTime()) / 1000 / 60) + ' ' + '분 전'
+                                                        ) : (
+                                                            ' ' + Math.floor((new Date().getTime() - new Date(application.affiliateInvitee.timestamp).getTime()) / 1000 / 60 / 60) + ' ' + '시간 전'
+                                                        )
+                                                        : ""
+                                                        }
+                                                    </span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        {/* affliateInvitee.data.totalCommission */}
+                                        {/* affliateInvitee.timestamp */}
+                                        {/* Total Commission */}
+                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                            <div className='flex flex-col gap-2'>
+                                                <span className='text-xs text-yellow-800'>
+                                                    누적 수수료(USDT)
+                                                </span>
+                                                <div className='flex flex-row items-center justify-start gap-2'>
+                                                    <span className='text-lg text-red-500'>
+                                                        {application?.affiliateInvitee?.data?.totalCommission ? Number(application.affiliateInvitee.data.totalCommission).toFixed(0) : 0} USDT
+                                                    </span>
+                                                    <span className='text-xs text-gray-800'>
+                                                        {application?.affiliateInvitee?.timestamp
+                                                        ?
+
+                                                        new Date().getTime() - new Date(application.affiliateInvitee.timestamp).getTime() < 1000 * 60 ? (
+                                                            ' ' + Math.floor((new Date().getTime() - new Date(application.affiliateInvitee.timestamp).getTime()) / 1000) + ' ' + '초 전'
+                                                        ) :
+                                                        new Date().getTime() - new Date(application.affiliateInvitee.timestamp).getTime() < 1000 * 60 * 60 ? (
+                                                            ' ' + Math.floor((new Date().getTime() - new Date(application.affiliateInvitee.timestamp).getTime()) / 1000 / 60) + ' ' + '분 전'
+                                                        ) : (
+                                                            ' ' + Math.floor((new Date().getTime() - new Date(application.affiliateInvitee.timestamp).getTime()) / 1000 / 60 / 60) + ' ' + '시간 전'
+                                                        )
+                                                        : ""
+                                                        }
+                                                    </span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
+
+
+
                                         {/* tradingAccountBalance */}
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                                             <div className='flex flex-col gap-2'>
                                                 <span className='text-xs text-yellow-800'>
-                                                    OKX Trading Balance
+                                                    거래계정 잔고가치($)
                                                 </span>
 
                                                 {/* if balance is not zero red color */}

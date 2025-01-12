@@ -488,10 +488,33 @@ export async function getAllAgentsForAILabs({ page = 1, limit = 100 }) {
 
       ///console.log('totalTradingAccountBalance: ' + JSON.stringify(totalTradingAccountBalance));
 
+
+      // sum of total affliliateInvitee.data.volMonth is string convert to number
+      const totalAffiliateInviteeVolMonth = await collection.aggregate([
+        {
+          $match: {
+            ///apiPassword: { $exists: true },
+            exchange: 'okx',
+            affiliateInvitee: { $exists: true },
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            total: { $sum: { $toDouble: "$affiliateInvitee.data.volMonth" } },
+          }
+        }
+      ]).toArray();
+
+      //console.log('totalAffiliateInviteeVolMonth: ' + JSON.stringify(totalAffiliateInviteeVolMonth));
+
+
+
      
       return {
         totalCount: totalCount,
         totalTradingAccountBalance: totalTradingAccountBalance[0].total,
+        totalAffiliateInviteeVolMonth: totalAffiliateInviteeVolMonth[0].total,
         applications: result,
       };
     } else {
@@ -1451,7 +1474,7 @@ export async function updateAccountAffiliateInvitee(
   const client = await clientPromise;
   const collection = client.db('vienna').collection('agents');
 
-  
+
 
   const result = await collection.updateOne(
     { id: applicationId },
