@@ -2479,16 +2479,14 @@ export default function AIPage({ params }: any) {
                                         {/* totalAffliliateInviteeVolMonth 이번달 총 누적거래량 */}
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                                             <span className='text-lg text-gray-800 font-semibold'>
-                                                이번달 총 누적거래량($):
+                                                이번달 총 거래량(USDT):
                                             </span>
                                             <span className='text-4xl text-green-500 font-semibold'>
                                                 {
-                                                    Number(totalAffliliateInviteeVolMonth).toLocaleString('en-US', {
-                                                        style: 'currency',
-                                                        currency: 'USD'
-                                                    })
+                                                    totalAffliliateInviteeVolMonth.toFixed(2)
                                                 }
                                             </span>
+                                                        
                                         </div>
                                     </div>
                                     
@@ -2694,27 +2692,18 @@ export default function AIPage({ params }: any) {
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                                             <div className='flex flex-col gap-2'>
                                                 <span className='text-xs text-yellow-800'>
-                                                    이번달 누적 거래량(USDT)
+                                                    이번달 거래량 / 수당(0.01%)(USDT)
                                                 </span>
                                                 <div className='flex flex-row items-center justify-start gap-2'>
                                                     <span className='text-lg text-red-500'>
-                                                        {application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth).toFixed(0) : 0} USDT
+                                                        {application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth).toFixed(0) : 0}
                                                     </span>
-                                                    <span className='text-xs text-gray-800'>
-                                                        {application?.affiliateInvitee?.timestamp
-                                                        ?
+                                                    {'/'}
+                                                    {/* application?.affiliateInvitee?.data?.volMonth * 0.0001 */}
+                                                    <span className='text-lg text-red-500'>
+                                                        {application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth * 0.0001).toFixed(0) : 0}
+                                                    </span>
 
-                                                        new Date().getTime() - new Date(application.affiliateInvitee.timestamp).getTime() < 1000 * 60 ? (
-                                                            ' ' + Math.floor((new Date().getTime() - new Date(application.affiliateInvitee.timestamp).getTime()) / 1000) + ' ' + '초 전'
-                                                        ) :
-                                                        new Date().getTime() - new Date(application.affiliateInvitee.timestamp).getTime() < 1000 * 60 * 60 ? (
-                                                            ' ' + Math.floor((new Date().getTime() - new Date(application.affiliateInvitee.timestamp).getTime()) / 1000 / 60) + ' ' + '분 전'
-                                                        ) : (
-                                                            ' ' + Math.floor((new Date().getTime() - new Date(application.affiliateInvitee.timestamp).getTime()) / 1000 / 60 / 60) + ' ' + '시간 전'
-                                                        )
-                                                        : ""
-                                                        }
-                                                    </span>
                                                 </div>
 
                                             </div>
@@ -2731,7 +2720,7 @@ export default function AIPage({ params }: any) {
                                                 </span>
                                                 <div className='flex flex-row items-center justify-start gap-2'>
                                                     <span className='text-lg text-red-500'>
-                                                        {application?.affiliateInvitee?.data?.depAmt ? Number(application.affiliateInvitee.data.depAmt).toFixed(0) : 0} USDT
+                                                        {application?.affiliateInvitee?.data?.depAmt ? Number(application.affiliateInvitee.data.depAmt).toFixed(0) : 0}
                                                     </span>
                                                     <span className='text-xs text-gray-800'>
                                                         {application?.affiliateInvitee?.timestamp
@@ -2763,7 +2752,7 @@ export default function AIPage({ params }: any) {
                                                 </span>
                                                 <div className='flex flex-row items-center justify-start gap-2'>
                                                     <span className='text-lg text-red-500'>
-                                                        {application?.affiliateInvitee?.data?.totalCommission ? Number(application.affiliateInvitee.data.totalCommission).toFixed(0) : 0} USDT
+                                                        {application?.affiliateInvitee?.data?.totalCommission ? Number(application.affiliateInvitee.data.totalCommission).toFixed(0) : 0}
                                                     </span>
                                                     <span className='text-xs text-gray-800'>
                                                         {application?.affiliateInvitee?.timestamp
