@@ -2492,7 +2492,7 @@ export default function AIPage({ params }: any) {
                                         <div className='flex flex-col gap-2'>
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                 <span className='text-lg text-gray-800 font-semibold'>
-                                                    이번달 OKX 총 수수료(0.0455%):
+                                                    이번달 전체 수수료(0.0455%):
                                                 </span>
                                                 <span className='text-4xl text-green-500 font-semibold'>
                                                     {
@@ -2502,19 +2502,63 @@ export default function AIPage({ params }: any) {
                                             </div>
                                         </div>
 
-                                        {/* 수당 계산 56% */}
+                                        {/* 수당 계산 23% */}
                                         <div className='flex flex-col gap-2'>
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                 <span className='text-lg text-gray-800 font-semibold'>
-                                                    이번달 수당 계산(56%):
+                                                    이번달 전체 수당(23%):
                                                 </span>
                                                 <span className='text-4xl text-green-500 font-semibold'>
                                                     {
-                                                        (totalAffliliateInviteeVolMonth * 0.000455 * 0.56).toFixed(2)
+                                                        (totalAffliliateInviteeVolMonth * 0.000455 * 0.23).toFixed(2)
                                                     }
                                                 </span>
                                             </div>
                                         </div>
+
+                                        {/* 회원 수당 = 수당 * 56% */}
+                                        <div className='flex flex-col gap-2'>
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <span className='text-lg text-gray-800 font-semibold'>
+                                                    이번달 회원 수당(56%):
+                                                </span>
+                                                <span className='text-4xl text-green-500 font-semibold'>
+                                                    {
+                                                        (totalAffliliateInviteeVolMonth * 0.000455 * 0.23 * 0.56).toFixed(2)
+                                                    }
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        {/* 에이전트 수당 = 수당 * 28% */}
+                                        <div className='flex flex-col gap-2'>
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <span className='text-lg text-gray-800 font-semibold'>
+                                                    이번달 에이전트 수당(28%):
+                                                </span>
+                                                <span className='text-4xl text-green-500 font-semibold'>
+                                                    {
+                                                        (totalAffliliateInviteeVolMonth * 0.000455 * 0.23 * 0.28).toFixed(2)
+                                                    }
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        {/* 센터 수당 = 수당 * 14% */}
+                                        <div className='flex flex-col gap-2'>
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <span className='text-lg text-gray-800 font-semibold'>
+                                                    이번달 센터 수당(14%):
+                                                </span>
+                                                <span className='text-4xl text-green-500 font-semibold'>
+                                                    {
+                                                        (totalAffliliateInviteeVolMonth * 0.000455 * 0.23 * 0.14).toFixed(2)
+                                                    }
+                                                </span>
+                                            </div>
+                                        </div>
+
+
 
 
 
@@ -2754,7 +2798,7 @@ export default function AIPage({ params }: any) {
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                                             <div className='flex flex-col gap-2'>
                                                 <span className='text-xs text-yellow-800'>
-                                                    이번달 수수료 / 수당(56%)
+                                                    이번달 수수료 / 수당(23%)
                                                 </span>
                                                 <div className='flex flex-row items-center justify-start gap-2'>
                                                     <span className='text-lg text-red-500'>
@@ -2762,7 +2806,7 @@ export default function AIPage({ params }: any) {
                                                     </span>
                                                     {'/'}
                                                     <span className='text-lg text-red-500'>
-                                                        {application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth * 0.000455 * 0.56).toFixed(2) : 0}
+                                                        {application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth * 0.000455 * 0.23).toFixed(2) : 0}
                                                     </span>
 
                                                 </div>
