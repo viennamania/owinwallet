@@ -7,6 +7,9 @@ import { parse } from 'path';
 import { start } from 'repl';
 
 
+
+
+
 export interface AgentProps {
   id: number;
   walletAddress: string;
@@ -38,6 +41,27 @@ export interface ResultProps {
     apiAccessKey: apiAccessKey,
     apiSecretKey: apiSecretKey,
 */
+
+
+
+
+import { Network, Alchemy } from 'alchemy-sdk';
+
+
+
+
+const settings = {
+  apiKey: process.env.ALCHEMY_API_KEY,
+  network: Network.MATIC_MAINNET,
+};
+
+const alchemy = new Alchemy(settings);
+
+
+
+
+
+
 
 export async function insertOne(data: any) {
 
@@ -1510,6 +1534,8 @@ export async function updateAccountAffiliateInvitee(
 
 
 
+
+
 // setSettlementClaim
 export async function setSettlementClaim(
   {
@@ -1559,11 +1585,58 @@ export async function setSettlementClaim(
   const masterInsentive = Number(tradingFee * 0.23 * 0.56).toFixed(8);
   const masterWalletAddress = application.walletAddress;
 
+
+
   const agentInsentive = Number(tradingFee * 0.23 * 0.28).toFixed(8);
-  const agentWalletAddress = "";
+
+  // get agentWalletAddress from agentBot and agentBotNumber
+  //     const response = await alchemy.nft.getOwnersForNft(address, tokenId)
+
+  const nftContractAddress = application.agentBot;
+  const tokenId = application.agentBotNumber;
+
+  const response = await alchemy.nft.getOwnersForNft(nftContractAddress, tokenId);
+  /* { owners: [ '0xf5fff32cf83a1a614e15f25ce55b0c0a6b5f8f2c' ] } */
+
+  const agentWalletAddress = response?.owners[0] || "";
+
+
+
+
+
 
   const centerInsentive = Number(tradingFee * 0.23 * 0.14).toFixed(8);
-  const centerWalletAddress = "";
+  
+  //const centerWalletAddress = "";
+  // api call to get centerWalletAddress
+  // POST https://https://shinemywinter.vercel.app/api/user/getCenterOwnerByCenter
+  // { center: center }
+
+  const center = application.center;
+
+  const getCenterOwnerByCenter = await fetch(`https://shinemywinter.vercel.app/api/user/getCenterOwnerByCenter`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      center: center,
+    }),
+  })
+
+  const centerOwner = await getCenterOwnerByCenter.json();
+
+  ///console.log('centerOwner: ' + JSON.stringify(centerOwner));
+
+  const centerWalletAddress = centerOwner?.result?.walletAddress || "";
+
+
+
+
+
+
+
+
 
   const settlementClaim = {
     okxUid: okxUid,
