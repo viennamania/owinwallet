@@ -2993,7 +2993,6 @@ export default function AIPage({ params }: any) {
                                         </div>
 
 
-
                                         {/* claimSettlement */}
                                         <div className='w-full flex flex-col gap-2
                                             border-t border-gray-300 pt-2
