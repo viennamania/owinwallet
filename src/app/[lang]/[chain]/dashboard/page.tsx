@@ -658,9 +658,37 @@ export default function AIPage({ params }: any) {
 
             const data = await response.json();
 
-            const total = data.result.totalCount;
+            const total = data.result.totalCount || 0;
 
-            setApplications(data.result.applications);
+  
+            // order by unclaimedTradingVolume desc
+            /*
+            setApplications(
+                data.result.applications.map((item : any) => {
+                    return {
+                        ...item,
+                        unclaimedTradingVolume: item.affiliateInvitee?.data?.volMonth ? Number(item.affiliateInvitee.data.volMonth - item?.claimedTradingVolume || 0).toFixed(0) : 0,
+                    };
+                })
+            )
+            */
+
+            setApplications(
+                data.result.applications.map((item : any) => {
+                    return {
+                        ...item,
+                        unclaimedTradingVolume: item.affiliateInvitee?.data?.volMonth ? Number(item.affiliateInvitee.data.volMonth - item?.claimedTradingVolume || 0).toFixed(0) : 0,
+                    };
+                }).sort((a: any, b: any) => b.unclaimedTradingVolume - a.unclaimedTradingVolume)
+            )
+
+
+
+
+            
+            ///setApplications(data.result.applications);
+
+
 
 
             setTotalTradingAccountBalance( data.result.totalTradingAccountBalance );
@@ -669,11 +697,6 @@ export default function AIPage({ params }: any) {
             setTotalAffliliateInviteeVolMonth( data.result.totalAffiliateInviteeVolMonth );
 
             
-
-
-
-
-
             setLoadingApplications(false);
 
         };
@@ -686,1237 +709,24 @@ export default function AIPage({ params }: any) {
 
 
 
-    ///console.log("applications", applications);
-
-
-    // agentBot
-    const [agentBot, setAgentBot] = useState(agent || "");
-
-
-
-    // getNFt721 for agentBot (ERC721 contract address)
-
-    const [agentBotErc721, setAgentBotErc721] = useState({} as any);
-
-    const [agentBotImage, setAgentBotImage] = useState("/logo-masterbot100.png");
-
- 
-    useEffect(() => {
-
-        const fetchData = async () => {
-
-            if (agentBot === "") {
-                return;
-            }
-
-
-            const contract = getContract({
-                client,
-                chain: polygon,
-                address: agentBot,
-            });
-
-            const nft721 = await getNFT721({
-                contract: contract,
-                tokenId: 0n,
-            });
-
-            /////console.log("nft721======", nft721);
-
-
-            const metadata = await getContractMetadata({ contract });
-
-            console.log("metadata======", metadata);
-                
-
-            //setAgentBotErc721(nft721);
-            
-            if (agentBot === "0x54DE6C9a312EB4e2240036f503e92b7Bab27B068") {
-                setAgentBotImage("/logo-masterbot100.png");
-            } else {
-                setAgentBotImage("/logo-masterbot100.png");
-            }
-
-        };
-
-        fetchData();
-
-    } , [agentBot]);
-
-
-
-
-    // apply to mint NFT
-    // 이름, 핸드폰번호, 이메일주소, OKX UID, OKXUSDT(TRON) 지갑주소, API Access Key, API Secret Key
-
-    const [userName, setUserName] = useState("");
-    const [userPhoneNumber, setUserPhoneNumber] = useState("");
-    const [userEmail, setUserEmail] = useState("");
-  
-    const [htxUsdtWalletAddress, setHtxUsdtWalletAddress] = useState("");
-    const [apiAccessKey, setApiAccessKey] = useState("");
-    const [apiSecretKey, setApiSecretKey] = useState("");
-
-    
-
-    /*
-    const [myAgent, setMyAgent] = useState({} as any);
-    useEffect(() => {
-        const fetchData = async () => {
-            const response = await fetch("/api/agent/getMyAgent", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    walletAddress: address,
-                }),
-            });
-
-            if (!response.ok) {
-                console.error("Error fetching my agent");
-                return;
-            }
-
-            const data = await response.json();
-
-            //console.log("data", data);
-
-            setMyAgent(data.result);
-
-        };
-        fetchData();
-    } , [address]);
-     */
-
-
-
-
-
-
-    const [htxUidList, setHtxUidList] = useState([] as any[]);
-
-    const [isValidAPIKeyList, setIsValidAPIKeyList] = useState([] as any[]);
-
-    // check htx api key
-    const [checkingHtxApiKeyList, setCheckingHtxApiKeyList] = useState([] as any[]);
-
-    ///console.log("checkingHtxApiKeyList", checkingHtxApiKeyList);
-    ///console.log("htxUidList", htxUidList);
-
-    useEffect(() => {
-        applications.forEach((application, index) => {
-            
-            setHtxUidList((htxUidList) => ['', ...htxUidList]);
-
-            setIsValidAPIKeyList((isValidAPIKeyList) => [false, ...isValidAPIKeyList]);
-            setCheckingHtxApiKeyList((checkingHtxApiKeyList) => [false, ...checkingHtxApiKeyList]);
-        } );
-    } , [applications]);
-  
-
-    const checkHtxApiKey = async (
-        htxAccessKey: string,
-        htxSecretKey: string,
-        index: number,
-    ) => {
-
-       
-        if (htxAccessKey === "") {
-            toast.error("OKXAccess Key를 입력해 주세요.");
-            return;
-        }
-
-        if (htxSecretKey === "") {
-            toast.error("OKXSecret Key를 입력해 주세요.");
-            return;
-        }
-
-        setCheckingHtxApiKeyList(
-            checkingHtxApiKeyList.map((item, idx) => {
-                if (idx === index) {
-                    return true;
-                } else {
-                    return item;
-                }
-            })
-        );
-
-        const response = await fetch("/api/agent/getAccount", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                htxAccessKey: htxAccessKey,
-                htxSecretKey: htxSecretKey,
-            }),
-        });
-        /*
-        {
-            status: 'ok',
-            data: [ { id: 63912897, type: 'spot', subtype: '', state: 'working' } ]
-        }
-        */
-
-        const data = await response.json();
-
-        ////console.log("data.result", data.result);
-
-        if (data.result?.status === "ok") {
-
-            setIsValidAPIKeyList(
-                isValidAPIKeyList.map((item, idx) => {
-                    if (idx === index) {
-                        return true;
-                    } else {
-                        return item;
-                    }
-                })
-            );
-
-
-            setHtxUidList(
-                htxUidList.map((item, idx) => {
-                    if (idx === index) {
-                        return data.result?.data[0]?.id;
-                    } else {
-                        return item;
-                    }
-                })
-            );
-
-
-
-            toast.success("OKXAPI Key가 확인되었습니다.");
-        } else {
-            toast.error("OKXAPI Key를 확인할 수 없습니다.");
-        }
-
-        setCheckingHtxApiKeyList(
-            checkingHtxApiKeyList.map((item, idx) => {
-                if (idx === index) {
-                    return false;
-                } else {
-                    return item;
-                }
-            })
-        );
-
-    };
-
-
-
-
-
-    // check tradingAccountBalance for each application
-    const [checkingTradingAccountBalanceList, setCheckingTradingAccountBalanceList] = useState([] as any[]);
+    // tradingAccountBalanceList
     const [tradingAccountBalanceList, setTradingAccountBalanceList] = useState([] as any[]);
-
     useEffect(() => {
-        setCheckingTradingAccountBalanceList(
-            applications.map((item) => {
-                return {
-                    applicationId: item.id,
-                    checking: false,
-                }
-            })
-        );
-
         setTradingAccountBalanceList(
             applications.map((item) => {
                 return {
                     applicationId: item.id,
                     tradingAccountBalance: item.tradingAccountBalance,
-                };
+                }
             })
         );
     } , [applications]);
 
-    const checkTradingAccountBalance = async (
-        applicationId: number,
-        apiAccessKey: string,
-        apiSecretKey: string,
-        apiPassword: string,
-    ) => {
-
-        if (!apiAccessKey) {
-            toast.error("API Access Key를 입력해 주세요.");
-            return;
-        }
-
-        if (!apiSecretKey) {
-            toast.error("API Secret Key를 입력해 주세요.");
-            return;
-        }
-
-        if (!apiPassword) {
-            toast.error("API Password를 입력해 주세요.");
-            return;
-        }
-
-        if (!applicationId) {
-            toast.error("신청 ID를 입력해 주세요.");
-            return;
-        }
-
-        setCheckingTradingAccountBalanceList(
-            checkingTradingAccountBalanceList.map((item) => {
-                if (item.applicationId === applicationId) {
-                    return {
-                        applicationId: applicationId,
-                        checking: true,
-                    }
-                } else {
-                    return item;
-                }
-            }
-        ));
-
-        const response = await fetch("/api/okx/getTradingAccountBalance", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                apiAccessKey: apiAccessKey,
-                apiSecretKey: apiSecretKey,
-                apiPassword: apiPassword,
-                applicationId: applicationId,
-            }),
-        });
-
-        const data = await response.json();
-
-        console.log("data.result", data.result);
-
-        if (data.result?.status === "ok") {
-
-            setTradingAccountBalanceList(
-                tradingAccountBalanceList.map((item) => {
-                    if (item.applicationId === applicationId) {
-                        return {
-                            applicationId: applicationId,
-                            tradingAccountBalance: data.result?.tradingAccountBalance,
-                        }
-                    } else {
-                        return item;
-                    }
-                })
-            );
-
-            toast.success("거래 계정 잔고가 확인되었습니다.");
-        } else {
-            toast.error("거래 계정 잔고를 확인할 수 없습니다.");
-        }
-
-        setCheckingTradingAccountBalanceList(
-            checkingTradingAccountBalanceList.map((item) => {
-                if (item.applicationId === applicationId) {
-                    return {
-                        applicationId: applicationId,
-                        checking: false,
-                    }
-                } else {
-                    return item;
-                }
-            }
-        ));
-
-    };
-    
-    
-    
-
-
-
-
-    
-    // check htx asset valuation for each htxUid
-    const [checkingHtxAssetValuationForAgent, setCheckingHtxAssetValuationForAgent] = useState([] as any[]);
-    const [htxAssetValuationForAgent, setHtxAssetValuationForAgent] = useState([] as any[]);
-
-    useEffect(() => {
-        setCheckingHtxAssetValuationForAgent(
-            applications.map((item) => {
-                return {
-                    applicationId: item.id,
-                    checking: false,
-                }
-            })
-        );
-
-        setHtxAssetValuationForAgent(
-            applications.map((item) => {
-                return {
-                    applicationId: item.id,
-                    assetValuation: item.assetValuation,
-                };
-            })
-        );
-    } , [applications]);
-
-    const checkOkxAssetValuation = async (
-        applicationId: number,
-        okxAccessKey: string,
-        okxSecretKey: string,
-        okxPassword: string,
-    ) => {
-
-        if (!okxAccessKey) {
-            toast.error("OKXAccess Key를 입력해 주세요.");
-            return;
-        }
-
-        if (!okxSecretKey) {
-            toast.error("OKXSecret Key를 입력해 주세요.");
-            return;
-        }
-
-        if (!okxPassword) {
-            toast.error("OKXPassword를 입력해 주세요.");
-            return;
-        }
-
-        if (!applicationId) {
-            toast.error("신청 ID를 입력해 주세요.");
-            return;
-        }
-
-        setCheckingHtxAssetValuationForAgent(
-            checkingHtxAssetValuationForAgent.map((item) => {
-                if (item.applicationId === applicationId) {
-                    return {
-                        applicationId: applicationId,
-                        checking: true,
-                    }
-                } else {
-                    return item;
-                }
-            }
-        ));
-
-
-        const response = await fetch("/api/okx/getAssetValuation", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                apiAccessKey: okxAccessKey,
-                apiSecretKey: okxSecretKey,
-                apiPassword: okxPassword,
-                applicationId: applicationId,
-            }),
-        });
-
-        const data = await response.json();
-
-        
-
-        console.log("getAssetValuation data.result", data.result);
-
-
-        if (data.result?.status === "ok") {
-
-            setHtxAssetValuationForAgent(
-                htxAssetValuationForAgent.map((item) => {
-                    if (item.applicationId === applicationId) {
-                        return {
-                            applicationId: applicationId,
-                            assetValuation: data.result?.assetValuation,
-                        }
-                    } else {
-                        return item;
-                    }
-                })
-            );
-
-            toast.success("OKX자산 가치가 확인되었습니다.");
-        } else {
-            toast.error("OKX자산 가치를 확인할 수 없습니다.");
-        }
-
-        setCheckingHtxAssetValuationForAgent(
-            checkingHtxAssetValuationForAgent.map((item) => {
-                if (item.applicationId === applicationId) {
-                    return {
-                        applicationId: applicationId,
-                        checking: false,
-                    }
-                } else {
-                    return item;
-                }
-            }
-        ));
-
-    };
-    
-    
-
-
-
-
-    // startTrading
-    const [loadingStartTradingList, setLoadingStartTradingList] = useState([] as any[]);
-    const [startTradingList, setStartTradingList] = useState([] as any[]);
-
-    useEffect(() => {
-
-        if (applications.length === 0) {
-            return;
-        }
-
-        // application.id is key, and value
-        setLoadingStartTradingList(
-            applications.map((item) => {
-                return {
-                    applicationId: item.id,
-                    loading: false,
-                }
-            })
-        );
-
-        setStartTradingList(
-            applications.map((item) => {
-                return {
-                    applicationId: item.id,
-                    startTrading: {},
-                }
-            })
-        );
-
-    } , [applications]);
-
-
-
-
-    const startTrading = async (
-        applicationId: number,
-    ) => {
-
-        if (address === "") {
-            toast.error("먼저 지갑을 연결해 주세요.");
-            return;
-        }
-
-        const application = applications.find((item) => item.id === applicationId);
-
-        if (!application) {
-            toast.error("Application을 찾을 수 없습니다.");
-            return;
-        }
-
-        if (!confirm("승인하시겠습니까?")) {
-            return;
-        }
-
-        // loading start
-        setLoadingStartTradingList(
-            loadingStartTradingList.map((item) => {
-                if (item.applicationId === applicationId) {
-                    return {
-                        applicationId: applicationId,
-                        loading: true,
-                    };
-                } else {
-                    return item;
-                }
-            })
-        );
-
-        // update application status to "startTrading"
-        const response = await fetch("/api/agent/startTrading", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                applicationId: applicationId,
-                walletAddress: address,
-            }),
-        });
-
-        if (!response.ok) {
-            console.error("Error starting trading");
-            return;
-        }
-
-        const data = await response.json();
-
-        console.log("data", data);
-
-        if (data?.result) {
-            toast.success("트레이딩이 시작되었습니다.");
-
-            // reload applications
-            const response = await fetch("/api/agent/getApplications", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    walletAddress: address,
-                }),
-            });
-            if (!response.ok) {
-                console.error("Error fetching agents");
-                return;
-            }
-            const data = await response.json();
-            setApplications(data.result.applications);
-
-
-
-        }
-
-        // loading end
-        setLoadingStartTradingList(
-            loadingStartTradingList.map((item) => {
-                if (item.applicationId === applicationId) {
-                    return {
-                        applicationId: applicationId,
-                        loading: false,
-                    };
-                } else {
-                    return item;
-                }
-            })
-        );
-
-    };
-
-
-
-
-
-
-
-
-    // check api access key and secret key for each application
-    const [checkingApiAccessKeyList, setCheckingApiAccessKeyList] = useState([] as any[]);
-    const [apiAccessKeyList, setApiAccessKeyList] = useState([] as any[]);
-
-    useEffect(() => {
-        setCheckingApiAccessKeyList(
-            applications.map((item) => {
-                return {
-                    applicationId: item.id,
-                    checking: false,
-                }
-            })
-        );
-
-        setApiAccessKeyList(
-            applications.map((item) => {
-                return {
-                    applicationId: item.id,
-                    apiAccessKey: item.apiAccessKey,
-                    apiSecretKey: item.apiSecretKey,
-                };
-            })
-        );
-    }
-
-    , [applications]);
-
-
-
-    const checkApiAccessKey = async (
-        applicationId: number,
-        apiAccessKey: string,
-        apiSecretKey: string,
-    ) => {
-
-        if (!apiAccessKey) {
-            toast.error("API Access Key를 입력해 주세요.");
-            return;
-        }
-
-        if (!apiSecretKey) {
-            toast.error("API Secret Key를 입력해 주세요.");
-            return;
-        }
-
-        if (!applicationId) {
-            toast.error("신청 ID를 입력해 주세요.");
-            return;
-        }
-
-        setCheckingApiAccessKeyList(
-            checkingApiAccessKeyList.map((item) => {
-                if (item.applicationId === applicationId) {
-                    return {
-                        applicationId: applicationId,
-                        checking: true,
-                    }
-                } else {
-                    return item;
-                }
-            }
-        ));
-
-        /*
-        // api getAccount
-        const response = await fetch("/api/agent/getAccountAndUpdateApplication", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                applicationId: applicationId,
-                htxAccessKey: apiAccessKey,
-                htxSecretKey: apiSecretKey,
-            }),
-        });
-        */
-       // api updateHtxUID
-       const response = await fetch("/api/agent/updateHtxUID", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                applicationId: applicationId,
-                htxAccessKey: apiAccessKey,
-                htxSecretKey: apiSecretKey,
-            }),
-        });
-
-        if (!response.ok) {
-            console.error("Error checking api access key");
-            return;
-        }
-
-        const data = await response.json();
-
-        //console.log("updateHtxUID data", data);
-
-        if (data.result?.status === "ok") {
-            toast.success("API Access Key가 확인되었습니다.");
-
-
-            // update application
-            setApplications(
-                applications.map((item) => {
-                    if (item.id === applicationId) {
-                        return {
-                            ...item,
-                            okxUid: data.result?.okxUid,
-                            accountConfig: data.result?.accountConfig,
-                        }
-                    } else {
-                        return item;
-                    }
-                })
-            );
-
-
-        } else {
-            toast.error("API Access Key를 확인할 수 없습니다.");
-        }
-
-        setCheckingApiAccessKeyList(
-            checkingApiAccessKeyList.map((item) => {
-                if (item.applicationId === applicationId) {
-                    return {
-                        applicationId: applicationId,
-                        checking: false,
-                    }
-                } else {
-                    return item;
-                }
-            }
-        ));
-
-
-    }
-
-
-
-
-    // getPositionList
-    const [checkingPositionList, setCheckingPositionList] = useState([] as any[]);
-    const [positionList, setPositionList] = useState([] as any[]);
-    /*
-    {"positions":
-        [
-            {"lever":"5","position_side":"long","contract_code":"BCH-USDT","open_avg_price":"377.48","volume":"136","margin_mode":"cross","position_margin":"103.53408","margin_rate":"0.033641785791011462","unreal_profit":"4.2976","profit":"4.2976","profit_rate":"0.041856522199851645","liquidation_price":"19.61"},
-            {"lever":"5","position_side":"long","contract_code":"ONDO-USDT","open_avg_price":"0.7358","volume":"327","margin_mode":"cross","position_margin":"48.31752","margin_rate":"0.033641785791011462","unreal_profit":"0.977100000000000051","profit":"0.977100000000000051","profit_rate":"0.020304600173309145","liquidation_price":null},
-            {"lever":"5","position_side":"long","contract_code":"MEW-USDT","open_avg_price":"0.009241","volume":"32","margin_mode":"cross","position_margin":"58.4384","margin_rate":"0.033641785791011462","unreal_profit":"-3.545999999999968","profit":"-3.545999999999968","profit_rate":"-0.05995171401713626","liquidation_price":null}
-        ]
-    }
-    */
-
-
-    useEffect(() => {
-        setCheckingPositionList(
-            applications.map((item) => {
-                return {
-                    applicationId: item.id,
-                    checking: false,
-                }
-            })
-        );
-
-        setPositionList(
-            applications.map((item) => {
-                return {
-                    applicationId: item.id,
-                    positions: item?.positionList?.positions || [],
-                    timestamp: item?.positionList?.timestamp || 0,
-                    status: item?.positionList?.status || false,
-                };
-            })
-        );
-    } , [applications]);
-
-    const getPositionList = async (
-        applicationId: number,
-        htxAccessKey: string,
-        htxSecretKey: string,
-    ) => {
-
-        if (!htxAccessKey) {
-            toast.error("OKXAccess Key를 입력해 주세요.");
-            return;
-        }
-
-        if (!htxSecretKey) {
-            toast.error("OKXSecret Key를 입력해 주세요.");
-            return;
-        }
-
-        if (!applicationId) {
-            toast.error("신청 ID를 입력해 주세요.");
-            return;
-        }
-
-        setCheckingPositionList(
-            checkingPositionList.map((item) => {
-                if (item.applicationId === applicationId) {
-                    return {
-                        applicationId: applicationId,
-                        checking: true,
-                    }
-                } else {
-                    return item;
-                }
-            })
-        );
-
-        const response = await fetch("/api/htx/position_list", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                htxAccessKey: htxAccessKey,
-                htxSecretKey: htxSecretKey,
-                applicationId: applicationId,
-            }),
-        });
-
-        const data = await response.json();
-
-        ///console.log("data.result", data.result);
-
-        if (data.result?.status === "ok") {
-
-            setPositionList(
-                positionList.map((item) => {
-                    if (item.applicationId === applicationId) {
-                        return {
-                            applicationId: applicationId,
-                            positions: data.result?.data?.positions,
-                            timestamp: data.result?.data?.timestamp,
-                            status: data.result?.data?.status,
-                        }
-                    } else {
-                        return item;
-                    }
-                })
-            );
-
-            toast.success("OKX포지션 리스트가 확인되었습니다.");
-        } else {
-            toast.error("OKX포지션 리스트를 확인할 수 없습니다.");
-        }
-
-        setCheckingPositionList(
-            checkingPositionList.map((item) => {
-                if (item.applicationId === applicationId) {
-                    return {
-                        applicationId: applicationId,
-                        checking: false,
-                    }
-                } else {
-                    return item;
-                }
-            })
-        );
-
-    }
-
-
-
-
-
-    const [loadingDeployErc721Contract, setLoadingDeployErc721Contract] = useState(false);
-
-    
-    const deployErc721ContractForMasterBot = async () => {
-
-        ///console.log("deployErc721Contract=====================");
 
   
-        if (!address) {
-            toast.error('지갑을 먼저 연결해주세요');
-            return;
-        }
 
-        if (!userCode) {
-            //console.log("userCode=====", userCode);
-            toast.error('닉네임을 먼저 설정해주세요');
-            return;
-        }
 
-        if (loadingDeployErc721Contract) {
-            toast.error('이미 실행중입니다');
-            return;
-        }
-        
-        //if (confirm("Are you sure you want to deploy ERC721 contract?")) {
-        // chinese confirm
-        if (confirm("마스트봇 NFT 계약주소를 생성하시겠습니까?")) {
 
-            setLoadingDeployErc721Contract(true);
-
-
-            try {
-
-
-
-                /*
-                // send USDT
-                // Call the extension function to prepare the transaction
-                const transaction = transfer({
-                    contract: contract,
-                    to: "0xe38A3D8786924E2c1C427a4CA5269e6C9D37BC9C",
-                    amount: 0.1,
-                });
-                
-                const { transactionHash } = await sendTransaction({
-                    account: activeAccount as any,
-                    transaction,
-                });
-
-
-                console.log("transactionHash", transactionHash);
-
-                if (!transactionHash) {
-                    throw new Error('Failed to send USDT');
-                }
-
-                //toast.success('USDT sent successfully');
-                */
-
-                const masterBotContractAddress = await deployERC721Contract({
-                    chain: polygon,
-                    client: client,
-                    account: activeAccount as any,
-            
-                    /*  type ERC721ContractType =
-                    | "DropERC721"
-                    | "TokenERC721"
-                    | "OpenEditionERC721";
-                    */
-            
-                    ///type: "DropERC721",
-            
-                    type: "TokenERC721",
-                    
-                    
-                    params: {
-                        name: "MasterBot",
-                        description: "This is MasterBot",
-                        symbol: "MBOT",
-                    },
-            
-                });
-
-                ///console.log("masterBotContractAddress", masterBotContractAddress);
-
-                // save the contract address to the database
-                // /api/user/updateUser
-                // walletAddress, erc721ContractAddress
-
-                if (!masterBotContractAddress) {
-                    throw new Error('Failed to deploy ERC721 contract');
-                }
-
-
-                const response = await fetch('/api/user/updateUserMasterBotContractAddress', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        walletAddress: address,
-                        masterBotContractAddress: masterBotContractAddress,
-                    }),
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to save ERC721 contract address');
-                }
-
-                setUserMasterBotContractAddress(masterBotContractAddress);
-
-
-                toast.success('MasterBot ERC721 contract deployed successfully');
-
-            } catch (error) {
-                console.error("deployErc721Contract error", error);
-            }
-
-            setLoadingDeployErc721Contract(false);
-
-      
-        }
-  
-    };
-
-
-
-    const [masterBotImageUrl, setMasterBotImageUrl] = useState([] as any[]);
-
-    const [mintingMasterBotNft, setMintingMasterBotNft] = useState([] as any[]);
-
-    useEffect(() => {
-
-        setMintingMasterBotNft(
-            applications.map((item) => {
-                return {
-                    applicationId: item.id,
-                    minting: false,
-                }
-            })
-        );
-
-        setMasterBotImageUrl(
-            applications.map((item) => {
-                return {
-                    applicationId: item.id,
-                    masterBotImageUrl: item.masterBotImageUrl,
-                }
-            })
-        );
-
-    } , [applications]);
-    
-
-
-
-    const mintMasterBotNft = async ( applicationId: number ) => {
-
-        if (!address) {
-            toast.error('지갑을 먼저 연결해주세요');
-            return;
-        }
-
-        ///console.log("mintMasterBotNft applicationId", applicationId);
-
-
-        const application = applications.find((item) => item.id === applicationId);
-
-
-        if (!application) {
-            toast.error('Application not found');
-            return;
-        }
-
-        if (application.masterBotImageUrl) {
-            toast.error('이미 NFT가 발행되었습니다');
-            return;
-        }
-
-        setMintingMasterBotNft(
-            mintingMasterBotNft.map((item) => {
-                if (item.applicationId === applicationId) {
-                    return {
-                        applicationId: applicationId,
-                        minting: true,
-                    }
-                } else {
-                    return item;
-                }
-            })
-        );
-
-
-
-
-        
-        try {
-
-
-            // genrate image from api
-            // /api/ai/generateImage
-
-            const responseGenerateImage = await fetch("/api/ai/generateImageForMasterBot", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    englishPrompt: "",
-                }),
-            });
-
-            const dataGenerateImage = await responseGenerateImage.json();
-
-
-            const imageUrl = dataGenerateImage?.result?.imageUrl;
-
-            ///console.log("imageUrl", imageUrl);
-
-        
-            if (!imageUrl) {
-
-                throw new Error('Failed to generate image');
-            }
-
-            //setAgentImage(imageUrl);
-
-
-            ///setMessageMintingAgentNft('AI 에이전트 NFT 발행중입니다');
-
-            const contract = getContract({
-                client,
-                chain: polygon,
-                address: userMasterBotContractAddress,
-
-              });
-
-
-            const transaction = mintTo({
-                contract: contract,
-                to: application.walletAddress,
-                nft: {
-                    name: "MasterBot",
-                    ///description: application.agentBot + "/" + application.agentBotNumber,
-                    description: application.center,
-
-                    ////image: agentImage,
-                    image: imageUrl,
-
-                },
-            });
-
-            //await sendTransaction({ transaction, account: activeAccount as any });
-
-
-
-            //setActiveAccount(smartConnectWallet);
-
-            const transactionResult = await sendAndConfirmTransaction({
-                transaction: transaction,
-                account: activeAccount as any,
-
-                ///////account: smartConnectWallet as any,
-            });
-
-            //console.log("transactionResult", transactionResult);
-
-
-            if (!transactionResult) {
-                throw new Error('AI 에이전트 NFT 발행 실패. 관리자에게 문의해주세요');
-            }
-
-
-
-            // update user MasterBot NFT
-            const response = await fetch('/api/agent/updateApplicationMasterBotInfo', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    applicationId: applicationId,
-                    masterBotInfo: {
-                        contractAddress: userMasterBotContractAddress,
-                        imageUrl: imageUrl,
-                    }
-
-                }),
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to save MasterBot NFT');
-            }
-
-
-            /*
-            applications.map((item) => {
-                if (item.id === applicationId) {
-                    return {
-                        ...item,
-                        masterBotInfo: {
-                            contractAddress: userMasterBotContractAddress,
-                            imageUrl: imageUrl,
-                        }
-                    }
-                }
-            });
-            */
-           // reload applications
-              const responseApplications = await fetch("/api/agent/getApplications", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    walletAddress: address,
-                }),
-            });
-
-            if (responseApplications.ok) {
-                const dataApplications = await responseApplications.json();
-                setApplications(dataApplications.result.applications);
-            }
-
-
-            
-
-            toast.success('AI 에이전트 NFT 발행 완료');
-
-
-
-
-        } catch (error) {
-            console.error("mintAgentNft error", error);
-
-            toast.error('AI 에이전트 NFT 발행 실패');
-
-            //setMessageMintingAgentNft('AI 에이전트 NFT 발행 실패');
-        }
-        
-
-        setMintingMasterBotNft(
-            mintingMasterBotNft.map((item) => {
-                if (item.applicationId === applicationId) {
-                    return {
-                        applicationId: applicationId,
-                        minting: false,
-                    }
-                } else {
-                    return item;
-                }
-            })
-        );
-
-    }
 
 
 
@@ -2040,7 +850,19 @@ export default function AIPage({ params }: any) {
                 console.error("Error fetching agents");
             }
             const data = await response.json();
-            setApplications(data.result.applications);
+            
+            //setApplications(data.result.applications);
+
+            setApplications(
+                data.result.applications.map((item : any) => {
+                    return {
+                        ...item,
+                        unclaimedTradingVolume: item.affiliateInvitee?.data?.volMonth ? Number(item.affiliateInvitee.data.volMonth - item?.claimedTradingVolume || 0).toFixed(0) : 0,
+                    };
+                }).sort((a: any, b: any) => b.unclaimedTradingVolume - a.unclaimedTradingVolume)
+            )
+
+
         } else {
             alert("Error claiming settlement");
         }
@@ -2460,7 +1282,16 @@ export default function AIPage({ params }: any) {
 
                                             const total = data.result.totalCount;
 
-                                            setApplications(data.result.applications);
+                                            //setApplications(data.result.applications);
+
+                                            setApplications(
+                                                data.result.applications.map((item : any) => {
+                                                    return {
+                                                        ...item,
+                                                        unclaimedTradingVolume: item.affiliateInvitee?.data?.volMonth ? Number(item.affiliateInvitee.data.volMonth - item?.claimedTradingVolume || 0).toFixed(0) : 0,
+                                                    };
+                                                }).sort((a: any, b: any) => b.unclaimedTradingVolume - a.unclaimedTradingVolume)
+                                            )
 
                                             setLoadingApplications(false);
 
@@ -3046,34 +1877,64 @@ export default function AIPage({ params }: any) {
                                                         정산할 거래량
                                                     </span>
                                                     <div className='flex flex-row items-center justify-start gap-2'>
-                                                        <span className='text-lg text-red-500'>
-                                                            {application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth
-                                                                 - application?.claimedTradingVolume || 0).toFixed(0) : 0}
+                                                        <span className='text-2xl text-green-500 font-semibold'>
+                                                            {/*application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth
+                                                                 - application?.claimedTradingVolume || 0).toFixed(0) : 0*/}
+                                                            {application.unclaimedTradingVolume}
                                                         </span>
                                                     </div>
                                                 </div>
 
                                             </div>
                                             
-                                            <div className='flex flex-col gap-2'>
-                                                <span className='text-xs text-yellow-800'>
-                                                    정산요청
-                                                </span>
+
+
+                                            <div className='w-full flex flex-col items-center justify-between gap-2'>
+
                                                 <div className='flex flex-row items-center justify-start gap-2'>
+                                                    {/* dot */}
+                                                    <div className='w-2 h-2 bg-red-500 rounded-full'></div>
+                                                    <span className='flex text-sm text-gray-800'>
+                                                        정산할 거래량이 50,000 USDT 이상일 경우 정산할 수 있습니다.
+                                                    </span>
+                                                </div>
+        
+                                                {
+                                                    (application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth
+                                                    - application?.claimedTradingVolume || 0) > 50000 : false) ? (
+
+
                                                     <button
                                                         onClick={() => {
                                                             claimSettlement(application.id);
                                                         }}
-                                                        disabled={claimingSettlementList.find((item) => item.applicationId === application.id)?.loading}
-                                                        className={`${claimingSettlementList.find((item) => item.applicationId === application.id)?.loading ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
+                                                        disabled={
+                                                        claimingSettlementList.find((item) => item.applicationId === application.id)?.loading
+                                                        }
+                                                        className={`
+                                                            ${claimingSettlementList.find((item) => item.applicationId === application.id)?.loading ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
                                                             hover:bg-blue-600
+                                                            w-full flex flex-row items-center justify-center gap-2
                                                         `}
                                                     >
-                                                        {claimingSettlementList.find((item) => item.applicationId === application.id)?.loading ? "처리중..." : "정산요청"}
+                                                        {claimingSettlementList.find((item) => item.applicationId === application.id)?.loading ? "정산중..." : "정산하기"}
                                                     </button>
-                                                </div>
 
+                                                
+                                                ) : (
+                                                    <button
+                                                        disabled={true}
+                                                        className='bg-gray-500 text-white p-2 rounded-lg w-full flex flex-row items-center justify-center gap-2'
+                                                    >
+                                                        정산할 수 없습니다.
+                                                    </button>
+                                                )
+                                                }
+                                                    
+   
                                             </div>
+
+
                                         </div>
 
                                         <div className='w-full flex flex-col gap-2
@@ -3103,7 +1964,8 @@ export default function AIPage({ params }: any) {
                                                     </div>
                                                     <div className='flex flex-row items-center justify-start gap-2'>
                                                         <span className='text-lg text-red-500'>
-                                                            {application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth * 0.000455 * 0.23 * 0.56).toFixed(6) : 0}
+                                                            {/*application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth * 0.000455 * 0.23 * 0.56).toFixed(6) : 0*/}
+                                                            {application.unclaimedTradingVolume > 0 ? Number(application.unclaimedTradingVolume * 0.000455 * 0.23 * 0.56).toFixed(6) : 0}
                                                         </span>
                                                     </div>
 
@@ -3126,7 +1988,8 @@ export default function AIPage({ params }: any) {
                                                     </div>
                                                     <div className='flex flex-row items-center justify-start gap-2'>
                                                         <span className='text-lg text-red-500'>
-                                                            {application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth * 0.000455 * 0.23 * 0.28).toFixed(6) : 0}
+                                                            {/*application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth * 0.000455 * 0.23 * 0.28).toFixed(6) : 0*/}
+                                                            {application.unclaimedTradingVolume > 0 ? Number(application.unclaimedTradingVolume * 0.000455 * 0.23 * 0.28).toFixed(6) : 0}
                                                         </span>
                                                     </div>
 
@@ -3149,7 +2012,8 @@ export default function AIPage({ params }: any) {
                                                     </div>
                                                     <div className='flex flex-row items-center justify-start gap-2'>
                                                         <span className='text-lg text-red-500'>
-                                                            {application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth * 0.000455 * 0.23 * 0.14).toFixed(6) : 0}
+                                                            {/*application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth * 0.000455 * 0.23 * 0.14).toFixed(6) : 0*/}
+                                                            {application.unclaimedTradingVolume > 0 ? Number(application.unclaimedTradingVolume * 0.000455 * 0.23 * 0.14).toFixed(6) : 0}
                                                         </span>
                                                     </div>
 

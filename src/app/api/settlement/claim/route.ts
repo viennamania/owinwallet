@@ -156,6 +156,11 @@ export async function POST(request: NextRequest) {
   const settlementTradingVolume = tradingVolume - claimedTradingVolume;
 
   const tradingFee = settlementTradingVolume * 0.000455;
+
+
+  // calculate insentive
+  //////////////////////////////////////////////////////////////
+
   const insentive = Number(tradingFee * 0.23).toFixed(8);
 
   const masterInsentive = Number(tradingFee * 0.23 * 0.56).toFixed(8);
