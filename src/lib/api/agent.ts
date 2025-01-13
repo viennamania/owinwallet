@@ -30,37 +30,6 @@ export interface ResultProps {
 }
 
 
-/*
-    walletAddress: walletAddress,
-    agentBot: agentBot,
-    userName: userName,
-    userPhoneNumber: userPhoneNumber,
-    userEmail: userEmail,
-    htxUid: htxUid,
-    htxUsdtWalletAddress: htxUsdtWalletAddress,
-    apiAccessKey: apiAccessKey,
-    apiSecretKey: apiSecretKey,
-*/
-
-
-
-
-import { Network, Alchemy } from 'alchemy-sdk';
-
-
-
-
-const settings = {
-  apiKey: process.env.ALCHEMY_API_KEY,
-  network: Network.MATIC_MAINNET,
-};
-
-const alchemy = new Alchemy(settings);
-
-
-
-
-
 
 
 export async function insertOne(data: any) {
@@ -739,7 +708,51 @@ export async function getMyReferAgents(
 }
 
 
+// getOneByApplicationId
+export async function getOneByApplicationId(applicationId: number) {
 
+  if (!applicationId) {
+    return null;
+  }
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('agents');
+
+  const result = await collection.findOne({ id: applicationId });
+
+  if (result) {
+    return {
+      id: result.id,
+      walletAddress: result.walletAddress,
+      agentBot: result.agentBot,
+      agentBotNumber: result.agentBotNumber,
+      userName: result.userName,
+      userPhoneNumber: result.userPhoneNumber,
+      userEmail: result.userEmail,
+      okxUid: result.okxUid,
+      accountConfig: result.accountConfig,
+      tradingAccountBalance: result.tradingAccountBalance,
+      assetBalance: result.assetBalance,
+      htxUsdtWalletAddress: result.htxUsdtWalletAddress,
+      apiAccessKey: result.apiAccessKey,
+      apiSecretKey: result.apiSecretKey,
+      apiPassword: result.apiPassword,
+      createdAt: result.createdAt,
+      startTrading: result.startTrading,
+      masterBotInfo: result.masterBotInfo,
+      assetValuation: result.assetValuation,
+
+      center: result.center,
+      marketingCenter: result.marketingCenter,
+
+      claimedTradingVolume: result.claimedTradingVolume,
+      affiliateInvitee: result.affiliateInvitee,
+    };
+  } else {
+    return null;
+  }
+
+}
 
 
 // getOneByWalletAddress
@@ -1540,130 +1553,21 @@ export async function updateAccountAffiliateInvitee(
 export async function setSettlementClaim(
   {
     applicationId,
+    settlementClaim,
   }
   :
   {
     applicationId: number,
+    settlementClaim: any,
   },
 ) {
 
-  if (!applicationId) {
+  if (!applicationId || !settlementClaim) {
     return null;
   }
+
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('agents');
-
-  // insert settlementClaim to collection settlementClaimHistory
-
-  const application = await collection.findOne({ id: applicationId });
-
-  if (!application) {
-    return null;
-  }
-
-
-  const okxUid = application.okxUid;
-  const tradingAccountBalance = application.tradingAccountBalance;
-
-
-  const claimedTradingVolume = application?.claimedTradingVolume || 0;
-
-  const tradingVolume = application.affiliateInvitee?.data?.volMonth || 0;
-
-  if (tradingVolume <= (claimedTradingVolume + 1000)) {
-    return null;
-  }
-
-
-
-  const settlementTradingVolume = tradingVolume - claimedTradingVolume;
-
-  const tradingFee = settlementTradingVolume * 0.000455;
-  const insentive = Number(tradingFee * 0.23).toFixed(8);
-
-  const masterInsentive = Number(tradingFee * 0.23 * 0.56).toFixed(8);
-  const masterWalletAddress = application.walletAddress;
-
-
-
-  const agentInsentive = Number(tradingFee * 0.23 * 0.28).toFixed(8);
-
-  // get agentWalletAddress from agentBot and agentBotNumber
-  //     const response = await alchemy.nft.getOwnersForNft(address, tokenId)
-
-  const nftContractAddress = application.agentBot;
-  const tokenId = application.agentBotNumber;
-
-  const response = await alchemy.nft.getOwnersForNft(nftContractAddress, tokenId);
-  /* { owners: [ '0xf5fff32cf83a1a614e15f25ce55b0c0a6b5f8f2c' ] } */
-
-  const agentWalletAddress = response?.owners[0] || "";
-
-
-  if (!agentWalletAddress) {
-    return null;
-  }
-
-
-
-
-  const centerInsentive = Number(tradingFee * 0.23 * 0.14).toFixed(8);
-  
-  //const centerWalletAddress = "";
-  // api call to get centerWalletAddress
-  // POST https://https://shinemywinter.vercel.app/api/user/getCenterOwnerByCenter
-  // { center: center }
-
-  const center = application.center;
-
-  const getCenterOwnerByCenter = await fetch(`https://shinemywinter.vercel.app/api/user/getCenterOwnerByCenter`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      center: center,
-    }),
-  })
-
-  const centerOwner = await getCenterOwnerByCenter.json();
-
-  ///console.log('centerOwner: ' + JSON.stringify(centerOwner));
-
-  const centerWalletAddress = centerOwner?.result?.walletAddress || "";
-
-
-  if (!centerWalletAddress) {
-    return null;
-  }
-
-
-  // send USDT to masterWalletAddress, agentWalletAddress, centerWalletAddress
-
-
-
-
-
-
-
-  const settlementClaim = {
-    okxUid: okxUid,
-    tradingAccountBalance: tradingAccountBalance,
-    tradingVolume: tradingVolume,
-    settlementTradingVolume: settlementTradingVolume,
-    tradingFee: tradingFee,
-    insentive: insentive,
-    masterInsentive: masterInsentive,
-    masterWalletAddress: masterWalletAddress,
-    agentInsentive: agentInsentive,
-    agentWalletAddress: agentWalletAddress,
-    centerInsentive: centerInsentive,
-    centerWalletAddress: centerWalletAddress,
-  };
-
-
-
 
 
   const collectionSettlementClaimHistory = client.db('vienna').collection('settlementClaimHistory');
@@ -1679,11 +1583,18 @@ export async function setSettlementClaim(
   // climedTradingVolume = climedTradingVolume + settlementTradingVolume
   // if claimedTradingVolume is empty, climedTradingVolume = settlementTradingVolume
 
+  const collection = client.db('vienna').collection('agents');
+
+  const settlementTradingVolume = settlementClaim.settlementTradingVolume;
+
+  const agent = await collection.findOne({ id: applicationId });
+  const currentClaimedTradingVolume = agent?.claimedTradingVolume || 0;
+
   const resultUpdate = await collection.updateOne(
     { id: applicationId },
     {
       $set: {
-        claimedTradingVolume: claimedTradingVolume + settlementTradingVolume,
+        claimedTradingVolume: currentClaimedTradingVolume + settlementTradingVolume,
       }
     }
   );

@@ -1918,10 +1918,12 @@ export default function AIPage({ params }: any) {
 
     // claim settlement
     const [claimingSettlementList, setClaimingSettlementList] = useState([] as any[]);
-    const [claimSettlementList, setClaimSettlementList] = useState([] as any[]);
+
+    //const [claimSettlementList, setClaimSettlementList] = useState([] as any[]);
 
     useEffect(() => {
 
+        /*
         setClaimSettlementList(
             applications.map((item) => {
                 return {
@@ -1930,8 +1932,9 @@ export default function AIPage({ params }: any) {
                 }
             })
         );
-
-        setClaimSettlementList(
+        */
+        
+        setClaimingSettlementList(
             applications.map((item) => {
                 return {
                     applicationId: item.id,
@@ -1961,6 +1964,7 @@ export default function AIPage({ params }: any) {
         if (!confirm("정산을 요청하시겠습니까?")) {
             return;
         }
+
 
         // loading start
         setClaimingSettlementList(
@@ -1993,8 +1997,22 @@ export default function AIPage({ params }: any) {
             
             alert("Error claiming settlement");
 
+            setClaimingSettlementList(
+                claimingSettlementList.map((item) => {
+                    if (item.applicationId === applicationId) {
+                        return {
+                            applicationId: applicationId,
+                            loading: false,
+                        };
+                    } else {
+                        return item;
+                    }
+                })
+            );
+
             return;
         }
+
 
         const data = await response.json();
 
@@ -2015,7 +2033,6 @@ export default function AIPage({ params }: any) {
             });
             if (!response.ok) {
                 console.error("Error fetching agents");
-                return;
             }
             const data = await response.json();
             setApplications(data.result.applications);
@@ -2978,7 +2995,9 @@ export default function AIPage({ params }: any) {
 
 
                                         {/* claimSettlement */}
-                                        <div className='w-full flex flex-col gap-2'>
+                                        <div className='w-full flex flex-col gap-2
+                                            border-t border-gray-300 pt-2
+                                        '>
                                             {/* claimedTradingVolume */}
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                 <div className='flex flex-col gap-2'>
@@ -3016,12 +3035,12 @@ export default function AIPage({ params }: any) {
                                                         onClick={() => {
                                                             claimSettlement(application.id);
                                                         }}
-                                                        disabled={claimingSettlementList.find((item) => item.applicationId === application.id)?.claiming}
-                                                        className={`${claimingSettlementList.find((item) => item.applicationId === application.id)?.claiming ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
+                                                        disabled={claimingSettlementList.find((item) => item.applicationId === application.id)?.loading}
+                                                        className={`${claimingSettlementList.find((item) => item.applicationId === application.id)?.loading ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
                                                             hover:bg-blue-600
                                                         `}
                                                     >
-                                                        {claimingSettlementList.find((item) => item.applicationId === application.id)?.claiming ? "처리중..." : "정산요청"}
+                                                        {claimingSettlementList.find((item) => item.applicationId === application.id)?.loading ? "처리중..." : "정산요청"}
                                                     </button>
                                                 </div>
 
@@ -3048,7 +3067,7 @@ export default function AIPage({ params }: any) {
                                                     </span>
                                                     <div className='flex flex-row items-center justify-start gap-2'>
                                                         <span className='text-lg text-red-500'>
-                                                            {application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth * 0.000455 * 0.23 * 0.56).toFixed(2) : 0}
+                                                            {application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth * 0.000455 * 0.23 * 0.56).toFixed(6) : 0}
                                                         </span>
                                                     </div>
 
@@ -3069,7 +3088,7 @@ export default function AIPage({ params }: any) {
                                                     </div>
                                                     <div className='flex flex-row items-center justify-start gap-2'>
                                                         <span className='text-lg text-red-500'>
-                                                            {application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth * 0.000455 * 0.23 * 0.28).toFixed(2) : 0}
+                                                            {application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth * 0.000455 * 0.23 * 0.28).toFixed(6) : 0}
                                                         </span>
                                                     </div>
 
@@ -3090,7 +3109,7 @@ export default function AIPage({ params }: any) {
                                                     </div>
                                                     <div className='flex flex-row items-center justify-start gap-2'>
                                                         <span className='text-lg text-red-500'>
-                                                            {application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth * 0.000455 * 0.23 * 0.14).toFixed(2) : 0}
+                                                            {application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth * 0.000455 * 0.23 * 0.14).toFixed(6) : 0}
                                                         </span>
                                                     </div>
 
