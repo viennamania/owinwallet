@@ -2788,6 +2788,8 @@ export default function AIPage({ params }: any) {
                                                 }
                                                 </div>
                                             </div>
+
+                                            
                                             
                                             {/* userName */}
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
