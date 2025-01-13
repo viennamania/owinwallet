@@ -47,6 +47,7 @@ export async function insertOne(data: any) {
 
 
 
+
     ////const userFromAddress = await collectionUsers.findOne({ walletAddress: data.fromAddress });
     /*
     const userFromAddress = collectionUsers
@@ -55,12 +56,12 @@ export async function insertOne(data: any) {
         { $project: { _id: 1, telegramId: 1, walletAddress: 1 } }
     ])
     */
-    const userFromAddress = collectionUsers.findOne(
+    const userFromAddress = await collectionUsers.findOne(
         { walletAddress: data.fromAddress },
-        { projection: { _id: 1, telegramId: 1, walletAddress: 1 } }
+        { projection: { telegramId: 1, walletAddress: 1 } }
     )
 
-    if (userFromAddress) {
+    if (userFromAddress && userFromAddress.walletAddress) {
         
         //console.log("userFromAddress", userFromAddress);
 
@@ -80,14 +81,14 @@ export async function insertOne(data: any) {
 
     }
 
-    //const userToAddress = await collectionUsers.findOne({ walletAddress: data.toAddress });
+
 
     const userToAddress = await collectionUsers.findOne(
         { walletAddress: data.toAddress },
-        { projection: { _id: 1, telegramId: 1, walletAddress: 1 } }
+        { projection: { telegramId: 1, walletAddress: 1 } }
     )
 
-    if (userToAddress) {
+    if (userToAddress && userToAddress.walletAddress) {
         
         //console.log("userToAddress", userToAddress);
 
@@ -127,6 +128,8 @@ export async function insertOne(data: any) {
     }
 
 
+
+
     return {
         result: "success",
     };
@@ -148,7 +151,12 @@ export async function getTransferByWalletAddress(data: any) {
 
     const collectionUsers = client.db('shinemywinter').collection('users');
 
-    const user = await collectionUsers.findOne({ walletAddress: data.walletAddress });
+    
+    const user = await collectionUsers.findOne(
+        { walletAddress: data.walletAddress },
+        { projection: { walletAddress: 1 } }
+    );
+
 
     if (!user) {
         return null;
@@ -161,13 +169,13 @@ export async function getTransferByWalletAddress(data: any) {
     const collectionUserTransfers = client.db('shinemywinter').collection('userTransfers');
 
     const userTransfers = await collectionUserTransfers
-    .find({ "user._id": user._id })
+    .find({ "user.walletAddress": data.walletAddress })
     .sort({ "transferData.timestamp": -1 })
     .toArray();
 
     // totalTransfers
     const totalTransfers = await collectionUserTransfers
-    .find({ "user._id": user._id })
+    .find({ "user.walletAddress": data.walletAddress })
     .count();
 
 
