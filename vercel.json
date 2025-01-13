@@ -2,11 +2,6 @@
     "crons": [
 
         {
-            "path": "/api/cronjob/cancelTradeByAdmin",
-            "schedule": "* * * * *"
-        },
-
-        {
             "path": "/api/cronjob/updateAllTradingAccountBalance",
             "schedule": "* * * * *"
         },
