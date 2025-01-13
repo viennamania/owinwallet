@@ -15,11 +15,7 @@
             "path": "/api/cronjob/updateAllUID",
             "schedule": "* * * * *"
         }
-        ,
-        {
-            "path": "/api/cronjob/affiliateInvitee",
-            "schedule": "0 * * * *"
-        }
+        
 
 
     ]

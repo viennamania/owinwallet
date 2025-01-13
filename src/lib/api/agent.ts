@@ -1601,6 +1601,9 @@ export async function setSettlementClaim(
   const agentWalletAddress = response?.owners[0] || "";
 
 
+  if (!agentWalletAddress) {
+    return null;
+  }
 
 
 
@@ -1631,6 +1634,12 @@ export async function setSettlementClaim(
   const centerWalletAddress = centerOwner?.result?.walletAddress || "";
 
 
+  if (!centerWalletAddress) {
+    return null;
+  }
+
+
+  // send USDT to masterWalletAddress, agentWalletAddress, centerWalletAddress
 
 
 
