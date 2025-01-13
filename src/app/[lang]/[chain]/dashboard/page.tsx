@@ -2806,6 +2806,20 @@ export default function AIPage({ params }: any) {
                                                 <span className='text-sm text-gray-800'>
                                                     {application.walletAddress.slice(0, 5)}...{application.walletAddress.slice(-5)}
                                                 </span>
+                                                {/* polygon scan */}
+                                                <a
+                                                    href={`https://polygonscan.com/address/${application.walletAddress}`}
+                                                    target="_blank"
+                                                    className='text-xs text-blue-500'
+                                                >
+                                                    <Image
+                                                        src="/logo-polygon.png"
+                                                        alt="Polygon"
+                                                        width={20}
+                                                        height={20}
+                                                        className='rounded-lg'
+                                                    />
+                                                </a>
                                             </div>
 
                                             {/* center */}
