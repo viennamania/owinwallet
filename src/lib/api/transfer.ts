@@ -1,3 +1,4 @@
+import { transfer } from 'thirdweb/extensions/erc20';
 import clientPromise from '../mongodb';
 
 /*
@@ -38,28 +39,31 @@ export async function insertOne(data: any) {
     // if toAddress is user wallet address, then insert into userTransfers collection
 
 
-    const collectionUsers = client.db('vienna').collection('users');
+    const collectionUsers = client.db('shinemywinter').collection('users');
 
-    const collectionUserTransfers = client.db('vienna').collection('userTransfers');
+    const collectionUserTransfers = client.db('shinemywinter').collection('userTransfers');
 
-    const collection = client.db('vienna').collection('transfers');
+    const collection = client.db('shinemywinter').collection('transfers');
 
 
 
-    //const userFromAddress = await collectionUsers.findOne({ walletAddress: data.fromAddress });
-    // project user._id
-
+    ////const userFromAddress = await collectionUsers.findOne({ walletAddress: data.fromAddress });
+    /*
     const userFromAddress = collectionUsers
     .aggregate([
         { $match: { walletAddress: data.fromAddress } },
         { $project: { _id: 1, telegramId: 1, walletAddress: 1 } }
     ])
-
-
+    */
+    const userFromAddress = collectionUsers.findOne(
+        { walletAddress: data.fromAddress },
+        { projection: { _id: 1, telegramId: 1, walletAddress: 1 } }
+    )
 
     if (userFromAddress) {
         
         //console.log("userFromAddress", userFromAddress);
+
 
 
         await collectionUserTransfers.insertOne(
@@ -76,7 +80,12 @@ export async function insertOne(data: any) {
 
     }
 
-    const userToAddress = await collectionUsers.findOne({ walletAddress: data.toAddress });
+    //const userToAddress = await collectionUsers.findOne({ walletAddress: data.toAddress });
+
+    const userToAddress = await collectionUsers.findOne(
+        { walletAddress: data.toAddress },
+        { projection: { _id: 1, telegramId: 1, walletAddress: 1 } }
+    )
 
     if (userToAddress) {
         
@@ -103,7 +112,7 @@ export async function insertOne(data: any) {
 
             const message = "You have received " + Number(amount).toFixed(6) + " USDT";
 
-            const collectionTelegramMessages = client.db('vienna').collection('telegramMessages');
+            const collectionTelegramMessages = client.db('shinemywinter').collection('telegramMessages');
 
             await collectionTelegramMessages.insertOne(
             {
@@ -137,7 +146,7 @@ export async function getTransferByWalletAddress(data: any) {
 
     const client = await clientPromise;
 
-    const collectionUsers = client.db('vienna').collection('users');
+    const collectionUsers = client.db('shinemywinter').collection('users');
 
     const user = await collectionUsers.findOne({ walletAddress: data.walletAddress });
 
@@ -149,15 +158,24 @@ export async function getTransferByWalletAddress(data: any) {
     // timestamp desc
     
 
-    const collectionUserTransfers = client.db('vienna').collection('userTransfers');
+    const collectionUserTransfers = client.db('shinemywinter').collection('userTransfers');
 
     const userTransfers = await collectionUserTransfers
     .find({ "user._id": user._id })
     .sort({ "transferData.timestamp": -1 })
     .toArray();
 
+    // totalTransfers
+    const totalTransfers = await collectionUserTransfers
+    .find({ "user._id": user._id })
+    .count();
 
-    return userTransfers;
+
+
+    return {
+        transfers: userTransfers,
+        totalTransfers: totalTransfers,
+    }
 
 }
 
