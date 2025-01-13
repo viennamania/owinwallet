@@ -135,7 +135,7 @@ export async function POST(request: NextRequest) {
   const application = await getOneByApplicationId(applicationId);
 
   if (!application) {
-    return null;
+    return NextResponse.error();
   }
 
 
@@ -148,7 +148,7 @@ export async function POST(request: NextRequest) {
   const tradingVolume = application.affiliateInvitee?.data?.volMonth || 0;
 
   if (tradingVolume <= (claimedTradingVolume + 1000)) {
-    return null;
+    return NextResponse.error();
   }
 
 
@@ -178,7 +178,7 @@ export async function POST(request: NextRequest) {
 
 
   if (!agentWalletAddress) {
-    return null;
+    return NextResponse.error();
   }
 
 
@@ -211,7 +211,7 @@ export async function POST(request: NextRequest) {
 
 
   if (!centerWalletAddress) {
-    return null;
+    return NextResponse.error();
   }
 
 
@@ -255,7 +255,7 @@ export async function POST(request: NextRequest) {
   //console.log("batchResponse: ", batchResponse);
 
   if (!batchResponse) {
-    return null;
+    return NextResponse.error();
   }
 
 
@@ -304,11 +304,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.error();
   }
 
- 
   return NextResponse.json({
-
     result: result,
-    
   });
   
 }
