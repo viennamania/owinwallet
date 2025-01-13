@@ -38,11 +38,11 @@ export async function insertOne(data: any) {
     // if toAddress is user wallet address, then insert into userTransfers collection
 
 
-    const collectionUsers = client.db('shinemywinter').collection('users');
+    const collectionUsers = client.db('vienna').collection('users');
 
-    const collectionUserTransfers = client.db('shinemywinter').collection('userTransfers');
+    const collectionUserTransfers = client.db('vienna').collection('userTransfers');
 
-    const collection = client.db('shinemywinter').collection('transfers');
+    const collection = client.db('vienna').collection('transfers');
 
 
 
@@ -94,7 +94,7 @@ export async function insertOne(data: any) {
 
             const message = "You have received " + Number(amount).toFixed(6) + " USDT";
 
-            const collectionTelegramMessages = client.db('shinemywinter').collection('telegramMessages');
+            const collectionTelegramMessages = client.db('vienna').collection('telegramMessages');
 
             await collectionTelegramMessages.insertOne(
             {
