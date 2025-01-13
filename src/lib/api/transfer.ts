@@ -128,7 +128,7 @@ export async function getTransferByWalletAddress(data: any) {
 
     const client = await clientPromise;
 
-    const collectionUsers = client.db('shinemywinter').collection('users');
+    const collectionUsers = client.db('vienna').collection('users');
 
     const user = await collectionUsers.findOne({ walletAddress: data.walletAddress });
 
@@ -140,7 +140,7 @@ export async function getTransferByWalletAddress(data: any) {
     // timestamp desc
     
 
-    const collectionUserTransfers = client.db('shinemywinter').collection('userTransfers');
+    const collectionUserTransfers = client.db('vienna').collection('userTransfers');
 
     const userTransfers = await collectionUserTransfers
     .find({ "user._id": user._id })
