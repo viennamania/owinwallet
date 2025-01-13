@@ -523,9 +523,14 @@ export default function AIPage({ params }: any) {
                 }),
             });
 
+            if (!response.ok) {
+                console.error("Error fetching user");
+                return;
+            }
+
             const data = await response.json();
 
-            console.log("data", data);
+            //console.log("data", data);
 
 
             if (data.result) {
@@ -2789,8 +2794,7 @@ export default function AIPage({ params }: any) {
                                                 </div>
                                             </div>
 
-                                            
-                                            
+
                                             {/* userName */}
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                 <span className='text-xs font-semibold text-gray-800'>
@@ -3073,7 +3077,7 @@ export default function AIPage({ params }: any) {
                                         </div>
 
                                         <div className='w-full flex flex-col gap-2
-                                            border-t border-gray-300 pt-2
+                                            border border-gray-300 p-4 rounded-lg bg-gray-100
                                         '>
                                             {/* 수당 계산 */}
                                             <div className='w-full flex flex-row items-center justify-start gap-2'>
@@ -3085,11 +3089,18 @@ export default function AIPage({ params }: any) {
 
                                             {/* 마스터 수당 */}
                                             {/* 마스터 수당 = 수당 * 56% */}
-                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                            <div className='w-full flex flex-row items-center justify-between gap-2
+                                                border-t border-gray-300 pt-2
+                                            '>
                                                 <div className='flex flex-col gap-2'>
-                                                    <span className='text-xs text-yellow-800'>
-                                                        마스터 수당(56%)
-                                                    </span>
+                                                    <div className='flex flex-row items-center justify-start gap-2'>
+                                                        <span className='text-xs text-yellow-800'>
+                                                            마스터 수당<br/>(56%)
+                                                        </span>
+                                                        <span className='text-xs text-green-500'>
+                                                            {application?.userName}
+                                                        </span>
+                                                    </div>
                                                     <div className='flex flex-row items-center justify-start gap-2'>
                                                         <span className='text-lg text-red-500'>
                                                             {application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth * 0.000455 * 0.23 * 0.56).toFixed(6) : 0}
@@ -3101,11 +3112,13 @@ export default function AIPage({ params }: any) {
 
                                             {/* 에이전트 수당 */}
                                             {/* 에이전트 수당 = 수당 * 28% */}
-                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                            <div className='w-full flex flex-row items-center justify-between gap-2
+                                                border-t border-gray-300 pt-2
+                                            '>
                                                 <div className='flex flex-col gap-2'>
                                                     <div className='flex flex-row items-center justify-start gap-2'>
                                                         <span className='text-xs text-yellow-800'>
-                                                            에이전트 수당(28%)
+                                                            에이전트 수당<br/>(28%)
                                                         </span>
                                                         <span className='text-xs text-green-500'>
                                                             {application?.agentBotNft?.name || "Unknown"}
@@ -3122,11 +3135,13 @@ export default function AIPage({ params }: any) {
 
                                             {/* 센터 수당 */}
                                             {/* 센터 수당 = 수당 * 14% */}
-                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                            <div className='w-full flex flex-row items-center justify-between gap-2
+                                                border-t border-gray-300 pt-2
+                                            '>
                                                 <div className='flex flex-col gap-2'>
                                                     <div className='flex flex-row items-center justify-start gap-2'>
                                                         <span className='text-xs text-yellow-800'>
-                                                            센터 수당(14%)
+                                                            센터 수당<br/>(14%)
                                                         </span>
                                                         <span className='text-xs text-green-500'>
                                                             {application.center}
