@@ -2798,7 +2798,7 @@ export default function AIPage({ params }: any) {
                                             {/* userName */}
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                 <span className='text-xs font-semibold text-gray-800'>
-                                                    회워아이디
+                                                    회원아이디
                                                 </span>
                                                 <span className='text-sm text-gray-800'>
                                                     {application.userName}
