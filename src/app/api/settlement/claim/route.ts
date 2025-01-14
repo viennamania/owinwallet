@@ -176,21 +176,11 @@ export async function POST(request: NextRequest) {
 
 
 
-      const tradingFee = totalSettlementTradingVolume * 0.000455;
-
-
-      // calculate insentive
-      //////////////////////////////////////////////////////////////
-
-      const insentive = Number(tradingFee * 0.23).toFixed(8);
-
-      const masterInsentive = Number(tradingFee * 0.23 * 0.56).toFixed(8);
+      // 1. master wallet address
       const masterWalletAddress = application.walletAddress;
 
 
-
-      const agentInsentive = Number(tradingFee * 0.23 * 0.28).toFixed(8);
-
+      // 2. agent wallet address
       // get agentWalletAddress from agentBot and agentBotNumber
       //     const response = await alchemy.nft.getOwnersForNft(address, tokenId)
 
@@ -208,10 +198,7 @@ export async function POST(request: NextRequest) {
       }
 
 
-
-
-      const centerInsentive = Number(tradingFee * 0.23 * 0.14).toFixed(8);
-      
+      // 3. center wallet address
       //const centerWalletAddress = "";
       // api call to get centerWalletAddress
       // POST https://https://shinemywinter.vercel.app/api/user/getCenterOwnerByCenter
@@ -239,6 +226,25 @@ export async function POST(request: NextRequest) {
       if (!centerWalletAddress) {
         return NextResponse.error();
       }
+
+
+
+
+      const tradingFee = totalSettlementTradingVolume * 0.000455;
+
+
+      // calculate insentive
+      //////////////////////////////////////////////////////////////
+
+      const insentive = Number(tradingFee * 0.23).toFixed(8);
+
+      const masterInsentive = Number(tradingFee * 0.23 * 0.56).toFixed(8);
+
+      const agentInsentive = Number(tradingFee * 0.23 * 0.28).toFixed(8);
+
+      const centerInsentive = Number(tradingFee * 0.23 * 0.14).toFixed(8);
+      
+ 
 
 
 
