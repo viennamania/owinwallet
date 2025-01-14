@@ -1929,10 +1929,8 @@ export default function AIPage({ params }: any) {
                                                     </button>
                                                 )
                                                 }
-                                                    
-   
+                                                
                                             </div>
-
 
                                         </div>
 
