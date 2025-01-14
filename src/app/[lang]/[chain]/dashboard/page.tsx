@@ -1888,7 +1888,6 @@ export default function AIPage({ params }: any) {
                                             </div>
                                             
 
-
                                             <div className='w-full flex flex-col items-center justify-between gap-2'>
 
                                                 <div className='flex flex-row items-center justify-start gap-2'>
