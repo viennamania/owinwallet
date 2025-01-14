@@ -677,7 +677,18 @@ export default function AIPage({ params }: any) {
                 data.result.applications.map((item : any) => {
                     return {
                         ...item,
-                        unclaimedTradingVolume: item.affiliateInvitee?.data?.volMonth ? Number(item.affiliateInvitee.data.volMonth - item?.claimedTradingVolume || 0).toFixed(0) : 0,
+                        
+                        //unclaimedTradingVolume: item.affiliateInvitee?.data?.volMonth ? Number(item.affiliateInvitee.data.volMonth - item?.claimedTradingVolume || 0).toFixed(0) : 0,
+
+                        // unclaimedTradingVolume = affiliateInvitee.data.volMonth - claimedTradingVolume,
+
+                        unclaimedTradingVolume: Number(
+                            item.affiliateInvitee?.data?.volMonth - (item?.claimedTradingVolume || 0)
+                        ).toFixed(0),
+
+                      
+
+
                     };
                 }).sort((a: any, b: any) => b.unclaimedTradingVolume - a.unclaimedTradingVolume)
             )
@@ -857,7 +868,10 @@ export default function AIPage({ params }: any) {
                 data.result.applications.map((item : any) => {
                     return {
                         ...item,
-                        unclaimedTradingVolume: item.affiliateInvitee?.data?.volMonth ? Number(item.affiliateInvitee.data.volMonth - item?.claimedTradingVolume || 0).toFixed(0) : 0,
+                        unclaimedTradingVolume: Number(
+                            item.affiliateInvitee?.data?.volMonth - (item?.claimedTradingVolume || 0)
+                        ).toFixed(0),
+
                     };
                 }).sort((a: any, b: any) => b.unclaimedTradingVolume - a.unclaimedTradingVolume)
             )
@@ -1288,7 +1302,9 @@ export default function AIPage({ params }: any) {
                                                 data.result.applications.map((item : any) => {
                                                     return {
                                                         ...item,
-                                                        unclaimedTradingVolume: item.affiliateInvitee?.data?.volMonth ? Number(item.affiliateInvitee.data.volMonth - item?.claimedTradingVolume || 0).toFixed(0) : 0,
+                                                        unclaimedTradingVolume: Number(
+                                                            item.affiliateInvitee?.data?.volMonth - (item?.claimedTradingVolume || 0)
+                                                        ).toFixed(0),
                                                     };
                                                 }).sort((a: any, b: any) => b.unclaimedTradingVolume - a.unclaimedTradingVolume)
                                             )
@@ -1899,35 +1915,35 @@ export default function AIPage({ params }: any) {
                                                 </div>
         
                                                 {
-                                                    (application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth
-                                                    - application?.claimedTradingVolume || 0) > 10000 : false) ? (
+                                                    (
+                                                        application.unclaimedTradingVolume > 10000
+                                                    ) ? (
 
+                                                            <button
+                                                                onClick={() => {
+                                                                    claimSettlement(application.id);
+                                                                }}
+                                                                disabled={
+                                                                    claimingSettlementList.find((item) => item.applicationId === application.id)?.loading
+                                                                }
+                                                                className={`
+                                                                    ${claimingSettlementList.find((item) => item.applicationId === application.id)?.loading ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
+                                                                    hover:bg-blue-600
+                                                                    w-full flex flex-row items-center justify-center gap-2
+                                                                `}
+                                                            >
+                                                                {claimingSettlementList.find((item) => item.applicationId === application.id)?.loading ? "정산중..." : "정산하기"}
+                                                            </button>
+                                                    
+                                                        ) : (
 
-                                                    <button
-                                                        onClick={() => {
-                                                            claimSettlement(application.id);
-                                                        }}
-                                                        disabled={
-                                                        claimingSettlementList.find((item) => item.applicationId === application.id)?.loading
-                                                        }
-                                                        className={`
-                                                            ${claimingSettlementList.find((item) => item.applicationId === application.id)?.loading ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
-                                                            hover:bg-blue-600
-                                                            w-full flex flex-row items-center justify-center gap-2
-                                                        `}
-                                                    >
-                                                        {claimingSettlementList.find((item) => item.applicationId === application.id)?.loading ? "정산중..." : "정산하기"}
-                                                    </button>
-
-                                                
-                                                ) : (
-                                                    <button
-                                                        disabled={true}
-                                                        className='bg-gray-500 text-white p-2 rounded-lg w-full flex flex-row items-center justify-center gap-2'
-                                                    >
-                                                        정산할 수 없습니다.
-                                                    </button>
-                                                )
+                                                            <button
+                                                                disabled={true}
+                                                                className='bg-gray-500 text-white p-2 rounded-lg w-full flex flex-row items-center justify-center gap-2'
+                                                            >
+                                                                정산할 수 없습니다.
+                                                            </button>
+                                                        )
                                                 }
                                                 
                                             </div>
