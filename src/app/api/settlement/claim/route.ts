@@ -134,183 +134,205 @@ export async function POST(request: NextRequest) {
 
   const application = await getOneByApplicationId(applicationId);
 
+
+  //console.log("application: ", application);
+
+
+
+
   if (!application) {
     return NextResponse.error();
   }
 
 
-  const okxUid = application.okxUid;
-  const tradingAccountBalance = application.tradingAccountBalance;
+  try {
+
+      const okxUid = application.okxUid;
+      const tradingAccountBalance = application.tradingAccountBalance;
+
+      const lastUnclaimedTradingVolume = parseFloat(application?.lastUnclaimedTradingVolume) || 0;
+
+      const claimedTradingVolume = parseFloat(application?.claimedTradingVolume) || 0;
+
+      const tradingVolume = parseFloat(application.affiliateInvitee?.data?.volMonth) || 0;
+
+      /*
+      if (tradingVolume <= (claimedTradingVolume + 1000)) {
+        return NextResponse.error();
+      }
+      */
 
 
-  const claimedTradingVolume = application?.claimedTradingVolume || 0;
+      const settlementTradingVolume = tradingVolume - claimedTradingVolume;
 
-  const tradingVolume = application.affiliateInvitee?.data?.volMonth || 0;
 
-  if (tradingVolume <= (claimedTradingVolume + 1000)) {
+      const totalSettlementTradingVolume = settlementTradingVolume + lastUnclaimedTradingVolume;
+
+      //console.log("settlementTradingVolume: ", settlementTradingVolume);
+
+      if (totalSettlementTradingVolume <= 0) {
+        return NextResponse.error();
+      }
+
+
+
+      const tradingFee = totalSettlementTradingVolume * 0.000455;
+
+
+      // calculate insentive
+      //////////////////////////////////////////////////////////////
+
+      const insentive = Number(tradingFee * 0.23).toFixed(8);
+
+      const masterInsentive = Number(tradingFee * 0.23 * 0.56).toFixed(8);
+      const masterWalletAddress = application.walletAddress;
+
+
+
+      const agentInsentive = Number(tradingFee * 0.23 * 0.28).toFixed(8);
+
+      // get agentWalletAddress from agentBot and agentBotNumber
+      //     const response = await alchemy.nft.getOwnersForNft(address, tokenId)
+
+      const nftContractAddress = application.agentBot;
+      const tokenId = application.agentBotNumber;
+
+      const response = await alchemy.nft.getOwnersForNft(nftContractAddress, tokenId);
+      /* { owners: [ '0xf5fff32cf83a1a614e15f25ce55b0c0a6b5f8f2c' ] } */
+
+      const agentWalletAddress = response?.owners[0] || "";
+
+
+      if (!agentWalletAddress) {
+        return NextResponse.error();
+      }
+
+
+
+
+      const centerInsentive = Number(tradingFee * 0.23 * 0.14).toFixed(8);
+      
+      //const centerWalletAddress = "";
+      // api call to get centerWalletAddress
+      // POST https://https://shinemywinter.vercel.app/api/user/getCenterOwnerByCenter
+      // { center: center }
+
+      const center = application.center;
+
+      const getCenterOwnerByCenter = await fetch(`https://shinemywinter.vercel.app/api/user/getCenterOwnerByCenter`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          center: center,
+        }),
+      })
+
+      const centerOwner = await getCenterOwnerByCenter.json();
+
+      ///console.log('centerOwner: ' + JSON.stringify(centerOwner));
+
+      const centerWalletAddress = centerOwner?.result?.walletAddress || "";
+
+
+      if (!centerWalletAddress) {
+        return NextResponse.error();
+      }
+
+
+
+
+
+
+      const transactionMasterWalletAddress = transfer({
+        contract: contractUSDT,
+        to: masterWalletAddress,
+        amount: masterInsentive,
+      });
+
+      const transactionAgentWalletAddress = transfer({
+        contract: contractUSDT,
+        to: agentWalletAddress,
+        amount: agentInsentive,
+      });
+
+      const transactionCenterWalletAddress = transfer({
+        contract: contractUSDT,
+        to: centerWalletAddress,
+        amount: centerInsentive,
+      });
+
+      const batchOptions: SendBatchTransactionOptions = {
+        account: account,
+        transactions: [
+          transactionMasterWalletAddress,
+          transactionAgentWalletAddress,
+          transactionCenterWalletAddress,
+        ],
+      };
+
+
+      const batchResponse = await sendBatchTransaction(
+        batchOptions
+      );
+
+
+      //console.log("batchResponse: ", batchResponse);
+
+      if (!batchResponse) {
+        return NextResponse.error();
+      }
+
+
+
+
+
+
+
+
+      const settlementClaim = {
+        okxUid: okxUid,
+        tradingAccountBalance: tradingAccountBalance,
+        tradingVolume: tradingVolume,
+        settlementTradingVolume: settlementTradingVolume,
+        totalSettlementTradingVolume: totalSettlementTradingVolume,
+        tradingFee: tradingFee,
+        insentive: insentive,
+        masterInsentive: masterInsentive,
+        masterWalletAddress: masterWalletAddress,
+        agentInsentive: agentInsentive,
+        agentWalletAddress: agentWalletAddress,
+        centerInsentive: centerInsentive,
+        centerWalletAddress: centerWalletAddress,
+      };
+
+
+      
+
+      
+      const result = await setSettlementClaim({
+        applicationId: applicationId,
+        settlementClaim: settlementClaim,
+      });
+
+
+      if (!result) {
+        return NextResponse.error();
+      }
+
+      return NextResponse.json({
+        result: result,
+      });
+
+
+
+  } catch (error) {
+    console.error(error+"");
     return NextResponse.error();
   }
 
-
-
-  const settlementTradingVolume = tradingVolume - claimedTradingVolume;
-
-  const tradingFee = settlementTradingVolume * 0.000455;
-
-
-  // calculate insentive
-  //////////////////////////////////////////////////////////////
-
-  const insentive = Number(tradingFee * 0.23).toFixed(8);
-
-  const masterInsentive = Number(tradingFee * 0.23 * 0.56).toFixed(8);
-  const masterWalletAddress = application.walletAddress;
-
-
-
-  const agentInsentive = Number(tradingFee * 0.23 * 0.28).toFixed(8);
-
-  // get agentWalletAddress from agentBot and agentBotNumber
-  //     const response = await alchemy.nft.getOwnersForNft(address, tokenId)
-
-  const nftContractAddress = application.agentBot;
-  const tokenId = application.agentBotNumber;
-
-  const response = await alchemy.nft.getOwnersForNft(nftContractAddress, tokenId);
-  /* { owners: [ '0xf5fff32cf83a1a614e15f25ce55b0c0a6b5f8f2c' ] } */
-
-  const agentWalletAddress = response?.owners[0] || "";
-
-
-  if (!agentWalletAddress) {
-    return NextResponse.error();
-  }
-
-
-
-
-  const centerInsentive = Number(tradingFee * 0.23 * 0.14).toFixed(8);
   
-  //const centerWalletAddress = "";
-  // api call to get centerWalletAddress
-  // POST https://https://shinemywinter.vercel.app/api/user/getCenterOwnerByCenter
-  // { center: center }
 
-  const center = application.center;
-
-  const getCenterOwnerByCenter = await fetch(`https://shinemywinter.vercel.app/api/user/getCenterOwnerByCenter`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      center: center,
-    }),
-  })
-
-  const centerOwner = await getCenterOwnerByCenter.json();
-
-  ///console.log('centerOwner: ' + JSON.stringify(centerOwner));
-
-  const centerWalletAddress = centerOwner?.result?.walletAddress || "";
-
-
-  if (!centerWalletAddress) {
-    return NextResponse.error();
-  }
-
-
-
-
-
-
-  const transactionMasterWalletAddress = transfer({
-    contract: contractUSDT,
-    to: masterWalletAddress,
-    amount: masterInsentive,
-  });
-
-  const transactionAgentWalletAddress = transfer({
-    contract: contractUSDT,
-    to: agentWalletAddress,
-    amount: agentInsentive,
-  });
-
-  const transactionCenterWalletAddress = transfer({
-    contract: contractUSDT,
-    to: centerWalletAddress,
-    amount: centerInsentive,
-  });
-
-  const batchOptions: SendBatchTransactionOptions = {
-    account: account,
-    transactions: [
-      transactionMasterWalletAddress,
-      transactionAgentWalletAddress,
-      transactionCenterWalletAddress,
-    ],
-  };
-
-
-  const batchResponse = await sendBatchTransaction(
-    batchOptions
-  );
-
-
-  //console.log("batchResponse: ", batchResponse);
-
-  if (!batchResponse) {
-    return NextResponse.error();
-  }
-
-
-
-
-
-
-
-
-  const settlementClaim = {
-    okxUid: okxUid,
-    tradingAccountBalance: tradingAccountBalance,
-    tradingVolume: tradingVolume,
-    settlementTradingVolume: settlementTradingVolume,
-    tradingFee: tradingFee,
-    insentive: insentive,
-    masterInsentive: masterInsentive,
-    masterWalletAddress: masterWalletAddress,
-    agentInsentive: agentInsentive,
-    agentWalletAddress: agentWalletAddress,
-    centerInsentive: centerInsentive,
-    centerWalletAddress: centerWalletAddress,
-  };
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-  
-  const result = await setSettlementClaim({
-    applicationId: applicationId,
-    settlementClaim: settlementClaim,
-  });
-  
-  if (!result) {
-    return NextResponse.error();
-  }
-
-  return NextResponse.json({
-    result: result,
-  });
   
 }

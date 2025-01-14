@@ -745,6 +745,8 @@ export async function getOneByApplicationId(applicationId: number) {
       center: result.center,
       marketingCenter: result.marketingCenter,
 
+      lastUnclaimedTradingVolume: result.lastUnclaimedTradingVolume,
+
       claimedTradingVolume: result.claimedTradingVolume,
       affiliateInvitee: result.affiliateInvitee,
     };
@@ -1588,13 +1590,16 @@ export async function setSettlementClaim(
   const settlementTradingVolume = settlementClaim.settlementTradingVolume;
 
   const agent = await collection.findOne({ id: applicationId });
+
   const currentClaimedTradingVolume = agent?.claimedTradingVolume || 0;
+
 
   const resultUpdate = await collection.updateOne(
     { id: applicationId },
     {
       $set: {
         claimedTradingVolume: currentClaimedTradingVolume + settlementTradingVolume,
+        lastUnclaimedTradingVolume: "0",
       }
     }
   );

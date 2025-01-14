@@ -677,18 +677,12 @@ export default function AIPage({ params }: any) {
                 data.result.applications.map((item : any) => {
                     return {
                         ...item,
-                        
-                        //unclaimedTradingVolume: item.affiliateInvitee?.data?.volMonth ? Number(item.affiliateInvitee.data.volMonth - item?.claimedTradingVolume || 0).toFixed(0) : 0,
-
-                        // unclaimedTradingVolume = affiliateInvitee.data.volMonth - claimedTradingVolume,
-
-                        unclaimedTradingVolume: Number(
-                            item.affiliateInvitee?.data?.volMonth - (item?.claimedTradingVolume || 0)
-                        ).toFixed(0),
-
-                      
-
-
+                        unclaimedTradingVolume:
+                            Number(
+                                parseFloat(item.lastUnclaimedTradingVolume || 0) +
+                                parseFloat(item.affiliateInvitee?.data?.volMonth || 0) - parseFloat(item?.claimedTradingVolume || 0)
+                            ).toFixed(0)
+                        ,
                     };
                 }).sort((a: any, b: any) => b.unclaimedTradingVolume - a.unclaimedTradingVolume)
             )
@@ -868,10 +862,12 @@ export default function AIPage({ params }: any) {
                 data.result.applications.map((item : any) => {
                     return {
                         ...item,
-                        unclaimedTradingVolume: Number(
-                            item.affiliateInvitee?.data?.volMonth - (item?.claimedTradingVolume || 0)
-                        ).toFixed(0),
-
+                        unclaimedTradingVolume:
+                            Number(
+                                parseFloat(item.lastUnclaimedTradingVolume || 0) +
+                                parseFloat(item.affiliateInvitee?.data?.volMonth || 0) - parseFloat(item?.claimedTradingVolume || 0)
+                            ).toFixed(0)
+                        ,
                     };
                 }).sort((a: any, b: any) => b.unclaimedTradingVolume - a.unclaimedTradingVolume)
             )
@@ -1302,9 +1298,12 @@ export default function AIPage({ params }: any) {
                                                 data.result.applications.map((item : any) => {
                                                     return {
                                                         ...item,
-                                                        unclaimedTradingVolume: Number(
-                                                            item.affiliateInvitee?.data?.volMonth - (item?.claimedTradingVolume || 0)
-                                                        ).toFixed(0),
+                                                        unclaimedTradingVolume:
+                                                            Number(
+                                                                parseFloat(item.lastUnclaimedTradingVolume || 0) +
+                                                                parseFloat(item.affiliateInvitee?.data?.volMonth || 0) - parseFloat(item?.claimedTradingVolume || 0)
+                                                            ).toFixed(0)
+                                                        ,
                                                     };
                                                 }).sort((a: any, b: any) => b.unclaimedTradingVolume - a.unclaimedTradingVolume)
                                             )
@@ -1874,15 +1873,28 @@ export default function AIPage({ params }: any) {
                                         <div className='w-full flex flex-col gap-2
                                             border-t border-gray-300 pt-2
                                         '>
+                                            {/* lastUnclaimedTradingVolume 누락된 거래량 */}
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <div className='flex flex-row items-center justify-start gap-2'>
+                                                    <div className='w-2 h-2 bg-red-500 rounded-full'></div>
+                                                    <span className='text-xs text-gray-800 font-semibold'>
+                                                        누락된 거래량
+                                                    </span>
+                                                </div>
+                                                <span className='text-2xl text-green-500 font-semibold'>
+                                                    {Number(application?.lastUnclaimedTradingVolume || 0).toFixed(0)}
+                                                </span>
+                                            </div>
+
                                             {/* claimedTradingVolume */}
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                 <div className='flex flex-col gap-2'>
                                                     <span className='text-xs text-yellow-800'>
                                                         정산된 거래량
                                                     </span>
-                                                    <div className='flex flex-row items-center justify-start gap-2'>
+                                                    <div className='flex flex-row items-center justify-end gap-2'>
                                                         <span className='text-lg text-red-500'>
-                                                            {application?.claimedTradingVolume ? Number(application.claimedTradingVolume).toFixed(0) : 0}
+                                                            {Number(application?.claimedTradingVolume || 0).toFixed(0)}
                                                         </span>
                                                     </div>
 
@@ -1892,7 +1904,7 @@ export default function AIPage({ params }: any) {
                                                     <span className='text-xs text-yellow-800'>
                                                         정산할 거래량
                                                     </span>
-                                                    <div className='flex flex-row items-center justify-start gap-2'>
+                                                    <div className='flex flex-row items-center justify-end gap-2'>
                                                         <span className='text-2xl text-green-500 font-semibold'>
                                                             {/*application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth
                                                                  - application?.claimedTradingVolume || 0).toFixed(0) : 0*/}
@@ -1978,7 +1990,12 @@ export default function AIPage({ params }: any) {
                                                     <div className='flex flex-row items-center justify-start gap-2'>
                                                         <span className='text-lg text-red-500'>
                                                             {/*application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth * 0.000455 * 0.23 * 0.56).toFixed(6) : 0*/}
-                                                            {application.unclaimedTradingVolume > 0 ? Number(application.unclaimedTradingVolume * 0.000455 * 0.23 * 0.56).toFixed(6) : 0}
+                                                            {application.unclaimedTradingVolume > 0 ?
+                                                            
+                                                            Number(application.unclaimedTradingVolume * 0.000455 * 0.23 * 0.56).toFixed(6)
+
+                                                            : 0
+                                                            }
                                                         </span>
                                                     </div>
 
