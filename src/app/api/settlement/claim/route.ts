@@ -329,12 +329,12 @@ export async function POST(request: NextRequest) {
       }
 
 
-
+      // center telegram message
       // setSettlementMessage
       // centerOwner?.result?.telegramId
       // centerInsentive
-
-      const messageText = `You have received ${centerInsentive} USDT as settlement insentive.`;
+      const centerTelegramId = centerOwner?.result?.telegramId;
+      const messageText = `You have received ${centerInsentive} USDT as center insentive.`;
 
       await fetch(`https://shinemywinter.vercel.app/api/telegram/setSettlementMessage`, {
         method: 'POST',
@@ -343,10 +343,23 @@ export async function POST(request: NextRequest) {
         },
         body: JSON.stringify({
           center: center,
-          telegramId: centerOwner?.result?.telegramId,
+          telegramId: centerTelegramId,
           message: messageText,
         }),
       })
+
+      // agent telegram message
+      // setSettlementMessage
+      // agent telegramId
+      // agentInsentive
+      //const agentTelegramId = application.agentTelegramId;
+
+      // get telegramId from agentWalletAddress
+      
+
+
+
+
 
 
 
