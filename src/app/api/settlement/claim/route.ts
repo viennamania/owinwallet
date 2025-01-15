@@ -357,13 +357,15 @@ export async function POST(request: NextRequest) {
       // https://shinemywinter.vercel.app/api/telegram/setSettlementMessageByWalletAddress
       // POST
 
-      await fetch(`https://shinemywinter.vercel.app/api/telegram/setSettlementMessageByWalletAddress`, {
+      await fetch(`https://shinemywinter.vercel.app/api/telegram/setAgentMessageByWalletAddress`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           center: center,
+          contract: nftContractAddress,
+          tokenId: tokenId,
           walletAddress: agentWalletAddress,
           message: `You have received ${agentInsentive} USDT as agent incentive.`,
         }),
