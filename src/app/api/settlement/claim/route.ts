@@ -3,6 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import {
   getOneByApplicationId,
 	setSettlementClaim,
+  setAgentBotIncentive,
 } from '@lib/api/agent';
 
 
@@ -308,8 +309,13 @@ export async function POST(request: NextRequest) {
         insentive: insentive,
         masterInsentive: masterInsentive,
         masterWalletAddress: masterWalletAddress,
+
+        agentContract: nftContractAddress,
+        agentTokenId: tokenId,
         agentInsentive: agentInsentive,
         agentWalletAddress: agentWalletAddress,
+
+        center: center,
         centerInsentive: centerInsentive,
         centerWalletAddress: centerWalletAddress,
       };
@@ -324,9 +330,12 @@ export async function POST(request: NextRequest) {
       });
 
 
+      /*
       if (!result) {
         return NextResponse.error();
       }
+      */
+
 
 
 
