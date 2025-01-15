@@ -175,7 +175,9 @@ export default function AgentPage({ params }: any) {
         setAgent(data.result);
 
         setOwnerInfo(data?.ownerInfo);
-        setHolderWalletAddress(data?.ownerInfo?.walletAddress);
+
+        //setHolderWalletAddress(data?.ownerInfo?.walletAddress);
+        setHolderWalletAddress(data?.holderWalletAddress);
 
 
         ////console.log("agent======", data.result);

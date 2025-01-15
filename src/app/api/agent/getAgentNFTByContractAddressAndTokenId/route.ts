@@ -92,6 +92,7 @@ export async function POST(request: NextRequest) {
 
   return NextResponse.json({
     result: response,
+    holderWalletAddress: walletAddress,
     ownerInfo: user,
     
   });

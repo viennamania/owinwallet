@@ -333,6 +333,13 @@ export async function POST(request: NextRequest) {
       // master insentive message
       // https://shinemywinter.vercel.app/api/telegram/setSettlementMessageByWalletAddress
       // POST
+
+      ///console.log("masterWalletAddress: ", masterWalletAddress);
+      ///console.log("masterInsentive: ", masterInsentive);
+
+
+
+
       await fetch(`https://shinemywinter.vercel.app/api/telegram/setSettlementMessageByWalletAddress`, {
         method: 'POST',
         headers: {
