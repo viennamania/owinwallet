@@ -2384,12 +2384,31 @@ export default function AIPage({ params }: any) {
                         </div>
                     )}
 
+                            {/* 나의 보상 */}
+                            {/* goto /claim */}
+                    <div className='w-full flex flex-col gap-2 items-start justify-between'>
+                        <span className='text-lg font-semibold text-blue-500'>
+                            마스트봇 보상
+                        </span>
+
+                        <button
+                            className='bg-blue-500 text-zinc-100 p-2 rounded-lg text-sm font-semibold'
+                            onClick={() => {
+                                router.push(
+                                '/' + params.lang + '/' + params.chain + '/claim'
+                                );
+                            }}
+                        >
+                            보상내역 보러 가기
+                        </button>
+                    </div>
 
                     {/* masterBot */}
                     {myAgent?.masterBotInfo ? (
                         <div className='w-full flex flex-col gap-2
                             border border-gray-300 p-4 rounded-lg
                         '>
+
                             <div className='flex flex-row items-center gap-2'>
                                 <Image
                                     src="/logo-opensea.png"

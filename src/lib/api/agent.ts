@@ -760,7 +760,7 @@ export async function getOneByApplicationId(applicationId: number) {
 // getOneByWalletAddress
 export async function getOneByWalletAddress(walletAddress: string) {
 
-  console.log('getOneByWalletAddress walletAddress: ' + walletAddress);
+  //console.log('getOneByWalletAddress walletAddress: ' + walletAddress);
 
   if (!walletAddress) {
     return null;

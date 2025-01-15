@@ -814,15 +814,32 @@ export default function AIPage({ params }: any) {
 
                 <AppBarComponent />
 
-                <Header
-                    center={center || ""}
-                    agent={agent || ""}
-                    tokenId={agentNumber || ""}
-                />
                 
-
-
-
+                {/* history back */}
+                {/* sticky top-0 bg-white */}
+                <div className='
+                    sticky top-0 bg-white z-50
+                    flex flex-row items-center justify-between gap-4
+                    p-4
+                    w-full
+                '>
+                    <button
+                        onClick={() => router.back()}
+                        className="flex flex-row items-center gap-2 bg-gray-500 text-white p-2 rounded-lg
+                        hover:bg-gray-600
+                        "
+                    >
+                        <Image
+                        src="/icon-back.png"
+                        width={24}
+                        height={24}
+                        alt="Back"
+                        />
+                        <span className='text-sm text-white'>
+                        뒤로가기
+                        </span>
+                    </button>
+                </div>
                 
 
 
@@ -915,6 +932,29 @@ export default function AIPage({ params }: any) {
                                 닉네임이 없습니다. 닉네임을 만들어 주세요.
                             </span>
 
+                        </div>
+                    )}
+
+                    {!loadingUserData && !myAgent?.masterBotInfo && (
+
+                        <div className='w-full flex flex-col gap-2 items-start justify-between'>
+                            <span className='text-lg font-semibold text-gray-500'>
+                                마스트봇이 없습니다.
+                            </span>
+                            <span className='text-lg font-semibold text-gray-500'>
+                                마스트봇을 만들어 주세요.
+                            </span>
+                            {/* goto button for /tbot */}
+                            <button
+                                onClick={() => {
+                                    router.push(
+                                        '/' + params.lang + '/' + params.chain + '/tbot'
+                                    );
+                                }}
+                                className='w-full bg-blue-500 text-white p-4 rounded-lg'
+                            >
+                                마스트봇 만들로 가기
+                            </button>
                         </div>
                     )}
 

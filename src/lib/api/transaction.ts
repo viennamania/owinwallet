@@ -200,7 +200,7 @@ export async function getOneByWalletAddress(
   walletAddress: string,
 ): Promise<UserProps | null> {
 
-  console.log('getOneByWalletAddress walletAddress: ' + walletAddress);
+  //console.log('getOneByWalletAddress walletAddress: ' + walletAddress);
 
   const client = await clientPromise;
   const collection = client.db('vienna').collection('users');
@@ -214,7 +214,7 @@ export async function getOneByWalletAddress(
   );
 
 
-  console.log('getOneByWalletAddress results: ' + results);
+  //console.log('getOneByWalletAddress results: ' + results);
 
   return results;
 
