@@ -169,7 +169,7 @@ export default function AgentPage({ params }: any) {
   
         const data = await response.json();
 
-        console.log("getAgentNFTByContractAddressAndTokenId data", data);
+        ///console.log("getAgentNFTByContractAddressAndTokenId data", data);
 
   
         setAgent(data.result);
@@ -942,6 +942,96 @@ export default function AgentPage({ params }: any) {
 
 
 
+    /*
+        // getSettlementHistoryByMasterWalletAddress
+        const [settlementHistory, setSettlementHistory] = useState([] as any[]);
+        const [loadingSettlementHistory, setLoadingSettlementHistory] = useState(false);
+        const getSettlementHistory = async () => {
+            
+            setLoadingSettlementHistory(true);
+    
+            const response = await fetch("/api/agent/getSettlementHistoryByMasterWalletAddress", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    limit: 100,
+                    page: 1,
+                    walletAddress: address,
+                }),
+            });
+    
+            if (!response.ok) {
+                console.error("Error fetching settlement history");
+                setLoadingSettlementHistory(false);
+                return;
+            }
+    
+            const data = await response.json();
+    
+            console.log("data", data);
+    
+            if (data.settlements) {
+                setSettlementHistory(data.settlements);
+            } else {
+                setSettlementHistory([]);
+            }
+    
+            setLoadingSettlementHistory(false);
+    
+        }
+    
+        useEffect(() => {
+            address && getSettlementHistory();
+        } , [address]);
+
+    */
+
+    // getSettlementHistoryByAgentWalletAddress
+    const [settlementHistory, setSettlementHistory] = useState([] as any[]);
+    const [loadingSettlementHistory, setLoadingSettlementHistory] = useState(false);
+    const getSettlementHistory = async () => {
+        
+        setLoadingSettlementHistory(true);
+
+        const response = await fetch("/api/agent/getSettlementHistoryByAgentWalletAddress", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                limit: 100,
+                page: 1,
+                walletAddress: holderWalletAddress,
+            }),
+        });
+
+        if (!response.ok) {
+            console.error("Error fetching settlement history");
+            setLoadingSettlementHistory(false);
+            return;
+        }
+
+        const data = await response.json();
+
+        console.log("data", data);
+
+        if (data.settlements) {
+            setSettlementHistory(data.settlements);
+        } else {
+            setSettlementHistory([]);
+        }
+
+        setLoadingSettlementHistory(false);
+
+    }
+
+    useEffect(() => {
+        holderWalletAddress && getSettlementHistory();
+    } , [holderWalletAddress]);
+
+
 
 
 
@@ -1271,8 +1361,6 @@ export default function AgentPage({ params }: any) {
                         )}
                         */}
 
-
-
                       </div>
 
                     </div>
@@ -1297,6 +1385,76 @@ export default function AgentPage({ params }: any) {
                   </div>
 
                 </div>
+
+
+
+
+                        {/* 보상 내역 table view designed */}
+                        {/* getSettlementHistory */}
+                        {/* 지급일, 정산거래량, 보상(USDT) */}
+
+                        {/* 거래량: if totalSettlementTradingVolume not exist, then use settlementTradingVolume */}
+
+                        <div className='w-full flex flex-col gap-2 items-start justify-between'>
+                            <div className='w-full flex flex-row items-center gap-2'>
+                                <span className='text-lg font-semibold text-gray-500'>
+                                    보상 내역
+                                </span>
+                            </div>
+
+                            {loadingSettlementHistory ? (
+                                <div className='w-full flex flex-col gap-2 items-start justify-between'>
+                                    <span className='text-lg font-semibold text-gray-500'>
+                                        Loading...
+                                    </span>
+                                </div>
+                            ) : (
+                                <table
+                                    className='w-full border border-gray-300'
+                                >
+                                    <thead>
+                                        <tr>
+                                            <th className='border border-gray-300 p-2'>
+                                                지급일
+                                            </th>
+                                            <th className='border border-gray-300 p-2'>
+                                               정산거래량
+                                            </th>
+                                            <th className='border border-gray-300 p-2'>
+                                                보상금액(USDT)
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    
+
+
+                                        {settlementHistory.map((settlement: any, index: number) => (
+                                            <tr key={index}>
+                                                <td className='border border-gray-300 p-2 text-xs'>
+                                                    {new Date(settlement.timestamp).toLocaleString()}
+                                                </td>
+                                                <td className='border border-gray-300 p-2 text-sm text-right'>
+                                                    {
+                                                    settlement.settlementClaim.totalSettlementTradingVolume
+                                                    ? Number(settlement.settlementClaim.totalSettlementTradingVolume).toFixed(0)
+                                                    : Number(settlement.settlementClaim.settlementTradingVolume).toFixed(0)
+                                                    }
+                                                </td>
+                                                <td className='border border-gray-300 p-2 text-lg text-right text-green-500 font-semibold'>
+                                                    {
+                                                    Number(settlement.settlementClaim.agentInsentive).toFixed(6)
+                                                    }
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            )}
+
+                        </div>
+
 
 
 

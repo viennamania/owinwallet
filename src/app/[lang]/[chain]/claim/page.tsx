@@ -785,7 +785,7 @@ export default function AIPage({ params }: any) {
 
         const data = await response.json();
 
-        console.log("data", data);
+        ///console.log("data", data);
 
         if (data.settlements) {
             setSettlementHistory(data.settlements);
@@ -992,7 +992,7 @@ export default function AIPage({ params }: any) {
 
                             {/* 보상 내역 table view designed */}
                             {/* getSettlementHistory */}
-                            {/* 지급일, 거래량, 보상(USDT) */}
+                            {/* 지급일, 정산거래량, 보상(USDT) */}
 
                             {/* 거래량: if totalSettlementTradingVolume not exist, then use settlementTradingVolume */}
 
@@ -1019,10 +1019,10 @@ export default function AIPage({ params }: any) {
                                                     지급일
                                                 </th>
                                                 <th className='border border-gray-300 p-2'>
-                                                    거래량
+                                                    정산거래량
                                                 </th>
                                                 <th className='border border-gray-300 p-2'>
-                                                    보상(USDT)
+                                                    보상금액(USDT)
                                                 </th>
                                             </tr>
                                         </thead>

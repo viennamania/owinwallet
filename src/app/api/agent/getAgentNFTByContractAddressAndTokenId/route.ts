@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
     parseInt(tokenId)
   );
 
-  //console.log("owner: ", owner);
+  //console.log("getOwnersForNft owner: ", owner);
   /*
   {
     owners: [ '0xAcDb8a6c00718597106F8cDa389Aac68973558B3' ],
@@ -81,8 +81,11 @@ export async function POST(request: NextRequest) {
   }
   */
 
+  const walletAddress = owner?.owners?.[0];
 
-  const user = await getOneByWalletAddress(owner?.owners?.[0]);
+  ///console.log("walletAddress: ", walletAddress);
+
+  const user = await getOneByWalletAddress(walletAddress);
 
 
 
