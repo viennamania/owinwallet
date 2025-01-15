@@ -357,8 +357,8 @@ export async function POST(request: NextRequest) {
         },
         body: JSON.stringify({
           center: center,
-          walletAddress: centerWalletAddress,
-          message: `You have received ${centerInsentive} USDT as center insentive.`,
+          walletAddress: agentWalletAddress,
+          message: `You have received ${agentInsentive} USDT as agent insentive.`,
         }),
       })
 
@@ -373,8 +373,8 @@ export async function POST(request: NextRequest) {
         },
         body: JSON.stringify({
           center: center,
-          walletAddress: agentWalletAddress,
-          message: `You have received ${agentInsentive} USDT as agent insentive.`,
+          walletAddress: centerWalletAddress,
+          message: `You have received ${centerInsentive} USDT as center insentive.`,
         }),
       })
 
