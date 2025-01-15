@@ -329,37 +329,57 @@ export async function POST(request: NextRequest) {
       }
 
 
-      // center telegram message
-      // setSettlementMessage
-      // centerOwner?.result?.telegramId
-      // centerInsentive
-      const centerTelegramId = centerOwner?.result?.telegramId;
-      const messageText = `You have received ${centerInsentive} USDT as center insentive.`;
 
-      await fetch(`https://shinemywinter.vercel.app/api/telegram/setSettlementMessage`, {
+      // master insentive message
+      // https://shinemywinter.vercel.app/api/telegram/setSettlementMessageByWalletAddress
+      // POST
+      await fetch(`https://shinemywinter.vercel.app/api/telegram/setSettlementMessageByWalletAddress`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           center: center,
-          telegramId: centerTelegramId,
-          message: messageText,
+          walletAddress: masterWalletAddress,
+          message: `You have received ${masterInsentive} USDT as master insentive.`,
         }),
       })
 
-      // agent telegram message
-      // setSettlementMessage
-      // agent telegramId
-      // agentInsentive
-      //const agentTelegramId = application.agentTelegramId;
 
-      // get telegramId from agentWalletAddress
+      // agent insentive message
+      // https://shinemywinter.vercel.app/api/telegram/setSettlementMessageByWalletAddress
+      // POST
+
+      await fetch(`https://shinemywinter.vercel.app/api/telegram/setSettlementMessageByWalletAddress`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          center: center,
+          walletAddress: centerWalletAddress,
+          message: `You have received ${centerInsentive} USDT as center insentive.`,
+        }),
+      })
+
+
+      // center insentive message
+      // https://shinemywinter.vercel.app/api/telegram/setSettlementMessageByWalletAddress
+      // POST
+      await fetch(`https://shinemywinter.vercel.app/api/telegram/setSettlementMessageByWalletAddress`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          center: center,
+          walletAddress: agentWalletAddress,
+          message: `You have received ${agentInsentive} USDT as agent insentive.`,
+        }),
+      })
+
       
-
-
-
-
+    
 
 
 
