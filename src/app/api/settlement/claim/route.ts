@@ -3,7 +3,6 @@ import { NextResponse, type NextRequest } from "next/server";
 import {
   getOneByApplicationId,
 	setSettlementClaim,
-  setAgentBotIncentive,
 } from '@lib/api/agent';
 
 
