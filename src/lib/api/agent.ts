@@ -1615,3 +1615,137 @@ export async function setSettlementClaim(
 
 
 }
+
+/*
+{
+  "_id": {
+    "$oid": "6787021fa7746c05eb11479d"
+  },
+  "applicationId": 945194,
+  "timestamp": "2025-01-15T00:32:31.295Z",
+  "settlementClaim": {
+    "okxUid": "650230456906336098",
+    "tradingAccountBalance": {
+      "balance": "58.82905155798478",
+      "timestamp": 1736901139043
+    },
+    "tradingVolume": 60591.5,
+    "settlementTradingVolume": 5833.5,
+    "totalSettlementTradingVolume": 46054.0782,
+    "tradingFee": 20.954605581000003,
+    "insentive": "4.81955928",
+    "masterInsentive": "2.69895320",
+    "masterWalletAddress": "0xfD6c58c58029212a5f181EA324cBC6051c7161EF",
+    "agentInsentive": "1.34947660",
+    "agentWalletAddress": "0xc147840E00F1840183de52FE57AC04ed3d474442",
+    "centerInsentive": "0.67473830",
+    "centerWalletAddress": "0xc147840E00F1840183de52FE57AC04ed3d474442"
+  }
+}
+*/
+// getSettlemeHistoryByWalletAddress
+export async function getSettlemeHistoryByWalletAddress(
+  {
+    limit,
+    page,
+    walletAddress,
+    roleType,
+  }
+  :
+  {
+    limit: number,
+    page: number,
+    walletAddress: string,
+    roleType: string,
+  },
+) {
+
+  //console.log('getSettlemeHistoryByWalletAddress walletAddress: ' + walletAddress);
+  //console.log('getSettlemeHistoryByWalletAddress roleType: ' + roleType);
+
+
+
+  if (!walletAddress) {
+    return null;
+  }
+
+  if (!roleType) { // "master" or "agent" or "center"
+    return null;
+  }
+
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('settlementClaimHistory');
+
+  if (roleType === "master") {
+    const result = await collection.aggregate([
+      {
+        $match: {
+          "settlementClaim.masterWalletAddress": walletAddress,
+        }
+      },
+      {
+        $sort: {
+          timestamp: -1,
+        }
+      },
+      {
+        $skip: (page - 1) * limit,
+      },
+      {
+        $limit: limit,
+      },
+    ]).toArray();
+
+    return result;
+
+  } else if (roleType === "agent") {
+    const result = await collection.aggregate([
+      {
+        $match: {
+          "settlementClaim.agentWalletAddress": walletAddress,
+        }
+      },
+      {
+        $sort: {
+          timestamp: -1,
+        }
+      },
+      {
+        $skip: (page - 1) * limit,
+      },
+      {
+        $limit: limit,
+      },
+    ]).toArray();
+
+    return result;
+
+  } else if (roleType === "center") {
+    const result = await collection.aggregate([
+      {
+        $match: {
+          "settlementClaim.centerWalletAddress": walletAddress,
+        }
+      },
+      {
+        $sort: {
+          timestamp: -1,
+        }
+      },
+      {
+        $skip: (page - 1) * limit,
+      },
+      {
+        $limit: limit,
+      },
+    ]).toArray();
+
+    return result;
+
+  } else {
+
+    return null;
+  }
+
+}

@@ -520,10 +520,16 @@ export default function AIPage({ params }: any) {
     const activeWallet = useActiveWallet();
 
 
-
     const smartAccount = useActiveAccount();
 
+    
+    
     const address = smartAccount?.address || "";
+
+    // test
+    //const address = "0x39ba8691D1124607b10FF3a45e70965b6C5584Bb";
+
+
 
 
 
