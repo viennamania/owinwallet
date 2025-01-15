@@ -168,7 +168,7 @@ export async function POST(request: NextRequest) {
 
       const totalSettlementTradingVolume = settlementTradingVolume + lastUnclaimedTradingVolume;
 
-      //console.log("settlementTradingVolume: ", settlementTradingVolume);
+      //console.log("totalSettlementTradingVolume: ", totalSettlementTradingVolume);
 
       if (totalSettlementTradingVolume <= 0) {
         return NextResponse.error();
@@ -192,6 +192,7 @@ export async function POST(request: NextRequest) {
 
       const agentWalletAddress = response?.owners[0] || "";
 
+      //console.log("agentWalletAddress: ", agentWalletAddress);
 
       if (!agentWalletAddress) {
         return NextResponse.error();

@@ -1643,6 +1643,14 @@ export default function AIPage({ params }: any) {
 
                                             {/* userName */}
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                {/* avatar */}
+                                                <Image
+                                                    src={application.avatar || "/profile-default.png"}
+                                                    alt="Avatar"
+                                                    width={50}
+                                                    height={50}
+                                                    className='rounded-lg'
+                                                />
                                                 <span className='text-xs font-semibold text-gray-800'>
                                                     회원아이디
                                                 </span>
@@ -1922,13 +1930,13 @@ export default function AIPage({ params }: any) {
                                                     {/* dot */}
                                                     <div className='w-2 h-2 bg-red-500 rounded-full'></div>
                                                     <span className='flex text-sm text-gray-800'>
-                                                        정산할 거래량이 10,000 USDT 이상일 경우 정산할 수 있습니다.
+                                                        정산할 거래량이 5,000 USDT 이상일 경우 정산할 수 있습니다.
                                                     </span>
                                                 </div>
         
                                                 {
                                                     (
-                                                        application.unclaimedTradingVolume > 10000
+                                                        application.unclaimedTradingVolume > 5000
                                                     ) ? (
 
                                                             <button
