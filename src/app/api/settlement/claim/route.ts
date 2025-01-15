@@ -328,6 +328,31 @@ export async function POST(request: NextRequest) {
         return NextResponse.error();
       }
 
+
+
+      // setSettlementMessage
+      // centerOwner?.result?.telegramId
+      // centerInsentive
+
+      const messageText = `You have received ${centerInsentive} USDT as settlement insentive.`;
+
+      await fetch(`https://shinemywinter.vercel.app/api/telegram/setSettlementMessage`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          center: center,
+          telegramId: centerOwner?.result?.telegramId,
+          message: messageText,
+        }),
+      })
+
+
+
+
+
+
       return NextResponse.json({
         result: result,
       });
