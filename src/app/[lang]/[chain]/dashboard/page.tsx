@@ -1936,7 +1936,7 @@ export default function AIPage({ params }: any) {
         
                                                 {
                                                     (
-                                                        application.unclaimedTradingVolume > 1000
+                                                        application.unclaimedTradingVolume > 500
                                                     ) ? (
 
                                                             <button
