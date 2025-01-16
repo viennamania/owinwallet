@@ -1686,9 +1686,6 @@ export default function AIPage({ params }: any) {
                                         </div>
 
 
-
-
-
                                     </div>
 
 
@@ -1697,7 +1694,68 @@ export default function AIPage({ params }: any) {
                             )}
 
                            
+                            {loadingStatisticsDaily && (
+                                <div className='flex flex-col items-center justify-center'>
+                                        <Image
+                                            src="/icon-reward.gif"
+                                            alt="Loading"
+                                            width={100}
+                                            height={100}
+                                        />
+                                </div>
+                            )}
 
+                           {/* statisticsDaily */}
+                           {/* tradingVolume, total, count */}
+                           <div className='flex flex-col gap-5
+                                border border-gray-300 p-4 rounded-lg bg-gray-100
+                            '>
+                            
+
+
+
+                                {!loadingStatisticsDaily && statisticsDaily?.length > 0 && (
+                                    <div className='flex flex-col gap-5'>
+
+                                        <div className=' flex flex-row items-center gap-2'>
+                                            <Image
+                                                src="/icon-statistics.gif"
+                                                alt="Statistics"
+                                                width={50}
+                                                height={50}
+                                                className='rounded-lg'
+                                            />
+                                            <span className='text-lg font-semibold text-gray-800'>
+                                                통계
+                                            </span>
+                                        </div>
+
+                                        <div className=' flex flex-col gap-2'>
+                                            <span className='text-lg text-gray-800'>
+                                                일일 거래량
+                                            </span>
+
+                                            <div className=' flex flex-col gap-2'>
+                                                {statisticsDaily.map((item: any, index: number) => (
+
+                                                    <div key={index} className='w-full flex flex-row items-center justify-start gap-2'>
+                                                        <span className='text-sm text-gray-800'>
+                                                            {item._id.yearmonthday}
+                                                        </span>
+                                                        <span className='text-2xl text-green-500'>
+                                                            거래량: {item.total.toFixed(2)}
+                                                        </span>
+                                                    </div>
+
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                )}
+
+                            </div>
                             
 
 
