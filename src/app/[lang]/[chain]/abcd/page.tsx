@@ -1533,7 +1533,7 @@ export default function AIPage({ params }: any) {
                                                 {/* dot */}
                                                 <div className='w-2 h-2 bg-red-500 rounded-full'></div>
                                                 <span className='text-lg text-gray-800 font-semibold'>
-                                                    보상 계산 (마스터: 56%, 에이전트: 28%, 센터: 14%)
+                                                    보상 계산
                                                 </span>
                                                 {/* 마스트봇 수 */}
                                                 <span className='text-lg text-green-500 font-semibold'>
