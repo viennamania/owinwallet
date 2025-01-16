@@ -1755,3 +1755,114 @@ export async function getSettlemeHistoryByWalletAddress(
   }
 
 }
+
+
+
+/*
+{
+  "_id": {
+    "$oid": "6788b661cd9211720e2eb740"
+  },
+  "applicationId": 353860,
+  "timestamp": "2025-01-16T07:33:53.703Z",
+  "settlementClaim": {
+    "okxUid": "657161265789629258",
+    "tradingAccountBalance": {
+      "balance": "87.27577578577875",
+      "timestamp": 1737012824395
+    },
+    "tradingVolume": 35533.53,
+    "settlementTradingVolume": 13899.25,
+    "totalSettlementTradingVolume": 13899.25,
+    "tradingFee": 6.32415875,
+    "insentive": "1.45455651",
+    "masterInsentive": "0.81455165",
+    "masterWalletAddress": "0xA831b643d4505fDD7fC6e36F3f58C111E6465D74",
+    "agentContract": "0xD0BB6F98bdd9CF442af90eB5f440FD6EB7AD6De2",
+    "agentTokenId": 0,
+    "agentInsentive": "0.40727582",
+    "agentWalletAddress": "0x498C2cF79ff70fbcCd94D27FF72952431Bd11B5f",
+    "center": "owin_shingyu_bot",
+    "centerInsentive": "0.20363791",
+    "centerWalletAddress": "0x498C2cF79ff70fbcCd94D27FF72952431Bd11B5f"
+  }
+}
+*/
+
+// get statistics daily Trading Balance and tradingVolume
+// from settlementClaimHistory
+// balance is settlementClaim.tradingAccountBalance.balance
+// tradingVolume is settlementClaim.tradingVolume
+
+//convert  "timestamp": "2025-01-07T09:44:40.065Z" to '20240107'
+
+// group by '20240107'
+
+export async function getStatisticsDailyTradingBalanceAndVolume() {
+
+  try {
+
+    const client = await clientPromise;
+
+    const collection = client.db('vienna').collection('settlementClaimHistory');
+
+    const result = await collection.aggregate([
+
+      /* "timestamp": "2025-01-07T09:44:40.065Z" */
+      {
+        $group: {
+          _id: {
+            ///yearmonthday: { $dateToString: { format: "%Y%m%d", date: "$timestamp" } },
+
+            //yearmonthday: { $dateToString: { format: "%Y%m%d", date: { $toDate: "$timestamp" } } },
+
+            // conver "2025-01-07T09:44:40.065Z" to '2025-01-07' by substr
+
+            yearmonthday: { $substr: ["$timestamp", 0, 10] },
+          },
+          // average of settlementClaim.tradingAccountBalance.balance
+          //total: { $sum: { $toDouble: "$settlementClaim.tradingAccountBalance.balance" } },
+
+          // average of settlementClaim.tradingAccountBalance.balance
+
+          ///total: { $avg: { $toDouble: "$settlementClaim.tradingAccountBalance.balance" } },
+
+          // sum of settlementClaim.tradingAccountBalance.balance
+
+          total: { $sum: { $toDouble: "$settlementClaim.tradingAccountBalance.balance" } },
+
+          // sum of settlementClaim.tradingVolume
+
+          tradingVolume: { $sum: "$settlementClaim.tradingVolume" },
+
+          // count of settlementClaim.tradingAccountBalance.balance
+
+          count: { $sum: 1 },
+
+          // count of distinct applicationId
+
+          ///countDistinct: { $sum: 1 },
+
+        }
+      },
+
+      {
+        $sort: {
+          _id: 1,
+        }
+      }
+
+    ]).toArray();
+
+    return result;
+
+  } catch (e) {
+
+    console.log('getStatisticsDailyTradingBalanceAndVolume error: ' + e);
+    return null;
+  }
+
+}
+
+
+

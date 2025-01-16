@@ -347,7 +347,7 @@ export async function POST(request: NextRequest) {
 
 
       // totalSettlementTradingVolume 채굴량을 보상으로 000 USDT를 지급하였습니다.
-      const messageMaster = `${totalSettlementTradingVolume} 채굴량을 보상으로 ${Number(masterInsentive).toFixed(6)} USDT를 지급하였습니다.`;
+      const messageMaster = `${Number(totalSettlementTradingVolume).toFixed(0)} 채굴량을 보상으로 ${Number(masterInsentive).toFixed(6)} USDT를 지급하였습니다.`;
 
       await fetch(`https://shinemywinter.vercel.app/api/telegram/setSettlementMessageByWalletAddress`, {
         method: 'POST',
@@ -367,7 +367,7 @@ export async function POST(request: NextRequest) {
       // https://shinemywinter.vercel.app/api/telegram/setSettlementMessageByWalletAddress
       // POST
 
-      const agentInsentiveMessage = `${totalSettlementTradingVolume} 채굴량을 보상으로 ${Number(agentInsentive).toFixed(6)} USDT를 지급하였습니다.`;
+      const agentInsentiveMessage = `${Number(totalSettlementTradingVolume).toFixed(0)} 채굴량을 보상으로 ${Number(agentInsentive).toFixed(6)} USDT를 지급하였습니다.`;
 
       await fetch(`https://shinemywinter.vercel.app/api/telegram/setAgentMessageByWalletAddress`, {
         method: 'POST',
@@ -389,7 +389,7 @@ export async function POST(request: NextRequest) {
       // https://shinemywinter.vercel.app/api/telegram/setSettlementMessageByWalletAddress
       // POST
 
-      const centerInsentiveMessage = `${totalSettlementTradingVolume} 채굴량을 보상으로 ${Number(centerInsentive).toFixed(6)} USDT를 지급하였습니다.`;
+      const centerInsentiveMessage = `${Number(totalSettlementTradingVolume).toFixed(0)} 채굴량을 보상으로 ${Number(centerInsentive).toFixed(6)} USDT를 지급하였습니다.`;
 
       await fetch(`https://shinemywinter.vercel.app/api/telegram/setSettlementMessageByWalletAddress`, {
         method: 'POST',
