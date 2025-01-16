@@ -367,6 +367,8 @@ export async function POST(request: NextRequest) {
       // https://shinemywinter.vercel.app/api/telegram/setSettlementMessageByWalletAddress
       // POST
 
+      const agentInsentiveMessage = `${totalSettlementTradingVolume} 채굴량을 보상으로 ${agentInsentive} USDT를 지급하였습니다.`;
+
       await fetch(`https://shinemywinter.vercel.app/api/telegram/setAgentMessageByWalletAddress`, {
         method: 'POST',
         headers: {
@@ -377,7 +379,8 @@ export async function POST(request: NextRequest) {
           contract: nftContractAddress,
           tokenId: tokenId,
           walletAddress: agentWalletAddress,
-          message: `You have received ${agentInsentive} USDT as agent incentive.`,
+          //message: `You have received ${agentInsentive} USDT as agent incentive.`,
+          message: agentInsentiveMessage,
         }),
       })
 
@@ -385,6 +388,9 @@ export async function POST(request: NextRequest) {
       // center insentive message
       // https://shinemywinter.vercel.app/api/telegram/setSettlementMessageByWalletAddress
       // POST
+
+      const centerInsentiveMessage = `${totalSettlementTradingVolume} 채굴량을 보상으로 ${centerInsentive} USDT를 지급하였습니다.`;
+
       await fetch(`https://shinemywinter.vercel.app/api/telegram/setSettlementMessageByWalletAddress`, {
         method: 'POST',
         headers: {
@@ -393,7 +399,8 @@ export async function POST(request: NextRequest) {
         body: JSON.stringify({
           center: center,
           walletAddress: centerWalletAddress,
-          message: `You have received ${centerInsentive} USDT as center incentive.`,
+          //message: `You have received ${centerInsentive} USDT as center incentive.`,
+          message: centerInsentiveMessage,
         }),
       })
 
