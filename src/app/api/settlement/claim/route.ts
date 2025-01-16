@@ -346,7 +346,8 @@ export async function POST(request: NextRequest) {
       ///console.log("masterInsentive: ", masterInsentive);
 
 
-
+      // totalSettlementTradingVolume 채굴량을 보상으로 000 USDT를 지급하였습니다.
+      const messageMaster = `${totalSettlementTradingVolume} 채굴량을 보상으로 ${masterInsentive} USDT를 지급하였습니다.`;
 
       await fetch(`https://shinemywinter.vercel.app/api/telegram/setSettlementMessageByWalletAddress`, {
         method: 'POST',
@@ -356,7 +357,8 @@ export async function POST(request: NextRequest) {
         body: JSON.stringify({
           center: center,
           walletAddress: masterWalletAddress,
-          message: `You have received ${masterInsentive} USDT as master incentive.`,
+          //message: `You have received ${masterInsentive} USDT as master incentive.`,
+          message: messageMaster,
         }),
       })
 
