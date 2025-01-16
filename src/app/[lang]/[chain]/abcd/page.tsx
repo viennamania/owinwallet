@@ -1924,50 +1924,6 @@ export default function AIPage({ params }: any) {
                                             </div>
                                             
 
-                                            <div className='w-full flex flex-col items-center justify-between gap-2'>
-
-                                                <div className='flex flex-row items-center justify-start gap-2'>
-                                                    {/* dot */}
-                                                    <div className='w-2 h-2 bg-red-500 rounded-full'></div>
-                                                    <span className='flex text-sm text-gray-800'>
-                                                        정산할 거래량이 5,000 USDT 이상일 경우 정산할 수 있습니다.
-                                                    </span>
-                                                </div>
-        
-                                                {
-                                                    (
-                                                        application.unclaimedTradingVolume >= 100
-                                                    ) ? (
-
-                                                            <button
-                                                                onClick={() => {
-                                                                    claimSettlement(application.id);
-                                                                }}
-                                                                disabled={
-                                                                    claimingSettlementList.find((item) => item.applicationId === application.id)?.loading
-                                                                }
-                                                                className={`
-                                                                    ${claimingSettlementList.find((item) => item.applicationId === application.id)?.loading ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
-                                                                    hover:bg-blue-600
-                                                                    w-full flex flex-row items-center justify-center gap-2
-                                                                `}
-                                                            >
-                                                                {claimingSettlementList.find((item) => item.applicationId === application.id)?.loading ? "정산중..." : "정산하기"}
-                                                            </button>
-                                                    
-                                                        ) : (
-
-                                                            <button
-                                                                disabled={true}
-                                                                className='bg-gray-500 text-white p-2 rounded-lg w-full flex flex-row items-center justify-center gap-2'
-                                                            >
-                                                                정산할 수 없습니다.
-                                                            </button>
-                                                        )
-                                                }
-                                                
-                                            </div>
-
                                         </div>
 
                                         <div className='w-full flex flex-col gap-2
