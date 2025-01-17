@@ -1722,6 +1722,22 @@ export default function AIPage({ params }: any) {
                                                             ${application?.startTrading?.status ? "animate-pulse" : ""}`}
                                                     />
                                                 </div>
+
+                                                {/* opensea link */}
+                                                <a
+                                                    href={`https://opensea.io/assets/matic/${application.agentBotNft?.contract.address}/${application.agentBotNft?.tokenId}`}
+                                                    target="_blank"
+                                                    className='text-xs text-blue-500'
+                                                >
+                                                    <Image
+                                                        src="/logo-opensea.png"
+                                                        alt="OpenSea"
+                                                        width={20}
+                                                        height={20}
+                                                        className='rounded-lg'
+                                                    />
+                                                </a>
+
                                             </div>
 
                                         </div>

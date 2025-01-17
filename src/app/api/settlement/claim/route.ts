@@ -141,6 +141,9 @@ export async function POST(request: NextRequest) {
 
 
   if (!application) {
+
+    console.error('application: ' + application);
+
     return NextResponse.error();
   }
 
@@ -171,6 +174,9 @@ export async function POST(request: NextRequest) {
       //console.log("totalSettlementTradingVolume: ", totalSettlementTradingVolume);
 
       if (totalSettlementTradingVolume <= 0) {
+
+        console.error('totalSettlementTradingVolume: ' + totalSettlementTradingVolume);
+
         return NextResponse.error();
       }
 
@@ -190,11 +196,16 @@ export async function POST(request: NextRequest) {
       const response = await alchemy.nft.getOwnersForNft(nftContractAddress, tokenId);
       /* { owners: [ '0xf5fff32cf83a1a614e15f25ce55b0c0a6b5f8f2c' ] } */
 
+      console.log("response: ", response);
+
       const agentWalletAddress = response?.owners[0] || "";
 
       //console.log("agentWalletAddress: ", agentWalletAddress);
 
       if (!agentWalletAddress) {
+
+        console.error('agentWalletAddress: ' + agentWalletAddress);
+
         return NextResponse.error();
       }
 
@@ -225,6 +236,9 @@ export async function POST(request: NextRequest) {
 
 
       if (!centerWalletAddress) {
+
+        console.error('centerWalletAddress: ' + centerWalletAddress);
+
         return NextResponse.error();
       }
 
@@ -288,6 +302,9 @@ export async function POST(request: NextRequest) {
       //console.log("batchResponse: ", batchResponse);
 
       if (!batchResponse) {
+        
+        console.error("batchResponse: ", batchResponse);
+
         return NextResponse.error();
       }
 
