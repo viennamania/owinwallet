@@ -342,7 +342,9 @@ export default function AIPage({ params }: any) {
 
     const activeAccount = useActiveAccount();
 
-    const address = activeAccount?.address || "";
+    //const address = activeAccount?.address || "";
+
+    const address = "0x0d2846FDbaAc5e9526f9409aE18d3e2c9CdC9466";
 
 
 
@@ -1030,7 +1032,7 @@ export default function AIPage({ params }: any) {
 
             formattedData.push({
                 
-                'Market': marketingCenter,
+                'Marketing': marketingCenter,
                 '센터봇': item.center,
                 '신청번호': item.id,
                 'UID': item.okxUid,
@@ -1039,9 +1041,7 @@ export default function AIPage({ params }: any) {
                 '신청자': item.userName,
                 '신청자 이메일': item.userEmail,
                 /////'신청자 휴대전화': item.userPhoneNumber,
-                'API Access Key': item.apiAccessKey,
-                'API Secret Key': item.apiSecretKey,
-                'API Passphrase': item.apiPassword,
+
                 '거래 계정 잔고': item?.tradingAccountBalance?.balance ? Number(item.tradingAccountBalance.balance).toFixed(2) : 0,
             });
 
@@ -1188,33 +1188,13 @@ export default function AIPage({ params }: any) {
                 <div className="flex flex-col items-start justify-center space-y-4">
 
                 
-
+                    {/*
                     <div className='w-full flex flex-col gap-5 mt-5'>
 
 
                         {!address && (
 
                             <div className="w-full flex flex-col justify-center items-start gap-2">
-
-                            {/*
-                                <button
-                                onClick={handleConnect}
-                                className="w-full bg-zinc-800 text-white px-4 py-2 rounded-lg hover:bg-zinc-900"
-                                >
-                                <div className="flex flex-row justify-center items-center gap-2">
-                                    <Image
-                                    src={thirdwebIcon}
-                                    alt="Thirdweb"
-                                    width={20}
-                                    height={20}
-                                    className="rounded-lg w-10 h-10"
-                                    />
-                                    <span>Sign in with OWIN Magic Wallet</span>
-                                </div>
-                                </button>
-                            */}
-
-
                                 <ConnectButton
                                 client={client}
                                 wallets={wallets}
@@ -1255,7 +1235,6 @@ export default function AIPage({ params }: any) {
                                         className="rounded"
                                     />
                                     <div className="flex flex-col gap-2">
-                                        {/* disconnect button */}
                                         <button
                                         onClick={() => {
                                             confirm("Disconnect wallet?") &&
@@ -1273,7 +1252,6 @@ export default function AIPage({ params }: any) {
                                     <span className='text-sm text-gray-800'>
                                         {My_Wallet_Address}: {address.slice(0, 10)}...{address.slice(-10)}
                                     </span>
-                                    {/* copy button */}
                                     <button
                                         onClick={() => {
                                             navigator.clipboard.writeText(address);
@@ -1291,6 +1269,8 @@ export default function AIPage({ params }: any) {
                         )}
 
                     </div>
+
+                    */}
 
 
 
@@ -1318,7 +1298,7 @@ export default function AIPage({ params }: any) {
                                         const fetchData = async () => {
 
                                             setLoadingApplications(true);
-                                            const response = await fetch("/api/agent/getApplications", {
+                                            const response = await fetch("/api/agent/getApplicationsPublic", {
                                                 method: "POST",
                                                 headers: {
                                                     "Content-Type": "application/json",
@@ -1399,7 +1379,7 @@ export default function AIPage({ params }: any) {
                                 </button>
 
                                 {/* export button */}
-                                
+                                {/*
                                 <button
                                     onClick={() => {
                                         exportToCSV('OKX_신청목록');
@@ -1411,6 +1391,7 @@ export default function AIPage({ params }: any) {
                                 >
                                     {isExporting ? "Exporting..." : "엑셀 다운로드"}
                                 </button>
+                                */}
                                 
                             </div>
 
@@ -2680,7 +2661,7 @@ function Header(
                     className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
                     />
                     <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
-                        실적관리
+                        ABC
                     </span>
                 </div>
             

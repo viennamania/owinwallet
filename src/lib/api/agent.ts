@@ -1907,3 +1907,81 @@ export async function getStatisticsDailyTradingBalanceAndVolume() {
 
 
 
+
+
+
+
+
+
+
+// getAllAgents
+// sort by createdAt desc
+export async function getAllApplicationsPublicData ({
+  page = 1,
+  limit = 200,
+}) {
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('agents');
+
+
+  try {
+
+    const result = await collection.aggregate([
+      {
+        $match: {
+          exchange: 'okx',
+        }
+      },
+      // project only public data exclude api key, api secret key, api password phone number, email
+      {
+        $project: {
+          walletAddress: 1,
+          agentBot: 1,
+          agentBotNumber: 1,
+          userName: 1,
+          okxUid: 1,
+          accountConfig: 1,
+          tradingAccountBalance: 1,
+          assetBalance: 1,
+          htxUsdtWalletAddress: 1,
+          createdAt: 1,
+          startTrading: 1,
+          masterBotInfo: 1,
+          assetValuation: 1,
+          center: 1,
+          marketingCenter: 1,
+          lastUnclaimedTradingVolume: 1,
+          claimedTradingVolume: 1,
+          affiliateInvitee: 1,
+        }
+      },
+      {
+        $sort: {
+          createdAt: -1,
+        }
+      },
+      {
+        $skip: (page - 1) * limit,
+      },
+      {
+        $limit: limit,
+      },
+    
+    ]).toArray();
+
+    if (result) {
+      return {
+        totalCount: result.length,
+        applications: result,
+      };
+    } else {
+      return null;
+    }
+
+  } catch (e) {
+    console.log('getAllApplicationsPublicData error: ' + e);
+    return null;
+  }
+  
+}
