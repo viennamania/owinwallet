@@ -1090,33 +1090,41 @@ export default function AIPage({ params }: any) {
             "_id": {
                 "yearmonthday": "2025-01-13"
             },
-            "total": 26127.983492000076,
-            "tradingVolume": 0,
+            "claimedTradingVolume": 7245096.38,
+            "masterReward": 424.59162823,
+            "agentReward": 212.29581418,
+            "centerReward": 106.14790703999999,
             "count": 99
         },
         {
             "_id": {
                 "yearmonthday": "2025-01-14"
             },
-            "total": 99609.25812647272,
-            "tradingVolume": 4750539.04,
+            "claimedTradingVolume": 1620955.8233999999,
+            "masterReward": 373.5873644,
+            "agentReward": 186.79368218,
+            "centerReward": 93.39684116,
             "count": 53
         },
         {
             "_id": {
                 "yearmonthday": "2025-01-15"
             },
-            "total": 23982.21042747087,
-            "tradingVolume": 4980555.2299999995,
+            "claimedTradingVolume": 392732.32999999996,
+            "masterReward": 27.89263885,
+            "agentReward": 13.946319410000001,
+            "centerReward": 6.97315973,
             "count": 32
         },
         {
             "_id": {
                 "yearmonthday": "2025-01-16"
             },
-            "total": 23841.166505259327,
-            "tradingVolume": 8058593.51,
-            "count": 46
+            "claimedTradingVolume": 2061770.1800000002,
+            "masterReward": 121.03309357,
+            "agentReward": 60.51654685,
+            "centerReward": 30.25827336,
+            "count": 194
         }
     ]
     */
@@ -1349,7 +1357,38 @@ export default function AIPage({ params }: any) {
                                             setLoadingApplications(false);
 
                                         };
+
+                                        
+                                        const fetchStatisticsDaily = async () => {
+
+                                            setLoadingStatisticsDaily(true);
+
+                                            const response = await fetch("/api/settlement/statistics/daily", {
+                                                method: "POST",
+                                                headers: {
+                                                    "Content-Type": "application/json",
+                                                },
+                                                body: JSON.stringify({
+                                                    //walletAddress: address,
+                                                }),
+                                            });
+
+                                            if (!response.ok) {
+                                                console.error('Error fetching data');
+                                                return;
+                                            }
+
+                                            const data = await response.json();
+
+                                            setStatisticsDaily(data.statisticsDaily);
+                                        
+                                            setLoadingStatisticsDaily(false);
+
+                                        }
+
+
                                         fetchData();
+                                        fetchStatisticsDaily();
                                     }}
                                     disabled={loadingApplications}
                                     className={`${loadingApplications ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
@@ -1497,7 +1536,7 @@ export default function AIPage({ params }: any) {
 
 
 
-                                    <div className='flex flex-row gap-5 items-center'>
+                                    <div className='flex flex-row gap-5 items-start justify-between'>
 
 
                                         <div className='flex flex-col gap-2
@@ -1505,11 +1544,11 @@ export default function AIPage({ params }: any) {
                                         '>  
                                             <div className='w-full flex flex-row items-center justify-start gap-2'>
                                                 <Image
-                                                    src="/icon-mining.gif"
-                                                    alt="mining"
-                                                    width={50}
-                                                    height={50}
-                                                    className='rounded-lg'
+                                                    src="/logo-exchange-okx.png"
+                                                    alt="OKX"
+                                                    width={100}
+                                                    height={100}
+                                                    className='rounded-lg w-10 h-10'
                                                 />
                                             </div>
                                             {/* 거래량 계산 */}
@@ -1518,7 +1557,7 @@ export default function AIPage({ params }: any) {
                                             '>
                                                 <div className='w-2 h-2 bg-green-500 rounded-full'></div>
                                                 <span className='text-lg text-gray-800 font-semibold'>
-                                                    거래량 계산
+                                                    이번달 거래량 계산
                                                 </span>
                                             </div>
 
@@ -1540,7 +1579,7 @@ export default function AIPage({ params }: any) {
                                             {/* totalAffliliateInviteeVolMonth 이번달 총 누적거래량 */}
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                 <span className='text-sm text-gray-800 font-semibold'>
-                                                    이번달 OKX 거래량(USDT):
+                                                    OKX 거래량(USDT):
                                                 </span>
                                                 <span className='text-2xl text-green-500 font-semibold'>
                                                     {
@@ -1554,7 +1593,7 @@ export default function AIPage({ params }: any) {
                                             <div className='flex flex-col gap-2'>
                                                 <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                     <span className='text-sm text-gray-800 font-semibold'>
-                                                        이번달 OKX 수수료(총 거래량 * 0.0455%):
+                                                        OKX 수수료(총 거래량 * 0.0455%):
                                                     </span>
                                                     <span className='text-2xl text-green-500 font-semibold'>
                                                         {
@@ -1572,12 +1611,13 @@ export default function AIPage({ params }: any) {
                                                 <div className='flex flex-col gap-2'>
                                                     <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                         <span className='text-sm text-gray-800 font-semibold'>
-                                                            이번달 전체 보상(OKX 수수료 * 23%):
+                                                            보상(OKX 수수료 * 23%):
                                                         </span>
                                                         <span className='text-2xl text-green-500 font-semibold'>
                                                             {
                                                                 (totalAffliliateInviteeVolMonth * 0.000455 * 0.23).toFixed(2)
                                                             }
+
                                                         </span>
                                                     </div>
                                                 </div>
@@ -1595,9 +1635,9 @@ export default function AIPage({ params }: any) {
                                                 <Image
                                                     src="/icon-reward.gif"
                                                     alt="reward"
-                                                    width={80}
-                                                    height={80}
-                                                    className='rounded-lg'
+                                                    width={100}
+                                                    height={100}
+                                                    className='rounded-lg w-10 h-10'
                                                 />
                                             </div>
 
@@ -1605,7 +1645,7 @@ export default function AIPage({ params }: any) {
                                             <div className='w-full flex flex-row items-center justify-start gap-2'>
                                                 <div className='w-2 h-2 bg-red-500 rounded-full'></div>
                                                 <span className='text-lg text-gray-800 font-semibold'>
-                                                    보상 계산
+                                                    이번달 봇 채굴보상 계산
                                                 </span>
                                             </div>
 
@@ -1622,11 +1662,11 @@ export default function AIPage({ params }: any) {
                                                             alt="Master Bot"
                                                             width={50}
                                                             height={50}
-                                                            className='rounded-lg'
+                                                            className='rounded-lg w-10 h-10'
                                                         />
 
                                                         <span className='text-sm text-gray-800 font-semibold'>
-                                                            이번달 마스터봇 보상:
+                                                            마스터봇 채굴보상:
                                                         </span>
                                                         <span className='text-4xl text-green-500 font-semibold'>
                                                             {
@@ -1642,13 +1682,13 @@ export default function AIPage({ params }: any) {
                                                         <Image
                                                             src="/logo-agentbot.png"
                                                             alt="Agent Bot"
-                                                            width={50}
-                                                            height={50}
-                                                            className='rounded-lg'
+                                                            width={100}
+                                                            height={100}
+                                                            className='rounded-lg w-10 h-10'
                                                         />
                                                         
                                                         <span className='text-sm text-gray-800 font-semibold'>
-                                                            이번달 에이전트봇 보상:
+                                                            에이전트봇 채굴보상:
                                                         </span>
                                                         <span className='text-4xl text-green-500 font-semibold'>
                                                             {
@@ -1664,13 +1704,13 @@ export default function AIPage({ params }: any) {
                                                         <Image
                                                             src="/logo-centerbot.png"
                                                             alt="Center Bot"
-                                                            width={50}
-                                                            height={50}
-                                                            className='rounded-lg'
+                                                            width={100}
+                                                            height={100}
+                                                            className='rounded-lg w-10 h-10'
                                                         />
 
                                                         <span className='text-sm text-gray-800 font-semibold'>
-                                                            이번달 센터봇 보상:
+                                                            센터봇 채굴보상:
                                                         </span>
                                                         <span className='text-4xl text-green-500 font-semibold'>
                                                             {
@@ -1699,8 +1739,8 @@ export default function AIPage({ params }: any) {
                                         <Image
                                             src="/icon-reward.gif"
                                             alt="Loading"
-                                            width={100}
-                                            height={100}
+                                            width={300}
+                                            height={300}
                                         />
                                 </div>
                             )}
@@ -1712,44 +1752,127 @@ export default function AIPage({ params }: any) {
                             '>
                             
 
+                                <div className='w-full flex flex-row gap-2'>
+                                    <Image
+                                        src="/icon-mining.gif"
+                                        alt="mining"
+                                        width={50}
+                                        height={50}
+                                        className='rounded-lg'
+                                    />
 
+                                    <span className='text-lg text-gray-800 font-semibold'>
+                                        일일 채굴량, 채굴보상
+                                    </span>
+                                </div>
 
-                                {!loadingStatisticsDaily && statisticsDaily?.length > 0 && (
-                                    <div className='flex flex-col gap-5'>
+                                
+                                { // 날짜, 거래량, 마스터봇 보상, 에이전트봇 보상, 센터봇 보상 table view
+                                
+                                !loadingStatisticsDaily && statisticsDaily?.length > 0 && (
 
-                                        <div className=' flex flex-row items-center gap-2'>
-                                            <Image
-                                                src="/icon-statistics.gif"
-                                                alt="Statistics"
-                                                width={50}
-                                                height={50}
-                                                className='rounded-lg'
-                                            />
-                                            <span className='text-lg font-semibold text-gray-800'>
-                                                통계
-                                            </span>
-                                        </div>
+                                    <div className='w-full flex flex-col gap-5'>
 
-                                        <div className=' flex flex-col gap-2'>
-                                            <span className='text-lg text-gray-800'>
-                                                일일 거래량
-                                            </span>
-
-                                            <div className=' flex flex-col gap-2'>
-                                                {statisticsDaily.map((item: any, index: number) => (
-
-                                                    <div key={index} className='w-full flex flex-row items-center justify-start gap-2'>
-                                                        <span className='text-sm text-gray-800'>
+                                        <table className='w-full'>
+                                            <thead>
+                                                <tr>
+                                                    <th className='text-sm text-gray-800 font-semibold'>
+                                                        날짜
+                                                    </th>
+                                                    <th className='text-sm text-gray-800 font-semibold'>
+                                                        채굴량
+                                                    </th>
+                                                    <th className='text-sm text-gray-800 font-semibold'>
+                                                        채굴횟수
+                                                    </th>
+                                                    <th className='text-sm text-gray-800 font-semibold'>
+                                                        마스터봇 채굴보상
+                                                    </th>
+                                                    <th className='text-sm text-gray-800 font-semibold'>
+                                                        에이전트봇 채굴보상
+                                                    </th>
+                                                    <th className='text-sm text-gray-800 font-semibold'>
+                                                        센터봇 채굴보상
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {statisticsDaily.map((item: any) => (
+                                                    <tr key={item._id.yearmonthday}>
+                                                        <td className='text-sm text-gray-800'>
                                                             {item._id.yearmonthday}
-                                                        </span>
-                                                        <span className='text-2xl text-green-500'>
-                                                            거래량: {item.total.toFixed(2)}
-                                                        </span>
-                                                    </div>
+                                                        </td>
+                                                        {/* same width font style */}
+                                                        <td className='text-lg text-gray-800 text-right'
+                                                            
+                                                            style={{
 
+                                                                width: '100px',
+                                                                fontFamily: 'monospace',
+                                                                fontSize: '1.1rem',
+                                                                fontWeight: 'bold',
+                                                                color: 'green',
+                                                            }}
+                                                        >
+                                                            {item.claimedTradingVolume.toFixed(0)}
+                                                        </td>
+                                                        <td className='text-lg text-gray-800 text-right'
+                                                            style={{
+
+                                                                width: '100px',
+                                                                fontFamily: 'monospace',
+                                                                fontSize: '1.1rem',
+                                                                fontWeight: 'bold',
+                                                                color: 'green',
+                                                            }}
+                                                        >
+                                                            {item.count}
+                                                        </td>
+                                                        <td className='text-lg text-gray-800 text-right'
+                                                            style={{
+
+                                                                width: '100px',
+                                                                fontFamily: 'monospace',
+                                                                fontSize: '1.1rem',
+                                                                fontWeight: 'bold',
+                                                                color: 'green',
+                                                            }}
+                                                        >
+                                                            {
+                                                            item.masterReward.toFixed(2).toLocaleString('en-US', {
+                                                                style: 'currency',
+                                                                currency: 'USD'
+                                                            })
+                                                            }
+                                                        </td>
+                                                        <td className='text-lg text-gray-800 text-right'
+                                                            style={{
+
+                                                                width: '100px',
+                                                                fontFamily: 'monospace',
+                                                                fontSize: '1.1rem',
+                                                                fontWeight: 'bold',
+                                                                color: 'green',
+                                                            }}
+                                                        >
+                                                            {item.agentReward.toFixed(2)}
+                                                        </td>
+                                                        <td className='text-lg text-gray-800 text-right'
+                                                            style={{
+
+                                                                width: '100px',
+                                                                fontFamily: 'monospace',
+                                                                fontSize: '1.1rem',
+                                                                fontWeight: 'bold',
+                                                                color: 'green',
+                                                            }}
+                                                        >
+                                                            {item.centerReward.toFixed(2)}
+                                                        </td>
+                                                    </tr>
                                                 ))}
-                                            </div>
-                                        </div>
+                                            </tbody>
+                                        </table>
 
                                     </div>
 

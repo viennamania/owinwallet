@@ -1792,7 +1792,7 @@ export async function getSettlemeHistoryByWalletAddress(
 // get statistics daily Trading Balance and tradingVolume
 // from settlementClaimHistory
 // balance is settlementClaim.tradingAccountBalance.balance
-// tradingVolume is settlementClaim.tradingVolume
+// tradingVolume is settlementClaim.settlementTradingVolume
 
 //convert  "timestamp": "2025-01-07T09:44:40.065Z" to '20240107'
 
@@ -1829,11 +1829,17 @@ export async function getStatisticsDailyTradingBalanceAndVolume() {
 
           // sum of settlementClaim.tradingAccountBalance.balance
 
-          total: { $sum: { $toDouble: "$settlementClaim.tradingAccountBalance.balance" } },
+          //total: { $sum: { $toDouble: "$settlementClaim.tradingAccountBalance.balance" } },
 
           // sum of settlementClaim.tradingVolume
 
-          tradingVolume: { $sum: "$settlementClaim.tradingVolume" },
+          claimedTradingVolume: { $sum: "$settlementClaim.settlementTradingVolume" },
+
+          masterReward: { $sum: { $toDouble: "$settlementClaim.masterInsentive" } },
+
+          agentReward: { $sum: { $toDouble: "$settlementClaim.agentInsentive" } },
+
+          centerReward: { $sum: { $toDouble: "$settlementClaim.centerInsentive" } },
 
           // count of settlementClaim.tradingAccountBalance.balance
 
