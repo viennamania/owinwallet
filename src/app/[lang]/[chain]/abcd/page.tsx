@@ -1889,7 +1889,12 @@ export default function AIPage({ params }: any) {
                                                                 color: 'green',
                                                             }}
                                                         >
-                                                            {item.agentReward.toFixed(2)}
+                                                            {
+                                                            Number(item.agentReward.toFixed(2)).toLocaleString('en-US', {
+                                                                style: 'currency',
+                                                                currency: 'USD'
+                                                            })
+                                                            }
                                                         </td>
                                                         <td className='text-lg text-gray-800 text-right'
                                                             style={{
@@ -1901,7 +1906,12 @@ export default function AIPage({ params }: any) {
                                                                 color: 'green',
                                                             }}
                                                         >
-                                                            {item.centerReward.toFixed(2)}
+                                                            {
+                                                            Number(item.centerReward.toFixed(2)).toLocaleString('en-US', {
+                                                                style: 'currency',
+                                                                currency: 'USD'
+                                                            })
+                                                            }
                                                         </td>
                                                     </tr>
                                                 ))}
