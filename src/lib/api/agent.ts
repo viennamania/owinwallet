@@ -1856,9 +1856,25 @@ export async function getStatisticsDailyTradingBalanceAndVolume() {
 
           masterReward: { $sum: { $toDouble: "$settlementClaim.masterInsentive" } },
 
+
+          distinctMasterWalletAddress: {
+            // sum of distinct settlementClaim.masterWalletAddress
+            $addToSet: "$settlementClaim.masterWalletAddress"
+          },
+
           agentReward: { $sum: { $toDouble: "$settlementClaim.agentInsentive" } },
 
+          distinctAgentWalletAddress: {
+            // sum of distinct settlementClaim.agentWalletAddress
+            $addToSet: "$settlementClaim.agentWalletAddress"
+          },
+
           centerReward: { $sum: { $toDouble: "$settlementClaim.centerInsentive" } },
+
+          distinctCenterWalletAddress: {
+            // sum of distinct settlementClaim.centerWalletAddress
+            $addToSet: "$settlementClaim.centerWalletAddress"
+          },
 
           // count of settlementClaim.tradingAccountBalance.balance
 

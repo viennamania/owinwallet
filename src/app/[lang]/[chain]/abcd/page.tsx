@@ -1878,6 +1878,10 @@ export default function AIPage({ params }: any) {
                                                                 currency: 'USD'
                                                             })
                                                             }
+                                                            /
+                                                            {
+                                                                item.distinctMasterWalletAddress.length
+                                                            }
                                                         </td>
                                                         <td className='text-lg text-gray-800 text-right'
                                                             style={{
@@ -1895,6 +1899,10 @@ export default function AIPage({ params }: any) {
                                                                 currency: 'USD'
                                                             })
                                                             }
+                                                            /
+                                                            {
+                                                                item.distinctAgentWalletAddress.length
+                                                            }
                                                         </td>
                                                         <td className='text-lg text-gray-800 text-right'
                                                             style={{
@@ -1911,6 +1919,10 @@ export default function AIPage({ params }: any) {
                                                                 style: 'currency',
                                                                 currency: 'USD'
                                                             })
+                                                            }
+                                                            /
+                                                            {
+                                                                item.distinctCenterWalletAddress.length
                                                             }
                                                         </td>
                                                     </tr>
