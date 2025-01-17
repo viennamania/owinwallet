@@ -1752,7 +1752,7 @@ export default function AIPage({ params }: any) {
                             '>
                             
 
-                                <div className='w-full flex flex-row gap-2'>
+                                <div className='w-full flex flex-row gap-2 items-center justify-start'>
                                     <Image
                                         src="/icon-mining.gif"
                                         alt="mining"
@@ -1774,32 +1774,40 @@ export default function AIPage({ params }: any) {
                                     <div className='w-full flex flex-col gap-5'>
 
                                         <table className='w-full'>
-                                            <thead>
+                                            <thead
+                                                className='bg-gray-200
+                                                    border border-gray-300 p-2 rounded-lg
+                                                '
+                                            >
                                                 <tr>
-                                                    <th className='text-sm text-gray-800 font-semibold'>
+                                                    <th className='text-sm text-gray-800 font-semibold text-center'>
                                                         날짜
                                                     </th>
-                                                    <th className='text-sm text-gray-800 font-semibold'>
+                                                    <th className='text-sm text-gray-800 font-semibold text-center'>
                                                         채굴량
                                                     </th>
-                                                    <th className='text-sm text-gray-800 font-semibold'>
+                                                    <th className='text-sm text-gray-800 font-semibold text-center'>
                                                         채굴횟수
                                                     </th>
-                                                    <th className='text-sm text-gray-800 font-semibold'>
+                                                    <th className='text-sm text-gray-800 font-semibold text-center'>
                                                         마스터봇 채굴보상
                                                     </th>
-                                                    <th className='text-sm text-gray-800 font-semibold'>
+                                                    <th className='text-sm text-gray-800 font-semibold text-center'>
                                                         에이전트봇 채굴보상
                                                     </th>
-                                                    <th className='text-sm text-gray-800 font-semibold'>
+                                                    <th className='text-sm text-gray-800 font-semibold text-center'>
                                                         센터봇 채굴보상
                                                     </th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody
+                                                className='bg-gray-100
+                                                    border border-gray-300 p-2 rounded-lg
+                                                '
+                                            >
                                                 {statisticsDaily.map((item: any) => (
                                                     <tr key={item._id.yearmonthday}>
-                                                        <td className='text-sm text-gray-800'>
+                                                        <td className='text-sm text-gray-800 text-center'>
                                                             {item._id.yearmonthday}
                                                         </td>
                                                         {/* same width font style */}
@@ -1807,7 +1815,7 @@ export default function AIPage({ params }: any) {
                                                             
                                                             style={{
 
-                                                                width: '100px',
+                                                                width: '150px',
                                                                 fontFamily: 'monospace',
                                                                 fontSize: '1.1rem',
                                                                 fontWeight: 'bold',
@@ -1819,7 +1827,7 @@ export default function AIPage({ params }: any) {
                                                         <td className='text-lg text-gray-800 text-right'
                                                             style={{
 
-                                                                width: '100px',
+                                                                width: '150px',
                                                                 fontFamily: 'monospace',
                                                                 fontSize: '1.1rem',
                                                                 fontWeight: 'bold',
@@ -1831,7 +1839,7 @@ export default function AIPage({ params }: any) {
                                                         <td className='text-lg text-gray-800 text-right'
                                                             style={{
 
-                                                                width: '100px',
+                                                                width: '150px',
                                                                 fontFamily: 'monospace',
                                                                 fontSize: '1.1rem',
                                                                 fontWeight: 'bold',
@@ -1848,7 +1856,7 @@ export default function AIPage({ params }: any) {
                                                         <td className='text-lg text-gray-800 text-right'
                                                             style={{
 
-                                                                width: '100px',
+                                                                width: '150px',
                                                                 fontFamily: 'monospace',
                                                                 fontSize: '1.1rem',
                                                                 fontWeight: 'bold',
@@ -1860,7 +1868,7 @@ export default function AIPage({ params }: any) {
                                                         <td className='text-lg text-gray-800 text-right'
                                                             style={{
 
-                                                                width: '100px',
+                                                                width: '150px',
                                                                 fontFamily: 'monospace',
                                                                 fontSize: '1.1rem',
                                                                 fontWeight: 'bold',

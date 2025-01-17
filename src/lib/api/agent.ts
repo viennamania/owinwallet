@@ -1833,7 +1833,26 @@ export async function getStatisticsDailyTradingBalanceAndVolume() {
 
           // sum of settlementClaim.tradingVolume
 
-          claimedTradingVolume: { $sum: "$settlementClaim.settlementTradingVolume" },
+          // if totalSettlementTradingVolume is exist
+          // , then claimedTradingVolume is sum of totalSettlementTradingVolume
+          // if totalSettlementTradingVolume is not exist
+          // , then claimedTradingVolume is sum of settlementTradingVolume
+
+          //claimedTradingVolume: { $sum: "$settlementClaim.settlementTradingVolume" },
+
+          
+          claimedTradingVolume: { $sum: {
+            $cond: [{
+                $eq: ["$settlementClaim.totalSettlementTradingVolume", null]
+              },
+              "$settlementClaim.settlementTradingVolume",
+              "$settlementClaim.totalSettlementTradingVolume"
+          ]
+          } },
+
+
+
+
 
           masterReward: { $sum: { $toDouble: "$settlementClaim.masterInsentive" } },
 
