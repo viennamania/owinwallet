@@ -2568,7 +2568,34 @@ export default function AIPage({ params }: any) {
                                                     ' ' + Math.floor((new Date().getTime() - new Date(application.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + '시간 전'
                                                     )
                                                 }
-                                                </span>                                              
+                                                </span>  
+
+
+                                                <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <div className='flex flex-col gap-2'>
+                                                    <span className='text-xs text-yellow-800'>
+                                                        매직월렛 USDT 지갑주소
+                                                    </span>
+                                                    <span className='text-xs text-gray-800'>
+                                                        {application.walletAddress.slice(0, 10)}...{application.walletAddress.slice(-10)}
+                                                    </span>
+                                                </div>
+                                                {/* copy button */}
+                                                <button
+                                                    onClick={() => {
+                                                        navigator.clipboard.writeText(application.walletAddress);
+                                                        toast.success("Copied to clipboard");
+                                                    }}
+                                                    className="bg-gray-500 text-white p-2 rounded-lg
+                                                        hover:bg-gray-600
+                                                    "
+                                                >
+                                                    Copy
+                                                </button>
+                                            </div>
+
+
+
 
                                             </div>
 
@@ -2650,7 +2677,7 @@ export default function AIPage({ params }: any) {
                                                         {checkingAgentBotNftList.find((item) => item.applicationId === application.id)?.checking ? "Checking..." : "Check NFT"}
                                                     </button>
                                                 ) : (
-                                                    <div className='w-full h-56 flex flex-col gap-1
+                                                    <div className='w-full h-44 flex flex-col gap-1
                                                         items-center justify-center
                                                         bg-gray-200 p-2 rounded-lg border border-gray-300
                                                     '>
@@ -2665,8 +2692,8 @@ export default function AIPage({ params }: any) {
                                                             <Image
                                                                 src="/logo-opensea.png"
                                                                 alt="OpenSea"
-                                                                width={30}
-                                                                height={30}
+                                                                width={20}
+                                                                height={20}
                                                                 className="rounded-lg"
                                                             />
                                                         </button>
@@ -2694,7 +2721,7 @@ export default function AIPage({ params }: any) {
                                                             alt="NFT"
                                                             width={100}
                                                             height={100}
-                                                            className='rounded-lg w-full h-full'
+                                                            className='rounded-lg'
                                                         />
                                                     </div>
                                                 )}
@@ -3025,7 +3052,7 @@ export default function AIPage({ params }: any) {
                                                     </span>
 
                                                     <div className='flex flex-row items-center gap-2'>
-                                                        <span className='text-lg text-green-800 font-semibold'>
+                                                        <span className='text-4xl text-red-800 font-semibold'>
                                                             {
                                                                 Number(htxAssetValuationForAgent.find((item) => item.applicationId === application.id)?.assetValuation?.balance || 0)
                                                                 .toLocaleString('en-US', {
@@ -3175,31 +3202,6 @@ export default function AIPage({ params }: any) {
                                                 </button>
                                             </div>
                                             */}
-
-                                            
-                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                                <div className='flex flex-col gap-2'>
-                                                    <span className='text-xs text-yellow-800'>
-                                                        매직월렛 USDT 지갑주소
-                                                    </span>
-                                                    <span className='text-xs text-gray-800'>
-                                                        {application.walletAddress.slice(0, 10)}...{application.walletAddress.slice(-10)}
-                                                    </span>
-                                                </div>
-                                                {/* copy button */}
-                                                <button
-                                                    onClick={() => {
-                                                        navigator.clipboard.writeText(application.walletAddress);
-                                                        toast.success("Copied to clipboard");
-                                                    }}
-                                                    className="bg-gray-500 text-white p-2 rounded-lg
-                                                        hover:bg-gray-600
-                                                    "
-                                                >
-                                                    Copy
-                                                </button>
-                                            </div>
-
 
                                             {/*
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
