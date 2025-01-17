@@ -771,10 +771,6 @@ export default function AIPage({ params }: any) {
         applicationId: number,
     ) => {
 
-        if (address === "") {
-            toast.error("먼저 지갑을 연결해주세요");
-            return;
-        }
 
         const application = applications.find((item) => item.id === applicationId);
 
