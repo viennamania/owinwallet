@@ -1522,211 +1522,237 @@ export default function AIPage({ params }: any) {
                             {/* totalTradingAccountBalance */}
                             {totalTradingAccountBalance > 0 && (
                                 <div className='w-full flex flex-col xl:flex-row items-start justify-between gap-5'>
-                                    {/* startTrading is exist count */}
-                                    <div className='flex flex-row items-center gap-2'>
-                                        <span className='text-lg text-gray-800 font-semibold'>
-                                            시작된 Bot:
-                                        </span>
-                                        <span className='text-4xl text-green-500 font-semibold'>
-                                            {
-                                                applications.filter((item) => item.accountConfig?.data.roleType === "2").length
-                                            }
-                                        </span>
+
+                                    <div className='flex flex-col gap-2
+                                        border border-yellow-500 p-2 rounded-lg
+                                    '>
+
+                                        <Image
+                                            src="/logo-masterbot.png"
+                                            alt="Master Bot"
+                                            width={50}
+                                            height={50}
+                                            className='rounded-lg w-10 h-10'
+                                        />
+                                        <div className='w-full flex flex-row items-center justify-start gap-2
+                                            border-b border-gray-300 pb-2
+                                        '>
+                                            <div className='w-2 h-2 bg-yellow-500 rounded-full'></div>
+                                            <span className='text-lg text-gray-800 font-semibold'>
+                                                마스터봇 현황
+                                            </span>
+                                        </div>
+
+
+                                        {/* startTrading is exist count */}
+                                        <div className='flex flex-row items-center gap-2'>
+                                            <span className='text-sm text-gray-800 font-semibold'>
+                                                마스트봇 수량:
+                                            </span>
+                                            <span className='text-2xl text-green-500 font-semibold'>
+                                                {
+                                                    applications.filter((item) => item.accountConfig?.data.roleType === "2").length
+                                                }
+                                            </span>
+                                        </div>
+
+
+                                        <div className='flex flex-row items-center justify-between gap-2'>
+                                            <span className='text-sm text-gray-800 font-semibold'>
+                                                운용 자산(AUM)($):
+                                            </span>
+                                            <span className='text-2xl text-green-500 font-semibold'>
+                                                {
+                                                Number(totalTradingAccountBalance).toLocaleString('en-US', {
+                                                    style: 'currency',
+                                                    currency: 'USD'
+                                                })
+                                                }
+                                            </span>
+                                        </div>
+
+
+
                                     </div>
 
 
 
-                                    <div className='flex flex-row gap-5 items-start justify-between'>
+
+
+                                    <div className='flex flex-col gap-2
+                                        border border-green-500 p-2 rounded-lg
+                                    '>  
+                                        <div className='w-full flex flex-row items-center justify-start gap-2'>
+                                            <Image
+                                                src="/logo-exchange-okx.png"
+                                                alt="OKX"
+                                                width={100}
+                                                height={100}
+                                                className='rounded-lg w-10 h-10'
+                                            />
+                                        </div>
+                                        {/* 거래량 계산 */}
+                                        <div className='w-full flex flex-row items-center justify-start gap-2
+                                            border-b border-gray-300 pb-2
+                                        '>
+                                            <div className='w-2 h-2 bg-green-500 rounded-full'></div>
+                                            <span className='text-lg text-gray-800 font-semibold'>
+                                                이번달 거래량
+                                            </span>
+                                        </div>
+
+
+                                        {/* totalAffliliateInviteeVolMonth 이번달 총 누적거래량 */}
+                                        <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                            <span className='text-sm text-gray-800 font-semibold'>
+                                                OKX 거래량(USDT):
+                                            </span>
+                                            <span className='text-2xl text-green-500 font-semibold'>
+                                                {
+                                                    totalAffliliateInviteeVolMonth.toFixed(2)
+                                                }
+                                            </span>
+                                                        
+                                        </div>
+
+                                        {/* 이번달 총 OKX 누적수수료 (totalAffliliateInviteeVolMonth * 0.000455) */}
+                                        <div className='flex flex-col gap-2'>
+                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                <span className='text-sm text-gray-800 font-semibold'>
+                                                    OKX 수수료(총 거래량 * 0.0455%):
+                                                </span>
+                                                <span className='text-2xl text-green-500 font-semibold'>
+                                                    {
+                                                        (totalAffliliateInviteeVolMonth * 0.000455).toFixed(2)
+                                                    }
+                                                </span>
+                                            </div>
+                                        </div>
 
 
                                         <div className='flex flex-col gap-2
-                                            border border-green-500 p-2 rounded-lg
-                                        '>  
-                                            <div className='w-full flex flex-row items-center justify-start gap-2'>
-                                                <Image
-                                                    src="/logo-exchange-okx.png"
-                                                    alt="OKX"
-                                                    width={100}
-                                                    height={100}
-                                                    className='rounded-lg w-10 h-10'
-                                                />
-                                            </div>
-                                            {/* 거래량 계산 */}
-                                            <div className='w-full flex flex-row items-center justify-start gap-2
-                                                border-b border-gray-300 pb-2
-                                            '>
-                                                <div className='w-2 h-2 bg-green-500 rounded-full'></div>
-                                                <span className='text-lg text-gray-800 font-semibold'>
-                                                    이번달 거래량 계산
-                                                </span>
-                                            </div>
-
-                                            <div className='flex flex-row items-center justify-between gap-2'>
-                                                <span className='text-sm text-gray-800 font-semibold'>
-                                                    총 거래계정 잔고가치($):
-                                                </span>
-                                                <span className='text-2xl text-green-500 font-semibold'>
-                                                    {
-                                                    Number(totalTradingAccountBalance).toLocaleString('en-US', {
-                                                        style: 'currency',
-                                                        currency: 'USD'
-                                                    })
-                                                    }
-                                                </span>
-                                            </div>
-
-
-                                            {/* totalAffliliateInviteeVolMonth 이번달 총 누적거래량 */}
-                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                                <span className='text-sm text-gray-800 font-semibold'>
-                                                    OKX 거래량(USDT):
-                                                </span>
-                                                <span className='text-2xl text-green-500 font-semibold'>
-                                                    {
-                                                        totalAffliliateInviteeVolMonth.toFixed(2)
-                                                    }
-                                                </span>
-                                                            
-                                            </div>
-
-                                            {/* 이번달 총 OKX 누적수수료 (totalAffliliateInviteeVolMonth * 0.000455) */}
+                                            border-t border-gray-300 pt-2
+                                        '>
+                                            {/* 보상 계산 23% */}
                                             <div className='flex flex-col gap-2'>
                                                 <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                     <span className='text-sm text-gray-800 font-semibold'>
-                                                        OKX 수수료(총 거래량 * 0.0455%):
+                                                        보상(OKX 수수료 * 23%):
                                                     </span>
                                                     <span className='text-2xl text-green-500 font-semibold'>
                                                         {
-                                                            (totalAffliliateInviteeVolMonth * 0.000455).toFixed(2)
+                                                            (totalAffliliateInviteeVolMonth * 0.000455 * 0.23).toFixed(2)
+                                                        }
+
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div className='flex flex-col gap-2
+                                        border border-red-500 p-2 rounded-lg
+                                    '>
+
+                                        <div className='w-full flex flex-row items-center justify-start gap-2'>
+                                            <Image
+                                                src="/icon-mining.gif"
+                                                alt="reward"
+                                                width={100}
+                                                height={100}
+                                                className='rounded-lg w-10 h-10'
+                                            />
+                                        </div>
+
+                                        {/* dot */}
+                                        <div className='w-full flex flex-row items-center justify-start gap-2'>
+                                            <div className='w-2 h-2 bg-red-500 rounded-full'></div>
+                                            <span className='text-lg text-gray-800 font-semibold'>
+                                                이번달 봇 채굴보상
+                                            </span>
+                                        </div>
+
+                                        <div className='flex flex-col gap-2
+                                            border-t border-gray-300 pt-2
+                                        '>
+
+                                            {/* 회원 보상 = 보상 * 56% */}
+                                            <div className='flex flex-col gap-2'>
+                                                <div className='w-full flex flex-row items-center justify-between gap-2'>
+
+                                                    <Image
+                                                        src="/logo-masterbot.png"
+                                                        alt="Master Bot"
+                                                        width={50}
+                                                        height={50}
+                                                        className='rounded-lg w-10 h-10'
+                                                    />
+
+                                                    <span className='text-sm text-gray-800 font-semibold'>
+                                                        마스터봇 채굴보상:
+                                                    </span>
+                                                    <span className='text-4xl text-green-500 font-semibold'>
+                                                        {
+                                                            (totalAffliliateInviteeVolMonth * 0.000455 * 0.23 * 0.56).toFixed(2)
                                                         }
                                                     </span>
                                                 </div>
                                             </div>
 
-
-                                            <div className='flex flex-col gap-2
-                                                border-t border-gray-300 pt-2
-                                            '>
-                                                {/* 보상 계산 23% */}
-                                                <div className='flex flex-col gap-2'>
-                                                    <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                                        <span className='text-sm text-gray-800 font-semibold'>
-                                                            보상(OKX 수수료 * 23%):
-                                                        </span>
-                                                        <span className='text-2xl text-green-500 font-semibold'>
-                                                            {
-                                                                (totalAffliliateInviteeVolMonth * 0.000455 * 0.23).toFixed(2)
-                                                            }
-
-                                                        </span>
-                                                    </div>
+                                            {/* 에이전트 보상 = 보상 * 28% */}
+                                            <div className='flex flex-col gap-2'>
+                                                <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                    <Image
+                                                        src="/logo-agentbot.png"
+                                                        alt="Agent Bot"
+                                                        width={100}
+                                                        height={100}
+                                                        className='rounded-lg w-10 h-10'
+                                                    />
+                                                    
+                                                    <span className='text-sm text-gray-800 font-semibold'>
+                                                        에이전트봇 채굴보상:
+                                                    </span>
+                                                    <span className='text-4xl text-green-500 font-semibold'>
+                                                        {
+                                                            (totalAffliliateInviteeVolMonth * 0.000455 * 0.23 * 0.28).toFixed(2)
+                                                        }
+                                                    </span>
                                                 </div>
-
                                             </div>
 
+                                            {/* 센터 보상 = 보상 * 14% */}
+                                            <div className='flex flex-col gap-2'>
+                                                <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                    <Image
+                                                        src="/logo-centerbot.png"
+                                                        alt="Center Bot"
+                                                        width={100}
+                                                        height={100}
+                                                        className='rounded-lg w-10 h-10'
+                                                    />
+
+                                                    <span className='text-sm text-gray-800 font-semibold'>
+                                                        센터봇 채굴보상:
+                                                    </span>
+                                                    <span className='text-4xl text-green-500 font-semibold'>
+                                                        {
+                                                            (totalAffliliateInviteeVolMonth * 0.000455 * 0.23 * 0.14).toFixed(2)
+                                                        }
+                                                    </span>
+                                                </div>
+                                            </div>
                                         </div>
 
-
-                                        <div className='flex flex-col gap-2
-                                            border border-red-500 p-2 rounded-lg
-                                        '>
-
-                                            <div className='w-full flex flex-row items-center justify-start gap-2'>
-                                                <Image
-                                                    src="/icon-reward.gif"
-                                                    alt="reward"
-                                                    width={100}
-                                                    height={100}
-                                                    className='rounded-lg w-10 h-10'
-                                                />
-                                            </div>
-
-                                            {/* dot */}
-                                            <div className='w-full flex flex-row items-center justify-start gap-2'>
-                                                <div className='w-2 h-2 bg-red-500 rounded-full'></div>
-                                                <span className='text-lg text-gray-800 font-semibold'>
-                                                    이번달 봇 채굴보상 계산
-                                                </span>
-                                            </div>
-
-                                            <div className='flex flex-col gap-2
-                                                border-t border-gray-300 pt-2
-                                            '>
-
-                                                {/* 회원 보상 = 보상 * 56% */}
-                                                <div className='flex flex-col gap-2'>
-                                                    <div className='w-full flex flex-row items-center justify-between gap-2'>
-
-                                                        <Image
-                                                            src="/logo-masterbot.png"
-                                                            alt="Master Bot"
-                                                            width={50}
-                                                            height={50}
-                                                            className='rounded-lg w-10 h-10'
-                                                        />
-
-                                                        <span className='text-sm text-gray-800 font-semibold'>
-                                                            마스터봇 채굴보상:
-                                                        </span>
-                                                        <span className='text-4xl text-green-500 font-semibold'>
-                                                            {
-                                                                (totalAffliliateInviteeVolMonth * 0.000455 * 0.23 * 0.56).toFixed(2)
-                                                            }
-                                                        </span>
-                                                    </div>
-                                                </div>
-
-                                                {/* 에이전트 보상 = 보상 * 28% */}
-                                                <div className='flex flex-col gap-2'>
-                                                    <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                                        <Image
-                                                            src="/logo-agentbot.png"
-                                                            alt="Agent Bot"
-                                                            width={100}
-                                                            height={100}
-                                                            className='rounded-lg w-10 h-10'
-                                                        />
-                                                        
-                                                        <span className='text-sm text-gray-800 font-semibold'>
-                                                            에이전트봇 채굴보상:
-                                                        </span>
-                                                        <span className='text-4xl text-green-500 font-semibold'>
-                                                            {
-                                                                (totalAffliliateInviteeVolMonth * 0.000455 * 0.23 * 0.28).toFixed(2)
-                                                            }
-                                                        </span>
-                                                    </div>
-                                                </div>
-
-                                                {/* 센터 보상 = 보상 * 14% */}
-                                                <div className='flex flex-col gap-2'>
-                                                    <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                                        <Image
-                                                            src="/logo-centerbot.png"
-                                                            alt="Center Bot"
-                                                            width={100}
-                                                            height={100}
-                                                            className='rounded-lg w-10 h-10'
-                                                        />
-
-                                                        <span className='text-sm text-gray-800 font-semibold'>
-                                                            센터봇 채굴보상:
-                                                        </span>
-                                                        <span className='text-4xl text-green-500 font-semibold'>
-                                                            {
-                                                                (totalAffliliateInviteeVolMonth * 0.000455 * 0.23 * 0.14).toFixed(2)
-                                                            }
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-
-                                        </div>
 
 
                                     </div>
+
+
+    
 
 
                                     
@@ -1847,7 +1873,7 @@ export default function AIPage({ params }: any) {
                                                             }}
                                                         >
                                                             {
-                                                            item.masterReward.toFixed(2).toLocaleString('en-US', {
+                                                            Number(item.masterReward.toFixed(2)).toLocaleString('en-US', {
                                                                 style: 'currency',
                                                                 currency: 'USD'
                                                             })
