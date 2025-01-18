@@ -1978,7 +1978,7 @@ export default function AIPage({ params }: any) {
                             
 
 
-                            <div className='w-full grid grid-cols-1 xl:grid-cols-4 gap-5'>
+                            <div className='w-full grid grid-cols-1 xl:grid-cols-5 gap-5'>
 
                                 {!loadingApplications && applications.map((application, index) => (
                                     <div
