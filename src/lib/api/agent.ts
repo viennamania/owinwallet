@@ -1456,7 +1456,12 @@ export async function getStatisticsDaily(
 
             // conver "2025-01-07T09:44:40.065Z" to '2025-01-07' by substr
 
-            yearmonthday: { $substr: ["$timestamp", 0, 10] },
+            // kr time is 9 hours ahead of utc time
+            // so, 9 hours should be plus
+
+            //yearmonthday: { $substr: ["$timestamp", 0, 10] },
+
+            yearmonthday: { $substr: [{ $add: [{ $toDate: "$timestamp" }, 9 * 60 * 60 * 1000] }, 0, 10] },
 
 
 
@@ -1851,7 +1856,13 @@ export async function getStatisticsDailyTradingVolume() {
 
             // conver "2025-01-07T09:44:40.065Z" to '2025-01-07' by substr
 
-            yearmonthday: { $substr: ["$timestamp", 0, 10] },
+            // kr time is 9 hours plus
+
+            //yearmonthday: { $substr: ["$timestamp", 0, 10] },
+
+            yearmonthday: { $substr: [{ $add: [{ $toDate: "$timestamp" }, 9 * 60 * 60 * 1000] }, 0, 10] },
+
+
           },
 
 
@@ -1999,7 +2010,10 @@ export async function getStatisticsDailyTradingAccountBalance() {
 
             // conver "2025-01-07T09:44:40.065Z" to '2025-01-07' by substr
 
-            yearmonthday: { $substr: ["$timestamp", 0, 10] },
+            //yearmonthday: { $substr: ["$timestamp", 0, 10] },
+
+            yearmonthday: { $substr: [{ $add: [{ $toDate: "$timestamp" }, 9 * 60 * 60 * 1000] }, 0, 10] },
+
           },
 
           //average: { $avg: { $toDouble: "$tradingAccountBalance.balance" } },
