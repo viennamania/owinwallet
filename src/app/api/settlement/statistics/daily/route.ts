@@ -3,7 +3,8 @@ import { NextResponse, type NextRequest } from "next/server";
 
 
 import {
-    getStatisticsDailyTradingBalanceAndVolume
+    getStatisticsDailyTradingVolume,
+    getStatisticsDailyTradingAccountBalance,
 } from '@lib/api/agent';
 
 
@@ -13,12 +14,15 @@ export async function POST(request: NextRequest) {
 
 
 
-    const result = await getStatisticsDailyTradingBalanceAndVolume();
+    const tradingVolume = await getStatisticsDailyTradingVolume();
+
+    const tradingAccountBalance = await getStatisticsDailyTradingAccountBalance();
 
 
     return NextResponse.json({
 
-        statisticsDaily: result,
+        tradingVolume,
+        tradingAccountBalance,
 
     });
 

@@ -1798,7 +1798,7 @@ export async function getSettlemeHistoryByWalletAddress(
 
 // group by '20240107'
 
-export async function getStatisticsDailyTradingBalanceAndVolume() {
+export async function getStatisticsDailyTradingVolume() {
 
   try {
 
@@ -1820,6 +1820,28 @@ export async function getStatisticsDailyTradingBalanceAndVolume() {
 
             yearmonthday: { $substr: ["$timestamp", 0, 10] },
           },
+
+
+
+          // settlementClaim.tradingAccountBalance.balance.balance
+
+         
+          // average of settlementClaim.tradingAccountBalance.balance group by applicationId
+
+          // group by applicationId
+          // group by applicationId
+          // average of settlementClaim.tradingAccountBalance.balance group by applicationId
+          ///total: { $sum: { $toDouble: "$settlementClaim.tradingAccountBalance.balance" } },
+
+
+          
+
+
+
+
+
+
+
           // average of settlementClaim.tradingAccountBalance.balance
           //total: { $sum: { $toDouble: "$settlementClaim.tradingAccountBalance.balance" } },
 
@@ -1904,6 +1926,82 @@ export async function getStatisticsDailyTradingBalanceAndVolume() {
   }
 
 }
+
+
+
+
+
+//
+/*
+{
+  "_id": {
+    "$oid": "677cf77a37aa8c335b1c40d0"
+  },
+  "applicationId": 784361,
+  "tradingAccountBalance": {
+    "balance": "0",
+    "timestamp": 1736243066243
+  },
+  "timestamp": "2025-01-07T09:44:26.251Z"
+}
+*/
+
+export async function getStatisticsDailyTradingAccountBalance() {
+  
+  try {
+
+    const client = await clientPromise;
+
+    const collection = client.db('vienna').collection('tradingAccountBalanceHistory');
+
+    const result = await collection.aggregate([
+
+      /* "timestamp": "2025-01-07T09:44:40.065Z" */
+      {
+        $group: {
+          _id: {
+            ///yearmonthday: { $dateToString: { format: "%Y%m%d", date: "$timestamp" } },
+
+            //yearmonthday: { $dateToString: { format: "%Y%m%d", date: { $toDate: "$timestamp" } } },
+
+            // conver "2025-01-07T09:44:40.065Z" to '2025-01-07' by substr
+
+            yearmonthday: { $substr: ["$timestamp", 0, 10] },
+          },
+
+          // average of tradingAccountBalance.balance group by applicationId
+
+          // group by applicationId
+
+          // average of tradingAccountBalance.balance group by applicationId
+          total: { $sum: { $toDouble: "$tradingAccountBalance.balance" } },
+          
+
+        }
+
+      },
+
+      {
+        $sort: {
+          _id: 1,
+        }
+      }
+
+    ]).toArray();
+
+    return result;
+
+  } catch (e) {
+    
+    console.log('getStatisticsDailyTradingAccountBalance error: ' + e);
+    return null;
+  }
+
+}
+
+
+
+
 
 
 

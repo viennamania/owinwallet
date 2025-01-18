@@ -660,7 +660,7 @@ export default function AIPage({ params }: any) {
 
             const data = await response.json();
 
-            const total = data.result.totalCount || 0;
+            const total = data.result?.totalCount || 0;
 
   
             // order by unclaimedTradingVolume desc
@@ -676,7 +676,7 @@ export default function AIPage({ params }: any) {
             */
 
             setApplications(
-                data.result.applications.map((item : any) => {
+                data.result.applications?.map((item : any) => {
                     return {
                         ...item,
                         unclaimedTradingVolume:
@@ -1126,6 +1126,7 @@ export default function AIPage({ params }: any) {
     */
     
     const [statisticsDaily, setStatisticsDaily] = useState([] as any[]);
+
     const [loadingStatisticsDaily, setLoadingStatisticsDaily] = useState(false);
     useEffect(() => {
 
@@ -1152,7 +1153,12 @@ export default function AIPage({ params }: any) {
 
             console.log("getStatisticsDaily data", data);
 
-            setStatisticsDaily(data.statisticsDaily);
+            //setStatisticsDaily(data.statisticsDaily);
+
+            const tradingVolumenDaily = data.tradingVolume;
+            setStatisticsDaily(tradingVolumenDaily);
+
+
 
 
             setLoadingStatisticsDaily(false);
@@ -1167,7 +1173,10 @@ export default function AIPage({ params }: any) {
 
     return (
 
-        <main className="p-4 pb-10 min-h-[100vh] flex items-start justify-center container max-w-screen-lg mx-auto">
+        <main className="
+        p-4 pb-10 min-h-[100vh] flex items-start justify-center container
+        max-w-screen-xl
+        mx-auto">
 
             <div className="py-0 w-full">
         
@@ -1765,7 +1774,7 @@ export default function AIPage({ params }: any) {
                                     />
 
                                     <span className='text-lg text-gray-800 font-semibold'>
-                                        일일 채굴량, 채굴보상
+                                        일별 채굴량, 채굴보상
                                     </span>
                                 </div>
 
@@ -1904,6 +1913,60 @@ export default function AIPage({ params }: any) {
                                                         </td>
                                                     </tr>
                                                 ))}
+
+
+                                                {/* sum of count, total, masterReward, agentReward, centerReward */}
+                                                <tr>
+                                                    <td className='text-lg text-gray-800 font-semibold text-center'>
+                                                        합계
+                                                    </td>
+                                                    <td className='text-lg text-gray-800 font-semibold text-right'>
+                                                        {
+                                                            statisticsDaily.reduce((acc, item) => acc + item.claimedTradingVolume, 0).toFixed(0)
+                                                        }
+                                                    </td>
+                                                    <td className='text-lg text-gray-800 font-semibold text-right'>
+                                                        {
+                                                            statisticsDaily.reduce((acc, item) => acc + item.count, 0)
+                                                        }
+                                                    </td>
+                                                    <td className='text-lg text-gray-800 font-semibold text-right'>
+                                                        {
+                                                            Number(statisticsDaily.reduce((acc, item) => acc + item.masterReward, 0).toFixed(2)).toLocaleString('en-US', {
+                                                                style: 'currency',
+                                                                currency: 'USD'
+                                                            })
+                                                        }
+                                                        /
+                                                        {
+                                                            statisticsDaily.reduce((acc, item) => acc + item.distinctMasterWalletAddress.length, 0)
+                                                        }
+                                                    </td>
+                                                    <td className='text-lg text-gray-800 font-semibold text-right'>
+                                                        {
+                                                            Number(statisticsDaily.reduce((acc, item) => acc + item.agentReward, 0).toFixed(2)).toLocaleString('en-US', {
+                                                                style: 'currency',
+                                                                currency: 'USD'
+                                                            })
+                                                        }
+                                                        /
+                                                        {
+                                                            statisticsDaily.reduce((acc, item) => acc + item.distinctAgentWalletAddress.length, 0)
+                                                        }
+                                                    </td>
+                                                    <td className='text-lg text-gray-800 font-semibold text-right'>
+                                                        {
+                                                            Number(statisticsDaily.reduce((acc, item) => acc + item.centerReward, 0).toFixed(2)).toLocaleString('en-US', {
+                                                                style: 'currency',
+                                                                currency: 'USD'
+                                                            })
+                                                        }
+                                                        /
+                                                        {
+                                                            statisticsDaily.reduce((acc, item) => acc + item.distinctCenterWalletAddress.length, 0)
+                                                        }
+                                                    </td>
+                                                </tr>
                                             </tbody>
                                         </table>
 
