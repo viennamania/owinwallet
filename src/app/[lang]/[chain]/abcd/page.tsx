@@ -1796,19 +1796,16 @@ export default function AIPage({ params }: any) {
                                                         날짜
                                                     </th>
                                                     <th className='text-sm text-gray-800 font-semibold text-center'>
-                                                        채굴량
+                                                        채굴량 / 횟수
                                                     </th>
                                                     <th className='text-sm text-gray-800 font-semibold text-center'>
-                                                        채굴횟수
+                                                        마스터봇 채굴보상 / 봇수량
                                                     </th>
                                                     <th className='text-sm text-gray-800 font-semibold text-center'>
-                                                        마스터봇 채굴보상
+                                                        에이전트봇 채굴보상 / 봇수량
                                                     </th>
                                                     <th className='text-sm text-gray-800 font-semibold text-center'>
-                                                        에이전트봇 채굴보상
-                                                    </th>
-                                                    <th className='text-sm text-gray-800 font-semibold text-center'>
-                                                        센터봇 채굴보상
+                                                        센터봇 채굴보상 / 봇수량
                                                     </th>
                                                 </tr>
                                             </thead>
@@ -1818,61 +1815,55 @@ export default function AIPage({ params }: any) {
                                                 '
                                             >
                                                 {statisticsDaily.map((item: any) => (
-                                                    <tr key={item._id.yearmonthday}>
-                                                        <td className='text-sm text-gray-800 text-center'>
+                                                    <tr key={item._id.yearmonthday}
+                                                        className='border-b border-gray-300
+                                                            hover:bg-gray-200 h-12
+                                                        '>
+                                                        <td className='text-lg text-gray-800 text-center'>
                                                             {item._id.yearmonthday}
                                                         </td>
                                                         {/* same width font style */}
                                                         <td className='text-lg text-gray-800 text-right'
-                                                            
                                                             style={{
-
-                                                                width: '150px',
+                                                                width: '190px',
                                                                 fontFamily: 'monospace',
-                                                                fontSize: '1.1rem',
-                                                                fontWeight: 'bold',
-                                                                color: 'green',
                                                             }}
                                                         >
-                                                            {item.claimedTradingVolume.toFixed(0)}
+                                                            <div className='flex flex-row items-center justify-end gap-2'>
+                                                                <span className='text-2xl text-green-500'>
+                                                                    {item.claimedTradingVolume.toFixed(0)}
+                                                                </span>
+                                                                {' '}/{' '}
+                                                                <span className='text-sm text-gray-800 font-semibold'>
+                                                                    {item.count}
+                                                                </span>
+                                                            </div>
+                                                        </td>
+                                                        <td className='text-lg text-gray-800 text-right'
+                                                            style={{
+                                                                width: '190px',
+                                                                fontFamily: 'monospace',
+                                                            }}
+                                                        >
+                                                            <div className='flex flex-row items-center justify-end gap-2'>
+                                                                <span className='text-2xl text-green-500'>
+                                                                    {
+                                                                    Number(item.masterReward.toFixed(2)).toLocaleString('en-US', {
+                                                                        style: 'currency',
+                                                                        currency: 'USD'
+                                                                    })
+                                                                    }
+                                                                </span>
+                                                                    {' '}/{' '}
+                                                                <span className='text-sm text-gray-800 font-semibold'>
+                                                                    {item.distinctMasterWalletAddress.length}
+                                                                </span>
+                                                            </div>
                                                         </td>
                                                         <td className='text-lg text-gray-800 text-right'
                                                             style={{
 
-                                                                width: '150px',
-                                                                fontFamily: 'monospace',
-                                                                fontSize: '1.1rem',
-                                                                fontWeight: 'bold',
-                                                                color: 'green',
-                                                            }}
-                                                        >
-                                                            {item.count}
-                                                        </td>
-                                                        <td className='text-lg text-gray-800 text-right'
-                                                            style={{
-
-                                                                width: '150px',
-                                                                fontFamily: 'monospace',
-                                                                fontSize: '1.1rem',
-                                                                fontWeight: 'bold',
-                                                                color: 'green',
-                                                            }}
-                                                        >
-                                                            {
-                                                            Number(item.masterReward.toFixed(2)).toLocaleString('en-US', {
-                                                                style: 'currency',
-                                                                currency: 'USD'
-                                                            })
-                                                            }
-                                                            /
-                                                            {
-                                                                item.distinctMasterWalletAddress.length
-                                                            }
-                                                        </td>
-                                                        <td className='text-lg text-gray-800 text-right'
-                                                            style={{
-
-                                                                width: '150px',
+                                                                width: '190px',
                                                                 fontFamily: 'monospace',
                                                                 fontSize: '1.1rem',
                                                                 fontWeight: 'bold',
@@ -1884,16 +1875,15 @@ export default function AIPage({ params }: any) {
                                                                 style: 'currency',
                                                                 currency: 'USD'
                                                             })
-                                                            }
-                                                            /
+                                                            }{' '}/{' '}
                                                             {
                                                                 item.distinctAgentWalletAddress.length
                                                             }
                                                         </td>
-                                                        <td className='text-lg text-gray-800 text-right'
+                                                        <td className='text-lg text-gray-800 text-right pr-2'
                                                             style={{
 
-                                                                width: '150px',
+                                                                width: '190px',
                                                                 fontFamily: 'monospace',
                                                                 fontSize: '1.1rem',
                                                                 fontWeight: 'bold',
@@ -1905,8 +1895,7 @@ export default function AIPage({ params }: any) {
                                                                 style: 'currency',
                                                                 currency: 'USD'
                                                             })
-                                                            }
-                                                            /
+                                                            }{' '}/{' '}
                                                             {
                                                                 item.distinctCenterWalletAddress.length
                                                             }
@@ -1916,54 +1905,48 @@ export default function AIPage({ params }: any) {
 
 
                                                 {/* sum of count, total, masterReward, agentReward, centerReward */}
-                                                <tr>
+                                                <tr
+                                                    className='border-b border-gray-300
+                                                        hover:bg-gray-200 p-2
+
+                                                        bg-gray-200
+                                                        h-12
+
+                                                    '
+                                                >
                                                     <td className='text-lg text-gray-800 font-semibold text-center'>
                                                         합계
                                                     </td>
-                                                    <td className='text-lg text-gray-800 font-semibold text-right'>
+                                                    <td className='text-2xl text-gray-800 font-semibold text-right'>
                                                         {
                                                             statisticsDaily.reduce((acc, item) => acc + item.claimedTradingVolume, 0).toFixed(0)
-                                                        }
-                                                    </td>
-                                                    <td className='text-lg text-gray-800 font-semibold text-right'>
+                                                        }{' '}/{' '}
                                                         {
                                                             statisticsDaily.reduce((acc, item) => acc + item.count, 0)
                                                         }
                                                     </td>
-                                                    <td className='text-lg text-gray-800 font-semibold text-right'>
+                                                    <td className='text-2xl text-gray-800 font-semibold text-right'>
                                                         {
                                                             Number(statisticsDaily.reduce((acc, item) => acc + item.masterReward, 0).toFixed(2)).toLocaleString('en-US', {
                                                                 style: 'currency',
                                                                 currency: 'USD'
                                                             })
                                                         }
-                                                        /
-                                                        {
-                                                            statisticsDaily.reduce((acc, item) => acc + item.distinctMasterWalletAddress.length, 0)
-                                                        }
                                                     </td>
-                                                    <td className='text-lg text-gray-800 font-semibold text-right'>
+                                                    <td className='text-2xl text-gray-800 font-semibold text-right'>
                                                         {
                                                             Number(statisticsDaily.reduce((acc, item) => acc + item.agentReward, 0).toFixed(2)).toLocaleString('en-US', {
                                                                 style: 'currency',
                                                                 currency: 'USD'
                                                             })
                                                         }
-                                                        /
-                                                        {
-                                                            statisticsDaily.reduce((acc, item) => acc + item.distinctAgentWalletAddress.length, 0)
-                                                        }
                                                     </td>
-                                                    <td className='text-lg text-gray-800 font-semibold text-right'>
+                                                    <td className='text-2xl text-gray-800 font-semibold text-right pr-2'>
                                                         {
                                                             Number(statisticsDaily.reduce((acc, item) => acc + item.centerReward, 0).toFixed(2)).toLocaleString('en-US', {
                                                                 style: 'currency',
                                                                 currency: 'USD'
                                                             })
-                                                        }
-                                                        /
-                                                        {
-                                                            statisticsDaily.reduce((acc, item) => acc + item.distinctCenterWalletAddress.length, 0)
                                                         }
                                                     </td>
                                                 </tr>
