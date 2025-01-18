@@ -8,7 +8,9 @@ import {
   //getAllAgentsForLive,
 	updateTradingAccountBalance,
   //updateAssetBalance,
-  updateAssetValuation
+  updateAssetValuation,
+
+  setSumOfTradingAccountBalanceHistory,
 } from '@lib/api/agent';
 
 
@@ -104,6 +106,10 @@ export async function GET(request: NextRequest) {
   const applications = result?.applications || [];
 
 
+  let sumOfTradingAccountBalance = 0;
+  let countOfTradingAccountBalance = 0;
+
+
   for (let i = 0; i < applications.length; i++) {
     const application = applications[i];
     const { id, apiAccessKey, apiSecretKey, apiPassword, userPhoneNumber } = application;
@@ -127,6 +133,11 @@ export async function GET(request: NextRequest) {
               balance: balance,
               timestamp: moment().valueOf(),
             };
+
+            sumOfTradingAccountBalance += parseFloat(balance);
+            countOfTradingAccountBalance++;
+
+
   
             await updateTradingAccountBalance({
               applicationId: id,
@@ -261,6 +272,19 @@ export async function GET(request: NextRequest) {
     }
 
   }
+
+
+
+
+  //console.log("sumOfTradingAccountBalance", sumOfTradingAccountBalance);
+  //console.log("countOfTradingAccountBalance", countOfTradingAccountBalance);
+
+  await setSumOfTradingAccountBalanceHistory(
+    sumOfTradingAccountBalance,
+    countOfTradingAccountBalance,
+  );
+
+
 
   
   return NextResponse.json({

@@ -1081,6 +1081,7 @@ export default function AIPage({ params }: any) {
     // getStatisticsDaily from api getStatisticsDaily
 
     /*
+    tradingVolume:
     [
         {
             "_id": {
@@ -1124,6 +1125,35 @@ export default function AIPage({ params }: any) {
         }
     ]
     */
+
+    /*
+    tradingAccountBalance:
+    [
+ 
+        {
+            "_id": {
+                "yearmonthday": "2025-01-16"
+            },
+            "average": 40946843.68127155
+        },
+        {
+            "_id": {
+                "yearmonthday": "2025-01-17"
+            },
+            "average": 40485341.43700433
+        },
+        {
+            "_id": {
+                "yearmonthday": "2025-01-18"
+            },
+            "average": 12109300.867852172
+        }
+    ]
+        */
+
+    /*
+    tradingVolume and tradingAccountBalance merged array for each day
+    */
     
     const [statisticsDaily, setStatisticsDaily] = useState([] as any[]);
 
@@ -1156,7 +1186,20 @@ export default function AIPage({ params }: any) {
             //setStatisticsDaily(data.statisticsDaily);
 
             const tradingVolumenDaily = data.tradingVolume;
-            setStatisticsDaily(tradingVolumenDaily);
+            const tradingAccountBalanceDaily = data.tradingAccountBalance;
+            //setStatisticsDaily(tradingVolumenDaily);
+
+            const merged = tradingVolumenDaily.map((item: any) => {
+                const tradingAccountBalance = tradingAccountBalanceDaily.find((item2: any) => item2._id.yearmonthday === item._id.yearmonthday);
+                return {
+                    ...item,
+                    tradingAccountBalance: tradingAccountBalance?.average || 0,
+                };
+            });
+
+            console.log("merged", merged);
+
+            setStatisticsDaily(merged);
 
 
 

@@ -5,6 +5,7 @@ import exp from 'constants';
 import { approve } from 'thirdweb/extensions/erc20';
 import { parse } from 'path';
 import { start } from 'repl';
+import { count } from 'console';
 
 
 
@@ -1033,6 +1034,38 @@ export async function updateTradingAccountBalance(
 
 
 
+// setSumOfTradingAccountBalance
+export async function setSumOfTradingAccountBalanceHistory(
+  sumOfTradingAccountBalance: number,
+  countOfTradingAccountBalance: number,
+) {
+
+  if (!sumOfTradingAccountBalance || !countOfTradingAccountBalance) {
+    return null;
+  }
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('tradingAccountBalanceSumHistory');
+
+  const result = await collection.insertOne(
+    {
+      sumOfTradingAccountBalance: sumOfTradingAccountBalance,
+      countOfTradingAccountBalance: countOfTradingAccountBalance,
+      timestamp: new Date().toISOString(),
+    }
+  );
+
+  if (result) {
+    return {
+      sumOfTradingAccountBalance: sumOfTradingAccountBalance,
+      countOfTradingAccountBalance: countOfTradingAccountBalance,
+    };
+  } else {
+    return null;
+  }
+
+}
+
 
 
 
@@ -1969,17 +2002,44 @@ export async function getStatisticsDailyTradingAccountBalance() {
             yearmonthday: { $substr: ["$timestamp", 0, 10] },
           },
 
-          // average of tradingAccountBalance.balance group by applicationId
+          //average: { $avg: { $toDouble: "$tradingAccountBalance.balance" } },
 
-          // group by applicationId
-
-          // average of tradingAccountBalance.balance group by applicationId
+          // sum of tradingAccountBalance.balance
           total: { $sum: { $toDouble: "$tradingAccountBalance.balance" } },
-          
+
 
         }
 
       },
+
+
+          // average of tradingAccountBalance.balance group by applicationId
+          //total: { $sum: { $toDouble: "$tradingAccountBalance.balance" } },
+          //count: { $sum: 1 },
+          //average: { $avg: { $toDouble: "$tradingAccountBalance.balance" } },
+
+          // average of tradingAccountBalance.balance group by date
+
+        
+      /*
+      {
+        $group: {
+
+          _id: "$_id.yearmonthday",
+          // average of tradingAccountBalance.balance
+          //total: { $avg: { $toDouble: "$tradingAccountBalance.balance" } },
+
+          // sum of tradingAccountBalance.balance
+          total: { $sum: { $toDouble: "$tradingAccountBalance.balance" } },
+
+
+        }
+
+      },
+      */
+
+
+
 
       {
         $sort: {
