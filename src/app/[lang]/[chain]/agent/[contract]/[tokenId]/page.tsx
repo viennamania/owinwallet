@@ -809,6 +809,7 @@ export default function AgentPage({ params }: any) {
 
 
 
+    //console.log('agent', agent);
 
 
 
@@ -1003,7 +1004,7 @@ export default function AgentPage({ params }: any) {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                limit: 100,
+                limit: 10,
                 page: 1,
                 walletAddress: holderWalletAddress,
             }),
@@ -1240,27 +1241,47 @@ export default function AgentPage({ params }: any) {
 
 
 
-                    <div className='w-full flex flex-col items-start justify-between gap-2
+                    <div className='w-full flex flex-row items-start justify-between gap-2
                       border-b border-gray-300 pb-2
                     '>
 
-                      <div className='flex flex-col items-start justify-between gap-2'>
-                        <span className='text-sm text-yellow-500'>
-                            AI 에이전트 NFT 이름
-                        </span>
-                        <span className='text-xl font-semibold text-gray-800'>
-                            {agent.name}
-                        </span>
-                      </div>
-            
-                      <div className='flex flex-col items-start justify-between gap-2'>
-                        <span className='text-sm text-yellow-500'>
-                            AI 에이전트 NFT 설명
-                        </span>
-                        <span className='text-xs text-gray-800'>
-                            {agent.description}
-                        </span>
-                      </div>
+                        <div className='w-full flex flex-col items-start justify-between gap-2'>
+
+                            <div className='flex flex-col items-start justify-between gap-2'>
+                                <span className='text-sm text-yellow-500'>
+                                    AI 에이전트 NFT 이름
+                                </span>
+                                <span className='text-xl font-semibold text-gray-800'>
+                                    {agent.name}
+                                </span>
+                            </div>
+                    
+                            <div className='flex flex-col items-start justify-between gap-2'>
+                                <span className='text-sm text-yellow-500'>
+                                    AI 에이전트 NFT 설명
+                                </span>
+                                <span className='text-xs text-gray-800'>
+                                    {agent.description}
+                                </span>
+                            </div>
+                        </div>
+
+
+                        <div className='flex flex-col items-start justify-start gap-2'>
+                            <span className='text-sm text-yellow-500'>
+                                AI 에이전트 NFT 이미지
+                            </span>
+                            {agent.image && (
+                            <Image
+                                //src={agent?.image?.thumbnailUrl}
+                                src={agent?.image?.pngUrl || '/logo-masterbot.png'}
+                                width={200}
+                                height={200}
+                                alt={agent.name}
+                                className='rounded-lg object-cover w-full animate-pulse'
+                            />
+                            )}
+                        </div>
 
                     </div>
 
@@ -1294,7 +1315,6 @@ export default function AgentPage({ params }: any) {
                         
 
                         <div className='w-full flex flex-row items-center justify-start gap-2
-                          border-b border-gray-300 pb-2
                         '>
 
                           <Image
@@ -1370,25 +1390,38 @@ export default function AgentPage({ params }: any) {
                   </div>
 
 
-                  <div className='w-full flex flex-col items-start justify-start gap-2'>
-                    <span className='text-sm text-yellow-500'>
-                        AI 에이전트 NFT 이미지
-                    </span>
-                    {agent.image && (
-                      <Image
-                        //src={agent?.image?.thumbnailUrl}
-                        src={agent?.image?.pngUrl}
-                        width={200}
-                        height={200}
-                        alt={agent.name}
-                        className='rounded-lg object-cover w-full animate-pulse'
-                      />
-                    )}
-                  </div>
-
                 </div>
 
 
+                {/* totalTradingAccountBalance */}
+                {totalTradingAccountBalance > 0 && (
+                    <div className='w-full flex flex-col xl:flex-row items-start justify-between gap-5'>
+                        {/* startTrading is exist count */}
+                        <div className='w-full flex flex-row items-center gap-2'>
+                            <span className='text-lg text-gray-800 font-semibold'>
+                                시작된 Bot:
+                            </span>
+                            <span className='text-4xl text-green-500 font-semibold'>
+                                {
+                                    applications.filter((item) => item.accountConfig?.data.roleType === "2").length
+                                }
+                            </span>
+                        </div>
+                        <div className='w-full flex flex-row items-center gap-2'>
+                            <span className='text-lg text-gray-800 font-semibold'>
+                                총 거래 계정 잔고:
+                            </span>
+                            <span className='text-4xl text-green-500 font-semibold'>
+                                {
+                                Number(totalTradingAccountBalance).toLocaleString('en-US', {
+                                    style: 'currency',
+                                    currency: 'USD'
+                                })
+                                }
+                            </span>
+                        </div>
+                    </div>
+                )}
 
 
                 {/* 보상 내역 table view designed */}
@@ -1400,7 +1433,7 @@ export default function AgentPage({ params }: any) {
                 <div className='w-full flex flex-col gap-2 items-start justify-between'>
                     <div className='w-full flex flex-row items-center gap-2'>
                         <span className='text-lg font-semibold text-gray-500'>
-                            보상 내역
+                            최신 보상 내역 (최근 10개)
                         </span>
                     </div>
 
@@ -1417,14 +1450,17 @@ export default function AgentPage({ params }: any) {
                             <thead>
                                 <tr>
                                     <th className='border border-gray-300 p-2'>
-                                        지급일
+                                        보상금액(USDT)
                                     </th>
+
                                     <th className='border border-gray-300 p-2'>
                                         정산거래량
                                     </th>
+
                                     <th className='border border-gray-300 p-2'>
-                                        보상금액(USDT)
+                                        지급일
                                     </th>
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -1434,9 +1470,19 @@ export default function AgentPage({ params }: any) {
 
                                 {settlementHistory.map((settlement: any, index: number) => (
                                     <tr key={index}>
-                                        <td className='border border-gray-300 p-2 text-xs'>
-                                            {new Date(settlement.timestamp).toLocaleString()}
+
+                                        {/* same width font */}
+                                        <td className='border border-gray-300 p-2 text-2xl text-right text-green-500'
+                                            style = {{
+                                                fontFamily: 'monospace'
+                                                
+                                            }}
+                                        >
+                                            {
+                                            Number(settlement.settlementClaim.agentInsentive).toFixed(6)
+                                            }
                                         </td>
+
                                         <td className='border border-gray-300 p-2 text-sm text-right'>
                                             {
                                             settlement.settlementClaim.totalSettlementTradingVolume
@@ -1444,11 +1490,65 @@ export default function AgentPage({ params }: any) {
                                             : Number(settlement.settlementClaim.settlementTradingVolume).toFixed(0)
                                             }
                                         </td>
-                                        <td className='border border-gray-300 p-2 text-lg text-right text-green-500 font-semibold'>
+
+
+                                        <td className='border border-gray-300 p-2 text-sm text-right'>
+                                            
+
+
                                             {
-                                            Number(settlement.settlementClaim.agentInsentive).toFixed(6)
+                                                (
+                                                    new Date().getTime() -  new Date(settlement.timestamp).getTime() < 1000 * 60 ? "방금 전" : (
+                                                        (
+                                                            new Date().getTime() -  new Date(settlement.timestamp).getTime() < 1000 * 60 * 60 ? 
+                                                            Math.floor(
+                                                                (new Date().getTime() -  new Date(settlement.timestamp).getTime()) / 1000 / 60
+                                                            ) + "분 전" : (
+                                                                (
+                                                                    new Date().getTime() -  new Date(settlement.timestamp).getTime() < 1000 * 60 * 60 * 24 ? 
+                                                                    Math.floor(
+                                                                        (new Date().getTime() -  new Date(settlement.timestamp).getTime()) / 1000 / 60 / 60
+                                                                    ) + "시간 전" : (
+                                                                        (
+                                                                            new Date().getTime() -  new Date(settlement.timestamp).getTime() < 1000 * 60 * 60 * 24 * 7 ? 
+                                                                            Math.floor(
+                                                                                (new Date().getTime() -  new Date(settlement.timestamp).getTime()) / 1000 / 60 / 60 / 24
+                                                                            ) + "일 전" : (
+                                                                                (
+                                                                                    new Date().getTime() -  new Date(settlement.timestamp).getTime() < 1000 * 60 * 60 * 24 * 30 ? 
+                                                                                    Math.floor(
+                                                                                        (new Date().getTime() -  new Date(settlement.timestamp).getTime()) / 1000 / 60 / 60 / 24 / 7
+                                                                                    ) + "주 전" : (
+                                                                                        (
+                                                                                            new Date().getTime() -  new Date(settlement.timestamp).getTime() < 1000 * 60 * 60 * 24 * 30 * 12 ? 
+                                                                                            Math.floor(
+                                                                                                (new Date().getTime() -  new Date(settlement.timestamp).getTime()) / 1000 / 60 / 60 / 24 / 30
+                                                                                            ) + "달 전" : (
+                                                                                                Math.floor(
+                                                                                                    (new Date().getTime() -  new Date(settlement.timestamp).getTime()) / 1000 / 60 / 60 / 24 / 30 / 12
+                                                                                                ) + "년 전"
+                                                                                            )
+                                                                                        )
+                                                                                    )
+                                                                                )
+                                                                            )
+                                                                        )
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+
+                                                    )
+
+                                                )
+
                                             }
+
+
+
+
                                         </td>
+
                                     </tr>
                                 ))}
                             </tbody>
@@ -1563,35 +1663,7 @@ export default function AgentPage({ params }: any) {
             </div>
 
 
-            {/* totalTradingAccountBalance */}
-            {totalTradingAccountBalance > 0 && (
-                <div className='w-full flex flex-col xl:flex-row items-start justify-between gap-5'>
-                    {/* startTrading is exist count */}
-                    <div className='w-full flex flex-row items-center gap-2'>
-                        <span className='text-lg text-gray-800 font-semibold'>
-                            시작된 Bot:
-                        </span>
-                        <span className='text-4xl text-green-500 font-semibold'>
-                            {
-                                applications.filter((item) => item.accountConfig?.data.roleType === "2").length
-                            }
-                        </span>
-                    </div>
-                    <div className='w-full flex flex-row items-center gap-2'>
-                        <span className='text-lg text-gray-800 font-semibold'>
-                            총 거래 계정 잔고:
-                        </span>
-                        <span className='text-4xl text-green-500 font-semibold'>
-                            {
-                            Number(totalTradingAccountBalance).toLocaleString('en-US', {
-                                style: 'currency',
-                                currency: 'USD'
-                            })
-                            }
-                        </span>
-                    </div>
-                </div>
-            )}
+
 
 
               <div className='w-full grid grid-cols-1 xl:grid-cols-3 gap-5'>
