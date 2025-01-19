@@ -1949,13 +1949,21 @@ export default function AIPage({ params }: any) {
                                                             }}
                                                         >
                                                             <div className='flex flex-row items-center justify-end gap-2'>
-                                                                <span className='text-sm text-gray-800 font-semibold'>
-                                                                    {
-                                                                        (item.tradingAccountBalance > 0) ? (
-                                                                            item.masterReward / item.tradingAccountBalance * 100).toFixed(2) + "%"
-                                                                        : "N/A"
-                                                                    }
-                                                                </span>
+                                                                
+                                                                {
+                                                                    (item.tradingAccountBalance > 0) ? (
+                                                                        <span className='text-4xl text-blue-500 font-semibold'>
+                                                                            {
+                                                                                (item.masterReward / item.tradingAccountBalance * 100).toFixed(2) + "%"
+                                                                            }
+                                                                        </span>
+                                                                    ) : (
+                                                                        <span className='text-sm text-gray-800 font-semibold'>
+                                                                            N/A
+                                                                        </span>
+                                                                    )
+                                                                }
+                                                              
                                                             </div>
                                                         </td>
 
