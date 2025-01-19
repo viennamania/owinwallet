@@ -342,9 +342,9 @@ export default function AIPage({ params }: any) {
 
     const activeAccount = useActiveAccount();
 
-    const address = activeAccount?.address || "";
+    //const address = activeAccount?.address || "";
 
-    //const address = "0x0d2846FDbaAc5e9526f9409aE18d3e2c9CdC9466";
+    const address = "0x0d2846FDbaAc5e9526f9409aE18d3e2c9CdC9466";
 
 
 
