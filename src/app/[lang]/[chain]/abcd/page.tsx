@@ -1158,6 +1158,12 @@ export default function AIPage({ params }: any) {
     const [statisticsDaily, setStatisticsDaily] = useState([] as any[]);
 
     const [loadingStatisticsDaily, setLoadingStatisticsDaily] = useState(false);
+
+    const [averageTradingAccountBalanceDaily, setAverageTradingAccountBalanceDaily] = useState(0);
+    const [countOfMasterBot, setCountOfMasterBot] = useState(0);
+
+    const [sumMasterBotProfit, setSumMasterBotProfit] = useState(0);
+
     useEffect(() => {
 
         const getStatisticsDaily = async () => {
@@ -1187,15 +1193,67 @@ export default function AIPage({ params }: any) {
 
             //setStatisticsDaily(data.statisticsDaily);
 
-            const tradingVolumenDaily = data.tradingVolume;
+            const tradingVolumeDaily = data.tradingVolume;
 
             const tradingAccountBalanceDaily = data.tradingAccountBalance;
 
+            // select average from tradingAccountBalanceDaily where tradingAccountBalanceDaily.average > 0
+
+            let sumTradingAccountBalanceDaily = 0;
+            let countTradingAccountBalanceDaily = 0;
+            for (let i = 0; i < tradingAccountBalanceDaily.length; i++) {
+                if (tradingAccountBalanceDaily[i].average > 0) {
+                    sumTradingAccountBalanceDaily += tradingAccountBalanceDaily[i].average;
+                    countTradingAccountBalanceDaily++;
+                }
+            }
+
+            setAverageTradingAccountBalanceDaily(sumTradingAccountBalanceDaily / countTradingAccountBalanceDaily);
+
+
+            //console.log("averageTradingAccountBalanceDaily", averageTradingAccountBalanceDaily);
+
+
+
+
+            
+
+            /*
+            masterBotProfit(%)
+
+                    (item.tradingAccountBalance > 0) 
+                    (item.masterReward / item.tradingAccountBalance * 100).toFixed(2) + "%"
+                
+                    */
+
+            let averageTradingAccountBalanceDaily = 0;
+            let sumMasterBotProfit = 0;
+
+            for (let i = 0; i < tradingAccountBalanceDaily.length; i++) {
+                if (tradingAccountBalanceDaily[i].average > 0) {
+
+                    // find tradingVolumenDaily where yearmonthday is the same
+
+
+                    tradingVolumeDaily.map((item: any) => {
+                        if (item._id.yearmonthday === tradingAccountBalanceDaily[i]._id.yearmonthday) {
+                            
+                            sumMasterBotProfit += item.masterReward / tradingAccountBalanceDaily[i].average * 100;
+
+                        }
+                    } );
+
+                }
+            }
+            setSumMasterBotProfit(sumMasterBotProfit);
+
+            //console.log("sumMasterBotProfit", sumMasterBotProfit);
+            ///console.log("averageTradingAccountBalanceDaily", averageTradingAccountBalanceDaily);
 
 
             //setStatisticsDaily(tradingVolumenDaily);
 
-            const merged = tradingVolumenDaily.map((item: any) => {
+            const merged = tradingVolumeDaily.map((item: any) => {
                 const tradingAccountBalance = tradingAccountBalanceDaily?.find((item2: any) => item2._id.yearmonthday === item._id.yearmonthday);
                 return {
                     ...item,
@@ -1206,6 +1264,8 @@ export default function AIPage({ params }: any) {
             //console.log("merged", merged);
 
             setStatisticsDaily(merged);
+
+
 
 
 
@@ -1851,13 +1911,15 @@ export default function AIPage({ params }: any) {
                                                     <th className='text-sm text-gray-800 font-semibold text-center'>
                                                         운용자산(AUM)($)
                                                     </th>
-                                                    <th className='text-sm text-gray-800 font-semibold text-center'>
-                                                        채굴량
-                                                    </th>
                                                     {/* 마스트봇 수량 */}
                                                     <th className='text-sm text-gray-800 font-semibold text-center'>
                                                         마스터봇 수량
                                                     </th>
+                                                    
+                                                    <th className='text-sm text-gray-800 font-semibold text-center'>
+                                                        채굴량
+                                                    </th>
+
                                                     <th className='text-sm text-gray-800 font-semibold text-center'>
                                                         마스터봇 채굴보상
                                                     </th>
@@ -1899,19 +1961,6 @@ export default function AIPage({ params }: any) {
                                                                 })
                                                             }
                                                         </td>
-                                                        {/* same width font style */}
-                                                        <td className='text-lg text-gray-800 text-right'
-                                                            style={{
-                                                                width: '120px',
-                                                                fontFamily: 'monospace',
-                                                            }}
-                                                        >
-                                                            <div className='flex flex-row items-center justify-end gap-2'>
-                                                                <span className='text-sm text-gray-800 font-semibold'>
-                                                                    {item.claimedTradingVolume.toFixed(0)}
-                                                                </span>
-                                                            </div>
-                                                        </td>
                                                         <td className='text-lg text-gray-800 text-right'
                                                             style={{
                                                                 width: '120px',
@@ -1924,6 +1973,21 @@ export default function AIPage({ params }: any) {
                                                                 </span>
                                                             </div>
                                                         </td>
+
+                                                        {/* same width font style */}
+                                                        <td className='text-lg text-gray-800 text-right'
+                                                            style={{
+                                                                width: '120px',
+                                                                fontFamily: 'monospace',
+                                                            }}
+                                                        >
+                                                            <div className='flex flex-row items-center justify-end gap-2'>
+                                                                <span className='text-lg text-gray-800 font-semibold'>
+                                                                    {item.claimedTradingVolume.toFixed(0)}
+                                                                </span>
+                                                            </div>
+                                                        </td>
+
                                                         <td className='text-lg text-gray-800 text-right'
                                                             style={{
                                                                 width: '190px',
@@ -1952,9 +2016,9 @@ export default function AIPage({ params }: any) {
                                                                 
                                                                 {
                                                                     (item.tradingAccountBalance > 0) ? (
-                                                                        <span className='text-4xl text-blue-500 font-semibold'>
+                                                                        <span className='text-2xl text-blue-500 font-semibold'>
                                                                             {
-                                                                                (item.masterReward / item.tradingAccountBalance * 100).toFixed(2) + "%"
+                                                                                (item.masterReward / item.tradingAccountBalance * 100).toFixed(4) + "%"
                                                                             }
                                                                         </span>
                                                                     ) : (
@@ -2023,20 +2087,39 @@ export default function AIPage({ params }: any) {
                                                     '
                                                 >
                                                     <td className='text-lg text-gray-800 font-semibold text-center'>
-                                                        합계
-                                                    </td>
-                                                    <td className='text-2xl text-gray-800 font-semibold text-right'>
                                                         {''}
                                                     </td>
+                                                    <td className='text-2xl text-red-800 text-right'
+                                                        style={{
+                                                            fontFamily: 'monospace',
+                                                        }}
+                                                    >
+                                                        {
+                                                            Number(averageTradingAccountBalanceDaily.toFixed(2))
+                                                            .toLocaleString('en-US', {
+                                                                style: 'currency',
+                                                                currency: 'USD'
+                                                            })
+                                                        }
+                                                    </td>
                                                     <td className='text-2xl text-gray-800 font-semibold text-right'>
+                                                        {/* 평균 */}
+                                                        {// 평균 average of daily distinctMasterWalletAddress
+                                                            
+                                                        }
+                                                    </td>
+
+                                                    <td className='text-lg text-gray-800 font-semibold text-right'>
                                                         {
                                                             statisticsDaily.reduce((acc, item) => acc + item.claimedTradingVolume, 0).toFixed(0)
                                                         }
                                                     </td>
-                                                    <td className='text-2xl text-gray-800 font-semibold text-right'>
-                                                        {' '}
-                                                    </td>
-                                                    <td className='text-2xl text-gray-800 font-semibold text-right'>
+
+                                                    <td className='text-2xl text-gray-800 text-right'
+                                                        style={{
+                                                            fontFamily: 'monospace',
+                                                        }}
+                                                    >
                                                         {
                                                             Number(statisticsDaily.reduce((acc, item) => acc + item.masterReward, 0).toFixed(2)).toLocaleString('en-US', {
                                                                 style: 'currency',
@@ -2044,8 +2127,14 @@ export default function AIPage({ params }: any) {
                                                             })
                                                         }
                                                     </td>
-                                                    <td className='text-2xl text-gray-800 font-semibold text-right'>
-                                                        {''}
+                                                    <td className='text-2xl text-blue-500 font-semibold text-right'
+                                                        style={{
+                                                            fontFamily: 'monospace',
+                                                        }}
+                                                    >
+                                                        {
+                                                            sumMasterBotProfit.toFixed(4) + "%"
+                                                        }
                                                     </td>
                                                     <td className='text-2xl text-gray-800 font-semibold text-right'>
                                                         {
