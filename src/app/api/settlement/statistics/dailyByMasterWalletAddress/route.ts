@@ -3,28 +3,51 @@ import { NextResponse, type NextRequest } from "next/server";
 
 
 import {
-    getStatisticsDailyTradingVolumeByApplicationId,
+    getStatisticsDailyTradingVolumeByMasterWalletAddress,
     getStatisticsDailyTradingAccountBalanceByApplicationId,
+
+    getOneByWalletAddress,
 } from '@lib/api/agent';
+
+
 
 
 export async function POST(request: NextRequest) {
 
     const body = await request.json();
 
-    const { applicationId } = body;
+    const { masterWalletAddress } = body;
 
-    if (!applicationId) {
+    if (!masterWalletAddress) {
         return NextResponse.error();
     }
 
 
-    const tradingVolume = await getStatisticsDailyTradingVolumeByApplicationId(applicationId);
+    // get applicationId from masterWalletAddress
+    const result = await getOneByWalletAddress(masterWalletAddress);
+    if (!result) {
+        return NextResponse.json({ error: 'Agent not found' }, { status: 404 });
+    }
 
-    const tradingAccountBalance = await getStatisticsDailyTradingAccountBalanceByApplicationId(applicationId);
+    const { id } = result;
+
+    const applicationId = id;
 
 
 
+    const tradingVolume = await getStatisticsDailyTradingVolumeByMasterWalletAddress(
+        {
+            masterWalletAddress
+        }
+    );
+
+
+    const tradingAccountBalance = await getStatisticsDailyTradingAccountBalanceByApplicationId(
+        {
+            applicationId
+        }
+    );
+ 
 
     return NextResponse.json({
 

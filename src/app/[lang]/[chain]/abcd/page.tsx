@@ -1160,7 +1160,6 @@ export default function AIPage({ params }: any) {
     const [loadingStatisticsDaily, setLoadingStatisticsDaily] = useState(false);
 
     const [averageTradingAccountBalanceDaily, setAverageTradingAccountBalanceDaily] = useState(0);
-    const [countOfMasterBot, setCountOfMasterBot] = useState(0);
 
     const [sumMasterBotProfit, setSumMasterBotProfit] = useState(0);
 
@@ -1211,22 +1210,6 @@ export default function AIPage({ params }: any) {
             setAverageTradingAccountBalanceDaily(sumTradingAccountBalanceDaily / countTradingAccountBalanceDaily);
 
 
-            //console.log("averageTradingAccountBalanceDaily", averageTradingAccountBalanceDaily);
-
-
-
-
-            
-
-            /*
-            masterBotProfit(%)
-
-                    (item.tradingAccountBalance > 0) 
-                    (item.masterReward / item.tradingAccountBalance * 100).toFixed(2) + "%"
-                
-                    */
-
-            let averageTradingAccountBalanceDaily = 0;
             let sumMasterBotProfit = 0;
 
             for (let i = 0; i < tradingAccountBalanceDaily.length; i++) {

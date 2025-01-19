@@ -2056,33 +2056,32 @@ export async function getStatisticsDailyTradingVolumeByMasterWalletAddress(
   },
 ) {
 
+  //console.log('getStatisticsDailyTradingVolumeByMasterWalletAddress masterWalletAddress: ' + masterWalletAddress);
+
+  // settlementClaim.masterWalletAddress == masterWalletAddress
+
   try {
 
     const client = await clientPromise;
 
     const collection = client.db('vienna').collection('settlementClaimHistory');
 
+    // match settlementClaim.masterWalletAddress == masterWalletAddress
+
     const result = await collection.aggregate([
 
-      /* "timestamp": "2025-01-07T09:44:40.065Z" */
+      {
+        $match: {
+          "settlementClaim.masterWalletAddress": masterWalletAddress,
+        }
+      },
       {
         $group: {
           _id: {
-            ///yearmonthday: { $dateToString: { format: "%Y%m%d", date: "$timestamp" } },
-
-            //yearmonthday: { $dateToString: { format: "%Y%m%d", date: { $toDate: "$timestamp" } } },
-
-            // conver "2025-01-07T09:44:40.065Z" to '2025-01-07' by substr
-
-            // kr time is 9 hours plus
-
-            //yearmonthday: { $substr: ["$timestamp", 0, 10] },
 
             yearmonthday: { $substr: [{ $add: [{ $toDate: "$timestamp" }, 9 * 60 * 60 * 1000] }, 0, 10] },
 
-
           },
-
           claimedTradingVolume: { $sum: {
             $cond: [{
                 $eq: ["$settlementClaim.totalSettlementTradingVolume", null]
@@ -2091,48 +2090,12 @@ export async function getStatisticsDailyTradingVolumeByMasterWalletAddress(
               "$settlementClaim.totalSettlementTradingVolume"
           ]
           } },
-
-
-
-
-
           masterReward: { $sum: { $toDouble: "$settlementClaim.masterInsentive" } },
 
-
-          distinctMasterWalletAddress: {
-            // sum of distinct settlementClaim.masterWalletAddress
-            $addToSet: "$settlementClaim.masterWalletAddress"
-          },
-
-          agentReward: { $sum: { $toDouble: "$settlementClaim.agentInsentive" } },
-
-          distinctAgentWalletAddress: {
-            // sum of distinct settlementClaim.agentWalletAddress
-            $addToSet: "$settlementClaim.agentWalletAddress"
-          },
-
-          centerReward: { $sum: { $toDouble: "$settlementClaim.centerInsentive" } },
-
-          distinctCenterWalletAddress: {
-            // sum of distinct settlementClaim.centerWalletAddress
-            $addToSet: "$settlementClaim.centerWalletAddress"
-          },
-
-          // count of settlementClaim.tradingAccountBalance.balance
-
-          count: { $sum: 1 },
-
-          // count of distinct applicationId
-
-          ///countDistinct: { $sum: 1 },
-
         }
+
       },
-      {
-        $match: {
-          "settlementClaim.masterWalletAddress": masterWalletAddress,
-        }
-      },
+
       {
         $sort: {
           _id: 1,
@@ -2141,11 +2104,13 @@ export async function getStatisticsDailyTradingVolumeByMasterWalletAddress(
 
     ]).toArray();
 
+
+
     return result;
 
   } catch (e) {
 
-    console.log('getStatisticsDailyTradingBalanceAndVolume error: ' + e);
+    console.log('getStatisticsDailyTradingVolumeByMasterWalletAddress error: ' + e);
     return null;
   }
 
@@ -2153,27 +2118,44 @@ export async function getStatisticsDailyTradingVolumeByMasterWalletAddress(
 
 
 
+/*
+{
+  "_id": {
+    "$oid": "677cf77c37aa8c335b1c40d5"
+  },
+  "applicationId": 544452,
+  "tradingAccountBalance": {
+    "balance": "0",
+    "timestamp": 1736243068710
+  },
+  "timestamp": "2025-01-07T09:44:28.716Z"
+}
+*/
 
-
-export async function getStatisticsDailyTradingAccountBalanceByMasterWalletAddress(
+export async function getStatisticsDailyTradingAccountBalanceByApplicationId(
   {
-    masterWalletAddress,
+    applicationId,
   }
   :
   {
-    masterWalletAddress: string,
+    applicationId: number,
   },
 ) {
-  
+
+
   try {
 
     const client = await clientPromise;
 
-    const collection = client.db('vienna').collection('tradingAccountBalanceSumHistory');
+    const collection = client.db('vienna').collection('tradingAccountBalanceHistory');
 
     const result = await collection.aggregate([
 
-      /* "timestamp": "2025-01-07T09:44:40.065Z" */
+      {
+        $match: {
+          applicationId: applicationId,
+        }
+      },
       {
         $group: {
           _id: {
@@ -2183,13 +2165,8 @@ export async function getStatisticsDailyTradingAccountBalanceByMasterWalletAddre
           },
 
           // average of sumOfTradingAccountBalance for each day
-          average: { $avg: { $toDouble: "$sumOfTradingAccountBalance" } },
+          average: { $avg: { $toDouble: "$tradingAccountBalance.balance" } },
 
-        }
-      },
-      {
-        $match: {
-          "settlementClaim.masterWalletAddress": masterWalletAddress,
         }
       },
       {

@@ -77,10 +77,16 @@ export async function POST(request: NextRequest) {
   );
 
   if (!accountInfo) {
+
+    console.log("accountInfo error");
+
     return NextResponse.error();
   }
 
   if (accountInfo.code !== '0') {
+
+    console.log("accountInfo code error");
+
     return NextResponse.error();
   }
 
