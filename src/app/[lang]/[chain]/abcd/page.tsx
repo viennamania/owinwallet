@@ -2216,7 +2216,7 @@ export default function AIPage({ params }: any) {
                                                 <span className='text-xs font-semibold text-gray-800'>
                                                     회원아이디
                                                 </span>
-                                                <span className='text-sm text-gray-800'>
+                                                <span className='text-lg text-blue-500 font-semibold'>
                                                     {application.userName}
                                                 </span>
                                             </div>
