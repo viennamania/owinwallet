@@ -918,7 +918,7 @@ export default function AIPage({ params }: any) {
 
         }
 
-        getStatisticsDaily();
+        address && getStatisticsDaily();
 
     } , [address]);
 
