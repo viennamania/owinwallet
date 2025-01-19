@@ -2078,11 +2078,7 @@ export default function AIPage({ params }: any) {
                                                         }}
                                                     >
                                                         {
-                                                            Number(averageTradingAccountBalanceDaily.toFixed(2))
-                                                            .toLocaleString('en-US', {
-                                                                style: 'currency',
-                                                                currency: 'USD'
-                                                            })
+
                                                         }
                                                     </td>
                                                     <td className='text-2xl text-gray-800 font-semibold text-right'>
