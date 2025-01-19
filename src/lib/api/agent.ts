@@ -2046,13 +2046,13 @@ export async function getStatisticsDailyTradingAccountBalance() {
 
 
 
-export async function getStatisticsDailyTradingVolumeByApplicationId(
+export async function getStatisticsDailyTradingVolumeByMasterWalletAddress(
   {
-    applicationId,
+    masterWalletAddress,
   }
   :
   {
-    applicationId: number,
+    masterWalletAddress: string,
   },
 ) {
 
@@ -2130,7 +2130,7 @@ export async function getStatisticsDailyTradingVolumeByApplicationId(
       },
       {
         $match: {
-          applicationId: applicationId,
+          "settlementClaim.masterWalletAddress": masterWalletAddress,
         }
       },
       {
@@ -2155,13 +2155,13 @@ export async function getStatisticsDailyTradingVolumeByApplicationId(
 
 
 
-export async function getStatisticsDailyTradingAccountBalanceByApplicationId(
+export async function getStatisticsDailyTradingAccountBalanceByMasterWalletAddress(
   {
-    applicationId,
+    masterWalletAddress,
   }
   :
   {
-    applicationId: number,
+    masterWalletAddress: string,
   },
 ) {
   
@@ -2189,7 +2189,7 @@ export async function getStatisticsDailyTradingAccountBalanceByApplicationId(
       },
       {
         $match: {
-          applicationId: applicationId,
+          "settlementClaim.masterWalletAddress": masterWalletAddress,
         }
       },
       {

@@ -375,10 +375,10 @@ export default function AIPage({ params }: any) {
 
     
     
-    const address = smartAccount?.address || "";
+    //const address = smartAccount?.address || "";
 
     // test
-    //const address = "0x39ba8691D1124607b10FF3a45e70965b6C5584Bb";
+    const address = "0x542197103Ca1398db86026Be0a85bc8DcE83e440";
 
 
 
@@ -771,7 +771,7 @@ export default function AIPage({ params }: any) {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                limit: 100,
+                limit: 10,
                 page: 1,
                 walletAddress: address,
             }),
@@ -854,7 +854,7 @@ export default function AIPage({ params }: any) {
                             height={40}
                         />
                         <span className="text-sm font-semibold text-gray-500">
-                            보상내역
+                            치근 보상내역 (최근 10개)
                         </span>
                     </div>
 
@@ -992,14 +992,16 @@ export default function AIPage({ params }: any) {
 
                             {/* 보상 내역 table view designed */}
                             {/* getSettlementHistory */}
-                            {/* 지급일, 정산거래량, 보상(USDT) */}
+                            {/* 지급시간, 거래량, 보상(USDT) */}
 
                             {/* 거래량: if totalSettlementTradingVolume not exist, then use settlementTradingVolume */}
+
+
 
                             <div className='w-full flex flex-col gap-2 items-start justify-between'>
                                 <div className='w-full flex flex-row items-center gap-2'>
                                     <span className='text-lg font-semibold text-gray-500'>
-                                        보상 내역
+                                        최근 보상 내역 (최근 10개)
                                     </span>
                                 </div>
 
@@ -1015,27 +1017,36 @@ export default function AIPage({ params }: any) {
                                     >
                                         <thead>
                                             <tr>
-                                                <th className='border border-gray-300 p-2'>
-                                                    지급일
-                                                </th>
-                                                <th className='border border-gray-300 p-2'>
-                                                    정산거래량
-                                                </th>
-                                                <th className='border border-gray-300 p-2'>
+
+
+                                                <th className='border border-gray-300 p-2 text-sm'>
                                                     보상금액(USDT)
+                                                </th>
+                                                <th className='border border-gray-300 p-2 text-sm'>
+                                                    정산채굴량
+                                                </th>
+                                                <th className='border border-gray-300 p-2 text-sm'>
+                                                    지급시간
                                                 </th>
                                             </tr>
                                         </thead>
                                         <tbody>
 
                                       
-
-
                                             {settlementHistory.map((settlement: any, index: number) => (
                                                 <tr key={index}>
-                                                    <td className='border border-gray-300 p-2 text-xs'>
-                                                        {new Date(settlement.timestamp).toLocaleString()}
+
+                                                    <td
+                                                        className='border border-gray-300 p-2 text-2xl text-right text-blue-500'
+                                                        style={{
+                                                            fontFamily: 'monospace',
+                                                        }}
+                                                    >
+                                                        {
+                                                        Number(settlement.settlementClaim.masterInsentive).toFixed(6)
+                                                        }
                                                     </td>
+
                                                     <td className='border border-gray-300 p-2 text-sm text-right'>
                                                         {
                                                         settlement.settlementClaim.totalSettlementTradingVolume
@@ -1043,11 +1054,62 @@ export default function AIPage({ params }: any) {
                                                         : Number(settlement.settlementClaim.settlementTradingVolume).toFixed(0)
                                                         }
                                                     </td>
-                                                    <td className='border border-gray-300 p-2 text-lg text-right text-green-500 font-semibold'>
+
+
+                                                    <td className='border border-gray-300 p-2 text-sm text-right'>
                                                         {
-                                                        Number(settlement.settlementClaim.masterInsentive).toFixed(6)
+                                                            (
+                                                                new Date().getTime() -  new Date(settlement.timestamp).getTime() < 1000 * 60 ? "방금 전" : (
+                                                                    (
+                                                                        new Date().getTime() -  new Date(settlement.timestamp).getTime() < 1000 * 60 * 60 ? 
+                                                                        Math.floor(
+                                                                            (new Date().getTime() -  new Date(settlement.timestamp).getTime()) / 1000 / 60
+                                                                        ) + "분 전" : (
+                                                                            (
+                                                                                new Date().getTime() -  new Date(settlement.timestamp).getTime() < 1000 * 60 * 60 * 24 ? 
+                                                                                Math.floor(
+                                                                                    (new Date().getTime() -  new Date(settlement.timestamp).getTime()) / 1000 / 60 / 60
+                                                                                ) + "시간 전" : (
+                                                                                    (
+                                                                                        new Date().getTime() -  new Date(settlement.timestamp).getTime() < 1000 * 60 * 60 * 24 * 7 ? 
+                                                                                        Math.floor(
+                                                                                            (new Date().getTime() -  new Date(settlement.timestamp).getTime()) / 1000 / 60 / 60 / 24
+                                                                                        ) + "일 전" : (
+                                                                                            (
+                                                                                                new Date().getTime() -  new Date(settlement.timestamp).getTime() < 1000 * 60 * 60 * 24 * 30 ? 
+                                                                                                Math.floor(
+                                                                                                    (new Date().getTime() -  new Date(settlement.timestamp).getTime()) / 1000 / 60 / 60 / 24 / 7
+                                                                                                ) + "주 전" : (
+                                                                                                    (
+                                                                                                        new Date().getTime() -  new Date(settlement.timestamp).getTime() < 1000 * 60 * 60 * 24 * 30 * 12 ? 
+                                                                                                        Math.floor(
+                                                                                                            (new Date().getTime() -  new Date(settlement.timestamp).getTime()) / 1000 / 60 / 60 / 24 / 30
+                                                                                                        ) + "달 전" : (
+                                                                                                            Math.floor(
+                                                                                                                (new Date().getTime() -  new Date(settlement.timestamp).getTime()) / 1000 / 60 / 60 / 24 / 30 / 12
+                                                                                                            ) + "년 전"
+                                                                                                        )
+                                                                                                    )
+                                                                                                )
+                                                                                            )
+                                                                                        )
+                                                                                    )
+                                                                                )
+                                                                            )
+                                                                        )
+                                                                    )
+
+                                                                )
+
+                                                            )
+
                                                         }
+
+
                                                     </td>
+
+
+
                                                 </tr>
                                             ))}
                                         </tbody>
@@ -1055,6 +1117,7 @@ export default function AIPage({ params }: any) {
                                 )}
 
                             </div>
+
 
 
 
