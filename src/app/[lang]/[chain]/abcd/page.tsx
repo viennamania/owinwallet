@@ -1176,6 +1176,8 @@ export default function AIPage({ params }: any) {
 
             if (!response.ok) {
                 console.error('Error fetching data');
+
+                setLoadingStatisticsDaily(false);
                 return;
             }
 
@@ -1186,11 +1188,15 @@ export default function AIPage({ params }: any) {
             //setStatisticsDaily(data.statisticsDaily);
 
             const tradingVolumenDaily = data.tradingVolume;
+
             const tradingAccountBalanceDaily = data.tradingAccountBalance;
+
+
+
             //setStatisticsDaily(tradingVolumenDaily);
 
             const merged = tradingVolumenDaily.map((item: any) => {
-                const tradingAccountBalance = tradingAccountBalanceDaily.find((item2: any) => item2._id.yearmonthday === item._id.yearmonthday);
+                const tradingAccountBalance = tradingAccountBalanceDaily?.find((item2: any) => item2._id.yearmonthday === item._id.yearmonthday);
                 return {
                     ...item,
                     tradingAccountBalance: tradingAccountBalance?.average || 0,
@@ -1834,7 +1840,11 @@ export default function AIPage({ params }: any) {
                                                     border border-gray-300 p-2 rounded-lg
                                                 '
                                             >
-                                                <tr>
+                                                <tr
+                                                    className='border-b border-gray-300
+                                                        hover:bg-gray-200 h-12
+                                                    '
+                                                >
                                                     <th className='text-sm text-gray-800 font-semibold text-center'>
                                                         날짜
                                                     </th>
