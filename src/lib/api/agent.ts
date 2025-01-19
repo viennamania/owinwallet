@@ -302,7 +302,10 @@ export async function getAllApplicationsForCenter({
   if (result) {
     return {
       totalCount: result.length,
-      totalTradingAccountBalance: totalTradingAccountBalance[0].total,
+      
+      //totalTradingAccountBalance: totalTradingAccountBalance[0].total,
+      totalTradingAccountBalance: totalTradingAccountBalance?.[0]?.total || 0,
+
       applications: result,
     };
   } else {
