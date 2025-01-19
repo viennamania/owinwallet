@@ -1883,7 +1883,7 @@ export default function AIPage({ params }: any) {
                                                         className='border-b border-gray-300
                                                             hover:bg-gray-200 h-12
                                                         '>
-                                                        <td className='text-lg text-gray-800 text-center'>
+                                                        <td className='text-lg text-gray-800 text-center w-40'>
                                                             {item._id.yearmonthday}
                                                         </td>
                                                         <td className='text-2xl text-red-800 text-right'
