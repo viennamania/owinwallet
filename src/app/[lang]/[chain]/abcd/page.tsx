@@ -1183,7 +1183,7 @@ export default function AIPage({ params }: any) {
 
             const data = await response.json();
 
-            console.log("getStatisticsDaily data", data);
+            //console.log("getStatisticsDaily data", data);
 
             //setStatisticsDaily(data.statisticsDaily);
 
@@ -1203,7 +1203,7 @@ export default function AIPage({ params }: any) {
                 };
             });
 
-            console.log("merged", merged);
+            //console.log("merged", merged);
 
             setStatisticsDaily(merged);
 
@@ -1594,7 +1594,7 @@ export default function AIPage({ params }: any) {
 
                                         <div className='flex flex-row items-center justify-between gap-2'>
                                             <span className='text-sm text-gray-800 font-semibold'>
-                                                운용 자산(AUM)($):
+                                                운용자산(AUM)($):
                                             </span>
                                             <span className='text-2xl text-green-500 font-semibold'>
                                                 {
@@ -1849,10 +1849,21 @@ export default function AIPage({ params }: any) {
                                                         날짜
                                                     </th>
                                                     <th className='text-sm text-gray-800 font-semibold text-center'>
-                                                        채굴량 / 횟수
+                                                        운용자산(AUM)($)
                                                     </th>
                                                     <th className='text-sm text-gray-800 font-semibold text-center'>
-                                                        마스터봇 채굴보상 / 봇수량
+                                                        채굴량
+                                                    </th>
+                                                    {/* 마스트봇 수량 */}
+                                                    <th className='text-sm text-gray-800 font-semibold text-center'>
+                                                        마스터봇 수량
+                                                    </th>
+                                                    <th className='text-sm text-gray-800 font-semibold text-center'>
+                                                        마스터봇 채굴보상
+                                                    </th>
+                                                    {/* 운용자산대비 채굴보상 비율 */}
+                                                    <th className='text-sm text-gray-800 font-semibold text-center'>
+                                                        마스터봇 AUM 대비 비율(%)
                                                     </th>
                                                     <th className='text-sm text-gray-800 font-semibold text-center'>
                                                         에이전트봇 채굴보상 / 봇수량
@@ -1875,20 +1886,41 @@ export default function AIPage({ params }: any) {
                                                         <td className='text-lg text-gray-800 text-center'>
                                                             {item._id.yearmonthday}
                                                         </td>
-                                                        {/* same width font style */}
-                                                        <td className='text-lg text-gray-800 text-right'
+                                                        <td className='text-2xl text-red-800 text-right'
                                                             style={{
                                                                 width: '190px',
                                                                 fontFamily: 'monospace',
                                                             }}
                                                         >
+                                                            {
+                                                                Number(item.tradingAccountBalance.toFixed(2)).toLocaleString('en-US', {
+                                                                    style: 'currency',
+                                                                    currency: 'USD'
+                                                                })
+                                                            }
+                                                        </td>
+                                                        {/* same width font style */}
+                                                        <td className='text-lg text-gray-800 text-right'
+                                                            style={{
+                                                                width: '120px',
+                                                                fontFamily: 'monospace',
+                                                            }}
+                                                        >
                                                             <div className='flex flex-row items-center justify-end gap-2'>
-                                                                <span className='text-2xl text-green-500'>
+                                                                <span className='text-sm text-gray-800 font-semibold'>
                                                                     {item.claimedTradingVolume.toFixed(0)}
                                                                 </span>
-                                                                {' '}/{' '}
+                                                            </div>
+                                                        </td>
+                                                        <td className='text-lg text-gray-800 text-right'
+                                                            style={{
+                                                                width: '120px',
+                                                                fontFamily: 'monospace',
+                                                            }}
+                                                        >
+                                                            <div className='flex flex-row items-center justify-end gap-2'>
                                                                 <span className='text-sm text-gray-800 font-semibold'>
-                                                                    {item.count}
+                                                                    {item.distinctMasterWalletAddress.length}
                                                                 </span>
                                                             </div>
                                                         </td>
@@ -1907,12 +1939,27 @@ export default function AIPage({ params }: any) {
                                                                     })
                                                                     }
                                                                 </span>
-                                                                    {' '}/{' '}
+                                                            </div>
+                                                        </td>
+                                                        
+                                                        <td className='text-lg text-gray-800 text-right'
+                                                            style={{
+                                                                width: '190px',
+                                                                fontFamily: 'monospace',
+                                                            }}
+                                                        >
+                                                            <div className='flex flex-row items-center justify-end gap-2'>
                                                                 <span className='text-sm text-gray-800 font-semibold'>
-                                                                    {item.distinctMasterWalletAddress.length}
+                                                                    {
+                                                                        (item.tradingAccountBalance > 0) ? (
+                                                                            item.masterReward / item.tradingAccountBalance * 100).toFixed(2) + "%"
+                                                                        : "N/A"
+                                                                    }
                                                                 </span>
                                                             </div>
                                                         </td>
+
+
                                                         <td className='text-lg text-gray-800 text-right'
                                                             style={{
 
@@ -1971,12 +2018,15 @@ export default function AIPage({ params }: any) {
                                                         합계
                                                     </td>
                                                     <td className='text-2xl text-gray-800 font-semibold text-right'>
+                                                        {''}
+                                                    </td>
+                                                    <td className='text-2xl text-gray-800 font-semibold text-right'>
                                                         {
                                                             statisticsDaily.reduce((acc, item) => acc + item.claimedTradingVolume, 0).toFixed(0)
-                                                        }{' '}/{' '}
-                                                        {
-                                                            statisticsDaily.reduce((acc, item) => acc + item.count, 0)
                                                         }
+                                                    </td>
+                                                    <td className='text-2xl text-gray-800 font-semibold text-right'>
+                                                        {' '}
                                                     </td>
                                                     <td className='text-2xl text-gray-800 font-semibold text-right'>
                                                         {
@@ -1985,6 +2035,9 @@ export default function AIPage({ params }: any) {
                                                                 currency: 'USD'
                                                             })
                                                         }
+                                                    </td>
+                                                    <td className='text-2xl text-gray-800 font-semibold text-right'>
+                                                        {''}
                                                     </td>
                                                     <td className='text-2xl text-gray-800 font-semibold text-right'>
                                                         {

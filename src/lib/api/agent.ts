@@ -1980,17 +1980,19 @@ export async function getStatisticsDailyTradingVolume() {
 
 //
 /*
+
 {
   "_id": {
-    "$oid": "677cf77a37aa8c335b1c40d0"
+    "$oid": "678c5b65bee5a16cf12358ce"
   },
-  "applicationId": 784361,
-  "tradingAccountBalance": {
-    "balance": "0",
-    "timestamp": 1736243066243
-  },
-  "timestamp": "2025-01-07T09:44:26.251Z"
+  "sumOfTradingAccountBalance": 29460.91659095778,
+  "countOfTradingAccountBalance": 143,
+  "timestamp": "2025-01-19T01:54:45.904Z"
 }
+
+*/
+/*
+daily trading account balance sum history
 */
 
 export async function getStatisticsDailyTradingAccountBalance() {
@@ -1999,7 +2001,7 @@ export async function getStatisticsDailyTradingAccountBalance() {
 
     const client = await clientPromise;
 
-    const collection = client.db('vienna').collection('tradingAccountBalanceHistory');
+    const collection = client.db('vienna').collection('tradingAccountBalanceSumHistory');
 
     const result = await collection.aggregate([
 
@@ -2007,57 +2009,16 @@ export async function getStatisticsDailyTradingAccountBalance() {
       {
         $group: {
           _id: {
-            ///yearmonthday: { $dateToString: { format: "%Y%m%d", date: "$timestamp" } },
-
-            //yearmonthday: { $dateToString: { format: "%Y%m%d", date: { $toDate: "$timestamp" } } },
-
-            // conver "2025-01-07T09:44:40.065Z" to '2025-01-07' by substr
-
-            //yearmonthday: { $substr: ["$timestamp", 0, 10] },
 
             yearmonthday: { $substr: [{ $add: [{ $toDate: "$timestamp" }, 9 * 60 * 60 * 1000] }, 0, 10] },
 
           },
 
-          //average: { $avg: { $toDouble: "$tradingAccountBalance.balance" } },
-
-          // sum of tradingAccountBalance.balance
-          total: { $sum: { $toDouble: "$tradingAccountBalance.balance" } },
-
+          // average of sumOfTradingAccountBalance for each day
+          average: { $avg: { $toDouble: "$sumOfTradingAccountBalance" } },
 
         }
-
       },
-
-
-          // average of tradingAccountBalance.balance group by applicationId
-          //total: { $sum: { $toDouble: "$tradingAccountBalance.balance" } },
-          //count: { $sum: 1 },
-          //average: { $avg: { $toDouble: "$tradingAccountBalance.balance" } },
-
-          // average of tradingAccountBalance.balance group by date
-
-        
-      /*
-      {
-        $group: {
-
-          _id: "$_id.yearmonthday",
-          // average of tradingAccountBalance.balance
-          //total: { $avg: { $toDouble: "$tradingAccountBalance.balance" } },
-
-          // sum of tradingAccountBalance.balance
-          total: { $sum: { $toDouble: "$tradingAccountBalance.balance" } },
-
-
-        }
-
-      },
-      */
-
-
-
-
       {
         $sort: {
           _id: 1,
@@ -2065,6 +2026,7 @@ export async function getStatisticsDailyTradingAccountBalance() {
       }
 
     ]).toArray();
+
 
     return result;
 
@@ -2076,6 +2038,9 @@ export async function getStatisticsDailyTradingAccountBalance() {
 
 }
 
+
+
+ 
 
 
 

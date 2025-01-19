@@ -4,7 +4,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import {
     getStatisticsDailyTradingVolume,
-    //getStatisticsDailyTradingAccountBalance,
+    getStatisticsDailyTradingAccountBalance,
 } from '@lib/api/agent';
 
 
@@ -16,9 +16,9 @@ export async function POST(request: NextRequest) {
 
     const tradingVolume = await getStatisticsDailyTradingVolume();
 
-    //const tradingAccountBalance = await getStatisticsDailyTradingAccountBalance();
+    const tradingAccountBalance = await getStatisticsDailyTradingAccountBalance();
 
-    const tradingAccountBalance = null;
+
 
 
     return NextResponse.json({
