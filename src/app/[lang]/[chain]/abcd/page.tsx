@@ -642,7 +642,7 @@ export default function AIPage({ params }: any) {
     useEffect(() => {
         const fetchData = async () => {
             setLoadingApplications(true);
-            const response = await fetch("/api/agent/getApplications", {
+            const response = await fetch("/api/agent/getApplicationsPublic", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -840,7 +840,7 @@ export default function AIPage({ params }: any) {
             toast.success("정산이 요청되었습니다.");
 
             // reload applications
-            const response = await fetch("/api/agent/getApplications", {
+            const response = await fetch("/api/agent/getApplicationsPublic", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -926,7 +926,7 @@ export default function AIPage({ params }: any) {
         });
         */
 
-        const response = await fetch("/api/agent/getApplications", {
+        const response = await fetch("/api/agent/getApplicationsPublic", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -2332,6 +2332,7 @@ export default function AIPage({ params }: any) {
 
                                           
                                             <div className='flex flex-col gap-2'>
+                                                
                                                 <div className='flex flex-row items-center justify-start gap-2'>
                                                     {(application.okxUid && application.okxUid !== '0') && (
                                                         <Image
@@ -2348,6 +2349,7 @@ export default function AIPage({ params }: any) {
                                                     </span>
 
                                                 </div>
+
                                                 <div className='flex flex-row items-center justify-start gap-2'>
                                                     {application.okxUid === '0' ? (
                                                         <span className='text-red-500'>
@@ -2359,6 +2361,55 @@ export default function AIPage({ params }: any) {
                                                         </span>
                                                     )}
                                                 </div>
+
+                                                {/*
+                                                roleType
+                                                0: General user
+                                                1: Leading trader
+                                                2: Copy trader
+                                                3: API trader
+                                                */}
+                                                <div className='flex flex-col gap-2'>
+                                                    <span className='text-xs text-yellow-800'>
+                                                        Role type
+                                                    </span>
+                                                    <div className='flex flex-row items-center gap-2'>
+                                                        <span className='text-sm text-gray-800'>
+                                                            {application.accountConfig?.data.roleType}
+                                                        </span>
+                                                        {application.accountConfig?.data.roleType === "0" ? (
+                                                            <span className='text-sm text-red-800 font-semibold'>
+                                                                General user
+                                                            </span>
+                                                        ) : application.accountConfig?.data.roleType === "1" ? (
+                                                            <span className='text-sm text-red-800 font-semibold'>
+                                                                Leading trader
+                                                            </span>
+                                                        ) : application.accountConfig?.data.roleType === "2" ? (
+                                                            <div className='flex flex-row items-center gap-2'>
+                                                                <span className='text-sm text-green-800 font-semibold'>
+                                                                    Copy trader
+                                                                </span>
+                                                                <Image
+                                                                    src="/verified.png"
+                                                                    alt="Verified"
+                                                                    width={20}
+                                                                    height={20}
+                                                                />
+                                                            </div>
+                                                        ) : application.accountConfig?.data.roleType === "3" ? (
+                                                            <span className='text-sm text-red-800 font-semibold'>
+                                                                API trader
+                                                            </span>
+                                                        ) : (
+                                                            <span className='text-sm text-red-800 font-semibold'>
+                                                                Unknown
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                </div>
+
+
                                             </div>
 
 
