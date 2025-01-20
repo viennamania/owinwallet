@@ -2192,12 +2192,22 @@ export default function AIPage({ params }: any) {
                                                     height={50}
                                                     className='rounded-lg'
                                                 />
-                                                <span className='text-xs font-semibold text-gray-800'>
-                                                    회원아이디
-                                                </span>
+                                                
                                                 <span className='text-lg text-blue-500 font-semibold'>
                                                     {application.userName}
                                                 </span>
+
+                                                {/* goto button */}
+                                                {/* https://shinemywinter.vercel.app/claim?walletAddress=0x307a187b2d75aB38Ee7900F28C566043EB21F5C5 */}
+                                                <a
+                                                    href={`https://shinemywinter.vercel.app/claim?walletAddress=${application.walletAddress}`}
+                                                    target="_blank"
+                                                    className='text-lg text-blue-500'
+                                                >
+                                                    보상
+                                                </a>
+
+
                                             </div>
                                             {/* wallet address */}
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
