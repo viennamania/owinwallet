@@ -86,6 +86,8 @@ export async function GET(request: NextRequest) {
 
     ///console.log(okxUid);
 
+
+
     if (!okxUid) {
       continue;
     }
@@ -127,6 +129,10 @@ export async function GET(request: NextRequest) {
             timestamp: moment().valueOf(),
 
           };
+
+          //console.log("okxUid", okxUid, "affiliateInvitee", affiliateInvitee);
+
+
 
           await updateAccountAffiliateInvitee({
             applicationId: id,

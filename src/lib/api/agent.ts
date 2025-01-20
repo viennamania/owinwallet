@@ -2389,6 +2389,7 @@ export async function getAllApplicationsPublicData ({
       // project only public data exclude api key, api secret key, api password phone number, email
       {
         $project: {
+          id: 1,
           walletAddress: 1,
           agentBot: 1,
           agentBotNumber: 1,
