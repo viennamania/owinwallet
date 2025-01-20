@@ -644,13 +644,14 @@ export default function AIPage({ params }: any) {
         const fetchData = async () => {
 
             setLoadingApplications(true);
-            const response = await fetch("/api/agent/getApplicationsPublic", {
+            const response = await fetch("/api/agent/getApplicationsForMarketingCenter", {
             ///const response = await fetch("/api/agent/getApplications", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
+                    marketingCenter: "owin",
                     walletAddress: address,
                 }),
             });
@@ -830,13 +831,14 @@ export default function AIPage({ params }: any) {
             toast.success("정산이 요청되었습니다.");
 
             // reload applications
-            const response = await fetch("/api/agent/getApplicationsPublic", {
+            const response = await fetch("/api/agent/getApplicationsForMarketingCenter", {
             ///const response = await fetch("/api/agent/getApplications", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
+                    marketingCenter: "owin",
                     walletAddress: address,
                 }),
             });
@@ -917,13 +919,14 @@ export default function AIPage({ params }: any) {
         });
         */
 
-        const response = await fetch("/api/agent/getApplicationsPublic", {
+        const response = await fetch("/api/agent/getApplicationsForMarketingCenter", {
         //const response = await fetch("/api/agent/getApplications", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
+                marketingCenter: "owin",
                 walletAddress: address,
             }),
         });
@@ -1163,13 +1166,14 @@ export default function AIPage({ params }: any) {
             
             setLoadingStatisticsDaily(true);
 
-            const response = await fetch("/api/settlement/statistics/daily", {
+            const response = await fetch("/api/settlement/statistics/dailyByMarketingCenter", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
                     //walletAddress: address,
+                    marketingCenter: "owin",
                 }),
             });
 
@@ -1394,13 +1398,14 @@ export default function AIPage({ params }: any) {
                                         const fetchData = async () => {
 
                                             setLoadingApplications(true);
-                                            const response = await fetch("/api/agent/getApplicationsPublic", {
-                                            //const response = await fetch("/api/agent/getApplications", {
+                                            const response = await fetch("/api/agent/getApplicationsForMarketingCenter", {
+                                           // const response = await fetch("/api/agent/getApplications", {
                                                 method: "POST",
                                                 headers: {
                                                     "Content-Type": "application/json",
                                                 },
                                                 body: JSON.stringify({
+                                                    marketingCenter: "owin",
                                                     walletAddress: address,
                                                 }),
                                             });
@@ -1441,13 +1446,14 @@ export default function AIPage({ params }: any) {
             
                                             setLoadingStatisticsDaily(true);
                                 
-                                            const response = await fetch("/api/settlement/statistics/daily", {
+                                            const response = await fetch("/api/settlement/statistics/dailyByMarketingCenter", {
                                                 method: "POST",
                                                 headers: {
                                                     "Content-Type": "application/json",
                                                 },
                                                 body: JSON.stringify({
                                                     //walletAddress: address,
+                                                    marketingCenter: "owin",
                                                 }),
                                             });
                                 
@@ -1614,6 +1620,7 @@ export default function AIPage({ params }: any) {
 
                             {/* check box for marketing center */}
                             {/* owin, ppump, exms */}
+                            {/*}
                             <div className='w-full flex flex-row items-center gap-5'>
                                 <div className='flex flex-row items-center gap-2'>
                                     <input
@@ -1665,6 +1672,9 @@ export default function AIPage({ params }: any) {
                                 </div>
 
                             </div>
+                            */}
+
+                            {/* applications table */}
 
 
                             {/* totalTradingAccountBalance */}
@@ -1726,7 +1736,7 @@ export default function AIPage({ params }: any) {
 
 
 
-
+                                    {/*
                                     <div className='flex flex-col gap-2
                                         border border-green-500 p-2 rounded-lg
                                     '>  
@@ -1739,7 +1749,6 @@ export default function AIPage({ params }: any) {
                                                 className='rounded-lg w-10 h-10'
                                             />
                                         </div>
-                                        {/* 거래량 계산 */}
                                         <div className='w-full flex flex-row items-center justify-start gap-2
                                             border-b border-gray-300 pb-2
                                         '>
@@ -1749,21 +1758,18 @@ export default function AIPage({ params }: any) {
                                             </span>
                                         </div>
 
-
-                                        {/* totalAffliliateInviteeVolMonth 이번달 총 누적거래량 */}
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                                             <span className='text-sm text-gray-800 font-semibold'>
                                                 OKX 거래량(USDT):
                                             </span>
                                             <span className='text-2xl text-green-500 font-semibold'>
                                                 {
-                                                    totalAffliliateInviteeVolMonth.toFixed(2)
+                                                    totalAffliliateInviteeVolMonth && totalAffliliateInviteeVolMonth.toFixed(2)
                                                 }
                                             </span>
                                                         
                                         </div>
 
-                                        {/* 이번달 총 OKX 누적수수료 (totalAffliliateInviteeVolMonth * 0.000455) */}
                                         <div className='flex flex-col gap-2'>
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                 <span className='text-sm text-gray-800 font-semibold'>
@@ -1771,7 +1777,7 @@ export default function AIPage({ params }: any) {
                                                 </span>
                                                 <span className='text-2xl text-green-500 font-semibold'>
                                                     {
-                                                        (totalAffliliateInviteeVolMonth * 0.000455).toFixed(2)
+                                                        totalAffliliateInviteeVolMonth && (totalAffliliateInviteeVolMonth * 0.000455).toFixed(2)
                                                     }
                                                 </span>
                                             </div>
@@ -1781,14 +1787,9 @@ export default function AIPage({ params }: any) {
                                         <div className='flex flex-col gap-2
                                             border-t border-gray-300 pt-2
                                         '>
-                                            {/* 보상 계산 23% */}
                                             <div className='flex flex-col gap-2'>
                                                 <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                                    {/*
-                                                    <span className='text-sm text-gray-800 font-semibold'>
-                                                        보상(OKX 수수료 * 23%):
-                                                    </span>
-                                                    */}
+
 
                                                     <span className='text-2xl text-green-500 font-semibold'>
                                                         {
@@ -1803,8 +1804,9 @@ export default function AIPage({ params }: any) {
                                         </div>
 
                                     </div>
+                                    */}
 
-
+                                    {/*
                                     <div className='flex flex-col gap-2
                                         border border-red-500 p-2 rounded-lg
                                     '>
@@ -1819,7 +1821,6 @@ export default function AIPage({ params }: any) {
                                             />
                                         </div>
 
-                                        {/* dot */}
                                         <div className='w-full flex flex-row items-center justify-start gap-2'>
                                             <div className='w-2 h-2 bg-red-500 rounded-full'></div>
                                             <span className='text-lg text-gray-800 font-semibold'>
@@ -1831,7 +1832,6 @@ export default function AIPage({ params }: any) {
                                             border-t border-gray-300 pt-2
                                         '>
 
-                                            {/* 회원 보상 = 보상 * 56% */}
                                             <div className='flex flex-col gap-2'>
                                                 <div className='w-full flex flex-row items-center justify-between gap-2'>
 
@@ -1855,7 +1855,6 @@ export default function AIPage({ params }: any) {
                                                 </div>
                                             </div>
 
-                                            {/* 에이전트 보상 = 보상 * 28% */}
                                             <div className='flex flex-col gap-2'>
                                                 <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                     <Image
@@ -1878,7 +1877,6 @@ export default function AIPage({ params }: any) {
                                                 </div>
                                             </div>
 
-                                            {/* 센터 보상 = 보상 * 14% */}
                                             <div className='flex flex-col gap-2'>
                                                 <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                     <Image
@@ -1905,6 +1903,7 @@ export default function AIPage({ params }: any) {
 
 
                                     </div>
+                                    */}
 
 
     
@@ -3035,7 +3034,7 @@ function Header(
                     className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
                     />
                     <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
-                        ABC
+                        OWIN Marketing Center
                     </span>
                 </div>
             

@@ -362,6 +362,118 @@ export async function getSummaryApplicationsForCenter({
 
 
 
+
+
+
+
+
+
+// get All Applications for Center
+// sort by createdAt desc
+export async function getAllApplicationsForMarketingCenter({
+  marketingCenter = '',
+  page = 1,
+  limit = 200,
+}) {
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('agents');
+
+  const result = await collection.find(
+    {
+      marketingCenter: marketingCenter,
+    },
+    {
+      sort: { createdAt: -1 },
+      skip: (page - 1) * limit,
+      limit: limit,
+    },
+  ).toArray();
+
+  const totalTradingAccountBalance = await collection.aggregate([
+    {
+      $match: {
+        marketingCenter: marketingCenter,
+      }
+    },
+    {
+      $group: {
+        _id: null,
+        total: { $sum: { $toDouble: "$tradingAccountBalance.balance" } },
+      }
+    }
+  ]).toArray();
+  
+
+  if (result) {
+    return {
+      totalCount: result.length,
+      
+      //totalTradingAccountBalance: totalTradingAccountBalance[0].total,
+      totalTradingAccountBalance: totalTradingAccountBalance?.[0]?.total || 0,
+
+      applications: result,
+    };
+  } else {
+    return null;
+  }
+
+}
+
+
+
+
+
+// get summary of Applications for Center
+// group by agentBot, agentBotNumber
+export async function getSummaryApplicationsForMarketingCenter({
+  marketingCenter = '',
+}) {
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('agents');
+
+  const result = await collection.aggregate([
+    {
+      $match: {
+        marketingCenter: marketingCenter,
+        $and: [
+          { "accountConfig.data.roleType": "2" },
+          { "accountConfig.data.roleType": { $exists: true } },
+        ]
+      }
+    },
+    {
+      $group: {
+        _id: { agentBot: "$agentBot", agentBotNumber: "$agentBotNumber" },
+        tradingAccountBalanceCount: { $sum: 1 },
+        tradingAccountBalanceSum: { $sum: { $toDouble: "$tradingAccountBalance.balance" } },
+      }
+    }
+  ]).toArray();
+
+  ///console.log('getSummaryApplicationsForCenter result: ' + JSON.stringify(result));
+
+  if (result) {
+    return {
+      result: result,
+    };
+  } else {
+    return null;
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
 // get count, and sum of tradingAccountBalance.balance
 // group by center
 // order by center asc
@@ -1060,6 +1172,44 @@ export async function setSumOfTradingAccountBalanceHistory(
 
   if (result) {
     return {
+      sumOfTradingAccountBalance: sumOfTradingAccountBalance,
+      countOfTradingAccountBalance: countOfTradingAccountBalance,
+    };
+  } else {
+    return null;
+  }
+
+}
+
+
+
+
+// setSumOfTradingAccountBalance
+export async function setSumOfTradingAccountBalanceHistoryByMarketingCenter(
+  sumOfTradingAccountBalance: number,
+  countOfTradingAccountBalance: number,
+  marketingCenter: string,
+) {
+
+  if (!sumOfTradingAccountBalance || !countOfTradingAccountBalance) {
+    return null;
+  }
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('tradingAccountBalanceSumHistoryForMarketingCenter');
+
+  const result = await collection.insertOne(
+    {
+      marketingCenter: marketingCenter,
+      sumOfTradingAccountBalance: sumOfTradingAccountBalance,
+      countOfTradingAccountBalance: countOfTradingAccountBalance,
+      timestamp: new Date().toISOString(),
+    }
+  );
+
+  if (result) {
+    return {
+      marketingCenter: marketingCenter,
       sumOfTradingAccountBalance: sumOfTradingAccountBalance,
       countOfTradingAccountBalance: countOfTradingAccountBalance,
     };
@@ -2198,13 +2348,7 @@ export async function getStatisticsDailyTradingAccountBalanceByApplicationId(
 
 
 export async function getStatisticsDailyTradingVolumeByAgentWalletAddress(
-  {
-    agentWalletAddress,
-  }
-  :
-  {
-    agentWalletAddress: string,
-  },
+  agentWalletAddress: string,
 ) {
 
   try {
@@ -2306,13 +2450,7 @@ export async function getStatisticsDailyTradingVolumeByAgentWalletAddress(
 
 
 export async function getStatisticsDailyTradingAccountBalanceByAgentWalletAddress(
-  {
-    agentWalletAddress,
-  }
-  :
-  {
-    agentWalletAddress: string,
-  },
+  agentWalletAddress: string,
 ) {
   
   try {
@@ -2360,6 +2498,203 @@ export async function getStatisticsDailyTradingAccountBalanceByAgentWalletAddres
   }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+export async function getStatisticsDailyTradingVolumeByMarketingCenter(
+  marketingCenter: string,
+) {
+
+
+  //console.log('getStatisticsDailyTradingVolumeByMarketingCenter marketingCenter: ' + marketingCenter);
+
+
+  try {
+
+    const client = await clientPromise;
+
+    const collection = client.db('vienna').collection('settlementClaimHistory');
+
+    const result = await collection.aggregate([
+
+      /* "timestamp": "2025-01-07T09:44:40.065Z" */
+      {
+        $group: {
+          _id: {
+            ///yearmonthday: { $dateToString: { format: "%Y%m%d", date: "$timestamp" } },
+
+            //yearmonthday: { $dateToString: { format: "%Y%m%d", date: { $toDate: "$timestamp" } } },
+
+            // conver "2025-01-07T09:44:40.065Z" to '2025-01-07' by substr
+
+            // kr time is 9 hours plus
+
+            //yearmonthday: { $substr: ["$timestamp", 0, 10] },
+
+            yearmonthday: { $substr: [{ $add: [{ $toDate: "$timestamp" }, 9 * 60 * 60 * 1000] }, 0, 10] },
+
+
+          },
+
+          claimedTradingVolume: { $sum: {
+            $cond: [{
+                $eq: ["$settlementClaim.totalSettlementTradingVolume", null]
+              },
+              "$settlementClaim.settlementTradingVolume",
+              "$settlementClaim.totalSettlementTradingVolume"
+          ]
+          } },
+
+
+
+
+
+          masterReward: { $sum: { $toDouble: "$settlementClaim.masterInsentive" } },
+
+
+          distinctMasterWalletAddress: {
+            // sum of distinct settlementClaim.masterWalletAddress
+            $addToSet: "$settlementClaim.masterWalletAddress"
+          },
+
+          agentReward: { $sum: { $toDouble: "$settlementClaim.agentInsentive" } },
+
+          distinctAgentWalletAddress: {
+            // sum of distinct settlementClaim.agentWalletAddress
+            $addToSet: "$settlementClaim.agentWalletAddress"
+          },
+
+          centerReward: { $sum: { $toDouble: "$settlementClaim.centerInsentive" } },
+
+          distinctCenterWalletAddress: {
+            // sum of distinct settlementClaim.centerWalletAddress
+            $addToSet: "$settlementClaim.centerWalletAddress"
+          },
+
+          // count of settlementClaim.tradingAccountBalance.balance
+
+          count: { $sum: 1 },
+
+          // count of distinct applicationId
+
+          ///countDistinct: { $sum: 1 },
+
+        }
+      },
+      /*
+      {
+        $match: {
+          "settlementClaim.agentWalletAddress": agentWalletAddress,
+        }
+      },
+      */
+      /* match settlementClaim.center is prefix is marketingCenter */
+      /* match settlementClaim.center is "owin_kingkong_bot" */
+      /* match prefix of settlementClaim.center is marketingCenter */
+      {
+        $match: {
+          
+
+          "settlementClaim.center": {
+            $regex: new RegExp("^" + marketingCenter),
+          },
+
+
+        }
+      },
+
+
+      {
+        $sort: {
+          _id: 1,
+        }
+      }
+
+    ]).toArray();
+
+    return result;
+
+  } catch (e) {
+
+    console.log('getStatisticsDailyTradingBalanceAndVolume error: ' + e);
+    return null;
+  }
+
+}
+
+
+
+
+export async function getStatisticsDailyTradingAccountBalanceByMarketingCenter(
+  marketingCenter: string,
+) {
+  
+  try {
+
+    const client = await clientPromise;
+
+    const collection = client.db('vienna').collection('tradingAccountBalanceSumHistory');
+
+    const result = await collection.aggregate([
+
+      /* "timestamp": "2025-01-07T09:44:40.065Z" */
+      {
+        $group: {
+          _id: {
+
+            yearmonthday: { $substr: [{ $add: [{ $toDate: "$timestamp" }, 9 * 60 * 60 * 1000] }, 0, 10] },
+
+          },
+
+          // average of sumOfTradingAccountBalance for each day
+          average: { $avg: { $toDouble: "$sumOfTradingAccountBalance" } },
+
+        }
+      },
+      /*
+      {
+        $match: {
+          "settlementClaim.agentWalletAddress": agentWalletAddress,
+        }
+      },
+      */
+      /* match settlementClaim.center is prefix is marketingCenter */
+      /*
+      {
+        $match: {
+          "settlementClaim.center": { $regex: new RegExp("^" + marketingCenter) },
+        }
+      },
+      */
+
+      {
+        $sort: {
+          _id: 1,
+        }
+      }
+
+    ]).toArray();
+
+
+    return result;
+
+  } catch (e) {
+    
+    console.log('getStatisticsDailyTradingAccountBalance error: ' + e);
+    return null;
+  }
+
+}
+
 
 
 

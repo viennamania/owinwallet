@@ -11,6 +11,8 @@ import {
   updateAssetValuation,
 
   setSumOfTradingAccountBalanceHistory,
+
+  setSumOfTradingAccountBalanceHistoryByMarketingCenter,
 } from '@lib/api/agent';
 
 
@@ -74,6 +76,7 @@ export async function GET(request: NextRequest) {
 
   let sendSms = false;
 
+  /*
   if (moment().minute() === 0) {
 
     const hour = moment().hour() + 9;
@@ -85,6 +88,7 @@ export async function GET(request: NextRequest) {
     }
 
   }
+  */
 
   console.log("sendSms", sendSms);
 
@@ -108,6 +112,13 @@ export async function GET(request: NextRequest) {
 
   let sumOfTradingAccountBalance = 0;
   let countOfTradingAccountBalance = 0;
+
+  let sumOfTradingAccountBalanceForOwin = 0;
+  let countOfTradingAccountBalanceForOwin = 0;
+
+  let countOfTradingAccountBalanceForPpump = 0;
+  let sumOfTradingAccountBalanceForPpump = 0;
+
 
 
   for (let i = 0; i < applications.length; i++) {
@@ -136,6 +147,16 @@ export async function GET(request: NextRequest) {
 
             sumOfTradingAccountBalance += parseFloat(balance);
             countOfTradingAccountBalance++;
+
+            if (application.marketingCenter === "owin") {
+              sumOfTradingAccountBalanceForOwin += parseFloat(balance);
+              countOfTradingAccountBalanceForOwin++;
+            }
+
+            if (application.marketingCenter === "ppump") {
+              sumOfTradingAccountBalanceForPpump += parseFloat(balance);
+              countOfTradingAccountBalanceForPpump++;
+            }
 
 
   
@@ -282,6 +303,19 @@ export async function GET(request: NextRequest) {
   await setSumOfTradingAccountBalanceHistory(
     sumOfTradingAccountBalance,
     countOfTradingAccountBalance,
+  );
+
+
+  await setSumOfTradingAccountBalanceHistoryByMarketingCenter(
+    sumOfTradingAccountBalanceForOwin,
+    countOfTradingAccountBalanceForOwin,
+    "owin",
+  );
+
+  await setSumOfTradingAccountBalanceHistoryByMarketingCenter(
+    sumOfTradingAccountBalanceForPpump,
+    countOfTradingAccountBalanceForPpump,
+    "ppump",
   );
 
 
