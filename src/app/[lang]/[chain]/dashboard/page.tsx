@@ -1513,12 +1513,15 @@ export default function AIPage({ params }: any) {
                                             {/* 보상 계산 23% */}
                                             <div className='flex flex-col gap-2'>
                                                 <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                                    {/*
                                                     <span className='text-lg text-gray-800 font-semibold'>
-                                                        이번달 전체 보상(OKX 수수료 * 23%):
+                                                        이번달 전체 보상(OKX 수수료 * ):
                                                     </span>
+                                                    */}
                                                     <span className='text-4xl text-green-500 font-semibold'>
                                                         {
-                                                            (totalAffliliateInviteeVolMonth * 0.000455 * 0.23).toFixed(2)
+                                                            //(totalAffliliateInviteeVolMonth * 0.000455 * 0.23).toFixed(2)
+                                                            (totalAffliliateInviteeVolMonth * 0.000455 * 0.35).toFixed(2)
                                                         }
                                                     </span>
                                                 </div>
@@ -1550,7 +1553,8 @@ export default function AIPage({ params }: any) {
                                                     </span>
                                                     <span className='text-4xl text-green-500 font-semibold'>
                                                         {
-                                                            (totalAffliliateInviteeVolMonth * 0.000455 * 0.23 * 0.56).toFixed(2)
+                                                            //(totalAffliliateInviteeVolMonth * 0.000455 * 0.23 * 0.56).toFixed(2)
+                                                            (totalAffliliateInviteeVolMonth * 0.000455 * 0.35 * 0.56).toFixed(2)
                                                         }
                                                     </span>
                                                 </div>
@@ -1564,7 +1568,8 @@ export default function AIPage({ params }: any) {
                                                     </span>
                                                     <span className='text-4xl text-green-500 font-semibold'>
                                                         {
-                                                            (totalAffliliateInviteeVolMonth * 0.000455 * 0.23 * 0.28).toFixed(2)
+                                                            //(totalAffliliateInviteeVolMonth * 0.000455 * 0.23 * 0.28).toFixed(2)
+                                                            (totalAffliliateInviteeVolMonth * 0.000455 * 0.35 * 0.28).toFixed(2)
                                                         }
                                                     </span>
                                                 </div>
@@ -1578,7 +1583,8 @@ export default function AIPage({ params }: any) {
                                                     </span>
                                                     <span className='text-4xl text-green-500 font-semibold'>
                                                         {
-                                                            (totalAffliliateInviteeVolMonth * 0.000455 * 0.23 * 0.14).toFixed(2)
+                                                            //(totalAffliliateInviteeVolMonth * 0.000455 * 0.23 * 0.14).toFixed(2)
+                                                            (totalAffliliateInviteeVolMonth * 0.000455 * 0.35 * 0.14).toFixed(2)
                                                         }
                                                     </span>
                                                 </div>
@@ -1874,16 +1880,22 @@ export default function AIPage({ params }: any) {
 
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                                             <div className='flex flex-col gap-2'>
+                                                {/*}
                                                 <span className='text-xs text-yellow-800'>
                                                     이번달 수수료 / 보상(23%)
                                                 </span>
+                                                */}
                                                 <div className='flex flex-row items-center justify-start gap-2'>
                                                     <span className='text-lg text-red-500'>
                                                         {application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth * 0.000455).toFixed(2) : 0}
                                                     </span>
                                                     {'/'}
                                                     <span className='text-lg text-red-500'>
+                                                        {/*
                                                         {application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth * 0.000455 * 0.23).toFixed(2) : 0}
+                                                        */}
+                                                        {application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth * 0.000455 * 0.35).toFixed(2) : 0}
+                                                        
                                                     </span>
 
                                                 </div>
@@ -2016,7 +2028,8 @@ export default function AIPage({ params }: any) {
                                                             {/*application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth * 0.000455 * 0.23 * 0.56).toFixed(6) : 0*/}
                                                             {application.unclaimedTradingVolume > 0 ?
                                                             
-                                                            Number(application.unclaimedTradingVolume * 0.000455 * 0.23 * 0.56).toFixed(6)
+                                                            //Number(application.unclaimedTradingVolume * 0.000455 * 0.23 * 0.56).toFixed(6)
+                                                            Number(application.unclaimedTradingVolume * 0.000455 * 0.35 * 0.56).toFixed(6)
 
                                                             : 0
                                                             }
@@ -2043,7 +2056,7 @@ export default function AIPage({ params }: any) {
                                                     <div className='flex flex-row items-center justify-start gap-2'>
                                                         <span className='text-lg text-red-500'>
                                                             {/*application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth * 0.000455 * 0.23 * 0.28).toFixed(6) : 0*/}
-                                                            {application.unclaimedTradingVolume > 0 ? Number(application.unclaimedTradingVolume * 0.000455 * 0.23 * 0.28).toFixed(6) : 0}
+                                                            {application.unclaimedTradingVolume > 0 ? Number(application.unclaimedTradingVolume * 0.000455 * 0.35 * 0.28).toFixed(6) : 0}
                                                         </span>
                                                     </div>
 
@@ -2067,7 +2080,7 @@ export default function AIPage({ params }: any) {
                                                     <div className='flex flex-row items-center justify-start gap-2'>
                                                         <span className='text-lg text-red-500'>
                                                             {/*application?.affiliateInvitee?.data?.volMonth ? Number(application.affiliateInvitee.data.volMonth * 0.000455 * 0.23 * 0.14).toFixed(6) : 0*/}
-                                                            {application.unclaimedTradingVolume > 0 ? Number(application.unclaimedTradingVolume * 0.000455 * 0.23 * 0.14).toFixed(6) : 0}
+                                                            {application.unclaimedTradingVolume > 0 ? Number(application.unclaimedTradingVolume * 0.000455 * 0.35 * 0.14).toFixed(6) : 0}
                                                         </span>
                                                     </div>
 

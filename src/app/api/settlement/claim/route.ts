@@ -251,6 +251,8 @@ export async function POST(request: NextRequest) {
       // calculate insentive
       //////////////////////////////////////////////////////////////
 
+      /*
+      //const rewardRate = 0.23;
       const insentive = Number(tradingFee * 0.23).toFixed(8);
 
       const masterInsentive = Number(tradingFee * 0.23 * 0.56).toFixed(8);
@@ -258,6 +260,20 @@ export async function POST(request: NextRequest) {
       const agentInsentive = Number(tradingFee * 0.23 * 0.28).toFixed(8);
 
       const centerInsentive = Number(tradingFee * 0.23 * 0.14).toFixed(8);
+      
+      */
+
+
+      const rewardRate = 0.35;
+
+
+      const insentive = Number(tradingFee * rewardRate).toFixed(8);
+
+      const masterInsentive = Number(tradingFee * rewardRate * 0.56).toFixed(8);
+
+      const agentInsentive = Number(tradingFee * rewardRate * 0.28).toFixed(8);
+
+      const centerInsentive = Number(tradingFee * rewardRate * 0.14).toFixed(8);
       
  
 
@@ -321,6 +337,7 @@ export async function POST(request: NextRequest) {
         tradingVolume: tradingVolume,
         settlementTradingVolume: settlementTradingVolume,
         totalSettlementTradingVolume: totalSettlementTradingVolume,
+        rewardRate: rewardRate,
         tradingFee: tradingFee,
         insentive: insentive,
         masterInsentive: masterInsentive,
