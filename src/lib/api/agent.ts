@@ -1106,6 +1106,17 @@ export async function updateTradingAccountBalance(
 
   const collection = client.db('vienna').collection('agents');
 
+
+  // get application
+  const application = await collection.findOne({ id: applicationId });
+
+  if (!application) {
+    return null;
+  }
+
+
+
+
   const result = await collection.updateOne(
     { id: applicationId },
     {
@@ -1125,9 +1136,13 @@ export async function updateTradingAccountBalance(
 
   const collectionTradingAccountBalanceHistory = client.db('vienna').collection('tradingAccountBalanceHistory');
 
+
+  const agentReferal = application.agentBot + '_' + application.agentBotNumber;
+
   await collectionTradingAccountBalanceHistory.insertOne(
     {
       applicationId: applicationId,
+      agentReferal: agentReferal,
       tradingAccountBalance: tradingAccountBalance,
       timestamp: new Date().toISOString(),
     }
