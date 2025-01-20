@@ -640,7 +640,9 @@ export default function AIPage({ params }: any) {
     const [applications, setApplications] = useState([] as any[]);
     const [loadingApplications, setLoadingApplications] = useState(false);
     useEffect(() => {
+
         const fetchData = async () => {
+
             setLoadingApplications(true);
             const response = await fetch("/api/agent/getApplicationsPublic", {
                 method: "POST",
@@ -661,19 +663,6 @@ export default function AIPage({ params }: any) {
             const data = await response.json();
 
             const total = data.result?.totalCount || 0;
-
-  
-            // order by unclaimedTradingVolume desc
-            /*
-            setApplications(
-                data.result.applications.map((item : any) => {
-                    return {
-                        ...item,
-                        unclaimedTradingVolume: item.affiliateInvitee?.data?.volMonth ? Number(item.affiliateInvitee.data.volMonth - item?.claimedTradingVolume || 0).toFixed(0) : 0,
-                    };
-                })
-            )
-            */
 
             setApplications(
                 data.result.applications?.map((item : any) => {
@@ -1398,6 +1387,7 @@ export default function AIPage({ params }: any) {
                                 {/* reload button */}
                                 <button
                                     onClick={() => {
+                                        
                                         const fetchData = async () => {
 
                                             setLoadingApplications(true);
@@ -1442,10 +1432,11 @@ export default function AIPage({ params }: any) {
                                         };
 
                                         
-                                        const fetchStatisticsDaily = async () => {
 
+                                        const getStatisticsDaily = async () => {
+            
                                             setLoadingStatisticsDaily(true);
-
+                                
                                             const response = await fetch("/api/settlement/statistics/daily", {
                                                 method: "POST",
                                                 headers: {
@@ -1455,23 +1446,92 @@ export default function AIPage({ params }: any) {
                                                     //walletAddress: address,
                                                 }),
                                             });
-
+                                
                                             if (!response.ok) {
                                                 console.error('Error fetching data');
+                                
+                                                setLoadingStatisticsDaily(false);
                                                 return;
                                             }
-
+                                
                                             const data = await response.json();
-
-                                            setStatisticsDaily(data.statisticsDaily);
-                                        
+                                
+                                            //console.log("getStatisticsDaily data", data);
+                                
+                                            //setStatisticsDaily(data.statisticsDaily);
+                                
+                                            const tradingVolumeDaily = data.tradingVolume;
+                                
+                                            const tradingAccountBalanceDaily = data.tradingAccountBalance;
+                                
+                                            // select average from tradingAccountBalanceDaily where tradingAccountBalanceDaily.average > 0
+                                
+                                            let sumTradingAccountBalanceDaily = 0;
+                                            let countTradingAccountBalanceDaily = 0;
+                                            for (let i = 0; i < tradingAccountBalanceDaily.length; i++) {
+                                                if (tradingAccountBalanceDaily[i].average > 0) {
+                                                    sumTradingAccountBalanceDaily += tradingAccountBalanceDaily[i].average;
+                                                    countTradingAccountBalanceDaily++;
+                                                }
+                                            }
+                                
+                                            setAverageTradingAccountBalanceDaily(sumTradingAccountBalanceDaily / countTradingAccountBalanceDaily);
+                                
+                                
+                                            let sumMasterBotProfit = 0;
+                                            let sumTotalBotProfit = 0;
+                                
+                                            for (let i = 0; i < tradingAccountBalanceDaily.length; i++) {
+                                                if (tradingAccountBalanceDaily[i].average > 0) {
+                                
+                                                    // find tradingVolumenDaily where yearmonthday is the same
+                                
+                                
+                                                    tradingVolumeDaily.map((item: any) => {
+                                                        if (item._id.yearmonthday === tradingAccountBalanceDaily[i]._id.yearmonthday) {
+                                                            
+                                                            sumMasterBotProfit += item.masterReward / tradingAccountBalanceDaily[i].average * 100;
+                                                            sumTotalBotProfit += (item.masterReward + item.agentReward + item.centerReward) / tradingAccountBalanceDaily[i].average * 100;
+                                
+                                                        }
+                                                    } );
+                                
+                                                }
+                                            }
+                                            setSumMasterBotProfit(sumMasterBotProfit);
+                                
+                                            setSumTotalBotProfit(sumTotalBotProfit);
+                                
+                                            //console.log("sumMasterBotProfit", sumMasterBotProfit);
+                                            ///console.log("averageTradingAccountBalanceDaily", averageTradingAccountBalanceDaily);
+                                
+                                
+                                            //setStatisticsDaily(tradingVolumenDaily);
+                                
+                                            const merged = tradingVolumeDaily.map((item: any) => {
+                                                const tradingAccountBalance = tradingAccountBalanceDaily?.find((item2: any) => item2._id.yearmonthday === item._id.yearmonthday);
+                                                return {
+                                                    ...item,
+                                                    tradingAccountBalance: tradingAccountBalance?.average || 0,
+                                                };
+                                            });
+                                
+                                            //console.log("merged", merged);
+                                
+                                            setStatisticsDaily(merged);
+                                
+                                
+                                
+                                
+                                
+                                
                                             setLoadingStatisticsDaily(false);
-
+                                
                                         }
 
 
                                         fetchData();
-                                        fetchStatisticsDaily();
+                                        getStatisticsDaily();
                                     }}
                                     disabled={loadingApplications}
                                     className={`${loadingApplications ? "bg-gray-500" : "bg-blue-500"} text-white p-2 rounded-lg
