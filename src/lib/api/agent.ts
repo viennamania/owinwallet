@@ -2605,7 +2605,7 @@ export async function getStatisticsDailyTradingVolumeByMarketingCenter(
         $match: {
 
 
-          "settlementClaim.center": { $regex: new RegExp("^" + marketingCenter) },
+          "settlementClaim.marketingCenter": marketingCenter,
 
         }
 

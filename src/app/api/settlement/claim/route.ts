@@ -193,6 +193,9 @@ export async function POST(request: NextRequest) {
       const nftContractAddress = application.agentBot;
       const tokenId = application.agentBotNumber;
 
+      const agentReferral = application.agentBot + "_" + application.agentBotNumber;
+
+
       const response = await alchemy.nft.getOwnersForNft(nftContractAddress, tokenId);
       /* { owners: [ '0xf5fff32cf83a1a614e15f25ce55b0c0a6b5f8f2c' ] } */
 
@@ -348,6 +351,7 @@ export async function POST(request: NextRequest) {
 
         agentContract: nftContractAddress,
         agentTokenId: tokenId,
+        agentReferral: agentReferral,
         agentInsentive: agentInsentive,
         agentWalletAddress: agentWalletAddress,
 
