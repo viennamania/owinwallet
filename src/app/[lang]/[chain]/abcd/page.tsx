@@ -644,7 +644,8 @@ export default function AIPage({ params }: any) {
         const fetchData = async () => {
 
             setLoadingApplications(true);
-            const response = await fetch("/api/agent/getApplicationsPublic", {
+            ///const response = await fetch("/api/agent/getApplicationsPublic", {
+            const response = await fetch("/api/agent/getApplications", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -829,7 +830,8 @@ export default function AIPage({ params }: any) {
             toast.success("정산이 요청되었습니다.");
 
             // reload applications
-            const response = await fetch("/api/agent/getApplicationsPublic", {
+            //const response = await fetch("/api/agent/getApplicationsPublic", {
+            const response = await fetch("/api/agent/getApplications", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -915,7 +917,8 @@ export default function AIPage({ params }: any) {
         });
         */
 
-        const response = await fetch("/api/agent/getApplicationsPublic", {
+        //const response = await fetch("/api/agent/getApplicationsPublic", {
+        const response = await fetch("/api/agent/getApplications", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -1391,7 +1394,8 @@ export default function AIPage({ params }: any) {
                                         const fetchData = async () => {
 
                                             setLoadingApplications(true);
-                                            const response = await fetch("/api/agent/getApplicationsPublic", {
+                                            ///const response = await fetch("/api/agent/getApplicationsPublic", {
+                                            const response = await fetch("/api/agent/getApplications", {
                                                 method: "POST",
                                                 headers: {
                                                     "Content-Type": "application/json",
