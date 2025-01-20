@@ -1972,7 +1972,7 @@ export default function AIPage({ params }: any) {
                                                     </th>
                                                     
                                                     <th className='text-sm text-gray-800 font-semibold text-center'>
-                                                        채굴량
+                                                        채굴량 / 횟수
                                                     </th>
 
                                                     <th className='text-sm text-gray-800 font-semibold text-center'>
@@ -2031,6 +2031,10 @@ export default function AIPage({ params }: any) {
                                                             <div className='flex flex-row items-center justify-end gap-2'>
                                                                 <span className='text-lg text-gray-800 font-semibold'>
                                                                     {item.claimedTradingVolume.toFixed(0)}
+                                                                </span>
+                                                                {' '}/{' '}
+                                                                <span className='text-sm text-gray-800 font-semibold'>
+                                                                    {item.count}
                                                                 </span>
                                                             </div>
                                                         </td>
