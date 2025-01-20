@@ -1163,6 +1163,8 @@ export default function AIPage({ params }: any) {
 
     const [sumMasterBotProfit, setSumMasterBotProfit] = useState(0);
 
+    const [sumTotalBotProfit, setSumTotalBotProfit] = useState(0);
+
     useEffect(() => {
 
         const getStatisticsDaily = async () => {
@@ -1211,6 +1213,7 @@ export default function AIPage({ params }: any) {
 
 
             let sumMasterBotProfit = 0;
+            let sumTotalBotProfit = 0;
 
             for (let i = 0; i < tradingAccountBalanceDaily.length; i++) {
                 if (tradingAccountBalanceDaily[i].average > 0) {
@@ -1222,6 +1225,7 @@ export default function AIPage({ params }: any) {
                         if (item._id.yearmonthday === tradingAccountBalanceDaily[i]._id.yearmonthday) {
                             
                             sumMasterBotProfit += item.masterReward / tradingAccountBalanceDaily[i].average * 100;
+                            sumTotalBotProfit += (item.masterReward + item.agentReward + item.centerReward) / tradingAccountBalanceDaily[i].average * 100;
 
                         }
                     } );
@@ -1229,6 +1233,8 @@ export default function AIPage({ params }: any) {
                 }
             }
             setSumMasterBotProfit(sumMasterBotProfit);
+
+            setSumTotalBotProfit(sumTotalBotProfit);
 
             //console.log("sumMasterBotProfit", sumMasterBotProfit);
             ///console.log("averageTradingAccountBalanceDaily", averageTradingAccountBalanceDaily);
@@ -1894,28 +1900,27 @@ export default function AIPage({ params }: any) {
                                                     <th className='text-sm text-gray-800 font-semibold text-center'>
                                                         운용자산(AUM)($)
                                                     </th>
-                                                    {/* 마스트봇 수량 */}
-                                                    <th className='text-sm text-gray-800 font-semibold text-center'>
-                                                        마스터봇 수량
-                                                    </th>
                                                     
                                                     <th className='text-sm text-gray-800 font-semibold text-center'>
                                                         채굴량
                                                     </th>
 
                                                     <th className='text-sm text-gray-800 font-semibold text-center'>
-                                                        마스터봇 채굴보상
+                                                        마스터봇 채굴보상 / 봇수량
                                                     </th>
-                                                    {/* 운용자산대비 채굴보상 비율 */}
-                                                    <th className='text-sm text-gray-800 font-semibold text-center'>
-                                                        마스터봇 AUM 대비 비율(%)
-                                                    </th>
+
                                                     <th className='text-sm text-gray-800 font-semibold text-center'>
                                                         에이전트봇 채굴보상 / 봇수량
                                                     </th>
                                                     <th className='text-sm text-gray-800 font-semibold text-center'>
                                                         센터봇 채굴보상 / 봇수량
                                                     </th>
+
+                                                    {/* 운용자산대비 채굴보상 비율 */}
+                                                    <th className='text-sm text-gray-800 font-semibold text-center'>
+                                                        AUM 대비 비율(%)
+                                                    </th>
+
                                                 </tr>
                                             </thead>
                                             <tbody
@@ -1944,18 +1949,7 @@ export default function AIPage({ params }: any) {
                                                                 })
                                                             }
                                                         </td>
-                                                        <td className='text-lg text-gray-800 text-right'
-                                                            style={{
-                                                                width: '120px',
-                                                                fontFamily: 'monospace',
-                                                            }}
-                                                        >
-                                                            <div className='flex flex-row items-center justify-end gap-2'>
-                                                                <span className='text-sm text-gray-800 font-semibold'>
-                                                                    {item.distinctMasterWalletAddress.length}
-                                                                </span>
-                                                            </div>
-                                                        </td>
+
 
                                                         {/* same width font style */}
                                                         <td className='text-lg text-gray-800 text-right'
@@ -1986,33 +1980,13 @@ export default function AIPage({ params }: any) {
                                                                     })
                                                                     }
                                                                 </span>
+                                                                {' '}/{' '}
+                                                                <span className='text-sm text-gray-800 font-semibold'>
+                                                                    {item.distinctMasterWalletAddress.length}
+                                                                </span>
                                                             </div>
                                                         </td>
                                                         
-                                                        <td className='text-lg text-gray-800 text-right'
-                                                            style={{
-                                                                width: '190px',
-                                                                fontFamily: 'monospace',
-                                                            }}
-                                                        >
-                                                            <div className='flex flex-row items-center justify-end gap-2'>
-                                                                
-                                                                {
-                                                                    (item.tradingAccountBalance > 0) ? (
-                                                                        <span className='text-2xl text-blue-500 font-semibold'>
-                                                                            {
-                                                                                (item.masterReward / item.tradingAccountBalance * 100).toFixed(4) + "%"
-                                                                            }
-                                                                        </span>
-                                                                    ) : (
-                                                                        <span className='text-sm text-gray-800 font-semibold'>
-                                                                            N/A
-                                                                        </span>
-                                                                    )
-                                                                }
-                                                              
-                                                            </div>
-                                                        </td>
 
 
                                                         <td className='text-lg text-gray-800 text-right'
@@ -2031,9 +2005,11 @@ export default function AIPage({ params }: any) {
                                                                 currency: 'USD'
                                                             })
                                                             }{' '}/{' '}
+                                                            <span className='text-sm text-gray-800 font-semibold'>
                                                             {
                                                                 item.distinctAgentWalletAddress.length
                                                             }
+                                                            </span>
                                                         </td>
                                                         <td className='text-lg text-gray-800 text-right pr-2'
                                                             style={{
@@ -2051,10 +2027,42 @@ export default function AIPage({ params }: any) {
                                                                 currency: 'USD'
                                                             })
                                                             }{' '}/{' '}
+                                                            <span className='text-sm text-gray-800 font-semibold'>
                                                             {
                                                                 item.distinctCenterWalletAddress.length
                                                             }
+                                                            </span>
                                                         </td>
+
+                                                        <td className='text-lg text-gray-800 text-right'
+                                                            style={{
+                                                                width: '190px',
+                                                                fontFamily: 'monospace',
+                                                            }}
+                                                        >
+                                                            <div className='flex flex-row items-center justify-end gap-2 pr-2'>
+                                                                
+                                                                {
+                                                                    (item.tradingAccountBalance > 0) ? (
+                                                                        <span className='text-2xl text-blue-500 font-semibold'>
+                                                                            {
+                                                                                (
+                                                                                    (item.masterReward + item.agentReward + item.centerReward)
+                                                                                    / item.tradingAccountBalance * 100).toFixed(4) + "%"
+                                                                            }
+                                                                        </span>
+                                                                    ) : (
+                                                                        <span className='text-sm text-gray-800 font-semibold'>
+                                                                            N/A
+                                                                        </span>
+                                                                    )
+                                                                }
+                                                              
+                                                            </div>
+                                                        </td>
+
+
+
                                                     </tr>
                                                 ))}
 
@@ -2072,6 +2080,7 @@ export default function AIPage({ params }: any) {
                                                     <td className='text-lg text-gray-800 font-semibold text-center'>
                                                         {''}
                                                     </td>
+                                                    
                                                     <td className='text-2xl text-red-800 text-right'
                                                         style={{
                                                             fontFamily: 'monospace',
@@ -2081,12 +2090,7 @@ export default function AIPage({ params }: any) {
 
                                                         }
                                                     </td>
-                                                    <td className='text-2xl text-gray-800 font-semibold text-right'>
-                                                        {/* 평균 */}
-                                                        {// 평균 average of daily distinctMasterWalletAddress
-                                                            
-                                                        }
-                                                    </td>
+
 
                                                     <td className='text-lg text-gray-800 font-semibold text-right'>
                                                         {
@@ -2106,16 +2110,8 @@ export default function AIPage({ params }: any) {
                                                             })
                                                         }
                                                     </td>
-                                                    <td className='text-2xl text-blue-500 font-semibold text-right'
-                                                        style={{
-                                                            fontFamily: 'monospace',
-                                                        }}
-                                                    >
-                                                        {
-                                                            sumMasterBotProfit.toFixed(4) + "%"
-                                                        }
-                                                    </td>
-                                                    <td className='text-2xl text-gray-800 font-semibold text-right'>
+
+                                                    <td className='text-2xl text-gray-800 text-right'>
                                                         {
                                                             Number(statisticsDaily.reduce((acc, item) => acc + item.agentReward, 0).toFixed(2)).toLocaleString('en-US', {
                                                                 style: 'currency',
@@ -2123,7 +2119,7 @@ export default function AIPage({ params }: any) {
                                                             })
                                                         }
                                                     </td>
-                                                    <td className='text-2xl text-gray-800 font-semibold text-right pr-2'>
+                                                    <td className='text-2xl text-gray-800  text-right pr-2'>
                                                         {
                                                             Number(statisticsDaily.reduce((acc, item) => acc + item.centerReward, 0).toFixed(2)).toLocaleString('en-US', {
                                                                 style: 'currency',
@@ -2131,6 +2127,18 @@ export default function AIPage({ params }: any) {
                                                             })
                                                         }
                                                     </td>
+
+                                                    <td className='text-2xl text-blue-500 font-semibold text-right pr-2'
+                                                        style={{
+                                                            fontFamily: 'monospace',
+                                                        }}
+                                                    >
+                                                        {
+                                                            //sumMasterBotProfit.toFixed(4) + "%"
+                                                            sumTotalBotProfit.toFixed(4) + "%"
+                                                        }
+                                                    </td>
+
                                                 </tr>
                                             </tbody>
                                         </table>
