@@ -218,6 +218,9 @@ export async function POST(request: NextRequest) {
 
       const center = application.center;
 
+      const marketingCenter = application.marketingCenter;
+
+
       const getCenterOwnerByCenter = await fetch(`https://shinemywinter.vercel.app/api/user/getCenterOwnerByCenter`, {
         method: 'POST',
         headers: {
@@ -349,6 +352,7 @@ export async function POST(request: NextRequest) {
         agentWalletAddress: agentWalletAddress,
 
         center: center,
+        marketingCenter: marketingCenter,
         centerInsentive: centerInsentive,
         centerWalletAddress: centerWalletAddress,
       };

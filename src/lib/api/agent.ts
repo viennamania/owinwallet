@@ -2598,18 +2598,17 @@ export async function getStatisticsDailyTradingVolumeByMarketingCenter(
       },
       */
       /* match settlementClaim.center is prefix is marketingCenter */
-      /* match settlementClaim.center is "owin_kingkong_bot" */
+      /* match settlementClaim.center is "owin_kingkong_bot", ... */
       /* match prefix of settlementClaim.center is marketingCenter */
+      /* match prefix 4 characters of settlementClaim.center is "owin" */
       {
         $match: {
-          
 
-          "settlementClaim.center": {
-            $regex: new RegExp("^" + marketingCenter),
-          },
 
+          "settlementClaim.center": { $regex: new RegExp("^" + marketingCenter) },
 
         }
+
       },
 
 
