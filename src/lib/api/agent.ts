@@ -2541,6 +2541,28 @@ export async function getStatisticsDailyTradingVolumeByMarketingCenter(
 
     const result = await collection.aggregate([
 
+      /*
+      {
+        $match: {
+          "settlementClaim.agentWalletAddress": agentWalletAddress,
+        }
+      },
+      */
+      /* match settlementClaim.center is prefix is marketingCenter */
+      /* match settlementClaim.center is "owin_kingkong_bot", ... */
+      /* match prefix of settlementClaim.center is marketingCenter */
+      /* match prefix 4 characters of settlementClaim.center is "owin" */
+      {
+        $match: {
+
+
+          "settlementClaim.marketingCenter": marketingCenter,
+
+        }
+
+      },
+
+
       /* "timestamp": "2025-01-07T09:44:40.065Z" */
       {
         $group: {
@@ -2605,28 +2627,6 @@ export async function getStatisticsDailyTradingVolumeByMarketingCenter(
 
         }
       },
-      /*
-      {
-        $match: {
-          "settlementClaim.agentWalletAddress": agentWalletAddress,
-        }
-      },
-      */
-      /* match settlementClaim.center is prefix is marketingCenter */
-      /* match settlementClaim.center is "owin_kingkong_bot", ... */
-      /* match prefix of settlementClaim.center is marketingCenter */
-      /* match prefix 4 characters of settlementClaim.center is "owin" */
-      {
-        $match: {
-
-
-          "settlementClaim.marketingCenter": marketingCenter,
-
-        }
-
-      },
-
-
       {
         $sort: {
           _id: 1,
@@ -2647,20 +2647,36 @@ export async function getStatisticsDailyTradingVolumeByMarketingCenter(
 
 
 
+/*
+{
+  "_id": {
+    "$oid": "678e20ddfb4169deccf04ce5"
+  },
+  "marketingCenter": "ppump",
+  "sumOfTradingAccountBalance": 9920.735891055685,
+  "countOfTradingAccountBalance": 37,
+  "timestamp": "2025-01-20T10:09:33.519Z"
+}
+*/
 
 export async function getStatisticsDailyTradingAccountBalanceByMarketingCenter(
   marketingCenter: string,
 ) {
+
+  //console.log('getStatisticsDailyTradingAccountBalanceByMarketingCenter marketingCenter: ' + marketingCenter);
   
   try {
 
     const client = await clientPromise;
 
-    const collection = client.db('vienna').collection('tradingAccountBalanceSumHistory');
+    const collection = client.db('vienna').collection('tradingAccountBalanceSumHistoryForMarketingCenter');
 
     const result = await collection.aggregate([
-
-      /* "timestamp": "2025-01-07T09:44:40.065Z" */
+      {
+        $match: {
+          marketingCenter: marketingCenter,
+        }
+      },
       {
         $group: {
           _id: {
@@ -2673,30 +2689,18 @@ export async function getStatisticsDailyTradingAccountBalanceByMarketingCenter(
           average: { $avg: { $toDouble: "$sumOfTradingAccountBalance" } },
 
         }
-      },
-      /*
-      {
-        $match: {
-          "settlementClaim.agentWalletAddress": agentWalletAddress,
-        }
-      },
-      */
-      /* match settlementClaim.center is prefix is marketingCenter */
-      /*
-      {
-        $match: {
-          "settlementClaim.center": { $regex: new RegExp("^" + marketingCenter) },
-        }
-      },
-      */
 
+      },
       {
         $sort: {
           _id: 1,
         }
       }
 
+
     ]).toArray();
+
+    ///console.log('getStatisticsDailyTradingAccountBalanceByMarketingCenter result: ' + JSON.stringify(result));
 
 
     return result;

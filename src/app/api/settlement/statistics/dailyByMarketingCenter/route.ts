@@ -20,9 +20,9 @@ export async function POST(request: NextRequest) {
     const tradingAccountBalance = await getStatisticsDailyTradingAccountBalanceByMarketingCenter(marketingCenter);
 
 
-    console.log("tradingVolume", tradingVolume);
+    ///console.log("tradingVolume", tradingVolume);
 
-    console.log("tradingAccountBalance", tradingAccountBalance);
+    ///console.log("tradingAccountBalance", tradingAccountBalance);
 
 
     return NextResponse.json({
