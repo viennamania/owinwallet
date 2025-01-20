@@ -2002,11 +2002,12 @@ export default function AIPage({ params }: any) {
                                                     <tr key={item._id.yearmonthday}
                                                         className='border-b border-gray-300
                                                             hover:bg-gray-200 h-12
-                                                        '>
+                                                    '>
+
                                                         <td className='text-lg text-gray-800 text-center w-40'>
                                                             {item._id.yearmonthday}
                                                         </td>
-                                                        <td className='text-2xl text-red-800 text-right'
+                                                        <td className='text-2xl text-red-800 text-right pr-2'
                                                             style={{
                                                                 width: '190px',
                                                                 fontFamily: 'monospace',
@@ -2032,8 +2033,8 @@ export default function AIPage({ params }: any) {
                                                                 <span className='text-lg text-gray-800 font-semibold'>
                                                                     {item.claimedTradingVolume.toFixed(0)}
                                                                 </span>
-                                                                {' '}/{' '}
-                                                                <span className='text-sm text-gray-800 font-semibold'>
+                                                                /
+                                                                <span className='w-4  text-sm text-gray-800 font-semibold'>
                                                                     {item.count}
                                                                 </span>
                                                             </div>
@@ -2054,8 +2055,8 @@ export default function AIPage({ params }: any) {
                                                                     })
                                                                     }
                                                                 </span>
-                                                                {' '}/{' '}
-                                                                <span className='text-sm text-gray-800 font-semibold'>
+                                                                /
+                                                                <span className='w-4 text-sm text-gray-800 font-semibold'>
                                                                     {item.distinctMasterWalletAddress.length}
                                                                 </span>
                                                             </div>
@@ -2068,44 +2069,50 @@ export default function AIPage({ params }: any) {
 
                                                                 width: '190px',
                                                                 fontFamily: 'monospace',
-                                                                fontSize: '1.1rem',
-                                                                fontWeight: 'bold',
-                                                                color: 'green',
                                                             }}
                                                         >
-                                                            {
-                                                            Number(item.agentReward.toFixed(2)).toLocaleString('en-US', {
-                                                                style: 'currency',
-                                                                currency: 'USD'
-                                                            })
-                                                            }{' '}/{' '}
-                                                            <span className='text-sm text-gray-800 font-semibold'>
-                                                            {
-                                                                item.distinctAgentWalletAddress.length
-                                                            }
-                                                            </span>
+                                                            <div className='flex flex-row items-center justify-end gap-2'>
+                                                                <span className='text-2xl text-green-500'>
+                                                                    {
+                                                                    Number(item.agentReward.toFixed(2)).toLocaleString('en-US', {
+                                                                        style: 'currency',
+                                                                        currency: 'USD'
+                                                                    })
+                                                                    }
+                                                                </span>
+                                                                /
+                                                                <span className='w-4 text-sm text-gray-800 font-semibold'>
+                                                                    {
+                                                                        item.distinctAgentWalletAddress.length
+                                                                    }
+                                                                </span>
+                                                            </div>
+
                                                         </td>
+
                                                         <td className='text-lg text-gray-800 text-right pr-2'
                                                             style={{
 
                                                                 width: '190px',
                                                                 fontFamily: 'monospace',
-                                                                fontSize: '1.1rem',
-                                                                fontWeight: 'bold',
-                                                                color: 'green',
                                                             }}
                                                         >
-                                                            {
-                                                            Number(item.centerReward.toFixed(2)).toLocaleString('en-US', {
-                                                                style: 'currency',
-                                                                currency: 'USD'
-                                                            })
-                                                            }{' '}/{' '}
-                                                            <span className='text-sm text-gray-800 font-semibold'>
-                                                            {
-                                                                item.distinctCenterWalletAddress.length
-                                                            }
-                                                            </span>
+                                                            <div className='flex flex-row items-center justify-end gap-2'>
+                                                                <span className='text-2xl text-green-500'>
+                                                                    {
+                                                                    Number(item.centerReward.toFixed(2)).toLocaleString('en-US', {
+                                                                        style: 'currency',
+                                                                        currency: 'USD'
+                                                                    })
+                                                                    }
+                                                                </span>
+                                                                /
+                                                                <span className='w-4 text-sm text-gray-800 font-semibold'>
+                                                                    {
+                                                                        item.distinctCenterWalletAddress.length
+                                                                    }
+                                                                </span>
+                                                            </div>
                                                         </td>
 
                                                         <td className='text-lg text-gray-800 text-right'
