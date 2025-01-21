@@ -1335,7 +1335,7 @@ export default function AIPage({ params }: any) {
 
             setStatisticsHourly(merged);
 
-
+            // reverse the array
             const barChartData = merged.map((item: any) => {
                 // convert item._id.yearmonthdayhour, to hour
                 // convert "2025-01-20T19" to 19
@@ -1347,12 +1347,12 @@ export default function AIPage({ params }: any) {
 
                     tradingVolume: item.tradingVolume,
 
-                    masterReward: item.masterReward * 100,
-                    agentReward: item.agentReward * 100,
-                    centerReward: item.centerReward * 100,
-                    reward: (item.masterReward + item.agentReward + item.centerReward) * 100,
+                    masterReward: item.masterReward * 300,
+                    agentReward: item.agentReward * 300,
+                    centerReward: item.centerReward * 300,
+                    reward: (item.masterReward + item.agentReward + item.centerReward) * 300,
                 };
-            });
+            }).reverse();
 
             //console.log("barChartData", barChartData);
 

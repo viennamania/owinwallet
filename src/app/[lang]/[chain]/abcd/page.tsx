@@ -1347,11 +1347,12 @@ export default function AIPage({ params }: any) {
 
             setStatisticsHourly(merged);
 
+            // reverse the array
 
             const barChartData = merged.map((item: any) => {
                 // convert item._id.yearmonthdayhour, to hour
                 // convert "2025-01-20T19" to 19
-                const dateHour = item._id.yearmonthdayhour.slice(-2);
+                const dateHour = item._id.yearmonthdayhour.slice(-2) + "시";
                 return {
                     name: dateHour,
   
@@ -1359,12 +1360,13 @@ export default function AIPage({ params }: any) {
 
                     tradingVolume: item.tradingVolume,
 
-                    masterReward: item.masterReward * 100,
-                    agentReward: item.agentReward * 100,
-                    centerReward: item.centerReward * 100,
-                    reward: (item.masterReward + item.agentReward + item.centerReward) * 100,
+                    masterReward: item.masterReward * 500,
+                    agentReward: item.agentReward * 500,
+                    centerReward: item.centerReward * 500,
+                    reward: (item.masterReward + item.agentReward + item.centerReward) * 500,
                 };
-            });
+            }).reverse();
+
 
             //console.log("barChartData", barChartData);
 
@@ -2049,7 +2051,7 @@ export default function AIPage({ params }: any) {
 
                                         <div className='w-full flex flex-row items-center justify-start gap-2'>
                                             <span className='text-sm text-gray-800 font-semibold'>
-                                                시간별 운용자산, 보상량 차트
+                                                시간별 운용자산, 보상량 차트 (최근 24시간)
                                             </span>
                                         </div>
 

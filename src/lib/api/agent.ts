@@ -2763,24 +2763,17 @@ export async function getStatisticsHourlyTradingVolumeByMarketingCenter(
 
           centerReward: { $sum: { $toDouble: "$settlementClaim.centerInsentive" } },
 
-          /*
-          reward: { $sum: {
-            $add: [
-              { $toDouble: "$settlementClaim.masterInsentive" },
-              { $toDouble: "$settlementClaim.agentInsentive" },
-              { $toDouble: "$settlementClaim.centerInsentive" },
-            ]
-          } },
-          */
-
         }
 
       },
 
       {
         $sort: {
-          _id: 1,
+          _id: -1,
         }
+      },
+      {
+        $limit: 24,
       }
 
     ]).toArray();
@@ -2834,8 +2827,11 @@ export async function getStatisticsHourlyTradingAccountBalanceByMarketingCenter(
       },
       {
         $sort: {
-          _id: 1,
+          _id: -1,
         }
+      },
+      {
+        $limit: 24,
       }
 
 
@@ -2860,7 +2856,7 @@ export async function getStatisticsHourlyTradingAccountBalanceByMarketingCenter(
 
 
 
-
+// last 24 hours
 export async function getStatisticsHourlyTradingVolume() {
 
   try {
@@ -2870,12 +2866,12 @@ export async function getStatisticsHourlyTradingVolume() {
     const collection = client.db('vienna').collection('settlementClaimHistory');
 
     const result = await collection.aggregate([
+
+
       {
         $group: {
           _id: {
             yearmonthdayhour: { $substr: [{ $add: [{ $toDate: "$timestamp" }, 9 * 60 * 60 * 1000] }, 0, 13] },
-
-
           },
 
           claimedTradingVolume: { $sum: {
@@ -2896,10 +2892,14 @@ export async function getStatisticsHourlyTradingVolume() {
         }
 
       },
+      // last 24 hours
       {
         $sort: {
-          _id: 1,
+          _id: -1,
         }
+      },
+      {
+        $limit: 24,
       }
 
     ]).toArray();
@@ -2940,9 +2940,12 @@ export async function getStatisticsHourlyTradingAccountBalance() {
       },
       {
         $sort: {
-          _id: 1,
+          _id: -1,
         }
-      }
+      },
+      {
+        $limit: 24,
+     }
 
     ]).toArray();
 
