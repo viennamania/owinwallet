@@ -90,7 +90,8 @@ import * as XLSX from "xlsx";
 
 import { format } from 'date-fns';
 import {
-    BarChart, Bar, XAxis, Tooltip, ResponsiveContainer, LineChart, Line, YAxis, CartesianGrid, Legend
+    BarChart, Bar, XAxis, Tooltip, ResponsiveContainer, LineChart, Line, YAxis, CartesianGrid, Legend,
+    Customized
 } from 'recharts';
 import { VolumeData } from './../../../data/static/volume';
 
@@ -113,6 +114,25 @@ const numberAbbr = (number: any) => {
   if (number >= 1e12) return +(number / 1e12).toFixed(1) + 'T';
 };
 
+
+const CustomizedLabel = (props: { x: number; y: number; value: string }) => {
+    const { x, y, value } = props;
+  
+    return (
+      <text
+        x={x}
+        y={y}
+        dx={"2%"}
+        dy={"-1%"}
+        fontSize="15"
+        fontWeight="bold"
+        fill={"#181818"}
+        textAnchor="left"
+      >
+        {value}
+      </text>
+    );
+  };
 
 
 
@@ -2106,10 +2126,11 @@ export default function AIPage({ params }: any) {
                                                     margin={{
                                                         top: 0,
                                                         right: 0,
-                                                        left: 0,
+                                                        left: 40,
                                                         bottom: 0,
                                                     }}
                                                 >
+                                                    <CartesianGrid strokeDasharray="3 3" />
                                                     <XAxis
                                                         dataKey="name"
                                                         tickLine={false}
@@ -2128,7 +2149,20 @@ export default function AIPage({ params }: any) {
                                                         }
                                                         cursor={{ strokeWidth: 0, fill: '#dffdff' }}
                                                     />
+                                                    {/* rotate x-axis label */}
+                                                    <YAxis
+                                                        tickLine={false}
+                                                        axisLine={false}
+                                                        tickFormatter={(value) => {
+                                                            return value.toLocaleString('en-US', {
+                                                                style: 'currency',
+                                                                currency: 'USD'
+                                                            });
+                                                        }}
+                                                    />
+
                                                     <Bar type="monotone" dataKey="tradingAccountBalance" fill="#1FC7D4"
+                    
                                                     />
                                                     {/*
                                                     <Bar type="monotone" dataKey="reward" fill="#FF0000"
