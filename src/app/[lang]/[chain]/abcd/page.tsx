@@ -2235,7 +2235,8 @@ export default function AIPage({ params }: any) {
                                                         <td className='text-lg text-gray-800 text-center w-40'>
                                                             {item._id.yearmonthday}
                                                         </td>
-                                                        <td className='text-2xl text-red-800 text-right'
+
+                                                        <td className='text-2xl text-red-800 text-right pr-2'
                                                             style={{
                                                                 width: '190px',
                                                                 fontFamily: 'monospace',
