@@ -2149,7 +2149,7 @@ export default function AIPage({ params }: any) {
                                                         }
                                                         cursor={{ strokeWidth: 0, fill: '#dffdff' }}
                                                     />
-                                                    {/* rotate x-axis label */}
+                                                   
                                                     <YAxis
                                                         tickLine={false}
                                                         axisLine={false}

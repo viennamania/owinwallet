@@ -2103,10 +2103,11 @@ export default function AIPage({ params }: any) {
                                                     margin={{
                                                         top: 0,
                                                         right: 0,
-                                                        left: 0,
+                                                        left: 40,
                                                         bottom: 0,
                                                     }}
                                                 >
+                                                    <CartesianGrid strokeDasharray="3 3" />
                                                     <XAxis
                                                         dataKey="name"
                                                         tickLine={false}
@@ -2125,6 +2126,20 @@ export default function AIPage({ params }: any) {
                                                         }
                                                         cursor={{ strokeWidth: 0, fill: '#dffdff' }}
                                                     />
+                                                   
+                                                    <YAxis
+                                                        tickLine={false}
+                                                        axisLine={false}
+                                                        tickFormatter={(value) => {
+                                                            return value.toLocaleString('en-US', {
+                                                                style: 'currency',
+                                                                currency: 'USD'
+                                                            });
+                                                        }}
+                                                    />
+                                                    {/*
+                                                    <Legend />
+                                                    */}
                                                     <Bar type="monotone" dataKey="tradingAccountBalance" fill="#1FC7D4"
                                                     />
                                                     {/*
