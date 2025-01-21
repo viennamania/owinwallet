@@ -2048,7 +2048,7 @@ export default function AIPage({ params }: any) {
 
                                         <div className='w-full flex flex-row items-center justify-start gap-2'>
                                             <span className='text-sm text-gray-800 font-semibold'>
-                                                시간별 운용자산, 보상량 차트
+                                                시간별 운용자산, 보상량 차트 (최근 24시간)
                                             </span>
                                         </div>
 
