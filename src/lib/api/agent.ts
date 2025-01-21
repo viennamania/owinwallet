@@ -2860,6 +2860,107 @@ export async function getStatisticsHourlyTradingAccountBalanceByMarketingCenter(
 
 
 
+
+export async function getStatisticsHourlyTradingVolume() {
+
+  try {
+
+    const client = await clientPromise;
+
+    const collection = client.db('vienna').collection('settlementClaimHistory');
+
+    const result = await collection.aggregate([
+      {
+        $group: {
+          _id: {
+            yearmonthdayhour: { $substr: [{ $add: [{ $toDate: "$timestamp" }, 9 * 60 * 60 * 1000] }, 0, 13] },
+
+
+          },
+
+          claimedTradingVolume: { $sum: {
+            $cond: [{
+                $eq: ["$settlementClaim.totalSettlementTradingVolume", null]
+              },
+              "$settlementClaim.settlementTradingVolume",
+              "$settlementClaim.totalSettlementTradingVolume"
+          ]
+          } },
+
+          masterReward: { $sum: { $toDouble: "$settlementClaim.masterInsentive" } },
+
+          agentReward: { $sum: { $toDouble: "$settlementClaim.agentInsentive" } },
+
+          centerReward: { $sum: { $toDouble: "$settlementClaim.centerInsentive" } },
+
+        }
+
+      },
+      {
+        $sort: {
+          _id: 1,
+        }
+      }
+
+    ]).toArray();
+
+    return result;
+
+  } catch (e) {
+
+    console.log('getStatisticsHourlyTradingVolume error: ' + e);
+    return null;
+  }
+
+}
+
+
+
+export async function getStatisticsHourlyTradingAccountBalance() {
+  
+  try {
+
+    const client = await clientPromise;
+
+    const collection = client.db('vienna').collection('tradingAccountBalanceSumHistory');
+
+    const result = await collection.aggregate([
+      {
+        $group: {
+          _id: {
+            yearmonthdayhour: { $substr: [{ $add: [{ $toDate: "$timestamp" }, 9 * 60 * 60 * 1000] }, 0, 13] },
+
+          },
+
+          // average of sumOfTradingAccountBalance for each day
+          average: { $avg: { $toDouble: "$sumOfTradingAccountBalance" } },
+
+        }
+
+      },
+      {
+        $sort: {
+          _id: 1,
+        }
+      }
+
+    ]).toArray();
+
+
+    return result;
+
+  }  catch (e) {
+    
+    console.log('getStatisticsHourlyTradingAccountBalance error: ' + e);
+    return null;
+  }
+
+}
+
+
+
+
+
 // getAllAgents
 // sort by createdAt desc
 export async function getAllApplicationsPublicData ({

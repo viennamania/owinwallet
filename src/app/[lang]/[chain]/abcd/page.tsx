@@ -84,8 +84,39 @@ import { start } from 'repl';
 
 
 import * as XLSX from "xlsx";
-import { time } from 'console';
-import { ok } from 'assert';
+
+
+
+
+import { format } from 'date-fns';
+import {
+    BarChart, Bar, XAxis, Tooltip, ResponsiveContainer, LineChart, Line, YAxis, CartesianGrid, Legend
+} from 'recharts';
+import { VolumeData } from './../../../data/static/volume';
+
+function CustomAxis({ x, y, payload }: any) {
+  const date = format(new Date(payload.value * 1000), 'd');
+  return (
+    <g transform={`translate(${x},${y})`} className="text-sm text-gray-500">
+      <text x={0} y={0} dy={10} textAnchor="end" fill="currentColor">
+        {date}
+      </text>
+    </g>
+  );
+}
+
+const numberAbbr = (number: any) => {
+  if (number < 1e3) return number;
+  if (number >= 1e3 && number < 1e6) return +(number / 1e3).toFixed(1) + 'K';
+  if (number >= 1e6 && number < 1e9) return +(number / 1e6).toFixed(1) + 'M';
+  if (number >= 1e9 && number < 1e12) return +(number / 1e9).toFixed(1) + 'B';
+  if (number >= 1e12) return +(number / 1e12).toFixed(1) + 'T';
+};
+
+
+
+
+
 
 const wallets = [
     inAppWallet({
@@ -1261,6 +1292,98 @@ export default function AIPage({ params }: any) {
     
 
 
+
+    // Bar chart
+    const [barChartData, setBarChartData] = useState([] as any[]); // Bar chart data
+
+    const [statisticsHourly, setStatisticsHourly] = useState([] as any[]);
+    const [loadingStatisticsHourly, setLoadingStatisticsHourly] = useState(false);
+
+    useEffect(() => {
+
+        const getStatisticsHourly = async () => {
+            
+            setLoadingStatisticsHourly(true);
+
+            const response = await fetch("/api/settlement/statistics/hourly", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    //walletAddress: address,
+                    marketingCenter: "owin",
+                }),
+            });
+
+            if (!response.ok) {
+                console.error('Error fetching data');
+
+                setLoadingStatisticsHourly(false);
+                return;
+            }
+
+            const data = await response.json();
+
+            //console.log("getStatisticsHourly data", data);
+
+            const tradingVolumeHourly = data.tradingVolume;
+
+            const tradingAccountBalanceHourly = data.tradingAccountBalance;
+
+
+            const merged = tradingAccountBalanceHourly.map((item: any) => {
+                const tradingVolume = tradingVolumeHourly?.find((item2: any) => item2._id.yearmonthdayhour === item._id.yearmonthdayhour);
+                return {
+                    ...item,
+                    tradingVolume: tradingVolume?.tradingVolume || 0,
+                    masterReward: tradingVolume?.masterReward || 0,
+                    agentReward: tradingVolume?.agentReward || 0,
+                    centerReward: tradingVolume?.centerReward || 0,
+                };
+            } );
+
+            //console.log("merged", merged);
+
+            setStatisticsHourly(merged);
+
+
+            const barChartData = merged.map((item: any) => {
+                // convert item._id.yearmonthdayhour, to hour
+                // convert "2025-01-20T19" to 19
+                const dateHour = item._id.yearmonthdayhour.slice(-2);
+                return {
+                    name: dateHour,
+  
+                    tradingAccountBalance: item.average,
+
+                    tradingVolume: item.tradingVolume,
+
+                    masterReward: item.masterReward * 100,
+                    agentReward: item.agentReward * 100,
+                    centerReward: item.centerReward * 100,
+                    reward: (item.masterReward + item.agentReward + item.centerReward) * 100,
+                };
+            });
+
+            //console.log("barChartData", barChartData);
+
+            setBarChartData(barChartData);
+
+
+            //setStatisticsHourly(data.statisticsHourly);
+
+            setLoadingStatisticsHourly(false);
+
+        }
+
+        getStatisticsHourly();
+
+    } , [address]);
+
+
+
+
     return (
 
         <main className="
@@ -1913,6 +2036,111 @@ export default function AIPage({ params }: any) {
                                     
                                 </div>
                             )}
+
+
+
+
+                           {!loadingStatisticsHourly && barChartData.length > 0 && (
+                                <div className='w-full flex flex-col gap-5
+                                    border border-gray-300 p-4 rounded-lg bg-gray-100
+                                '>
+                                
+                                    <div className='w-full flex flex-col gap-5'>
+
+                                        <div className='w-full flex flex-row items-center justify-start gap-2'>
+                                            <span className='text-sm text-gray-800 font-semibold'>
+                                                시간별 운용자산, 보상량 차트
+                                            </span>
+                                        </div>
+
+                                        {/* 범례 색상 */}
+                                        <div className='w-full flex flex-row items-center justify-start gap-2'>
+                                            <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
+                                            <span className='text-sm text-gray-800'>
+                                                운용자산
+                                            </span>
+                                            {/*
+                                            <div className='w-4 h-4 bg-yellow-500 rounded-full'></div>
+                                            <span className='text-sm text-gray-800'>
+                                                채굴량
+                                            </span>
+                                            */}
+
+                                            {/* 보상량 전체 */}
+                                            <div className='w-4 h-4 bg-red-500 rounded-full'></div>
+                                            <span className='text-sm text-gray-800'>
+                                                보상량 전체
+                                            </span>
+
+                                            {/* 마스터봇 보상량 */}
+                                            <div className='w-4 h-4 bg-green-500 rounded-full'></div>
+                                            <span className='text-sm text-gray-800'>
+                                                마스터봇 보상량
+                                            </span>
+                                            
+                                            {/* 에이전트봇 보상량 */}
+                                            <div className='w-4 h-4 bg-yellow-500 rounded-full'></div>
+                                            <span className='text-sm text-gray-800'>
+                                                에이전트봇 보상량
+                                            </span>
+
+                                            {/* 센터봇 보상량 */}
+                                            <div className='w-4 h-4 bg-purple-500 rounded-full'></div>
+                                            <span className='text-sm text-gray-800'>
+                                                센터봇 보상량
+                                            </span>
+                                        </div>
+
+
+
+                                        <div className='w-full h-96'>
+                                            <ResponsiveContainer width="100%" height="100%">
+                                                <BarChart
+                                                    data={barChartData}
+                                                    margin={{
+                                                        top: 0,
+                                                        right: 0,
+                                                        left: 0,
+                                                        bottom: 0,
+                                                    }}
+                                                >
+                                                    <XAxis
+                                                        dataKey="name"
+                                                        tickLine={false}
+                                                        axisLine={false}
+                                                        //tick={<CustomAxis />}
+                                                        ticks={
+
+                                                            barChartData.map((item) => item.name)
+                                                        }
+                                                        interval={0}
+                                                        tickMargin={5}
+                                                    />
+                                                    <Tooltip
+                                                        content={
+                                                            <></>
+                                                        }
+                                                        cursor={{ strokeWidth: 0, fill: '#dffdff' }}
+                                                    />
+                                                    <Bar type="monotone" dataKey="tradingAccountBalance" fill="#1FC7D4" />
+                                                    <Bar type="monotone" dataKey="reward" fill="#FF0000" />
+                                                    <Bar type="monotone" dataKey="masterReward" fill="#008000" />
+                                                    <Bar type="monotone" dataKey="agentReward" fill="#FFFF00" />
+                                                    <Bar type="monotone" dataKey="centerReward" fill="#800080" />
+
+
+
+                                                </BarChart>
+                                            </ResponsiveContainer>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            )}
+
+
+
+
 
                            
                             {loadingStatisticsDaily && (
