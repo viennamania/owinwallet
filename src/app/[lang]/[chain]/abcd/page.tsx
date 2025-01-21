@@ -2069,10 +2069,14 @@ export default function AIPage({ params }: any) {
                                             */}
 
                                             {/* 보상량 전체 */}
+                                            {/*
                                             <div className='w-4 h-4 bg-red-500 rounded-full'></div>
                                             <span className='text-sm text-gray-800'>
                                                 보상량 전체
                                             </span>
+                                            */}
+
+                                            {/* 보상량 */}
 
                                             {/* 마스터봇 보상량 */}
                                             <div className='w-4 h-4 bg-green-500 rounded-full'></div>
@@ -2124,11 +2128,22 @@ export default function AIPage({ params }: any) {
                                                         }
                                                         cursor={{ strokeWidth: 0, fill: '#dffdff' }}
                                                     />
-                                                    <Bar type="monotone" dataKey="tradingAccountBalance" fill="#1FC7D4" />
-                                                    <Bar type="monotone" dataKey="reward" fill="#FF0000" />
-                                                    <Bar type="monotone" dataKey="masterReward" fill="#008000" />
-                                                    <Bar type="monotone" dataKey="agentReward" fill="#FFFF00" />
-                                                    <Bar type="monotone" dataKey="centerReward" fill="#800080" />
+                                                    <Bar type="monotone" dataKey="tradingAccountBalance" fill="#1FC7D4"
+                                                    />
+                                                    {/*
+                                                    <Bar type="monotone" dataKey="reward" fill="#FF0000"
+                                                    />
+                                                    */}
+
+                                                    <Bar type="monotone" dataKey="masterReward" fill="#008000"
+                                                        stackId="a"
+                                                    />
+                                                    <Bar type="monotone" dataKey="agentReward" fill="#FFFF00"
+                                                        stackId="a"
+                                                    />
+                                                    <Bar type="monotone" dataKey="centerReward" fill="#800080"
+                                                        stackId="a"
+                                                    />
 
 
 

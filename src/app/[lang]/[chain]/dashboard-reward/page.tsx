@@ -2126,7 +2126,6 @@ export default function AIPage({ params }: any) {
                                                         cursor={{ strokeWidth: 0, fill: '#dffdff' }}
                                                     />
                                                     <Bar type="monotone" dataKey="tradingAccountBalance" fill="#1FC7D4"
-                                                        name={"운용자산"}
                                                     />
                                                     {/*
                                                     <Bar type="monotone" dataKey="reward" fill="#FF0000"
