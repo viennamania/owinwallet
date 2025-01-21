@@ -56,36 +56,39 @@ import AppBarComponent from "@/components/Appbar/AppBar";
 import { getDictionary } from "../../../dictionaries";
 
 
-import { deployERC721Contract } from 'thirdweb/deploys';
-
-
-import {
-    
-    getNFT as getNFT721,
-    getOwnedNFTs,
-    mintTo
-} from "thirdweb/extensions/erc721";
-
-
-
-
-import { getContractMetadata } from "thirdweb/extensions/common";
-
-
-import { Alert, useForkRef } from '@mui/material';
-
-
-import thirdwebIcon from "@public/thirdweb.svg";
-import { verify } from 'crypto';
-import { tree } from 'next/dist/build/templates/app-page';
-import { add } from 'thirdweb/extensions/farcaster/keyGateway';
-import { start } from 'repl';
-
-
 
 import * as XLSX from "xlsx";
-import { time } from 'console';
-import { ok } from 'assert';
+
+
+
+
+import { format } from 'date-fns';
+import {
+    BarChart, Bar, XAxis, Tooltip, ResponsiveContainer, LineChart, Line, YAxis, CartesianGrid, Legend
+} from 'recharts';
+import { VolumeData } from './../../../data/static/volume';
+
+function CustomAxis({ x, y, payload }: any) {
+  const date = format(new Date(payload.value * 1000), 'd');
+  return (
+    <g transform={`translate(${x},${y})`} className="text-sm text-gray-500">
+      <text x={0} y={0} dy={10} textAnchor="end" fill="currentColor">
+        {date}
+      </text>
+    </g>
+  );
+}
+
+const numberAbbr = (number: any) => {
+  if (number < 1e3) return number;
+  if (number >= 1e3 && number < 1e6) return +(number / 1e3).toFixed(1) + 'K';
+  if (number >= 1e6 && number < 1e9) return +(number / 1e6).toFixed(1) + 'M';
+  if (number >= 1e9 && number < 1e12) return +(number / 1e9).toFixed(1) + 'B';
+  if (number >= 1e12) return +(number / 1e12).toFixed(1) + 'T';
+};
+
+
+
 
 const wallets = [
     inAppWallet({
@@ -1265,6 +1268,111 @@ export default function AIPage({ params }: any) {
     
 
 
+    // /api/settlement/statistics/hourlyByMarketingCenter
+    /*
+    [
+        {
+            "_id": {
+                "yearmonthdayhour": "2025-01-20T19"
+            },
+            "average": 19506.381116857872,
+            "tradingVolume": 174.37000000000262
+        },
+    ]
+    */
+
+    // Bar chart
+    const [barChartData, setBarChartData] = useState([] as any[]); // Bar chart data
+
+    const [statisticsHourly, setStatisticsHourly] = useState([] as any[]);
+    const [loadingStatisticsHourly, setLoadingStatisticsHourly] = useState(false);
+
+    useEffect(() => {
+
+        const getStatisticsHourly = async () => {
+            
+            setLoadingStatisticsHourly(true);
+
+            const response = await fetch("/api/settlement/statistics/hourlyByMarketingCenter", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    //walletAddress: address,
+                    marketingCenter: "owin",
+                }),
+            });
+
+            if (!response.ok) {
+                console.error('Error fetching data');
+
+                setLoadingStatisticsHourly(false);
+                return;
+            }
+
+            const data = await response.json();
+
+            //console.log("getStatisticsHourly data", data);
+
+            const tradingVolumeHourly = data.tradingVolume;
+
+            const tradingAccountBalanceHourly = data.tradingAccountBalance;
+
+
+            const merged = tradingAccountBalanceHourly.map((item: any) => {
+                const tradingVolume = tradingVolumeHourly?.find((item2: any) => item2._id.yearmonthdayhour === item._id.yearmonthdayhour);
+                return {
+                    ...item,
+                    tradingVolume: tradingVolume?.tradingVolume || 0,
+                    masterReward: tradingVolume?.masterReward || 0,
+                    agentReward: tradingVolume?.agentReward || 0,
+                    centerReward: tradingVolume?.centerReward || 0,
+                };
+            } );
+
+            //console.log("merged", merged);
+
+            setStatisticsHourly(merged);
+
+
+            const barChartData = merged.map((item: any) => {
+                // convert item._id.yearmonthdayhour, to hour
+                // convert "2025-01-20T19" to 19
+                const dateHour = item._id.yearmonthdayhour.slice(-2);
+                return {
+                    name: dateHour,
+  
+                    tradingAccountBalance: item.average,
+
+                    tradingVolume: item.tradingVolume,
+
+                    masterReward: item.masterReward * 100,
+                    agentReward: item.agentReward * 100,
+                    centerReward: item.centerReward * 100,
+                    reward: (item.masterReward + item.agentReward + item.centerReward) * 100,
+                };
+            });
+
+            //console.log("barChartData", barChartData);
+
+            setBarChartData(barChartData);
+
+
+            //setStatisticsHourly(data.statisticsHourly);
+
+            setLoadingStatisticsHourly(false);
+
+        }
+
+        getStatisticsHourly();
+
+    } , [address]);
+
+
+
+
+
     return (
 
         <main className="
@@ -1914,6 +2022,183 @@ export default function AIPage({ params }: any) {
                             )}
 
                            
+
+
+
+                            {loadingStatisticsHourly && (
+                                <div className='flex flex-col items-center justify-center'>
+                                    <Image
+                                        src="/icon-reward.gif"
+                                        alt="Loading"
+                                        width={300}
+                                        height={300}
+                                    />
+                                </div>
+                            )}
+
+                            {/* statisticsHourly */}
+                            {/* volume chart */}
+
+                            {!loadingStatisticsHourly && barChartData.length > 0 && (
+                                <div className='w-full flex flex-col gap-5
+                                    border border-gray-300 p-4 rounded-lg bg-gray-100
+                                '>
+                                
+                                    <div className='w-full flex flex-col gap-5'>
+
+                                        <div className='w-full flex flex-row items-center justify-start gap-2'>
+                                            <span className='text-sm text-gray-800 font-semibold'>
+                                                시간별 운용자산, 보상량 차트
+                                            </span>
+                                        </div>
+
+                                        {/* 범례 색상 */}
+                                        <div className='w-full flex flex-row items-center justify-start gap-2'>
+                                            <div className='w-4 h-4 bg-blue-500 rounded-full'></div>
+                                            <span className='text-sm text-gray-800'>
+                                                운용자산
+                                            </span>
+                                            {/*
+                                            <div className='w-4 h-4 bg-yellow-500 rounded-full'></div>
+                                            <span className='text-sm text-gray-800'>
+                                                채굴량
+                                            </span>
+                                            */}
+
+                                            {/* 보상량 전체 */}
+                                            <div className='w-4 h-4 bg-red-500 rounded-full'></div>
+                                            <span className='text-sm text-gray-800'>
+                                                보상량 전체
+                                            </span>
+
+                                            {/* 마스터봇 보상량 */}
+                                            <div className='w-4 h-4 bg-green-500 rounded-full'></div>
+                                            <span className='text-sm text-gray-800'>
+                                                마스터봇 보상량
+                                            </span>
+                                            
+                                            {/* 에이전트봇 보상량 */}
+                                            <div className='w-4 h-4 bg-yellow-500 rounded-full'></div>
+                                            <span className='text-sm text-gray-800'>
+                                                에이전트봇 보상량
+                                            </span>
+
+                                            {/* 센터봇 보상량 */}
+                                            <div className='w-4 h-4 bg-purple-500 rounded-full'></div>
+                                            <span className='text-sm text-gray-800'>
+                                                센터봇 보상량
+                                            </span>
+                                        </div>
+
+
+
+                                        <div className='w-full h-96'>
+                                            <ResponsiveContainer width="100%" height="100%">
+                                                <BarChart
+                                                    data={barChartData}
+                                                    margin={{
+                                                        top: 0,
+                                                        right: 0,
+                                                        left: 0,
+                                                        bottom: 0,
+                                                    }}
+                                                >
+                                                    <XAxis
+                                                        dataKey="name"
+                                                        tickLine={false}
+                                                        axisLine={false}
+                                                        //tick={<CustomAxis />}
+                                                        ticks={
+
+                                                            barChartData.map((item) => item.name)
+                                                        }
+                                                        interval={0}
+                                                        tickMargin={5}
+                                                    />
+                                                    <Tooltip
+                                                        content={
+                                                            <></>
+                                                        }
+                                                        cursor={{ strokeWidth: 0, fill: '#dffdff' }}
+                                                    />
+                                                    <Bar type="monotone" dataKey="tradingAccountBalance" fill="#1FC7D4" />
+                                                    <Bar type="monotone" dataKey="reward" fill="#FF0000" />
+                                                    <Bar type="monotone" dataKey="masterReward" fill="#008000" />
+                                                    <Bar type="monotone" dataKey="agentReward" fill="#FFFF00" />
+                                                    <Bar type="monotone" dataKey="centerReward" fill="#800080" />
+
+
+
+                                                </BarChart>
+                                            </ResponsiveContainer>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            )}
+
+                            
+                                
+    {/*
+    <div className="rounded-lg bg-white p-6 shadow-card dark:bg-light-dark sm:p-8">
+      <h3 className="mb-1.5 text-sm uppercase tracking-wider text-gray-600 dark:text-gray-400 sm:mb-2 sm:text-base">
+        Volume 24h
+      </h3>
+      <div className="mb-1 text-base font-medium text-gray-900 dark:text-white sm:text-xl">
+        {dailyVolume}
+      </div>
+      <div className="text-xs text-gray-600 dark:text-gray-400 sm:text-sm">
+        {formattedDate}
+      </div>
+      <div className="mt-5 h-56 sm:mt-8 md:mt-16 lg:mt-8 lg:h-64 2xl:h-72 3xl:h-[340px] 4xl:h-[480px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart
+            data={VolumeData}
+            margin={{
+              top: 0,
+              right: 0,
+              left: 0,
+              bottom: 0,
+            }}
+            onMouseMove={(data) => {
+              if (data.isTooltipActive) {
+                setDate(
+                  data.activePayload && data.activePayload[0].payload.date
+                );
+                setVolume(
+                  data.activePayload &&
+                    data.activePayload[0].payload.dailyVolumeUSD
+                );
+              }
+            }}
+          >
+            <XAxis
+              dataKey="date"
+              tickLine={false}
+              axisLine={false}
+              tick={<CustomAxis />}
+              interval={0}
+              tickMargin={5}
+            />
+            <Tooltip
+              content={<></>}
+              cursor={{ strokeWidth: 0, fill: '#dffdff' }}
+            />
+            <Bar type="monotone" dataKey="dailyVolumeUSD" fill="#1FC7D4" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+    */}
+
+
+      
+            
+
+
+
+
+
                             {loadingStatisticsDaily && (
                                 <div className='flex flex-col items-center justify-center'>
                                         <Image
@@ -2020,6 +2305,8 @@ export default function AIPage({ params }: any) {
                                                                 })
                                                             }
                                                         </td>
+
+                                                        
 
 
                                                         {/* same width font style */}

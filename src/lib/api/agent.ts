@@ -2720,6 +2720,146 @@ export async function getStatisticsDailyTradingAccountBalanceByMarketingCenter(
 
 
 
+
+// reward is sum of masterInsentive, agentInsentive, centerInsentive
+
+export async function getStatisticsHourlyTradingVolumeByMarketingCenter(
+  marketingCenter: string,
+) {
+
+  //console.log('getStatisticsHourlyTradingVolumeByMarketingCenter marketingCenter: ' + marketingCenter);
+  
+  try {
+
+    const client = await clientPromise;
+
+    const collection = client.db('vienna').collection('settlementClaimHistory');
+
+    const result = await collection.aggregate([
+      {
+        $match: {
+          "settlementClaim.marketingCenter": marketingCenter,
+        }
+      },
+      {
+        $group: {
+          _id: {
+
+            yearmonthdayhour: { $substr: [{ $add: [{ $toDate: "$timestamp" }, 9 * 60 * 60 * 1000] }, 0, 13] },
+
+          },
+          tradingVolume: { $sum: {
+            $cond: [{
+                $eq: ["$settlementClaim.totalSettlementTradingVolume", null]
+              },
+              "$settlementClaim.settlementTradingVolume",
+              "$settlementClaim.totalSettlementTradingVolume"
+          ]
+          } },
+
+          masterReward: { $sum: { $toDouble: "$settlementClaim.masterInsentive" } },
+
+          agentReward: { $sum: { $toDouble: "$settlementClaim.agentInsentive" } },
+
+          centerReward: { $sum: { $toDouble: "$settlementClaim.centerInsentive" } },
+
+          /*
+          reward: { $sum: {
+            $add: [
+              { $toDouble: "$settlementClaim.masterInsentive" },
+              { $toDouble: "$settlementClaim.agentInsentive" },
+              { $toDouble: "$settlementClaim.centerInsentive" },
+            ]
+          } },
+          */
+
+        }
+
+      },
+
+      {
+        $sort: {
+          _id: 1,
+        }
+      }
+
+    ]).toArray();
+
+    return result;
+
+  } catch (e) {
+
+    console.log('getStatisticsHourlyTradingVolumeByMarketingCenter error: ' + e);
+    return null;
+  }
+
+}
+
+
+
+
+
+
+export async function getStatisticsHourlyTradingAccountBalanceByMarketingCenter(
+  marketingCenter: string,
+) {
+  
+  //console.log('getStatisticsDailyTradingAccountBalanceByMarketingCenter marketingCenter: ' + marketingCenter);
+  
+  try {
+
+    const client = await clientPromise;
+
+    const collection = client.db('vienna').collection('tradingAccountBalanceSumHistoryForMarketingCenter');
+
+    const result = await collection.aggregate([
+      {
+        $match: {
+          marketingCenter: marketingCenter,
+        }
+      },
+      {
+        $group: {
+          _id: {
+
+            yearmonthdayhour: { $substr: [{ $add: [{ $toDate: "$timestamp" }, 9 * 60 * 60 * 1000] }, 0, 13] },
+
+          },
+
+          // average of sumOfTradingAccountBalance for each day
+          average: { $avg: { $toDouble: "$sumOfTradingAccountBalance" } },
+
+        }
+
+      },
+      {
+        $sort: {
+          _id: 1,
+        }
+      }
+
+
+    ]).toArray();
+
+
+    return result;
+
+  } catch (e) {
+    
+    console.log('getStatisticsDailyTradingAccountBalance error: ' + e);
+    return null;
+  }
+
+}
+
+
+
+
+
+
+
+
+
 // getAllAgents
 // sort by createdAt desc
 export async function getAllApplicationsPublicData ({
