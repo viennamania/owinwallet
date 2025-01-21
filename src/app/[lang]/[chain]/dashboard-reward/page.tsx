@@ -2121,11 +2121,21 @@ export default function AIPage({ params }: any) {
                                                         }
                                                         cursor={{ strokeWidth: 0, fill: '#dffdff' }}
                                                     />
-                                                    <Bar type="monotone" dataKey="tradingAccountBalance" fill="#1FC7D4" />
-                                                    <Bar type="monotone" dataKey="reward" fill="#FF0000" />
-                                                    <Bar type="monotone" dataKey="masterReward" fill="#008000" />
-                                                    <Bar type="monotone" dataKey="agentReward" fill="#FFFF00" />
-                                                    <Bar type="monotone" dataKey="centerReward" fill="#800080" />
+                                                    <Bar type="monotone" dataKey="tradingAccountBalance" fill="#1FC7D4"
+                                                        
+                                                    />
+                                                    <Bar type="monotone" dataKey="reward" fill="#FF0000"
+                                                    />
+
+                                                    <Bar type="monotone" dataKey="masterReward" fill="#008000"
+                                                        stackId="a"
+                                                    />
+                                                    <Bar type="monotone" dataKey="agentReward" fill="#FFFF00"
+                                                        stackId="a"
+                                                    />
+                                                    <Bar type="monotone" dataKey="centerReward" fill="#800080"
+                                                        stackId="a"
+                                                    />
 
 
 
