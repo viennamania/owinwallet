@@ -714,6 +714,8 @@ export default function AIPage({ params }: any) {
 
             const data = await response.json();
 
+            //console.log("data", data);
+
             const total = data.result?.totalCount || 0;
 
             setApplications(
@@ -2602,9 +2604,23 @@ export default function AIPage({ params }: any) {
                                                     {application.marketingCenter}
                                                 </span>
                                                 <div className='flex flex-col gap-2 items-center justify-center'>
-                                                    <span className='text-sm text-gray-800'>
-                                                        {application.center}
-                                                    </span>
+                                                    {/* telegram link */}
+                                                    {/* "t.me/" + application.center */}
+                                                    <button
+                                                        onClick={() => {
+                                                            window.open(`https://t.me/${application.center}`, '_blank');
+                                                        } }
+                                                        className='bg-blue-500 text-white p-2 rounded-lg
+                                                            hover:bg-blue-600
+                                                        '
+                                                    >
+                                                        
+                                                            
+                                                        <span className='text-sm text-gray-100'>
+                                                            {application.center}
+                                                        </span>
+
+                                                    </button>
                                                 </div>
 
                                                 

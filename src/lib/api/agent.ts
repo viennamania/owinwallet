@@ -2990,6 +2990,7 @@ export async function getAllApplicationsPublicData ({
           walletAddress: 1,
           agentBot: 1,
           agentBotNumber: 1,
+          agentBotNft: 1,
           userName: 1,
           okxUid: 1,
           accountConfig: 1,
