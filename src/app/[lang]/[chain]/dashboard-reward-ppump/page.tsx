@@ -2321,13 +2321,25 @@ export default function AIPage({ params }: any) {
                                                     {application.marketingCenter}
                                                 </span>
                                                 <div className='flex flex-col gap-2 items-center justify-center'>
-                                                    <span className='text-sm text-gray-800'>
-                                                        {application.center}
-                                                    </span>
-                                                </div>
+                                                    {/* telegram link */}
+                                                    {/* "t.me/" + application.center */}
+                                                    <button
+                                                        onClick={() => {
+                                                            window.open(`https://t.me/${application.center}`, '_blank');
+                                                        } }
+                                                        className='bg-blue-500 text-white p-2 rounded-lg
+                                                            hover:bg-blue-600
+                                                        '
+                                                    >
+                                                        
+                                                        <span className='text-sm text-gray-100'>
+                                                            {application.center}
+                                                        </span>
 
-                                                
+                                                    </button>
+                                                </div>
                                             </div>
+
 
 
 
@@ -2335,10 +2347,10 @@ export default function AIPage({ params }: any) {
                                             {/* agentBotNft name */}
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                 <div className='flex flex-col gap-2'>
-                                                    <span className='text-sm text-gray-800'>
+                                                    <span className='text-lg text-yellow-600'>
                                                         {application?.agentBotNft?.name || "Unknown"}
                                                     </span>
-                                                    <span className='text-xs text-gray-800'>
+                                                    <span className='text-xs text-gray-800 h-10 overflow-hidden'>
                                                         {application?.agentBotNft?.description || "Unknown"}
                                                     </span>
                                                 </div>
