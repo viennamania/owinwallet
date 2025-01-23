@@ -1711,7 +1711,7 @@ export default function AIPage({ params }: any) {
                                                     <span className='text-lg text-yellow-600 font-semibold'>
                                                         {application?.agentBotNft?.name || "Unknown"}
                                                     </span>
-                                                    <span className='text-xs text-gray-800'>
+                                                    <span className='text-xs text-gray-800 h-10 overflow-hidden'>
                                                         {application?.agentBotNft?.description || "Unknown"}
                                                     </span>
                                                 </div>
