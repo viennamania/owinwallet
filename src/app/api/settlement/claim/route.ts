@@ -48,6 +48,7 @@ import { Network, Alchemy } from 'alchemy-sdk';
 
 
 
+
 const chain = polygon;
 
 
@@ -199,7 +200,7 @@ export async function POST(request: NextRequest) {
       const response = await alchemy.nft.getOwnersForNft(nftContractAddress, tokenId);
       /* { owners: [ '0xf5fff32cf83a1a614e15f25ce55b0c0a6b5f8f2c' ] } */
 
-      console.log("response: ", response);
+      //console.log("response: ", response);
 
       const agentWalletAddress = response?.owners[0] || "";
 
@@ -332,6 +333,14 @@ export async function POST(request: NextRequest) {
 
 
 
+      // get nft info form alchemy
+      // nftContractAddress, tokenId
+
+      const responseNftInfo = await alchemy.nft.getNftMetadata(
+        nftContractAddress,
+        parseInt(tokenId)
+      );
+
 
 
 
@@ -346,11 +355,13 @@ export async function POST(request: NextRequest) {
         rewardRate: rewardRate,
         tradingFee: tradingFee,
         insentive: insentive,
+
         masterInsentive: masterInsentive,
         masterWalletAddress: masterWalletAddress,
 
         agentContract: nftContractAddress,
         agentTokenId: tokenId,
+        agentBotNft: responseNftInfo,
         agentReferral: agentReferral,
         agentInsentive: agentInsentive,
         agentWalletAddress: agentWalletAddress,
