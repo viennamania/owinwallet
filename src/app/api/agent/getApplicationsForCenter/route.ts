@@ -13,11 +13,7 @@ export async function POST(request: NextRequest) {
 
   const body = await request.json();
 
-  const { walletAddress, center } = body;
-
-  if (!walletAddress) {
-    return NextResponse.error();
-  }
+  const { center } = body;
 
   if (!center) {
     return NextResponse.error();
