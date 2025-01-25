@@ -432,6 +432,7 @@ export async function POST(request: NextRequest) {
           center: center,
           contract: nftContractAddress,
           tokenId: tokenId,
+          agentBotNft: responseNftInfo,
           walletAddress: agentWalletAddress,
           //message: `You have received ${agentInsentive} USDT as agent incentive.`,
           message: agentInsentiveMessage,
