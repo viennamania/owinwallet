@@ -2580,7 +2580,9 @@ export default function AIPage({ params }: any) {
 
                                             </div>
                                             {/* wallet address */}
-                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                            <div className='w-full flex flex-row items-center justify-between gap-2
+                                                border-b border-gray-300 pb-2
+                                            '>
                                                 <span className='text-xs font-semibold text-gray-800'>
                                                     지갑주소
                                                 </span>
@@ -2605,8 +2607,10 @@ export default function AIPage({ params }: any) {
 
                                             {/* center */}
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                                <span className='text-xs font-semibold text-gray-800'>
-                                                    {application.marketingCenter}
+                                                <span className='text-xs font-semibold text-red-800'>
+                                                    {
+                                                    application.marketingCenter.toUpperCase()
+                                                    }
                                                 </span>
                                                 <div className='flex flex-col gap-2 items-center justify-center'>
                                                     {/* telegram link */}
@@ -2632,28 +2636,50 @@ export default function AIPage({ params }: any) {
 
 
                                             {/* agentBotNft name */}
-                                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                            <div className='w-full flex flex-row items-center justify-between gap-2
+                                                border border-gray-300 p-2 rounded-lg
+                                            '>
+                                               
+
                                                 <div className='flex flex-col gap-2'>
-                                                    <span className='text-lg text-yellow-600'>
+                                                    <span className='text-sm text-yellow-600'>
                                                         {application?.agentBotNft?.name || "Unknown"}
                                                     </span>
                                                     <span className='text-xs text-gray-800 h-10 overflow-hidden'>
                                                         {application?.agentBotNft?.description || "Unknown"}
                                                     </span>
+
+                                                    {/* oepnsea link */}
+                                                    <div className='flex flex-row items-center justify-between gap-2'>
+                                                        <Image
+                                                            src="/logo-opensea.png"
+                                                            alt="OpenSea"
+                                                            width={20}
+                                                            height={20}
+                                                            className='rounded-lg'
+                                                        />
+                                                        <a
+                                                            href={`https://opensea.io/assets/matic/${application?.agentBotNft?.contract?.address}/${application?.agentBotNft?.tokenId}`}
+                                                            target="_blank"
+                                                            className='text-xs text-blue-500'
+                                                        >
+                                                            OpenSea
+                                                        </a>
+                                                    </div>
+
+
                                                 </div>
 
-                                                <div className='flex flex-col gap-2 items-center justify-center'>
-
-                                                    <Image
-                                                        src={application?.agentBotNft?.image?.thumbnailUrl || "/logo-masterbot100.png"}
-                                                        alt="Agent Bot"
-                                                        width={80}
-                                                        height={80}
-                                                        className={`w-10 h-10 object-cover
-                                                            rounded-lg
-                                                            ${application?.startTrading?.status ? "animate-pulse" : ""}`}
-                                                    />
-                                                </div>
+                                                <Image
+                                                    src={application?.agentBotNft?.image?.thumbnailUrl || "/logo-masterbot100.png"}
+                                                    alt="Agent Bot"
+                                                    width={80}
+                                                    height={80}
+                                                    className={`w-20 h-20 object-cover
+                                                        rounded-lg
+                                                        ${application?.startTrading?.status ? "animate-pulse" : ""}`}
+                                                />
+                                              
                                             </div>
 
                                         </div>
