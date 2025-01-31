@@ -1448,7 +1448,7 @@ export default function AIPage({ params }: any) {
                                     {/* startTrading is exist count */}
                                     <div className='flex flex-row items-center gap-2'>
                                         <span className='text-lg text-gray-800 font-semibold'>
-                                            시작된 Bot:
+                                            마스트봇:
                                         </span>
                                         <span className='text-4xl text-green-500 font-semibold'>
                                             {
