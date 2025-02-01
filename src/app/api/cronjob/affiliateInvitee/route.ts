@@ -6,6 +6,7 @@ import moment from 'moment';
 import {
   getAllAgentsForAILabs,
 	updateAccountAffiliateInvitee,
+  setClaimedTradingVolumeToZero,
 } from '@lib/api/agent';
 
 
@@ -91,6 +92,15 @@ export async function GET(request: NextRequest) {
     if (!okxUid) {
       continue;
     }
+
+
+
+    // every month 1st day 00:00:00 reset claimedTradingVolume to 0
+    /*
+    await setClaimedTradingVolumeToZero({
+      applicationId: id,
+    });
+    */
 
 
 

@@ -658,6 +658,8 @@ export default function AIPage({ params }: any) {
 
             const data = await response.json();
 
+            console.log("data", data);
+
             const total = data.result.totalCount || 0;
 
   

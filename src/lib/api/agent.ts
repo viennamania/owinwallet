@@ -3037,3 +3037,42 @@ export async function getAllApplicationsPublicData ({
   }
   
 }
+
+
+// setClaimedTradingVolumeToZero
+export async function setClaimedTradingVolumeToZero (
+  {
+    applicationId,
+  }
+  :
+  {
+    applicationId: number,
+  }
+) {
+
+  if (!applicationId) {
+    return null;
+  }
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('agents');
+
+  const result = await collection.updateOne(
+    { id: applicationId },
+    {
+      $set: {
+        claimedTradingVolume: "0",
+      }
+    }
+  );
+
+  if (result) {
+    return {
+      applicationId: applicationId,
+      claimedTradingVolume: "0",
+    };
+  } else {
+    return null;
+  }
+
+}
