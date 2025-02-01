@@ -1797,7 +1797,7 @@ export async function setSettlementClaim(
 
   const agent = await collection.findOne({ id: applicationId });
 
-  const currentClaimedTradingVolume = agent?.claimedTradingVolume || 0;
+  const currentClaimedTradingVolume = parseFloat(agent?.claimedTradingVolume) || 0;
 
 
   const resultUpdate = await collection.updateOne(
