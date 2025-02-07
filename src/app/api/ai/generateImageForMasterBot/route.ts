@@ -7,6 +7,9 @@ import Replicate from "replicate";
 import * as fal from "@fal-ai/serverless-client";
 
 
+import { put, PutBlobResult } from '@vercel/blob'
+
+
 
 // nextjs-app
 export const maxDuration = 60; // This function can run for a maximum of 60 seconds
@@ -81,19 +84,77 @@ export async function POST(request: NextRequest) {
     }
     */
 
-    hosting = "fal";
-    model = "fal-ai/flux-realism";
+    //hosting = "fal";
+    //model = "fal-ai/flux-realism";
+
+
+    hosting = "replicate";
+    model = "black-forest-labs/flux-dev";
 
 
     try {
 
-        let result = [] as any;
+        //let result = [] as any;
 
-        let output = [] as any;
+        //let output = [] as any;
+
+        let imageUrl = "";
 
         if (hosting === "replicate") {
 
-            output = await replicate.run(model, { input }) as any;
+            const output = await replicate.run(model, { input }) as any;
+            /*
+            output= [
+                ReadableStream { locked: false, state: 'readable', supportsBYOB: false }
+            ]
+            */
+
+            //console.log("output=", output);
+
+            const reader = output[0].getReader();
+
+            // put image to vercel blob storage
+
+            //const filename = "image.png";
+
+            const filename = `image.png`;
+
+
+            let stream = new ReadableStream({
+                start(controller) {
+                    function push() {
+                        reader.read().then(({ done, value }: { done: boolean; value: Uint8Array }) => {
+                            if (done) {
+                                controller.close();
+                                return;
+                            }
+                            controller.enqueue(value);
+                            push();
+                        });
+                    }
+                    push();
+                }
+            });
+
+            const putBlobResult = await put(filename, stream, {
+                contentType: "image/png",
+                access: "public",
+            });
+
+            imageUrl = putBlobResult.url;
+
+            console.log("imageUrl=", imageUrl);
+
+
+
+
+            /*
+            const blob = await new Response(stream).blob();
+
+            imageUrl = URL.createObjectURL(blob);
+
+            console.log("imageUrl=", imageUrl);
+            */
 
             
 
@@ -121,45 +182,23 @@ export async function POST(request: NextRequest) {
             ////console.log(data);
 
             
+            let result = [] as any;
         
             //const output = data.images[0]?.url;
             // output is array of images
-            output = [
+            const output = [
                 data?.images[0]?.url,
             ];
 
+            output.forEach((element: any) => {
+                result.push({ url: element });
+            } );
+
+            imageUrl = result[0].url;
+
         }
 
-        //console.log("result=", result);
-        /*
-        URL {
-            href: 'https://replicate.delivery/yhqm/D2aV5KH1Ma7CH9KY8ZppQcZdbKIc5B43aJxQLmTl7hvJDe2JA/out-0.png',
-            origin: 'https://replicate.delivery',
-            protocol: 'https:',
-            username: '',
-            password: '',
-            host: 'replicate.delivery',
-            hostname: 'replicate.delivery',
-            port: '',
-            pathname: '/yhqm/D2aV5KH1Ma7CH9KY8ZppQcZdbKIc5B43aJxQLmTl7hvJDe2JA/out-0.png',
-            search: '',
-            searchParams: URLSearchParams {},
-            hash: ''
-        }
-        */
 
-        // get href from result string
-
-        ///console.log("result=", result.toString());
-
-
-        output.forEach((element: any) => {
-            result.push({ url: element });
-        } );
-
-        const imageUrl = result[0].url;
-
-        console.log("imageUrl=", imageUrl);
 
         return NextResponse.json({
 
