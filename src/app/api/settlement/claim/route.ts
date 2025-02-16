@@ -170,6 +170,8 @@ export async function POST(request: NextRequest) {
       const settlementTradingVolume = tradingVolume - claimedTradingVolume;
 
 
+
+
       const totalSettlementTradingVolume = settlementTradingVolume + lastUnclaimedTradingVolume;
 
       //console.log("totalSettlementTradingVolume: ", totalSettlementTradingVolume);
@@ -276,17 +278,31 @@ export async function POST(request: NextRequest) {
 
       const insentive = Number(tradingFee * rewardRate).toFixed(8);
 
-      const masterInsentive = Number(tradingFee * rewardRate * 0.56).toFixed(8);
 
-      const agentInsentive = Number(tradingFee * rewardRate * 0.28).toFixed(8);
+      const platformFee = Number(parseFloat(insentive) * 0.03).toFixed(8);
+      const platformFeeWalletAddress = "0x307a187b2d75aB38Ee7900F28C566043EB21F5C5";
 
-      const centerInsentive = Number(tradingFee * rewardRate * 0.14).toFixed(8);
+
+
+
+      const totalReward = Number(parseFloat(insentive) - parseFloat(platformFee)).toFixed(8);
+
+      const masterInsentive = Number(parseFloat(totalReward) * 0.56).toFixed(8);
+
+      const agentInsentive = Number(parseFloat(totalReward) * 0.28).toFixed(8);
+
+      const centerInsentive = Number(parseFloat(totalReward) * 0.14).toFixed(8);
       
  
 
 
 
 
+      const transactionPlatformWalletAddress = transfer({
+        contract: contractUSDT,
+        to: platformFeeWalletAddress,
+        amount: platformFee,
+      });
 
 
       const transactionMasterWalletAddress = transfer({
@@ -310,6 +326,7 @@ export async function POST(request: NextRequest) {
       const batchOptions: SendBatchTransactionOptions = {
         account: account,
         transactions: [
+          transactionPlatformWalletAddress,
           transactionMasterWalletAddress,
           transactionAgentWalletAddress,
           transactionCenterWalletAddress,
