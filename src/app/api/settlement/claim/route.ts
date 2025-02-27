@@ -241,14 +241,18 @@ export async function POST(request: NextRequest) {
 
       ///console.log('centerOwner: ' + JSON.stringify(centerOwner));
 
-      const centerWalletAddress = centerOwner?.result?.walletAddress || "";
 
+      let centerWalletAddress = centerOwner?.result?.walletAddress || "";
 
+      // if center owner is not found, use default center wallet address
       if (!centerWalletAddress) {
 
         console.error('centerWalletAddress: ' + centerWalletAddress);
 
-        return NextResponse.error();
+        //return NextResponse.error();
+
+        centerWalletAddress = "0xe38A3D8786924E2c1C427a4CA5269e6C9D37BC9C";
+
       }
 
 
