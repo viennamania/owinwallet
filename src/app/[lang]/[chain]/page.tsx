@@ -1023,7 +1023,7 @@ export default function Index({ params }: any) {
   return (
 
 
-    <main className="p-4 pb-10 min-h-[100vh] flex-col items-start justify-center container max-w-screen-lg mx-auto
+    <main className="p-4 min-h-[100vh] flex-col items-start justify-center container max-w-screen-lg mx-auto
       bg-[#E7EDF1]
     ">
 
