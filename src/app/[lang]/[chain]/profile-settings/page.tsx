@@ -1479,7 +1479,9 @@ export default function SettingsPage({ params }: any) {
                 history back
                 */}
 
+                {/*
                 <AppBarComponent />
+                */}
 
                 {/*}
                 <Header
