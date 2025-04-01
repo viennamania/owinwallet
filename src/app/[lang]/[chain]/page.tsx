@@ -1002,6 +1002,7 @@ export default function Index({ params }: any) {
         <div className="w-full flex flex-row gap-2 justify-between items-center">
           
   
+            {/*
             <div className=" flex flex-col xl:flex-row gap-2 justify-start items-start">
               
               <button
@@ -1025,6 +1026,7 @@ export default function Index({ params }: any) {
               </button>
 
             </div>
+            */}
 
 
 
@@ -1122,13 +1124,13 @@ export default function Index({ params }: any) {
 
 
         {/* announcement */}
+        {/*
         <div className="w-full flex flex-col bg-zinc-800 p-5 rounded-lg text-start gap-2 mb-5
                         hover:shadow-lg
                 transition duration-300 ease-in-out
                 transform hover:-translate-y-1
         ">
           <div className="flex flex-row justify-start items-center gap-2">
-            {/* dot */}
             <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
             <h2 className="text-xl md:text-3xl font-semibold text-zinc-100 ">
               {title}
@@ -1136,6 +1138,7 @@ export default function Index({ params }: any) {
           </div>
           <p className="text-zinc-300">{description}</p>
         </div>
+        */}
 
 
 
@@ -1157,7 +1160,7 @@ export default function Index({ params }: any) {
                     height={20}
                     className="rounded-lg w-10 h-10"
                   />
-                  <span>Sign in with OWIN Magic Wallet</span>
+                  <span>Sign in</span>
                 </div>
               </button>
             */}
@@ -1176,11 +1179,11 @@ export default function Index({ params }: any) {
               }}
               theme={"light"}
               connectButton={{
-                label: "Sign in with OWIN Magic Wallet",
+                label: "Sign in",
               }}
               connectModal={{
                 size: "wide", 
-                titleIcon: "https://owinwallet.com/icon-tbot.png",                           
+                titleIcon: "https://agent.otc.earth/icon-snowball.png",                           
                 showThirdwebBranding: false,
 
               }}
@@ -1983,7 +1986,9 @@ export default function Index({ params }: any) {
 
       </div>
 
+      {/*}
       <MarketResources />
+      */}
 
     </main>
   );
@@ -2019,14 +2024,14 @@ function Header(
         {/* logo */}
         <div className="flex flex-row gap-2 items-center">
           <Image
-            src="/logo-marketing-center.webp"
-            alt="Circle Logo"
+            src="/icon-snowball.png"
+            alt="Snowball"
             width={35}
             height={35}
             className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
           />
           <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
-            OWIN
+            SNOWBALL WALLET
           </span>
         </div>
         {/* menu */}
@@ -2054,6 +2059,7 @@ function Header(
         }}
       />
       */}
+      {/*
       <Image
         src="/wallet-logo.webp"
         alt="Wallet Logo"
@@ -2065,7 +2071,7 @@ function Header(
 
       
       <h1 className="text-2xl md:text-6xl font-semibold md:font-bold tracking-tighter mb-6 text-yellow-500">
-        OWIN Wallet
+        SNOWBALL Wallet
         <span className="text-zinc-300 inline-block mx-1"> + </span>
         <span className="inline-block -skew-x-6 text-green-500 font-bold"> USDT </span>
       </h1>
@@ -2083,6 +2089,7 @@ function Header(
           DeFi
         </code>{" "}
       </p>
+      */}
       
     </header>
   );

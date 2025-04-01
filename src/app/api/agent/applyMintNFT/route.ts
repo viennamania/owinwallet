@@ -159,7 +159,7 @@ export async function POST(request: NextRequest) {
 
       try {
 
-        const msgBody = `[OWIN] [TID:#${applicationId}] You have a new agent application from [${userName}]`;
+        const msgBody = `[SNOWBALL] [TID:#${applicationId}] You have a new agent application from [${userName}]`;
 
         const message = await client.messages.create({
           body: msgBody,
@@ -178,7 +178,7 @@ export async function POST(request: NextRequest) {
 
     try {
       // send sms to userPhoneNumber
-      const msgBody = `[OWIN] [TID:#${applicationId}] Your master bot application has been submitted successfully!`;
+      const msgBody = `[SNOWBALL] [TID:#${applicationId}] Your master bot application has been submitted successfully!`;
 
       const message = await client.messages.create({
         body: msgBody,

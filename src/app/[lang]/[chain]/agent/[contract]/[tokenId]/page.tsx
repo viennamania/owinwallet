@@ -1130,7 +1130,7 @@ export default function AgentPage({ params }: any) {
                 }}
                 connectModal={{
                   size: "wide", 
-                  titleIcon: "https://ppump.me/logo-marketing-center.webp",                           
+                  titleIcon: "https://ppump.me/icon-snowball.png",                           
                   showThirdwebBranding: false,
 
                 }}

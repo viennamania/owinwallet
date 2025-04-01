@@ -927,11 +927,11 @@ export default function Index({ params }: any) {
                       }}
                       theme={"light"}
                       connectButton={{
-                        label: "Sign in with OWIN Magic Wallet",
+                        label: "Sign in",
                       }}
                       connectModal={{
                         size: "wide", 
-                        titleIcon: "https://owinwallet.com/icon-tbot.png",                           
+                        titleIcon: "https://agent.otc.earth/icon-snowball.png",                           
                         showThirdwebBranding: false,
 
                       }}
@@ -2426,14 +2426,14 @@ const TradeDetail = (
             >            
                 <div className="flex flex-row gap-2 items-center">
                     <Image
-                    src="/logo-marketing-center.webp"
+                    src="/icon-snowball.png"
                     alt="Circle Logo"
                     width={35}
                     height={35}
                     className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
                     />
                     <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
-                    OWIN
+                    SNOWBALL
                     </span>
                 </div>
             </button>

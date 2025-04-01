@@ -988,11 +988,11 @@ export default function Home() {
               }}
               theme={"light"}
               connectButton={{
-                label: "Sign in with OWIN Magic Wallet",
+                label: "Sign in",
               }}
               connectModal={{
                 size: "wide", 
-                titleIcon: "https://owinwallet.com/icon-tbot.png",                           
+                titleIcon: "https://agent.otc.earth/icon-snowball.png",                           
                 showThirdwebBranding: false,
 
               }}

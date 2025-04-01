@@ -2020,7 +2020,7 @@ export default function AIPage({ params }: any) {
             if (item.center === 'ppump') {
                 market = 'PPUMP';
             } else if (item.center === 'owin') {
-                market = 'OWIN';
+                market = 'SNOWBALL';
             } else if (item.center === 'exms') {
                 market = 'EXMS';
             }
@@ -2029,13 +2029,13 @@ export default function AIPage({ params }: any) {
             let marketingCenter = "";
 
             // if slice(0, 5) = "ppump" => "PPUMP"
-            // if slice(0, 4) = "owin" => "OWIN"
+            // if slice(0, 4) = "owin" => "SNOWBALL"
             // if slice(0, 4) = "exms" => "EXMS"
 
             if (item.center?.slice(0, 5) === "ppump") {
                 marketingCenter = "PPUMP";
             } else if (item.center?.slice(0, 4) === "owin") {
-                marketingCenter = "OWIN";
+                marketingCenter = "SNOWBALL";
             } else if (item.center?.slice(0, 4) === "exms") {
                 marketingCenter = "EXMS";
             }
@@ -2218,7 +2218,7 @@ export default function AIPage({ params }: any) {
                                     height={20}
                                     className="rounded-lg w-10 h-10"
                                     />
-                                    <span>Sign in with OWIN Magic Wallet</span>
+                                    <span>Sign in</span>
                                 </div>
                                 </button>
                             */}
@@ -2234,11 +2234,11 @@ export default function AIPage({ params }: any) {
                                 }}
                                 theme={"light"}
                                 connectButton={{
-                                    label: "Sign in with OWIN Magic Wallet",
+                                    label: "Sign in",
                                 }}
                                 connectModal={{
                                     size: "wide", 
-                                    titleIcon: "https://owinwallet.com/icon-tbot.png",                           
+                                    titleIcon: "https://agent.otc.earth/icon-snowball.png",                           
                                     showThirdwebBranding: false,
 
                                 }}
@@ -2502,7 +2502,7 @@ export default function AIPage({ params }: any) {
                                             handleMarketingCenter("owin");
                                         }}
                                     />
-                                    <label htmlFor="owin">OWIN</label>
+                                    <label htmlFor="owin">SNOWBALL</label>
                                 </div>
                                 <div className='flex flex-row items-center gap-2'>
                                     <input
@@ -3358,7 +3358,7 @@ function Header(
             >            
                 <div className="flex flex-row gap-2 items-center">
                     <Image
-                    src="/logo-marketing-center.webp"
+                    src="/icon-snowball.png"
                     alt="Circle Logo"
                     width={35}
                     height={35}
