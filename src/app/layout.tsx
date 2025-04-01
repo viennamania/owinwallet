@@ -75,8 +75,8 @@ export default function RootLayout({
 
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>SNOWBALL OKX</title>
-        <meta name="description" content="Starter for Tether Pay." />
+        <title>SNOWBALL</title>
+        <meta name="description" content="눈덩이처럼 불어나는 나의 자산" />
         <link rel="icon" href="/favicon.ico" />
 
 
