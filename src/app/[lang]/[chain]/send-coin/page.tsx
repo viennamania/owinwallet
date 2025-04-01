@@ -876,7 +876,7 @@ export default function SendUsdt({ params }: any) {
             }}
             connectModal={{
               size: "wide", 
-              titleIcon: "https://agent.otc.earth/icon-snowball.png",                           
+              titleIcon: "https://uma.tips/icon-snowball.png",                           
               showThirdwebBranding: false,
 
             }}
