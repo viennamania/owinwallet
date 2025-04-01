@@ -90,7 +90,7 @@ import { parse } from "path";
 import { N } from "ethers";
 
 
-
+import Link from "next/link";
 
 
 
@@ -1018,24 +1018,67 @@ export default function Index({ params }: any) {
   */
       
 
-
+  {/* bg R:231, G:237, B:241 */}
 
   return (
 
 
     <main className="p-4 pb-10 min-h-[100vh] flex-col items-start justify-center container max-w-screen-lg mx-auto
-      
+      bg-[#E7EDF1]
     ">
 
 
       <div className="py-0 w-full">
         
-        
+        {/*
         <Header
+          params={params}
           agent={agent || ""}
           tokenId={agentNumber || ""}
           center={center || ""}
         />
+        */}
+
+        <div className="w-full flex flex-row gap-2 justify-end items-center">
+          <select
+            className="p-2 text-sm bg-zinc-800 text-white rounded"
+            onChange={(e) => {
+              const lang = e.target.value;
+              router.push(
+                "/" + lang + "/" + params.chain
+              );
+            }}
+          >
+            <option
+              value="en"
+              selected={params.lang === "en"}
+            >
+              English(US)
+            </option>
+            <option
+              value="kr"
+              selected={params.lang === "kr"}
+            >
+              한국어(KR)
+            </option>
+            <option
+              value="zh"
+              selected={params.lang === "zh"}
+            >
+              中文(ZH)
+            </option>
+            <option
+              value="ja"
+              selected={params.lang === "ja"}
+            >
+              日本語(JP)
+            </option>
+          </select>
+
+        </div>
+
+
+
 
         <div className="w-full flex flex-row gap-2 justify-between items-center">
           
@@ -1068,52 +1111,17 @@ export default function Index({ params }: any) {
 
 
 
-          {/* language selection */}
-          
-          <div className=" flex flex-row gap-2 justify-end items-center">
-            <select
-              className="p-2 bg-zinc-800 text-white rounded"
-              onChange={(e) => {
-                const lang = e.target.value;
-                router.push(
-                  "/" + lang + "/" + params.chain
-                );
-              }}
-            >
-              <option
-                value="en"
-                selected={params.lang === "en"}
-              >
-                English(US)
-              </option>
-              <option
-                value="kr"
-                selected={params.lang === "kr"}
-              >
-                한국어(KR)
-              </option>
-              <option
-                value="zh"
-                selected={params.lang === "zh"}
-              >
-                中文(ZH)
-              </option>
-              <option
-                value="ja"
-                selected={params.lang === "ja"}
-              >
-                日本語(JP)
-              </option>
-            </select>
 
-          </div>
           
 
         </div>
         
 
         <div className="w-full flex flex-col justify-between items-center gap-2 mb-5">
+          {/*
           <AppBarComponent />
+          */}
+
 
           {/* select input for network selection (polygon, arbitrum) */}
           {/*
@@ -1161,6 +1169,34 @@ export default function Index({ params }: any) {
         </div>
 
 
+        {/* 눈덩이처럼 불어나는 나의 자산 */}
+        {/* SNOWBOLL WALLET */}
+        <div className="
+          mt-16
+          w-full flex flex-col justify-center items-center gap-2 mb-5">
+          <span className="text-lg md:text-xl text-zinc-500">
+            {description}
+          </span>
+          <span className="text-xl md:text-2xl font-semibold text-zinc-800">
+            {title}
+          </span>
+        </div>
+
+
+        {/* logo */}
+        <div className="
+          mt-16
+          w-full flex flex-col justify-center items-center gap-2 mb-5">
+          <Image
+            src="/icon-snowball.png"
+            alt="Snowball"
+            width={200}
+            height={200}
+            className="rounded-lg w-40 h-40 xl:w-60 xl:h-60"
+          />
+        </div>
+
+
         {/* announcement */}
         {/*
         <div className="w-full flex flex-col bg-zinc-800 p-5 rounded-lg text-start gap-2 mb-5
@@ -1183,7 +1219,9 @@ export default function Index({ params }: any) {
 
         {!address && (
 
-          <div className="w-full flex flex-col justify-center items-start gap-2 p-2">
+          <div className="
+            mt-16
+            w-full flex flex-col justify-center items-center gap-2 p-2">
 
             {/*
               <button
@@ -1217,11 +1255,11 @@ export default function Index({ params }: any) {
               }}
               theme={"light"}
               connectButton={{
-                label: "Sign in",
+                label: "로그인하세요",
               }}
               connectModal={{
-                //size: "wide", 
-                size: "compact",
+                size: "wide", 
+                //size: "compact",
                 titleIcon: "https://uma.tips/icon-snowball.png",                           
                 showThirdwebBranding: false,
 
@@ -1263,490 +1301,514 @@ export default function Index({ params }: any) {
 
 
         <div className="mt-5 w-full flex flex-col xl:flex-row items-center xl:items-stretch justify-center gap-5 mb-10">
-              
-              <div
-                className="flex flex-col bg-yellow-500 p-5 rounded-lg text-center
-                w-full xl:w-1/2
-                hover:shadow-lg
-                transition duration-300 ease-in-out
-                transform hover:-translate-y-1
-
-                "
-              >
+          
 
 
-                <div className=" flex flex-row justify-between items-center">
-
-                  <div className="w-full flex flex-row gap-2 justify-between items-center">
-                    {/* Tether USDT logo */}
-                    
-                    <div className="flex flex-row gap-2 items-center">
-                      <Image
-                        src="/icon-bank.png"
-                        alt="Bank"
-                        width={35}
-                        height={35}
-                        className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
-
-                      />
-
-                      <p className="text-lg md:text-xl font-semibold text-gray-600">
-                        {My_Balance}
-                      </p>
-                    </div>
-
-                    {/* select network */}
-                    {/*
-                    <div className="flex flex-row gap-2 items-center">
-                      <select 
-                        className="p-2 bg-zinc-800 text-white rounded"
-                        onChange={(e) => {
-                          const chain = e.target.value;
-                          router.push(
-                            "/" + params.lang + "/" + chain
-                          );
-                        }}
-                      >
-                        <option
-                          value="tron"
-                          selected={params.chain === "tron"}
-                        >
-                          Tron
-                        </option>
-                        <option
-                          value="ethereum"
-                          selected={params.chain === "ethereum"}
-                        >
-                          Ethereum
-                        </option>
-                        <option
-                          value="polygon"
-                          selected={params.chain === "polygon"}
-                        >
-                          Polygon
-                        </option>
-                        <option
-                          value="arbitrum"
-                          selected={params.chain === "arbitrum"}
-                        >
-                          Arbitrum
-                        </option>
 
 
-                      </select>
-                    </div>
-                    */}
+        
 
 
-                    {/* button for polygon explorer */}
-                    {/*
-                    {address && !loadingAnimation
-                      ? (
-                        <button
-                            onClick={() => {
-                                window.open(`
-                                  ${params.chain === "arbitrum" ? "https://arbiscan.io/address/" : "https://polygonscan.com/address/"}${address}
-                                    `, "_blank");
-                            }}
-                            className="p-2 bg-zinc-200 text-zinc-800 rounded"
-                        >
-                            <Image
-                                //src="/logo-polygon.png"
-
-                                src={`/logo-${params.chain}.png`}
-                                alt="Network"
-                                width={18}
-                                height={18}
-                                
-                            />
-                        </button>
-                    ) : (
-                      <Image
-                        //src="/logo-polygon.png"
-                        src={`/logo-${params.chain}.png`}
-                        alt="Network"
-                        width={20}
-                        height={20}
-                        className='ml-2 animate-spin'
-                      />
-                  
-                    )}
-                    */}
-                      
-                  </div>
 
 
+        {address && (
+          <div
+            className="flex flex-col bg-yellow-500 p-5 rounded-lg text-center
+            w-full xl:w-1/2
+            hover:shadow-lg
+            transition duration-300 ease-in-out
+            transform hover:-translate-y-1
+
+            "
+          >
+
+
+            <div className=" flex flex-row justify-between items-center">
+
+              <div className="w-full flex flex-row gap-2 justify-between items-center">
+                {/* Tether USDT logo */}
+                
+                <div className="flex flex-row gap-2 items-center">
+                  <Image
+                    src="/icon-bank.png"
+                    alt="Bank"
+                    width={35}
+                    height={35}
+                    className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
+
+                  />
+
+                  <p className="text-lg md:text-xl font-semibold text-gray-600">
+                    {My_Balance}
+                  </p>
                 </div>
 
-                {/* check box for Native Wallet */}
+                {/* select network */}
                 {/*
-                {address && (
-                  <div className="mt-5 flex flex-row items-center gap-2">
-                    <input
-                      disabled={true}
-                      type="checkbox"
-                      checked={
-                        activeWallet === inAppConnectWallet
-                      }
-                      onChange={(e) => 
-                        
-                        //e.target.checked ? setActiveAccount(inAppConnectWallet) : setActiveAccount(smartConnectWallet)
+                <div className="flex flex-row gap-2 items-center">
+                  <select 
+                    className="p-2 bg-zinc-800 text-white rounded"
+                    onChange={(e) => {
+                      const chain = e.target.value;
+                      router.push(
+                        "/" + params.lang + "/" + chain
+                      );
+                    }}
+                  >
+                    <option
+                      value="tron"
+                      selected={params.chain === "tron"}
+                    >
+                      Tron
+                    </option>
+                    <option
+                      value="ethereum"
+                      selected={params.chain === "ethereum"}
+                    >
+                      Ethereum
+                    </option>
+                    <option
+                      value="polygon"
+                      selected={params.chain === "polygon"}
+                    >
+                      Polygon
+                    </option>
+                    <option
+                      value="arbitrum"
+                      selected={params.chain === "arbitrum"}
+                    >
+                      Arbitrum
+                    </option>
 
-                        e.target.checked ?
-                        router.push(window.location.pathname)
-                        :
-                        router.push(window.location.pathname + "?wallet=smart")
 
-                      } 
-                      className="w-5 h-5"
-                    />
-                    <label className="text-sm text-zinc-400">Pro Wallet</label>
-                  </div>
-                )}
+                  </select>
+                </div>
                 */}
 
+
+                {/* button for polygon explorer */}
                 {/*
-                <div className="mt-4 flex flex-row gap-2 justify-between items-center
-                  border border-gray-800 rounded-lg text-center p-2 mb-5
-                ">
+                {address && !loadingAnimation
+                  ? (
+                    <button
+                        onClick={() => {
+                            window.open(`
+                              ${params.chain === "arbitrum" ? "https://arbiscan.io/address/" : "https://polygonscan.com/address/"}${address}
+                                `, "_blank");
+                        }}
+                        className="p-2 bg-zinc-200 text-zinc-800 rounded"
+                    >
+                        <Image
+                            //src="/logo-polygon.png"
+
+                            src={`/logo-${params.chain}.png`}
+                            alt="Network"
+                            width={18}
+                            height={18}
+                            
+                        />
+                    </button>
+                ) : (
                   <Image
+                    //src="/logo-polygon.png"
                     src={`/logo-${params.chain}.png`}
                     alt="Network"
-                    width={35}
-                    height={35}
-                    className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
+                    width={20}
+                    height={20}
+                    className='ml-2 animate-spin'
                   />
-
-                  <div className="text-4xl font-semibold text-zinc-100">
-                    {Number(chainBalance).toFixed(2)}
-                  </div>
-                  <p className="w-12 text-sm text-gray-600">
-                    {params.chain === "polygon" ? "POL" : params.chain === "arbitrum" ? "ARB" : params.chain === "tron" ? "TRX" : params.chain === "ethereum" ? "ETH" : ""}
-                  </p>
-
-                  <button
-                    onClick={() => {
-                      router.push(
-                        "/" + params.lang + "/" + params.chain + "/send-coin/?wallet=" + wallet
-                      );
-
-                    }}
-                    className="text-sm text-blue-500 hover:underline"
-                  >
-                    <Image
-                      src="/goto-icon.webp"
-                      alt="Send"
-                      width={20}
-                      height={20}
-                    />
-                  </button>
-                </div>
-                */}
-
-
-
-
-                <div className="mt-4 flex flex-row gap-2 justify-between items-center p-2">
-                  <Image
-                    src="/logo-tether.png"
-                    alt="USDT"
-                    width={35}
-                    height={35}
-                    className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
-                  />
-
-
-                    {/* floating point number to fixed 5 and text size small */}
-                  <div className="text-4xl font-semibold text-zinc-100">
-                    {Number(usdtBalance).toFixed(2)}
-                  </div>
-                  <p className="w-12 text-sm text-gray-600">USDT</p>
-
-                  <button
-                    onClick={() => {
-
-                      params.chain === "tron" ?
-                      router.push(
-                        "/" + params.lang + "/" + params.chain + "/send-tron-token/?token=USDT"
-                      ) :
-                      router.push(
-                        "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=USDT"
-                        + "&agent=" + agent + "&tokenId=" + agentNumber
-                        
-                      );
-
-                    }}
-                    className="text-sm text-blue-500 hover:underline"
-                  >
-                    <Image
-                      src="/goto-icon.webp"
-                      alt="Send"
-                      width={20}
-                      height={20}
-                    />
-                  </button>
-                </div>
-
-                {/* if tron chain, then show tron balance */}
-                {/*
-                {params.chain === "tron" && (
-                  <div className="mt-4 flex flex-row gap-2 justify-between items-center p-2">
-                    <Image
-                      src="/logo-tron.png"
-                      alt="TRX"
-                      width={35}
-                      height={35}
-                      className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
-                    />
-                    <div className="text-4xl font-semibold text-zinc-100">
-                      {Number(tronBalance).toFixed(2)}
-                    </div>
-                    <p className="w-12 text-sm text-gray-600">TRX</p>
-                    
-                    <button
-                      onClick={() => {
-                        router.push(
-                          "/" + params.lang + "/" + params.chain + "/send-tron-coin"
-                        );
-                      }}
-                      className="text-sm text-blue-500 hover:underline"
-                    >
-                      <Image
-                        src="/goto-icon.webp"
-                        alt="Send"
-                        width={20}
-                        height={20}
-                      />
-                    </button>
-                    
-                  </div>
+              
                 )}
                 */}
-
-
-
-
-                {/* apply button of listing for new token */}
-                {/*
-                <div className=" flex flex-row gap-2 justify-center items-center mt-10">
-                  <button
-                    onClick={() => {
-                      // apply for listing new token
-                      //console.log("apply for listing new token");
-
-                      if (!address) {
-                        toast.error(Please_connect_your_wallet_first);
-                        return;
-                      }
-
-                      router.push(
-                        "/" + params.lang + "/" + params.chain + "/"
-                      );
-
-                    }}
-                    className="w-full bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900"
-                  >
-                    <div className="flex flex-row justify-between items-center gap-2">
-                      <p className="text-lg font-semibold text-white">
-                        {Apply_for_Listing_New_Token}
-                      </p>
-                      <Image
-                        src="/goto-icon.webp"
-                        alt="Go"
-                        width={20}
-                        height={20}
-                      />
-                    </div>
-                  </button>
-                </div>
-                */}
-
-                
-                <div className=" flex flex-col gap-2 justify-center items-center mt-10">
                   
-                  {/*
-                  <button
-                    onClick={() => {
-  
-
-                      // redirect to buy USDT page
-                      router.push(
-                        "/" + params.lang + "/" + params.chain + "/buy-usdt" + "?agent=" + agent + "&tokenId=" + agentNumber + "&center=" + center
-                      );
-
-                    }}
-                    className=" w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-                  >
-                    <div className="flex flex-row justify-between items-center gap-2">
-                      <p className="text-lg font-semibold text-white">
-                        USDT 구매하기
-                      </p>
-                      <Image
-                        src="/goto-icon.webp"
-                        alt="Go"
-                        width={20}
-                        height={20}
-                      />
-                    </div>
-                    
-                  </button>
-                  */}
-
-
-                  {/* Go Buy Order USDT */}
-                  {/*
-                  <button
-                    onClick={() => {
-  
-
-                      // redirect to buy USDT page
-                      router.push(
-                        //"/" + params.lang + "/" + params.chain + "/buyorder-usdt"
-
-                        wallet === "smart" ?
-                        "/" + params.lang + "/" + params.chain + "/buyorder-usdt?wallet=smart"
-                        :
-                        "/" + params.lang + "/" + params.chain + "/buyorder-usdt"
-
-                      );
-
-                    }}
-                    className=" w-full bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
-                  >
-                    <div className="flex flex-row justify-between items-center gap-2">
-                      <p className="text-lg font-semibold text-white">
-                        구매신청하기
-                      </p>
-                      <Image
-                        src="/goto-icon.webp"
-                        alt="Go"
-                        width={20}
-                        height={20}
-                      />
-                    </div>
-                  </button>
-                  */}
-
-
-                </div>
-
-
-
-
-                {/* my address and copy button */}
-                {/*
-                <div className="flex flex-row justify-center items-center mt-4">
-
-                  {address && (
-                    <>
-                      <p className="text-zinc-300 text-xs w-80">
-                        {address}
-                      </p>
-
-                      <button
-
-                        onClick={() => {
-                          navigator.clipboard.writeText(address);
-                          toast.success('Address copied to clipboard');
-                        }}
-                        className="text-sm text-blue-500 ml-2 hover:underline"
-                      >
-                        Copy
-                      </button>
-                    </>
-                  )}
-
-                </div>
-                */}
-
-
-                {/* send button */}
-                
-                <div className="flex flex-row gap-2 justify-center items-center mt-10">
-                  {/*
-                  <button
-                    disabled={!address}
-                    onClick={() => {
-                      // send USDT
-                      //console.log("send USDT");
-
-                      if (!address) {
-                        toast.error(Please_connect_your_wallet_first);
-                        return;
-                      }
-
-                      // redirect to send USDT page
-                      router.push(
-                        "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet
-                      );
-
-                    }}
-                    className=" w-40 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-                  >
-                    {Send_USDT}
-                  </button>
-                  */}
-
-                    {/*
-                  <button
-                    
-                    //disabled={!address}
-
-                    onClick={() => {
-                      // pay USDT
-                      //console.log("pay USDT");
-
-                      if (!address) {
-                        toast.error(Please_connect_your_wallet_first);
-                        return;
-                      }
-
-
-                      // redirect to send USDT page
-                      //router.push("/send-token");
-
-                      // comming soon
-
-                      toast.success(Coming_Soon);
-
-                      //router.push('/' + params.lang + '/' + params.chain + '/sell-usdt');
-
-
-                    }}
-                    className=" w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-                  >
-                    {Pay_USDT}
-                  </button>
-                  */}
-                </div>
-
-                {/* Go Buy USDT */}
-                {/*
-                <div className="flex flex-row justify-center items-center mt-4">
-                  <button
-                    onClick={() => {
-  
-
-                      // redirect to buy USDT page
-                      router.push(
-                        "/" + params.lang + "/" + params.chain + "/buy-usdt"
-                      );
-
-                    }}
-                    className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-                  >
-                    {Buy_USDT}
-                  </button>
-                </div>
-                */}
-
-
               </div>
 
 
+            </div>
+
+            {/* check box for Native Wallet */}
+            {/*
+            {address && (
+              <div className="mt-5 flex flex-row items-center gap-2">
+                <input
+                  disabled={true}
+                  type="checkbox"
+                  checked={
+                    activeWallet === inAppConnectWallet
+                  }
+                  onChange={(e) => 
+                    
+                    //e.target.checked ? setActiveAccount(inAppConnectWallet) : setActiveAccount(smartConnectWallet)
+
+                    e.target.checked ?
+                    router.push(window.location.pathname)
+                    :
+                    router.push(window.location.pathname + "?wallet=smart")
+
+                  } 
+                  className="w-5 h-5"
+                />
+                <label className="text-sm text-zinc-400">Pro Wallet</label>
+              </div>
+            )}
+            */}
+
+            {/*
+            <div className="mt-4 flex flex-row gap-2 justify-between items-center
+              border border-gray-800 rounded-lg text-center p-2 mb-5
+            ">
+              <Image
+                src={`/logo-${params.chain}.png`}
+                alt="Network"
+                width={35}
+                height={35}
+                className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
+              />
+
+              <div className="text-4xl font-semibold text-zinc-100">
+                {Number(chainBalance).toFixed(2)}
+              </div>
+              <p className="w-12 text-sm text-gray-600">
+                {params.chain === "polygon" ? "POL" : params.chain === "arbitrum" ? "ARB" : params.chain === "tron" ? "TRX" : params.chain === "ethereum" ? "ETH" : ""}
+              </p>
+
+              <button
+                onClick={() => {
+                  router.push(
+                    "/" + params.lang + "/" + params.chain + "/send-coin/?wallet=" + wallet
+                  );
+
+                }}
+                className="text-sm text-blue-500 hover:underline"
+              >
+                <Image
+                  src="/goto-icon.webp"
+                  alt="Send"
+                  width={20}
+                  height={20}
+                />
+              </button>
+            </div>
+            */}
 
 
-              {/* My Nickname */}
+
+
+            <div className="mt-4 flex flex-row gap-2 justify-between items-center p-2">
+              <Image
+                src="/logo-tether.png"
+                alt="USDT"
+                width={35}
+                height={35}
+                className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
+              />
+
+
+                {/* floating point number to fixed 5 and text size small */}
+              <div className="text-4xl font-semibold text-zinc-100">
+                {Number(usdtBalance).toFixed(2)}
+              </div>
+              <p className="w-12 text-sm text-gray-600">USDT</p>
+
+              <button
+                onClick={() => {
+
+                  params.chain === "tron" ?
+                  router.push(
+                    "/" + params.lang + "/" + params.chain + "/send-tron-token/?token=USDT"
+                  ) :
+                  router.push(
+                    "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=USDT"
+                    + "&agent=" + agent + "&tokenId=" + agentNumber
+                    
+                  );
+
+                }}
+                className="text-sm text-blue-500 hover:underline"
+              >
+                <Image
+                  src="/goto-icon.webp"
+                  alt="Send"
+                  width={20}
+                  height={20}
+                />
+              </button>
+            </div>
+
+            {/* if tron chain, then show tron balance */}
+            {/*
+            {params.chain === "tron" && (
+              <div className="mt-4 flex flex-row gap-2 justify-between items-center p-2">
+                <Image
+                  src="/logo-tron.png"
+                  alt="TRX"
+                  width={35}
+                  height={35}
+                  className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
+                />
+                <div className="text-4xl font-semibold text-zinc-100">
+                  {Number(tronBalance).toFixed(2)}
+                </div>
+                <p className="w-12 text-sm text-gray-600">TRX</p>
+                
+                <button
+                  onClick={() => {
+                    router.push(
+                      "/" + params.lang + "/" + params.chain + "/send-tron-coin"
+                    );
+                  }}
+                  className="text-sm text-blue-500 hover:underline"
+                >
+                  <Image
+                    src="/goto-icon.webp"
+                    alt="Send"
+                    width={20}
+                    height={20}
+                  />
+                </button>
+                
+              </div>
+            )}
+            */}
+
+
+
+
+            {/* apply button of listing for new token */}
+            {/*
+            <div className=" flex flex-row gap-2 justify-center items-center mt-10">
+              <button
+                onClick={() => {
+                  // apply for listing new token
+                  //console.log("apply for listing new token");
+
+                  if (!address) {
+                    toast.error(Please_connect_your_wallet_first);
+                    return;
+                  }
+
+                  router.push(
+                    "/" + params.lang + "/" + params.chain + "/"
+                  );
+
+                }}
+                className="w-full bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900"
+              >
+                <div className="flex flex-row justify-between items-center gap-2">
+                  <p className="text-lg font-semibold text-white">
+                    {Apply_for_Listing_New_Token}
+                  </p>
+                  <Image
+                    src="/goto-icon.webp"
+                    alt="Go"
+                    width={20}
+                    height={20}
+                  />
+                </div>
+              </button>
+            </div>
+            */}
+
+            
+            <div className=" flex flex-col gap-2 justify-center items-center mt-10">
+              
+              {/*
+              <button
+                onClick={() => {
+
+
+                  // redirect to buy USDT page
+                  router.push(
+                    "/" + params.lang + "/" + params.chain + "/buy-usdt" + "?agent=" + agent + "&tokenId=" + agentNumber + "&center=" + center
+                  );
+
+                }}
+                className=" w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+              >
+                <div className="flex flex-row justify-between items-center gap-2">
+                  <p className="text-lg font-semibold text-white">
+                    USDT 구매하기
+                  </p>
+                  <Image
+                    src="/goto-icon.webp"
+                    alt="Go"
+                    width={20}
+                    height={20}
+                  />
+                </div>
+                
+              </button>
+              */}
+
+
+              {/* Go Buy Order USDT */}
+              {/*
+              <button
+                onClick={() => {
+
+
+                  // redirect to buy USDT page
+                  router.push(
+                    //"/" + params.lang + "/" + params.chain + "/buyorder-usdt"
+
+                    wallet === "smart" ?
+                    "/" + params.lang + "/" + params.chain + "/buyorder-usdt?wallet=smart"
+                    :
+                    "/" + params.lang + "/" + params.chain + "/buyorder-usdt"
+
+                  );
+
+                }}
+                className=" w-full bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+              >
+                <div className="flex flex-row justify-between items-center gap-2">
+                  <p className="text-lg font-semibold text-white">
+                    구매신청하기
+                  </p>
+                  <Image
+                    src="/goto-icon.webp"
+                    alt="Go"
+                    width={20}
+                    height={20}
+                  />
+                </div>
+              </button>
+              */}
+
+
+            </div>
+
+
+
+
+            {/* my address and copy button */}
+            {/*
+            <div className="flex flex-row justify-center items-center mt-4">
+
+              {address && (
+                <>
+                  <p className="text-zinc-300 text-xs w-80">
+                    {address}
+                  </p>
+
+                  <button
+
+                    onClick={() => {
+                      navigator.clipboard.writeText(address);
+                      toast.success('Address copied to clipboard');
+                    }}
+                    className="text-sm text-blue-500 ml-2 hover:underline"
+                  >
+                    Copy
+                  </button>
+                </>
+              )}
+
+            </div>
+            */}
+
+
+            {/* send button */}
+            
+            <div className="flex flex-row gap-2 justify-center items-center mt-10">
+              {/*
+              <button
+                disabled={!address}
+                onClick={() => {
+                  // send USDT
+                  //console.log("send USDT");
+
+                  if (!address) {
+                    toast.error(Please_connect_your_wallet_first);
+                    return;
+                  }
+
+                  // redirect to send USDT page
+                  router.push(
+                    "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet
+                  );
+
+                }}
+                className=" w-40 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+              >
+                {Send_USDT}
+              </button>
+              */}
+
+                {/*
+              <button
+                
+                //disabled={!address}
+
+                onClick={() => {
+                  // pay USDT
+                  //console.log("pay USDT");
+
+                  if (!address) {
+                    toast.error(Please_connect_your_wallet_first);
+                    return;
+                  }
+
+
+                  // redirect to send USDT page
+                  //router.push("/send-token");
+
+                  // comming soon
+
+                  toast.success(Coming_Soon);
+
+                  //router.push('/' + params.lang + '/' + params.chain + '/sell-usdt');
+
+
+                }}
+                className=" w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+              >
+                {Pay_USDT}
+              </button>
+              */}
+            </div>
+
+            {/* Go Buy USDT */}
+            {/*
+            <div className="flex flex-row justify-center items-center mt-4">
+              <button
+                onClick={() => {
+
+
+                  // redirect to buy USDT page
+                  router.push(
+                    "/" + params.lang + "/" + params.chain + "/buy-usdt"
+                  );
+
+                }}
+                className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+              >
+                {Buy_USDT}
+              </button>
+            </div>
+            */}
+
+
+          </div>
+        )}
+
+
+
+
+        {address && loadingUser && (                          
+          <div className="mt-4 flex flex-row justify-center items-center">
+
+            <Image
+              src="/loading.png"
+              alt="Loading"
+              width={35}
+              height={35}
+              className="animate-spin hidden"
+            />
+          </div>
+        )}
+
+        {address && !loadingUser && (
               <div className="w-full flex flex-col p-5 rounded-lg text-center
                 bg-green-500
                 hover:shadow-lg
@@ -1776,22 +1838,7 @@ export default function Index({ params }: any) {
                 </div>
     
                 
-                {address && loadingUser ? (
 
-                  
-                  <div className="mt-4 flex flex-row justify-center items-center">
-
-                    <Image
-                      src="/loading.png"
-                      alt="Loading"
-                      width={35}
-                      height={35}
-                      className="animate-spin hidden"
-                    />
-                  </div>
-                  
-
-                ) : (
 
                   <div className="mt-4 flex flex-row gap-2 justify-center items-center">
 
@@ -1840,7 +1887,7 @@ export default function Index({ params }: any) {
 
                   </div>
 
-                )}
+             
 
 
 
@@ -1955,12 +2002,12 @@ export default function Index({ params }: any) {
                 </div>
                 
 
-
+            
 
 
               </div>
 
-
+          )}
 
         </div>
 
@@ -2017,6 +2064,69 @@ export default function Index({ params }: any) {
 
       </div>
 
+
+
+      {/* footer fixed */}
+
+      <div className="w-full fixed bottom-0 left-0 right-0 items-center justify-center pb-5">
+
+
+          {/* 이용방법인 궁금하신가요? 이용가이드 */}
+          {/* 계속하면 이용약관에 동의하는것입니다. 이용약관 */}
+          {/* 개인정보 처리방침을 확인하세요. 개인정보 처리방침 */}
+          {!address && (
+
+            <div className="flex flex-col items-center justify-center gap-2">
+
+              <div className="
+                flex flex-row gap-2 justify-center items-center">
+                <span className="text-lg md:text-xl text-zinc-500">
+                  이용방법이 궁금하신가요?
+                </span>
+                <Link
+                  href="#"
+                  className="text-lg md:text-xl text-blue-500 font-semibold hover:underline"
+                >
+                  이용가이드
+                </Link>
+              </div>
+
+              <div className="
+                flex flex-row gap-2 justify-center items-center">
+                <span className="text-sm md:text-lg text-zinc-500">
+                  계속하면 이용약관에 동의하는것입니다.
+                </span>
+                <Link
+                  href="#"
+                  className="text-sm md:text-lg text-blue-500 font-semibold hover:underline"
+                >
+                  이용약관
+                </Link>
+              </div>
+
+              <div className="
+                flex flex-row gap-2 justify-center items-center">
+                <span className="text-sm md:text-lg text-zinc-500">
+                  개인정보 처리방침을 확인하세요.
+                </span>
+                <Link
+                  href="#"
+                  className="text-sm md:text-lg text-blue-500 font-semibold hover:underline"
+                >
+                  개인정보 처리방침
+                </Link>
+              </div>
+
+
+
+            </div>
+
+          )}
+
+
+      </div>
+
+
       {/*}
       <MarketResources />
       */}
@@ -2029,12 +2139,14 @@ export default function Index({ params }: any) {
 
 function Header(
   {
+    params,
     agent,
     tokenId,
     center,
   }
   :
   {
+    params: any;
     agent: string;
     tokenId: string;
     center: string;
@@ -2062,10 +2174,55 @@ function Header(
             className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
           />
           <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
-            SNOWBALL WALLET
+            SNOWBALL
           </span>
         </div>
+
+
+          {/* language selection */}
+          
+          <div className=" flex flex-row gap-2 justify-end items-center">
+            <select
+              className="p-2 text-sm bg-zinc-800 text-white rounded"
+              onChange={(e) => {
+                const lang = e.target.value;
+                router.push(
+                  "/" + lang + "/" + params.chain
+                );
+              }}
+            >
+              <option
+                value="en"
+                selected={params.lang === "en"}
+              >
+                English(US)
+              </option>
+              <option
+                value="kr"
+                selected={params.lang === "kr"}
+              >
+                한국어(KR)
+              </option>
+              <option
+                value="zh"
+                selected={params.lang === "zh"}
+              >
+                中文(ZH)
+              </option>
+              <option
+                value="ja"
+                selected={params.lang === "ja"}
+              >
+                日本語(JP)
+              </option>
+            </select>
+
+          </div>
+
+
+
         {/* menu */}
+        {/*
         <div className="flex flex-row gap-2 items-center">
 
           <button
@@ -2078,6 +2235,7 @@ function Header(
           </button>
 
         </div>
+        */}
       </div>
       
       {/*
