@@ -1521,11 +1521,11 @@ export default function SettingsPage({ params }: any) {
         
 
 
-                <div className="flex flex-col items-start justify-center space-y-4">
+                <div className="w-full flex flex-col items-start justify-center gap-4 p-4 mt-10">
 
-                    <div className='flex flex-row items-center space-x-4'>
+                    <div className='w-full flex flex-row items-center justify-start gap-4'>
                         <Image
-                            src="/logo-tbot.webp"
+                            src={avatar ? avatar : "/profile-default.png"}
                             alt="Profile Picture"
                             width={50}
                             height={50}
@@ -1542,9 +1542,9 @@ export default function SettingsPage({ params }: any) {
                 
                     <div className='w-full flex flex-col gap-4 items-start justify-center'>
 
-                        <div className='w-full flex flex-col items-start gap-5 mt-10'>
+                        <div className='w-full flex flex-col items-start justify-center gap-4 border border-gray-300 p-4 rounded-lg'>
                             {/* live icon */}
-                            {address ? (
+                            {address && (
                                 <div className='flex flex-row items-center gap-2'>
                                     <Image
                                         src="/icon-wallet-live.gif"
@@ -1557,88 +1557,10 @@ export default function SettingsPage({ params }: any) {
                                         {address.slice(0, 6)}...{address.slice(-4)}
                                     </span>
 
-                                    <div className="flex flex-col gap-2">
-                                        {/* disconnect button */}
-                                        <button
-                                            onClick={() => {
-                                                confirm("지갑 연결을 해제하시겠습니까?") && activeWallet?.disconnect();
-                                            }}
-                                            className="bg-zinc-800 text-white p-2 rounded-lg"
-                                        >
-                                            지갑 연결 해제
-                                        </button>
-                                    </div>
 
-                                </div>
-                            ) : (
-                                <div className='flex flex-col items-start gap-2'>
-                                    
-                                    <ConnectButton
-                                        client={client}
-                                        wallets={wallets}
-                                        accountAbstraction={{
-                                            chain: polygon,
-                                            
-                                            sponsorGas: true
-                                        }}
-                                        theme={"light"}
-                                        connectButton={{
-                                            label: "Sign in with Wallet",
-                                        }}
-                                        connectModal={{
-                                            size: "wide", 
-                                            titleIcon: "https://ppump.me/icon-snowball.png",                           
-                                            showThirdwebBranding: false,
-
-                                        }}
-                                        locale={"ko_KR"}
-                                        //locale={"en_US"}
-                                    />
-
-                        
-
-
-                                    <span className='text-sm font-semibold text-red-500'>
-                                        {Please_connect_your_wallet_first}
-                                    </span>
                                 </div>
                             )}
                         </div>
-
-
-
-
-                        {address && (
-
-                            <div className='w-full flex flex-col gap-4 items-start justify-center'>
-
-
-                                {/* wallet address and copy button */}
-                                <div className='w-full flex flex-col gap-2 items-start justify-between border border-gray-300 p-4 rounded-lg'>
-                                    <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
-                                        입금용 지갑주소(Polygon)
-                                    </div>
-                                    <div className='flex flex-row gap-2 items-center justify-between'>
-                                        <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
-                                            {address.substring(0, 6)}...{address.substring(address.length - 4, address.length)}
-                                        </div>
-                                        <button
-                                            onClick={() => {
-                                                navigator.clipboard.writeText(address);
-                                                toast.success('지갑주소가 복사되었습니다');
-                                            }}
-                                            className="p-2 bg-blue-500 text-zinc-100 rounded"
-                                        >
-                                            Copy
-                                        </button>
-                                    </div>
-                                </div>
-
-
-                            </div>
-
-                        )}
-
 
                         
                     </div>
@@ -1654,8 +1576,12 @@ export default function SettingsPage({ params }: any) {
                         {address && userCode && (
                             <div className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
 
-                                <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
-                                    {My_Nickname}
+                                <div className='flex flex-row items-center gap-2'>
+                                    {/* dot */}
+                                    <div className='w-2 h-2 bg-green-500 rounded-full' />
+                                    <span className='text-sm font-semibold text-blue-500'>
+                                        {My_Nickname}
+                                    </span>
                                 </div>
 
                                 <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
@@ -1691,12 +1617,14 @@ export default function SettingsPage({ params }: any) {
                         { (address && (nicknameEdit || !userCode)) && (
                             <div className=' flex flex-col xl:flex-row gap-2 items-start justify-between border border-gray-300 p-4 rounded-lg'>
 
-                                <div
-                                    className="bg-green-500 text-sm text-zinc-100 p-2 rounded"
-                                >
-                                    {!userCode ? Enter_your_nickname :
-                                        nicknameEdit ? "수정할 내 닉네임" : Enter_your_nickname
-                                    }
+                                <div className='flex flex-row items-center gap-2'>
+                                    {/* dot */}
+                                    <div className='w-2 h-2 bg-green-500 rounded-full' />
+                                    <span className='text-sm font-semibold text-blue-500'>
+                                        {!userCode ? Enter_your_nickname :
+                                            nicknameEdit ? "수정할 내 닉네임" : Enter_your_nickname
+                                        }
+                                    </span>
                                 </div>
 
                                 <div className='flex flex-col gap-2 items-start justify-between'>
@@ -1793,8 +1721,12 @@ export default function SettingsPage({ params }: any) {
                         {userCode && (
                             <div className='flex flex-row xl:flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
 
-                                <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
-                                    {My_Profile_Picture}
+                                <div className='flex flex-row items-center gap-2'>
+                                    {/* dot */}
+                                    <div className='w-2 h-2 bg-green-500 rounded-full' />
+                                    <span className='text-sm font-semibold text-blue-500'>
+                                        {My_Profile_Picture}
+                                    </span>
                                 </div>
 
                                 <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
@@ -1850,7 +1782,7 @@ export default function SettingsPage({ params }: any) {
 
 
 
-                        {userCode && seller && (
+                        {false && userCode && seller && (
 
                             <div className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
 
