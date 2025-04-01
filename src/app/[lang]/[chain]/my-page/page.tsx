@@ -51,8 +51,11 @@ import {
 } from "thirdweb/react";
 
 
-import { smartWallet, inAppWallet } from "thirdweb/wallets";
 
+import {
+  inAppWallet,
+  createWallet,
+} from "thirdweb/wallets";
 
 import {
     getUserPhoneNumber,
@@ -123,7 +126,33 @@ const contractAddressArbitrum = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"; //
 
 
 
-
+const wallets = [
+    inAppWallet({
+      auth: {
+        options: [
+          "google",
+          "discord",
+          "email",
+          "x",
+          "passkey",
+          "phone",
+          "facebook",
+          "line",
+          "apple",
+          "coinbase",
+        ],
+      },
+    }),
+    createWallet("com.coinbase.wallet"),
+    createWallet("me.rainbow"),
+    createWallet("io.rabby"),
+    createWallet("io.zerion.wallet"),
+    createWallet("io.metamask"),
+    //createWallet("com.binance.wallet"),
+    createWallet("com.bitget.web3"),
+    createWallet("com.trustwallet.app"),
+    createWallet("com.okex.wallet"),
+];
 
 
 
@@ -147,16 +176,6 @@ export default function SettingsPage({ params }: any) {
 
     const agentNumber = searchParams.get('tokenId');
 
-    const wallets = [
-        inAppWallet({
-          auth: {
-            options: [
-                "phone",
-                "telegram",
-            ],
-          },
-        }),
-    ];
 
 
 
@@ -1492,11 +1511,53 @@ export default function SettingsPage({ params }: any) {
                 */}
 
 
+                {!address && (
+
+                    <div className="
+                        mt-16
+                        w-full flex flex-col justify-center items-center gap-2 p-2">
+
+                    
+                        <ConnectButton
+                        client={client}
+                        wallets={wallets}
+                        accountAbstraction={{
+                            chain: polygon,
+                            sponsorGas: true
+                        }}
+                        theme={"light"}
+                        connectButton={{
+                            label: "로그인하세요",
+                        }}
+                        connectModal={{
+                            size: "wide", 
+                            //size: "compact",
+                            titleIcon: "https://uma.tips/icon-snowball.png",                           
+                            showThirdwebBranding: false,
+
+                        }}
+                        locale={"ko_KR"}
+                        //locale={"en_US"}
+                        />
+                        
+                    
+
+                    </div>
+
+                )}
+
+
+
+
+
                 <div className="w-full flex flex-col items-start justify-center gap-4 p-4">
 
-                    <div className='flex flex-row items-center space-x-4'>
+                    <div className='w-full flex flex-row items-center justify-start
+                        gap-2 border border-gray-300 p-4 rounded-lg'>
+
+                    
                         <Image
-                            src={avatar ? avatar : "/profile-default.png"}
+                            src="/icon-profile.png"
                             alt="Profile Picture"
                             width={50}
                             height={50}
@@ -1504,10 +1565,7 @@ export default function SettingsPage({ params }: any) {
                             border border-gray-300 w-12 h-12"
                         />
                         <div className='flex flex-row items-center gap-2'>
-                            <span className="text-xl font-semibold">
-                                My Page
-                            </span>
-                            <span className="text-2xl font-semibold text-green-500">
+                            <span className="text-2xl font-semibold text-blue-500">
                                 {nickname ? nickname : ""}
                             </span>
                         </div>
@@ -1515,32 +1573,6 @@ export default function SettingsPage({ params }: any) {
 
                     </div>
 
-
-                
-                    <div className='w-full flex flex-col gap-4 items-start justify-center'>
-
-                        <div className='w-full flex flex-col items-start justify-center gap-4 border border-gray-300 p-4 rounded-lg'>
-                            {/* live icon */}
-                            {address && (
-                                <div className='flex flex-row items-center gap-2'>
-                                    <Image
-                                        src="/icon-wallet-live.gif"
-                                        alt="Live"
-                                        width={50}
-                                        height={50}
-                                    />
-
-                                    <span className='text-lg font-semibold text-blue-500'>
-                                        {address.slice(0, 6)}...{address.slice(-4)}
-                                    </span>
-
-
-                                </div>
-                            )}
-                        </div>
-
-                        
-                    </div>
 
 
                     <div className='w-full  flex flex-col gap-5 '>
@@ -1695,7 +1727,7 @@ export default function SettingsPage({ params }: any) {
                         )}
 
 
-                        {userCode && (
+                        {false && userCode && (
                             <div className='flex flex-row xl:flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
 
                                 <div className='flex flex-row items-center gap-2'>
@@ -2088,7 +2120,7 @@ export default function SettingsPage({ params }: any) {
           {/* 홈 / NFT 상점 / 친구초대 / 마이페이지 */}
           {/* same width footer menu */}
 
-          {address && (
+          {true && (
 
             <div className="w-full fixed bottom-0 left-0 right-0 items-center justify-center">
 
