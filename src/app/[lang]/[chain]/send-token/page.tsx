@@ -542,7 +542,7 @@ export default function SendUsdt({ params }: any) {
   }
 
 
-  const [wantToReceiveWalletAddress, setWantToReceiveWalletAddress] = useState(false);
+  const [wantToReceiveWalletAddress, setWantToReceiveWalletAddress] = useState(true);
 
 
   const [sending, setSending] = useState(false);
@@ -956,6 +956,7 @@ export default function SendUsdt({ params }: any) {
         
 
                   {/* check box for want to receive wallet address */}
+                  {/*
                   <div className="flex flex-row items-center gap-2">
                     <input
                       type="checkbox"
@@ -965,6 +966,7 @@ export default function SendUsdt({ params }: any) {
                     />
                     <div className="text-white">{Enter_Wallet_Address}</div>
                   </div>
+                  */}
 
                 </div>
 
@@ -1143,7 +1145,7 @@ export default function SendUsdt({ params }: any) {
               </div>
 
               {/* otp verification */}
-
+              {/*
               {verifiedOtp ? (
                 <div className="w-full flex flex-row gap-2 items-center justify-center">
                   <Image
@@ -1208,7 +1210,7 @@ export default function SendUsdt({ params }: any) {
                 </div>
 
               )}
-
+              */}
               
 
 
