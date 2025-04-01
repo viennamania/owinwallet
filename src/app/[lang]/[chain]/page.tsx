@@ -2192,13 +2192,22 @@ export default function Index({ params }: any) {
                 {/* logo */}
 
                 {/* home */}
+                {/* selected state */}
                 <button
                   onClick={() => {
                     router.push(
                       "/" + params.lang + "/" + params.chain + "/"
                     );
                   }}
-                  className="flex flex-col justify-center items-center gap-2"
+                  // selected state
+                  className="flex flex-col justify-center items-center gap-2
+                    bg-blue-200 text-blue-800
+                    transition duration-300 ease-in-out
+                    transform hover:-translate-y-1
+                    hover:bg-blue-200 hover:text-blue-800
+                    rounded-lg
+                    p-2
+                  "
                 >
                   <Image
                     src="/icon-home.png"
@@ -2219,7 +2228,13 @@ export default function Index({ params }: any) {
                       "/" + params.lang + "/" + params.chain + "/nft-market"
                     );
                   }}
-                  className="flex flex-col justify-center items-center gap-2"
+                  className="flex flex-col justify-center items-center gap-2
+                    hover:bg-blue-200 hover:text-blue-800
+                    transition duration-300 ease-in-out
+                    transform hover:-translate-y-1
+                    rounded-lg
+                    p-2
+                  "
                 >
                   <Image
                     src="/icon-shopping-cart.png"
@@ -2240,7 +2255,13 @@ export default function Index({ params }: any) {
                       "/" + params.lang + "/" + params.chain + "/invite-friend"
                     );
                   }}
-                  className="flex flex-col justify-center items-center gap-2"
+                  className="flex flex-col justify-center items-center gap-2
+                    hover:bg-blue-200 hover:text-blue-800
+                    transition duration-300 ease-in-out
+                    transform hover:-translate-y-1
+                    rounded-lg
+                    p-2
+                  "
                 >
                   <Image
                     src="/icon-invite.png"
@@ -2261,7 +2282,13 @@ export default function Index({ params }: any) {
                       "/" + params.lang + "/" + params.chain + "/my-page"
                     );
                   }}
-                  className="flex flex-col justify-center items-center gap-2"
+                  className="flex flex-col justify-center items-center gap-2
+                    hover:bg-blue-200 hover:text-blue-800
+                    transition duration-300 ease-in-out
+                    transform hover:-translate-y-1
+                    rounded-lg
+                    p-2
+                  "
                 >
                   <Image
                     src="/icon-my-page.png"
