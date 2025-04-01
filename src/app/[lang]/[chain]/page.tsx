@@ -2167,6 +2167,109 @@ export default function Index({ params }: any) {
 
           )}
 
+          {/* footer menu */}
+          {/* 홈 / NFT 상점 / 친구초대 / 마이페이지 */}
+          {/* same width footer menu */}
+
+          {address && (
+
+            <div className="w-full grid grid-cols-4 gap-2 justify-center items-center p-5
+              bg-zinc-100 rounded-lg text-center
+              hover:shadow-lg
+              transition duration-300 ease-in-out
+              transform hover:-translate-y-1
+            ">
+
+              {/* logo */}
+
+              {/* home */}
+              <button
+                onClick={() => {
+                  router.push(
+                    "/" + params.lang + "/" + params.chain + "/"
+                  );
+                }}
+                className="flex flex-col justify-center items-center gap-2"
+              >
+                <Image
+                  src="/icon-home.png"
+                  alt="Home"
+                  width={35}
+                  height={35}
+                  className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
+                />
+                <p className="text-sm md:text-lg text-gray-600">
+                  홈
+                </p>
+              </button>
+
+              {/* NFT 상점 */}
+              <button
+                onClick={() => {
+                  router.push(
+                    "/" + params.lang + "/" + params.chain + "/nft-market"
+                  );
+                }}
+                className="flex flex-col justify-center items-center gap-2"
+              >
+                <Image
+                  src="/icon-shopping-cart.png"
+                  alt="NFT Market"
+                  width={35}
+                  height={35}
+                  className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
+                />
+                <p className="text-sm md:text-lg text-gray-600">
+                  NFT 상점
+                </p>
+              </button>
+
+              {/* 친구 초대 */}
+              <button
+                onClick={() => {
+                  router.push(
+                    "/" + params.lang + "/" + params.chain + "/invite-friend"
+                  );
+                }}
+                className="flex flex-col justify-center items-center gap-2"
+              >
+                <Image
+                  src="/icon-invite.png"
+                  alt="Invite Friend"
+                  width={35}
+                  height={35}
+                  className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
+                />
+                <p className="text-sm md:text-lg text-gray-600">
+                  친구초대
+                </p>
+              </button>
+
+              {/* 마이페이지 */}
+              <button
+                onClick={() => {
+                  router.push(
+                    "/" + params.lang + "/" + params.chain + "/my-page"
+                  );
+                }}
+                className="flex flex-col justify-center items-center gap-2"
+              >
+                <Image
+                  src="/icon-my-page.png"
+                  alt="My Page"
+                  width={35}
+                  height={35}
+                  className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
+                />
+                <p className="text-sm md:text-lg text-gray-600">
+                  마이페이지
+                </p>
+              </button>
+
+            </div>
+
+          )}
+
 
       </div>
 
