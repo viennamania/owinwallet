@@ -1023,7 +1023,9 @@ export default function Index({ params }: any) {
   return (
 
 
-    <main className="p-4 min-h-[100vh] flex-col items-start justify-center container max-w-screen-lg mx-auto
+    <main className="
+      pb-10
+      p-4 min-h-[100vh] flex-col items-start justify-center container max-w-screen-lg mx-auto
       bg-[#E7EDF1]
     ">
 
@@ -2112,7 +2114,6 @@ export default function Index({ params }: any) {
 
       {/* footer fixed */}
 
-      <div className="w-full fixed bottom-0 left-0 right-0 items-center justify-center pb-5">
 
 
           {/* 이용방법인 궁금하신가요? 이용가이드 */}
@@ -2120,48 +2121,53 @@ export default function Index({ params }: any) {
           {/* 개인정보 처리방침을 확인하세요. 개인정보 처리방침 */}
           {!address && (
 
-            <div className="flex flex-col items-center justify-center gap-2">
+            <div className="w-full fixed bottom-0 left-0 right-0 items-center justify-center pb-5">
 
-              <div className="
-                flex flex-row gap-2 justify-center items-center">
-                <span className="text-lg md:text-xl text-zinc-500">
-                  이용방법이 궁금하신가요?
-                </span>
-                <Link
-                  href="#"
-                  className="text-lg md:text-xl text-blue-500 font-semibold hover:underline"
-                >
-                  이용가이드
-                </Link>
+
+              <div className="flex flex-col items-center justify-center gap-2">
+
+                <div className="
+                  flex flex-row gap-2 justify-center items-center">
+                  <span className="text-lg md:text-xl text-zinc-500">
+                    이용방법이 궁금하신가요?
+                  </span>
+                  <Link
+                    href="#"
+                    className="text-lg md:text-xl text-blue-500 font-semibold hover:underline"
+                  >
+                    이용가이드
+                  </Link>
+                </div>
+
+                <div className="
+                  flex flex-row gap-2 justify-center items-center">
+                  <span className="text-sm md:text-lg text-zinc-500">
+                    계속하면 이용약관에 동의하는것입니다.
+                  </span>
+                  <Link
+                    href="#"
+                    className="text-sm md:text-lg text-blue-500 font-semibold hover:underline"
+                  >
+                    이용약관
+                  </Link>
+                </div>
+
+                <div className="
+                  flex flex-row gap-2 justify-center items-center">
+                  <span className="text-sm md:text-lg text-zinc-500">
+                    개인정보 처리방침을 확인하세요.
+                  </span>
+                  <Link
+                    href="#"
+                    className="text-sm md:text-lg text-blue-500 font-semibold hover:underline"
+                  >
+                    개인정보 처리방침
+                  </Link>
+                </div>
+
+
+
               </div>
-
-              <div className="
-                flex flex-row gap-2 justify-center items-center">
-                <span className="text-sm md:text-lg text-zinc-500">
-                  계속하면 이용약관에 동의하는것입니다.
-                </span>
-                <Link
-                  href="#"
-                  className="text-sm md:text-lg text-blue-500 font-semibold hover:underline"
-                >
-                  이용약관
-                </Link>
-              </div>
-
-              <div className="
-                flex flex-row gap-2 justify-center items-center">
-                <span className="text-sm md:text-lg text-zinc-500">
-                  개인정보 처리방침을 확인하세요.
-                </span>
-                <Link
-                  href="#"
-                  className="text-sm md:text-lg text-blue-500 font-semibold hover:underline"
-                >
-                  개인정보 처리방침
-                </Link>
-              </div>
-
-
 
             </div>
 
@@ -2173,105 +2179,110 @@ export default function Index({ params }: any) {
 
           {address && (
 
-            <div className="w-full grid grid-cols-4 gap-2 justify-center items-center p-5
-              bg-zinc-100 rounded-lg text-center
-              hover:shadow-lg
-              transition duration-300 ease-in-out
-              transform hover:-translate-y-1
-            ">
+            <div className="w-full fixed bottom-0 left-0 right-0 items-center justify-center">
 
-              {/* logo */}
 
-              {/* home */}
-              <button
-                onClick={() => {
-                  router.push(
-                    "/" + params.lang + "/" + params.chain + "/"
-                  );
-                }}
-                className="flex flex-col justify-center items-center gap-2"
-              >
-                <Image
-                  src="/icon-home.png"
-                  alt="Home"
-                  width={35}
-                  height={35}
-                  className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
-                />
-                <p className="text-sm md:text-lg text-gray-600">
-                  홈
-                </p>
-              </button>
+              <div className="w-full grid grid-cols-4 gap-2 justify-center items-center p-5
+                bg-zinc-100 rounded-lg text-center
+                hover:shadow-lg
+                transition duration-300 ease-in-out
+                transform hover:-translate-y-1
+              ">
 
-              {/* NFT 상점 */}
-              <button
-                onClick={() => {
-                  router.push(
-                    "/" + params.lang + "/" + params.chain + "/nft-market"
-                  );
-                }}
-                className="flex flex-col justify-center items-center gap-2"
-              >
-                <Image
-                  src="/icon-shopping-cart.png"
-                  alt="NFT Market"
-                  width={35}
-                  height={35}
-                  className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
-                />
-                <p className="text-sm md:text-lg text-gray-600">
-                  NFT 상점
-                </p>
-              </button>
+                {/* logo */}
 
-              {/* 친구 초대 */}
-              <button
-                onClick={() => {
-                  router.push(
-                    "/" + params.lang + "/" + params.chain + "/invite-friend"
-                  );
-                }}
-                className="flex flex-col justify-center items-center gap-2"
-              >
-                <Image
-                  src="/icon-invite.png"
-                  alt="Invite Friend"
-                  width={35}
-                  height={35}
-                  className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
-                />
-                <p className="text-sm md:text-lg text-gray-600">
-                  친구초대
-                </p>
-              </button>
+                {/* home */}
+                <button
+                  onClick={() => {
+                    router.push(
+                      "/" + params.lang + "/" + params.chain + "/"
+                    );
+                  }}
+                  className="flex flex-col justify-center items-center gap-2"
+                >
+                  <Image
+                    src="/icon-home.png"
+                    alt="Home"
+                    width={35}
+                    height={35}
+                    className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
+                  />
+                  <p className="text-sm md:text-lg text-gray-600">
+                    홈
+                  </p>
+                </button>
 
-              {/* 마이페이지 */}
-              <button
-                onClick={() => {
-                  router.push(
-                    "/" + params.lang + "/" + params.chain + "/my-page"
-                  );
-                }}
-                className="flex flex-col justify-center items-center gap-2"
-              >
-                <Image
-                  src="/icon-my-page.png"
-                  alt="My Page"
-                  width={35}
-                  height={35}
-                  className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
-                />
-                <p className="text-sm md:text-lg text-gray-600">
-                  마이페이지
-                </p>
-              </button>
+                {/* NFT 상점 */}
+                <button
+                  onClick={() => {
+                    router.push(
+                      "/" + params.lang + "/" + params.chain + "/nft-market"
+                    );
+                  }}
+                  className="flex flex-col justify-center items-center gap-2"
+                >
+                  <Image
+                    src="/icon-shopping-cart.png"
+                    alt="NFT Market"
+                    width={35}
+                    height={35}
+                    className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
+                  />
+                  <p className="text-sm md:text-lg text-gray-600">
+                    NFT 상점
+                  </p>
+                </button>
+
+                {/* 친구 초대 */}
+                <button
+                  onClick={() => {
+                    router.push(
+                      "/" + params.lang + "/" + params.chain + "/invite-friend"
+                    );
+                  }}
+                  className="flex flex-col justify-center items-center gap-2"
+                >
+                  <Image
+                    src="/icon-invite.png"
+                    alt="Invite Friend"
+                    width={35}
+                    height={35}
+                    className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
+                  />
+                  <p className="text-sm md:text-lg text-gray-600">
+                    친구초대
+                  </p>
+                </button>
+
+                {/* 마이페이지 */}
+                <button
+                  onClick={() => {
+                    router.push(
+                      "/" + params.lang + "/" + params.chain + "/my-page"
+                    );
+                  }}
+                  className="flex flex-col justify-center items-center gap-2"
+                >
+                  <Image
+                    src="/icon-my-page.png"
+                    alt="My Page"
+                    width={35}
+                    height={35}
+                    className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
+                  />
+                  <p className="text-sm md:text-lg text-gray-600">
+                    마이페이지
+                  </p>
+                </button>
+
+              </div>
 
             </div>
 
           )}
 
 
-      </div>
+      
 
 
       {/*}
