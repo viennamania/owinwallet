@@ -776,15 +776,6 @@ export default function SendUsdt({ params }: any) {
                   width={35}
                   height={35}
                 />
-        
-                
-                <Image
-                  src={`/logo-${params.chain}.png`}
-                  alt="chain"
-                  width={32}
-                  height={32}
-                  className="rounded-lg"
-                />
                 
               </div>
 
@@ -801,7 +792,7 @@ export default function SendUsdt({ params }: any) {
               <div className="w-full flex flex-col xl:flex-row items-start justify-between gap-3">
 
                 {/* my usdt balance */}
-                <div className="w-full flex flex-row items-start gap-3">
+                <div className="w-full flex flex-col xl:flex-row items-start gap-3">
                   
                   <div className="flex flex-col gap-2 items-start">
                     
@@ -1379,6 +1370,7 @@ function Header(
           </button>
 
         {/* menu */}
+        {/*
         <div className="flex flex-row gap-2 items-center">
 
               <button
@@ -1393,6 +1385,7 @@ function Header(
               </button>
 
         </div>
+        */}
         
       </div>
       
