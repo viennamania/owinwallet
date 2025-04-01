@@ -9,7 +9,9 @@ import thirdwebIcon from "@public/thirdweb.svg";
 
 import { client } from "../../client";
 
-import { createThirdwebClient } from "thirdweb";
+import {
+  createThirdwebClient,
+} from "thirdweb";
 
 import {
   //ThirdwebProvider,
@@ -31,10 +33,15 @@ import {
   lightTheme,
 
   useConnectModal,
+
+  
   
 } from "thirdweb/react";
 
-import { inAppWallet } from "thirdweb/wallets";
+import {
+  inAppWallet,
+  createWallet,
+} from "thirdweb/wallets";
 
 import {
   polygon,
@@ -89,16 +96,47 @@ import { N } from "ethers";
 
 
 
-
+/*
 const wallets = [
   inAppWallet({
     auth: {
       options: [
         "phone",
+        "email",
+
+
          
       ],
     },
   }),
+];
+*/
+const wallets = [
+  inAppWallet({
+    auth: {
+      options: [
+        "google",
+        "discord",
+        "email",
+        "x",
+        "passkey",
+        "phone",
+        "facebook",
+        "line",
+        "apple",
+        "coinbase",
+      ],
+    },
+  }),
+  createWallet("com.coinbase.wallet"),
+  createWallet("me.rainbow"),
+  createWallet("io.rabby"),
+  createWallet("io.zerion.wallet"),
+  createWallet("io.metamask"),
+  //createWallet("com.binance.wallet"),
+  createWallet("com.bitget.web3"),
+  createWallet("com.trustwallet.app"),
+  createWallet("com.okex.wallet"),
 ];
 
 
@@ -1182,7 +1220,8 @@ export default function Index({ params }: any) {
                 label: "Sign in",
               }}
               connectModal={{
-                size: "wide", 
+                //size: "wide", 
+                size: "compact",
                 titleIcon: "https://agent.otc.earth/icon-snowball.png",                           
                 showThirdwebBranding: false,
 
@@ -1488,7 +1527,7 @@ export default function Index({ params }: any) {
 
 
                 {/* apply button of listing for new token */}
-
+                {/*
                 <div className=" flex flex-row gap-2 justify-center items-center mt-10">
                   <button
                     onClick={() => {
@@ -1520,11 +1559,12 @@ export default function Index({ params }: any) {
                     </div>
                   </button>
                 </div>
+                */}
 
-
+                
                 <div className=" flex flex-col gap-2 justify-center items-center mt-10">
                   
-                  {/* Go Buy USDT */}
+                  {/*
                   <button
                     onClick={() => {
   
@@ -1550,6 +1590,7 @@ export default function Index({ params }: any) {
                     </div>
                     
                   </button>
+                  */}
 
 
                   {/* Go Buy Order USDT */}
@@ -1805,7 +1846,7 @@ export default function Index({ params }: any) {
 
 
                 {/* apply button of listing for sellers */}
-
+                {/*
                 <div className=" flex-row gap-2 justify-center items-center mt-10 hidden">
                   <button
                     onClick={() => {
@@ -1839,30 +1880,19 @@ export default function Index({ params }: any) {
                     </div>
                   </button>
                 </div>
+                */}
 
 
               
                 <div className="grid grid-cols-1 gap-2 mt-4">
 
- 
+                  {/*
                   <button
                     //disabled={!address}
                     onClick={() => {
                       // my sell trades
                       //console.log("my sell trades");
 
-                      /*
-                      if (!address) {
-                        toast.error('Please connect your wallet first');
-                        return;
-                      }
-
-
-                      if (!seller && !userCode) {
-                        toast.error(Please_verify_your_account_first_for_selling);
-                        return;
-                      }
-                      */
 
                       // redirect to sell trades page
                       router.push(
@@ -1884,6 +1914,7 @@ export default function Index({ params }: any) {
                       />
                     </div>
                   </button>
+                  */}
 
                   {/*
                   <button
