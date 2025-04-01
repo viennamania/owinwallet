@@ -1039,45 +1039,87 @@ export default function Index({ params }: any) {
         />
         */}
 
-        <div className="w-full flex flex-row gap-2 justify-end items-center">
-          <select
-            className="p-2 text-sm bg-zinc-800 text-white rounded"
-            onChange={(e) => {
-              const lang = e.target.value;
-              router.push(
-                "/" + lang + "/" + params.chain
-              );
-            }}
-          >
-            <option
-              value="en"
-              selected={params.lang === "en"}
+        {!address && (
+          <div className="w-full flex flex-row gap-2 justify-end items-center">
+            <select
+              className="p-2 text-sm bg-zinc-800 text-white rounded"
+              onChange={(e) => {
+                const lang = e.target.value;
+                router.push(
+                  "/" + lang + "/" + params.chain
+                );
+              }}
             >
-              English(US)
-            </option>
-            <option
-              value="kr"
-              selected={params.lang === "kr"}
-            >
-              한국어(KR)
-            </option>
-            <option
-              value="zh"
-              selected={params.lang === "zh"}
-            >
-              中文(ZH)
-            </option>
-            <option
-              value="ja"
-              selected={params.lang === "ja"}
-            >
-              日本語(JP)
-            </option>
-          </select>
+              <option
+                value="en"
+                selected={params.lang === "en"}
+              >
+                English(US)
+              </option>
+              <option
+                value="kr"
+                selected={params.lang === "kr"}
+              >
+                한국어(KR)
+              </option>
+              <option
+                value="zh"
+                selected={params.lang === "zh"}
+              >
+                中文(ZH)
+              </option>
+              <option
+                value="ja"
+                selected={params.lang === "ja"}
+              >
+                日本語(JP)
+              </option>
+            </select>
 
-        </div>
+          </div>
+        )}
 
+        {/* header */}
+        {/* SNOWBALL */}
+        {address && (
+          <div className="w-full flex flex-col gap-2 justify-start items-center">
 
+            <div className="w-full flex flex-row gap-2 justify-start items-center">
+              <Image
+                src="/icon-snowball.png"
+                alt="Snowball"
+                width={50}
+                height={50}
+                className="rounded-lg w-10 h-10"
+              />
+              <span className="text-xl md:text-2xl font-semibold text-zinc-800">
+                SNOWBALL
+              </span>
+            </div>
+
+            <div className="w-full flex flex-row gap-2 justify-between items-center">
+              <div className="w-full flex flex-col justify-start items-start">
+                <span className="text-sm md:text-lg font-bold text-zinc-500">
+                  Let Your Money
+                </span>
+                <span className="text-sm md:text-lg font-bold text-zinc-500">
+                  Roll And Grow
+                </span>
+              </div>
+
+              <Image
+                src="/logo-snowball.webp"
+                alt="Snowball"
+                width={200}
+                height={50}
+                className="rounded-lg"
+              />
+
+            </div>
+
+          </div>
+
+        )}
 
 
         <div className="w-full flex flex-row gap-2 justify-between items-center">
@@ -1171,30 +1213,32 @@ export default function Index({ params }: any) {
 
         {/* 눈덩이처럼 불어나는 나의 자산 */}
         {/* SNOWBOLL WALLET */}
-        <div className="
-          mt-16
-          w-full flex flex-col justify-center items-center gap-2 mb-5">
-          <span className="text-lg md:text-xl text-zinc-500">
-            {description}
-          </span>
-          <span className="text-xl md:text-2xl font-semibold text-zinc-800">
-            {title}
-          </span>
-        </div>
+        {!address && (
+          <div className="mt-16 w-full flex flex-col justify-center items-center gap-2 mb-5">
+              <div className="w-full flex flex-col justify-center items-center gap-2 mb-5">
+                <span className="text-lg md:text-xl text-zinc-500">
+                  {description}
+                </span>
+                <span className="text-xl md:text-2xl font-semibold text-zinc-800">
+                  {title}
+                </span>
+              </div>
 
 
-        {/* logo */}
-        <div className="
-          mt-16
-          w-full flex flex-col justify-center items-center gap-2 mb-5">
-          <Image
-            src="/icon-snowball.png"
-            alt="Snowball"
-            width={200}
-            height={200}
-            className="rounded-lg w-40 h-40 xl:w-60 xl:h-60"
-          />
-        </div>
+              {/* logo */}
+              <div className="
+                mt-16
+                w-full flex flex-col justify-center items-center gap-2 mb-5">
+                <Image
+                  src="/icon-snowball.png"
+                  alt="Snowball"
+                  width={200}
+                  height={200}
+                  className="rounded-lg w-40 h-40 xl:w-60 xl:h-60"
+                />
+              </div>
+          </div>
+        )}
 
 
         {/* announcement */}
