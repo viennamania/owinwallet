@@ -18,8 +18,6 @@ import {
     getContract,
     sendTransaction,
     sendAndConfirmTransaction,
-
-    
 } from "thirdweb";
 
 import { deployERC721Contract } from 'thirdweb/deploys';
@@ -2175,7 +2173,7 @@ export default function SettingsPage({ params }: any) {
                 <button
                   onClick={() => {
                     router.push(
-                      "/" + params.lang + "/" + params.chain + "/nft-market"
+                      "/" + params.lang + "/" + params.chain + "/my-nft-snowball"
                     );
                   }}
                   className="flex flex-col justify-center items-center gap-2

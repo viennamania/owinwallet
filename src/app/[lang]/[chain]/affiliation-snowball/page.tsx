@@ -1884,7 +1884,7 @@ function AgentPage(
                 <button
                   onClick={() => {
                     router.push(
-                      "/" + params.lang + "/" + params.chain + "/nft-market"
+                      "/" + params.lang + "/" + params.chain + "/my-nft-snowball"
                     );
                   }}
                   className="flex flex-col justify-center items-center gap-2
