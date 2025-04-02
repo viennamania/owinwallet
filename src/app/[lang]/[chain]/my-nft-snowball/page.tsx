@@ -447,7 +447,7 @@ function AgentPage(
 
 
 
-    const erc1155ContractAddress = "0x936C5b9348Dc08CF60Bdc6C03F0871037517161d";
+    const erc1155ContractAddress = "0x96A7f4173b3ac70489403822dFde5f172e7EF1EB";
 
     const price = 3000;
 
