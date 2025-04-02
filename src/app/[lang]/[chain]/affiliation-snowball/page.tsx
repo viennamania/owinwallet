@@ -1972,15 +1972,12 @@ function AgentPage(
                 </button>
 
                 {/* 마이페이지 */}
-                {/* selected state */}
                 <button
-                    /*
                   onClick={() => {
                     router.push(
                       "/" + params.lang + "/" + params.chain + "/my-page"
                     );
                   }}
-                    */
                   className="flex flex-col justify-center items-center gap-2
                     hover:bg-blue-200 hover:text-blue-800
                     transition duration-300 ease-in-out
