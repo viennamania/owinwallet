@@ -2252,14 +2252,11 @@ export default function Index({ params }: any) {
 
                 {/* 친구 초대 */}
                 <button
-                  /*
                   onClick={() => {
                     router.push(
                       "/" + params.lang + "/" + params.chain + "/affiliation-snowball"
                     );
                   }}
-                  */
-                  // selected state
                   className="flex flex-col justify-center items-center gap-2
                     hover:bg-blue-200 hover:text-blue-800
                     transition duration-300 ease-in-out
