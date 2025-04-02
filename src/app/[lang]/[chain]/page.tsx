@@ -1921,7 +1921,7 @@ export default function Index({ params }: any) {
                         }
 
                         router.push(
-                          "/" + params.lang + "/" + params.chain + "/profile-settings" + "?agent=" + agent + "&tokenId=" + agentNumber + "&center=" + center
+                          "/" + params.lang + "/" + params.chain + "/my-page" + "?agent=" + agent + "&tokenId=" + agentNumber + "&center=" + center
                         );
 
                       }}
