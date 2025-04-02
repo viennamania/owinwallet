@@ -1103,6 +1103,7 @@ function AgentPage(
 
 
                             {/* 전송내역 (최신 5개) */}
+                            {/*
                             {loadingTransfers && (
                                 <div className="flex flex-row gap-2 items-center justify-center">
                                     <Image
@@ -1131,6 +1132,7 @@ function AgentPage(
 
                                 </div>
                             )}
+                            
 
                             {!loadingTransfers && transfers.length > 0 && (
                                 <div className="w-full flex flex-col gap-2 items-start justify-between">
@@ -1150,7 +1152,7 @@ function AgentPage(
                                                 {transfer.sendOrReceive === 'send' && (
                                                     <div className="w-24   flex flex-row gap-2 items-center justify-between">
                                                         <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                                                        {/* otherUser?.avatar */}
+  
                                                         {transfer?.otherUser?.avatar && (
                                                             <Image
                                                                 src={transfer.otherUser.avatar}
@@ -1168,7 +1170,7 @@ function AgentPage(
                                                 {transfer.sendOrReceive === 'receive' && (
                                                     <div className=" w-20 flex flex-row gap-2 items-center justify-between">
                                                         <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                                                        {/* otherUser?.avatar */}
+
                                                         {transfer?.otherUser?.avatar && (
                                                             <Image
                                                                 src={transfer.otherUser.avatar}
@@ -1183,7 +1185,7 @@ function AgentPage(
                                                         </span>
                                                     </div>
                                                 )}
-                                                {/* monospace font style */}
+
                                                 <span
                                                     className="w-28 text-sm text-zinc-100 text-right"
                                                     style={{
@@ -1221,12 +1223,14 @@ function AgentPage(
 
                                 </div>
                             )}
+                            */}
 
 
                         </div>
                     )}
 
                 
+
 
 
 
@@ -1238,8 +1242,8 @@ function AgentPage(
                             <div className="w-full flex flex-row gap-2 items-center justify-start">
                                 {/* dot */}
                                 <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                                <div className="text-sm text-zinc-100 font-semibold">
-                                    채굴 NFT 발행
+                                <div className="text-xl text-zinc-800 font-bold">
+                                    SNOW BOT 3000
                                 </div>
                             </div>
 
@@ -1247,34 +1251,30 @@ function AgentPage(
                                 border border-gray-200
                                 p-4 rounded-lg">
 
-                                {/* 보유하고 있는 USDT로 채굴 NFT를 직접 발행받을 수 있습니다. */}
-                                <div className="w-full flex flex-row gap-2 items-center justify-start">
-                                    {/* dot */}
-                                    <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                                    <span className="text-lg text-yellow-500 font-semibold">
-                                        보유하고 있는 USDT로 채굴 NFT를 직접 발행받을 수 있습니다.
-                                    </span>
-                                </div>
-
-                                {/* 지갑에 USDT가 있어야 발행 가능합니다. */}
-                                <div className="w-full flex flex-row gap-2 items-center justify-start">
-                                    {/* dot */}
-                                    <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                                    <span className="text-lg text-yellow-500 font-semibold">
-                                        지갑에 USDT가 있어야 발행 가능합니다.
-                                    </span>
-                                </div>
+                                {/*
+                                ‘Snow Bot 300’은 해당 봇을 구매한 사용자들에게 특별한 혜택을 제공하는 스페셜 멤버십 NFT입니다. 구매와 동시에 ‘Snowball 프로젝트’의 멤버가 되며, 이 Bot을 기반으로 다양한 보상과 혜택을 누릴 수 있습니다.
+                                */}
 
 
-                                <span className="text-lg text-zinc-400 font-semibold">
-                                    채굴 NFT를 발행받을려면 아래 버튼을 클릭하세요.
+                                <span className="text-sm text-zinc-800 font-semibold">
+                                    SNOW BOT 3000은 해당 봇을 구매한 사용자들에게 특별한 혜택을 제공하는 스페셜 멤버십 NFT입니다. 구매와 동시에 ‘Snowball 프로젝트’의 멤버가 되며, 이 Bot을 기반으로 다양한 보상과 혜택을 누릴 수 있습니다.
                                 </span>
+
+                                {/*
+                                ‘Snow Bot 300’을 구매하면 해당 Bot의 정책에 따른 멤버십 리워드를 획득할 수 있습니다. 획득한 리워드는 외부 지갑으로 자유롭게 출금하거나 ‘Snowball 프로젝트’와 함께하는 다양한 제휴사에서 사용할 수 있습니다. 지금 바로 Snow Bot으로 Snowball을 굴려보세요!
+                                */}
+
+                                <span className="text-sm text-zinc-800 font-semibold">
+                                    ‘Snow Bot 300’을 구매하면 해당 Bot의 정책에 따른 멤버십 리워드를 획득할 수 있습니다. 획득한 리워드는 외부 지갑으로 자유롭게 출금하거나 ‘Snowball 프로젝트’와 함께하는 다양한 제휴사에서 사용할 수 있습니다. 지금 바로 Snow Bot으로 Snowball을 굴려보세요!
+                                </span>
+
+
                                 <div className="p-5 w-full flex flex-col gap-2 items-center justify-center">
 
 
                                     {/* 발행금액 */}
                                     <span className="text-2xl text-green-500 font-semibold">
-                                        발행금액: {price} USDT
+                                        가격: {price} USDT
                                     </span>
                                     <span className="text-lg text-zinc-400 font-semibold">
                                         USDT 잔액: {balance} USDT
@@ -1285,7 +1285,7 @@ function AgentPage(
                                         </span>
                                     ) : (
                                         <span className="text-lg text-green-500 font-semibold">
-                                            발행후 USDT 잔액: {(balance - price).toFixed(6)} USDT
+                                            구매후 USDT 잔액: {(balance - price).toFixed(6)} USDT
                                         </span>
                                     )}
 
