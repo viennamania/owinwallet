@@ -2193,7 +2193,7 @@ export default function SettingsPage({ params }: any) {
                 <button
                   onClick={() => {
                     router.push(
-                      "/" + params.lang + "/" + params.chain + "/invite-friend"
+                      "/" + params.lang + "/" + params.chain + "/affiliation-snowball"
                     );
                   }}
                   className="flex flex-col justify-center items-center gap-2

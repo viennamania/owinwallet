@@ -2202,7 +2202,7 @@ export default function Index({ params }: any) {
                     );
                   }}
                   */
-                  // selected state
+
                   className="flex flex-col justify-center items-center gap-2
                     bg-blue-200 text-blue-800
                     transition duration-300 ease-in-out
@@ -2252,11 +2252,14 @@ export default function Index({ params }: any) {
 
                 {/* 친구 초대 */}
                 <button
+                  /*
                   onClick={() => {
                     router.push(
-                      "/" + params.lang + "/" + params.chain + "/invite-friend"
+                      "/" + params.lang + "/" + params.chain + "/affiliation-snowball"
                     );
                   }}
+                  */
+                  // selected state
                   className="flex flex-col justify-center items-center gap-2
                     hover:bg-blue-200 hover:text-blue-800
                     transition duration-300 ease-in-out
