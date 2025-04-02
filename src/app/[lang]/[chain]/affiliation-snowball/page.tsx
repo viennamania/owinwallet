@@ -1140,17 +1140,17 @@ function AgentPage(
 
     return (
 
+        <main className="
+        p-4 min-h-[100vh] flex-col items-start justify-center container max-w-screen-lg mx-auto
+        bg-[#E7EDF1]
+        ">
+
+        {/*
         <main
             className="p-4 pb-28 min-h-[100vh] flex items-start justify-center container max-w-screen-lg mx-auto"
-            /*
-            style={{
-                backgroundImage: "url('/mobile-background-nft.jpg')",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-              }}
-            */
+
         >
+        */}
 
 
 
@@ -1164,20 +1164,8 @@ function AgentPage(
                 />
                 */}
 
-                {/* sticky header */}
-                <div className="sticky top-0 z-50
-                    bg-zinc-800 bg-opacity-90
-                    backdrop-blur-md
-                    p-4 rounded-lg
-                    w-full flex flex-row items-center justify-between">
-
-                    {/* title */}
-                    <div className="text-2xl font-semibold text-zinc-100">
-                        추천코드 관리
-                    </div>
-                </div>
         
-                <div className="mt-5 flex flex-col items-start justify-center space-y-4">
+                <div className="flex flex-col items-start justify-center gap-2">
 
                     
                     {!address && (
@@ -1220,7 +1208,7 @@ function AgentPage(
                     
                     <div className="flex justify-center mt-5">
                         {address ? (
-                            <div className="flex flex-row gap-2 items-center justify-between">
+                            <div className="hidden flex-row gap-2 items-center justify-between">
 
                                 <div className=" flex flex-col xl:flex-row items-center justify-start gap-5">
                                     <Image
@@ -1259,51 +1247,36 @@ function AgentPage(
                     </div>
 
 
+                    <div className='w-full flex flex-row items-center justify-start
+                        gap-2 border border-gray-800
+                        p-4 rounded-lg'>
 
-                    <div className='w-full  flex flex-col gap-5 '>
-
-                        {/* profile picture */}
-      
-
-                        {address && userCode && (
-                            <div className='flex flex-row gap-2 items-center justify-between
-                            border border-gray-800
-                            p-4 rounded-lg'>
-
-
-                                <div className="flex flex-row gap-2 items-center justify-between">
-                                    {/* dot */}
-                                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                                    <span className='text-lg font-semibold'>
-                                        회원아이디
-                                    </span>
-                                </div>
-
-                                <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
-                                    {nickname}
-                                </div>
-
-                                {isCenterOwner && (
-                                    <div className="p-2 bg-green-500 rounded text-zinc-100 text-xl font-semibold">
-                                        센터장
-                                    </div>
-                                )}
-
-                                <Image
-                                    src="/verified.png"
-                                    alt="Verified"
-                                    width={20}
-                                    height={20}
-                                    className="rounded-lg"
-                                />
-
-
-                                
+                    
+                        <Image
+                            src="/icon-profile.png"
+                            alt="Profile Picture"
+                            width={50}
+                            height={50}
+                            className="rounded-full object-cover bg-gray-300
+                            border border-gray-300 w-12 h-12"
+                        />
+                        <div className='flex flex-col items-start justify-start gap-2'>
+                            <span className="text-2xl font-semibold text-blue-500">
+                                {nickname ? nickname : ""}
+                            </span>
+                            {/* KYC 인증 완료 */}
+                            <div 
+                                className="flex flex-row items-center justify-start gap-2
+                                bg-green-500 text-zinc-100 p-2 rounded-lg">
+                                <span className="text-sm font-semibold text-zinc-100">
+                                    KYC 인증 완료
+                                </span>
                             </div>
-                        )}
+                        </div>
 
 
                     </div>
+
 
 
 
@@ -1446,9 +1419,8 @@ function AgentPage(
                                 </div>
                                 */}
                                 <div className="flex flex-row items-center justify-start gap-5">
-                                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                                     <span className="text-sm xl:text-lg font-semibold">
-                                        NFT 소유권을 이전하면 이전한 이후부터 채굴보상은 이전 받은 소유자에게 지급됩니다.
+                                    아래의 추천코드 발행하기 버튼을 누르면 나의 ‘SNOW BUDDY’ BOT이 생성됩니다. 친구를 초대해 함께 스노우볼을 굴려보세요!
                                     </span>
                                 </div>
 
@@ -1459,18 +1431,9 @@ function AgentPage(
 
 
                             {/* mint AI Agent NFT */}
-                            <div className='w-full flex flex-col gap-2 items-start justify-between
-                                bg-yellow-100 border border-gray-300
-                                p-4 rounded-lg'>
+                            <div className='w-full flex flex-col gap-2 items-start justify-between'>
                                 
 
-                                <div className="flex flex-row gap-2 items-center justify-start">
-                                    {/* dot */}
-                                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                                    <span className='text-lg font-semibold'>
-                                        추천코드 발행
-                                    </span>
-                                </div>
 
                                 {/*
                                 <div className='flex flex-col xl:flex-row gap-2 items-start justify-between'>
@@ -1505,7 +1468,10 @@ function AgentPage(
                                     }
                                     className={`
                                         ${mintingAgentNft ? 'bg-gray-300 text-gray-400' : 'bg-blue-500 text-zinc-100'}
-                                        p-2 rounded-sm text-sm font-semibold
+                                        p-2 rounded-lg text-sm font-semibold
+                                        w-full
+                                        hover:bg-blue-600
+                                        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50
                                     `}
                                 >
                                     <div className='flex flex-row gap-2 items-center justify-center'>
@@ -1519,8 +1485,8 @@ function AgentPage(
                                                 className='animate-spin'
                                             />
                                         )}
-                                        {mintingAgentNft && 'NFT 발행중...'}
-                                        {!mintingAgentNft && 'NFT 발행하기'}
+                                        {mintingAgentNft && '추천코드 발행중...'}
+                                        {!mintingAgentNft && '추천코드 발행하기'}
                                     </div>
                                 </button>
 
@@ -1582,7 +1548,7 @@ function AgentPage(
                                         {/* dot */}
                                         <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                                         <span className="text-lg font-semibold">
-                                            추천코드
+                                            나의 SNOW BUDDY
                                         </span>
                                     </div>
 
