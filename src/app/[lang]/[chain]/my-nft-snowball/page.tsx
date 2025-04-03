@@ -981,7 +981,8 @@ function AgentPage(
 
 
 
-            <div className="py-0 w-full">
+            <div className="pb-56
+            w-full">
 
                 {/*
                 <AutoConnect
@@ -1075,7 +1076,7 @@ function AgentPage(
 
                 
                     {/* radio box for snowbot 300 or 3000 */}
-
+                    {/*
                     <div className="w-full flex flex-row gap-2 items-center justify-start">
                         <div className="w-full flex flex-row gap-2 items-center justify-start">
                             <input
@@ -1108,6 +1109,7 @@ function AgentPage(
                         </div>
 
                     </div>
+                    */}
 
 
 
@@ -1117,16 +1119,18 @@ function AgentPage(
                     {address && (
                         <div className="mt-5 w-full flex flex-col gap-2 items-center justify-between">
 
+                            {/*
                             <div className="w-full flex flex-row gap-2 items-center justify-start">
-                                {/* dot */}
                                 <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                                 <div className="text-xl text-zinc-800 font-bold">
                                     {snowbot === 300 ? "SNOW BOT 300" : "SNOW BOT 3000"}
                                 </div>
                             </div>
+                            */}
 
                             {/* nft image */}
                             {/* logo-snowball-3000.png */}
+                            {/*
                             <div className="w-full flex flex-col gap-2 items-center justify-between">
                                 <Image
                                     //src="/logo-snowbot3000.png"
@@ -1136,6 +1140,59 @@ function AgentPage(
                                     height={300}
                                     className="rounded-lg"
                                 />
+                            </div>
+                            */}
+
+                            {/* select image */}
+                            <div className="w-full flex flex-row gap-2 items-center justify-between">
+
+                                <button
+                                    onClick={() => setSnowbot(300)}
+                                    className={`w-full flex flex-col gap-2 items-center justify-between
+                                    ${snowbot === 300 ? "border border-blue-500" : "border border-gray-200"}
+                                    p-4 rounded-lg
+                                    ${snowbot === 300 ? "bg-white" : "bg-gray-200"}
+                                    `}
+                                >
+                                    <span className="text-sm text-zinc-800 font-semibold">
+                                        SNOW BOT 300
+                                    </span>
+                                    <Image
+                                        src="/logo-snowbot300.png"
+                                        alt="NFT"
+                                        width={300}
+                                        height={300}
+                                        className="rounded-lg"
+                                    />
+                                    {/* 가격: 300 USDT */}
+                                    <span className="text-sm text-green-500 font-semibold">
+                                        가격: 300 USDT
+                                    </span>
+                                </button>
+                                <button
+                                    onClick={() => setSnowbot(3000)}
+                                    className={`w-full flex flex-col gap-2 items-center justify-between
+                                    ${snowbot === 3000 ? "border border-blue-500" : "border border-gray-200"}
+                                    p-4 rounded-lg
+                                    ${snowbot === 3000 ? "bg-white" : "bg-gray-200"}
+                                    `}
+                                >
+                                    <span className="text-sm text-zinc-800 font-semibold">
+                                        SNOW BOT 3000
+                                    </span>
+                                    <Image
+                                        src="/logo-snowbot3000.png"
+                                        alt="NFT"
+                                        width={300}
+                                        height={300}
+                                        className="rounded-lg"
+                                    />
+                                    {/* 가격: 3000 USDT */}
+                                    <span className="text-sm text-green-500 font-semibold">
+                                        가격: 3,000 USDT
+                                    </span>
+                                </button>
+
                             </div>
 
 
@@ -1525,7 +1582,7 @@ function AgentPage(
                             {/* dot */}
                             <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                             <div className="text-sm text-zinc-800 font-bold">
-                                소유한 SNOWBOT3000
+                                소유한 SNOW BOT
                             </div>
                         </div>
 
@@ -1539,7 +1596,7 @@ function AgentPage(
                                     className="animate-spin"
                                 />
                                 <span className="text-lg font-semibold text-zinc-400">
-                                    채굴 NFT 불러오는 중...
+                                    SNOW BOT 불러오는 중...
                                 </span>
                             </div>
                         )}
@@ -1548,7 +1605,7 @@ function AgentPage(
                         {ownedNfts.length === 0 && !loadingOwnedNfts && (
                             <div className="w-full flex flex-row gap-2 items-center justify-center">
                                 <span className="text-lg font-semibold text-zinc-400">
-                                    소유한 채굴 NFT가 없습니다.
+                                    소유한 SNOW BOT 이 없습니다.
                                 </span>
                             </div>
                         )}
