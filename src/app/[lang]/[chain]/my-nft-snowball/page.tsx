@@ -568,7 +568,7 @@ function AgentPage(
             setOwnedNfts(nfts);
             setLoadingOwnedNfts(false);
 
-
+            /*
             // fetch transfers again
             setLoadingTransfers(true);
             const response = await fetch("/api/wallet/getTransfersByWalletAddress", {
@@ -587,6 +587,7 @@ function AgentPage(
                 setTransfers(data.result?.transfers);
             }
             setLoadingTransfers(false);
+            */
             
 
 
@@ -872,6 +873,7 @@ function AgentPage(
 
 
     // /api/wallet/getTransfersByWalletAddress
+    /*
     const [transfers, setTransfers] = useState([] as any[]);
     const [loadingTransfers, setLoadingTransfers] = useState(false);
     useEffect(() => {
@@ -912,6 +914,7 @@ function AgentPage(
             fetchTransfers();
         }
     } , [address]);
+    */
 
     /*
     {
