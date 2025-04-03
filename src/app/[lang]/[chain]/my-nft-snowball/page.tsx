@@ -1174,9 +1174,15 @@ function AgentPage(
                                 기간별 구매 리워드
                                     봇 구매 후 보유한 기간별로 받을 수 있는 리워드 혜택입니다. (단위 USDT)
 
+                                    // Snow Bot 300
                                     1일 → 0.45 USDT
                                     30일 → 13.5 USDT
                                     365일 → 164.25 USDT
+
+                                    // Snow Bot 3000
+                                    1일 → 4.5 USDT
+                                    30일 → 135 USDT
+                                    365일 → 1642.5 USDT
                                 */}
                                 <div className="w-full flex flex-col gap-2 items-start justify-between">
                                     <div className="w-full flex flex-row gap-2 items-center justify-start">
@@ -1191,13 +1197,13 @@ function AgentPage(
                                         봇 구매 후 보유한 기간별로 받을 수 있는 리워드 혜택입니다. (단위 USDT)
                                     </span>
                                     <span className="text-sm text-zinc-800 font-semibold">
-                                        1일 → 0.45 USDT
+                                        1일 → {snowbot === 300 ? "0.45" : "4.5"} USDT
                                     </span>
                                     <span className="text-sm text-zinc-800 font-semibold">
-                                        30일 → 13.5 USDT
+                                        30일 → {snowbot === 300 ? "13.5" : "135"} USDT
                                     </span>
                                     <span className="text-sm text-zinc-800 font-semibold">
-                                        365일 → 164.25 USDT
+                                        365일 → {snowbot === 300 ? "164.25" : "1642.5"} USDT
                                     </span>
                                 </div>
 
