@@ -979,7 +979,7 @@ function AgentPage(
 
 
         
-                <div className="w-full mt-5 flex flex-col items-start justify-center space-y-4">
+                <div className="w-full mt-5 flex flex-col items-start justify-center gap-2">
 
                     {!address && (
 
@@ -1247,7 +1247,20 @@ function AgentPage(
                                 </div>
                             </div>
 
-                            <div className="w-full flex flex-col gap-2 items-start justify-between
+                            {/* nft image */}
+                            {/* logo-snowball-3000.png */}
+                            <div className="w-full flex flex-col gap-2 items-center justify-between">
+                                <Image
+                                    src="/logo-snowbot3000.png"
+                                    alt="NFT"
+                                    width={300}
+                                    height={300}
+                                    className="rounded-lg"
+                                />
+                            </div>
+
+
+                            <div className="w-full flex flex-col gap-5 items-start justify-between
                                 border border-gray-200
                                 p-4 rounded-lg">
 
@@ -1255,18 +1268,57 @@ function AgentPage(
                                 ‘Snow Bot 300’은 해당 봇을 구매한 사용자들에게 특별한 혜택을 제공하는 스페셜 멤버십 NFT입니다. 구매와 동시에 ‘Snowball 프로젝트’의 멤버가 되며, 이 Bot을 기반으로 다양한 보상과 혜택을 누릴 수 있습니다.
                                 */}
 
-
-                                <span className="text-sm text-zinc-800 font-semibold">
-                                    SNOW BOT 3000은 해당 봇을 구매한 사용자들에게 특별한 혜택을 제공하는 스페셜 멤버십 NFT입니다. 구매와 동시에 ‘Snowball 프로젝트’의 멤버가 되며, 이 Bot을 기반으로 다양한 보상과 혜택을 누릴 수 있습니다.
-                                </span>
+                                <div className="w-full flex flex-row gap-2 items-center justify-start">
+                                    {/* dot */}
+                                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                                    <span className="text-sm text-zinc-800 font-semibold">
+                                        SNOW BOT 3000은 해당 봇을 구매한 사용자들에게 특별한 혜택을 제공하는 스페셜 멤버십 NFT입니다. 구매와 동시에 ‘Snowball 프로젝트’의 멤버가 되며, 이 Bot을 기반으로 다양한 보상과 혜택을 누릴 수 있습니다.
+                                    </span>
+                                </div>
 
                                 {/*
                                 ‘Snow Bot 300’을 구매하면 해당 Bot의 정책에 따른 멤버십 리워드를 획득할 수 있습니다. 획득한 리워드는 외부 지갑으로 자유롭게 출금하거나 ‘Snowball 프로젝트’와 함께하는 다양한 제휴사에서 사용할 수 있습니다. 지금 바로 Snow Bot으로 Snowball을 굴려보세요!
                                 */}
+                                <div className="w-full flex flex-row gap-2 items-center justify-start">
+                                    {/* dot */}
+                                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                                    <span className="text-sm text-zinc-800 font-semibold">
+                                        SNOW BOT 3000을 구매하면 해당 Bot의 정책에 따른 멤버십 리워드를 획득할 수 있습니다. 획득한 리워드는 외부 지갑으로 자유롭게 출금하거나 ‘Snowball 프로젝트’와 함께하는 다양한 제휴사에서 사용할 수 있습니다. 지금 바로 Snow Bot으로 Snowball을 굴려보세요!
+                                    </span>
+                                </div>
 
-                                <span className="text-sm text-zinc-800 font-semibold">
-                                    ‘Snow Bot 300’을 구매하면 해당 Bot의 정책에 따른 멤버십 리워드를 획득할 수 있습니다. 획득한 리워드는 외부 지갑으로 자유롭게 출금하거나 ‘Snowball 프로젝트’와 함께하는 다양한 제휴사에서 사용할 수 있습니다. 지금 바로 Snow Bot으로 Snowball을 굴려보세요!
-                                </span>
+                                {/*
+                                기간별 구매 리워드
+                                    봇 구매 후 보유한 기간별로 받을 수 있는 리워드 혜택입니다. (단위 USDT)
+
+                                    1일 → 0.45 USDT
+                                    30일 → 13.5 USDT
+                                    365일 → 164.25 USDT
+                                */}
+                                <div className="w-full flex flex-col gap-2 items-start justify-between">
+                                    <div className="w-full flex flex-row gap-2 items-center justify-start">
+                                        {/* dot */}
+                                        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                                        <span className="text-lg text-zinc-800 font-bold">
+                                            기간별 구매 리워드
+                                        </span>
+                                    </div>
+
+                                    <span className="text-sm text-zinc-800 font-semibold">
+                                        봇 구매 후 보유한 기간별로 받을 수 있는 리워드 혜택입니다. (단위 USDT)
+                                    </span>
+                                    <span className="text-sm text-zinc-800 font-semibold">
+                                        1일 → 0.45 USDT
+                                    </span>
+                                    <span className="text-sm text-zinc-800 font-semibold">
+                                        30일 → 13.5 USDT
+                                    </span>
+                                    <span className="text-sm text-zinc-800 font-semibold">
+                                        365일 → 164.25 USDT
+                                    </span>
+                                </div>
+
+
 
 
                                 <div className="p-5 w-full flex flex-col gap-2 items-center justify-center">
@@ -1294,12 +1346,15 @@ function AgentPage(
                                     <button
                                         disabled={claimingNft}
                                         onClick={() =>
-                                            confirm("채굴 NFT를 발행하시겠습니까?") &&
+                                            confirm("구매하시겠습니까?") &&
                                             claimNft(erc1155ContractAddress, "0"
                                         )}
                                         className={`
                                             ${claimingNft ? 'bg-gray-300 text-gray-400' : 'bg-blue-500 text-zinc-100'}
                                             p-2 rounded-lg text-lg font-semibold
+                                            hover:bg-blue-600 hover:text-zinc-100
+                                            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+                                            w-full
                                         `}
                                     >
                                         <div className="flex flex-row gap-2 items-center justify-center">
@@ -1312,8 +1367,8 @@ function AgentPage(
                                                     className="animate-spin"
                                                 />
                                             )}
-                                            {claimingNft && '채굴 NFT 발행중...'}
-                                            {!claimingNft && '채굴 NFT 발행하기'}
+                                            {claimingNft && '구매중...'}
+                                            {!claimingNft && '구매하기'}
                                         </div>
                                     </button>
                                 </div>
