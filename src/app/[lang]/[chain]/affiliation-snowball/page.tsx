@@ -1248,7 +1248,7 @@ function AgentPage(
 
 
                     <div className='w-full flex flex-row items-center justify-start
-                        gap-2 border border-gray-800
+                        gap-2 border border-gray-300
                         p-4 rounded-lg'>
 
                     
@@ -1347,7 +1347,7 @@ function AgentPage(
 
 
                         <div className='w-full flex flex-col gap-2 items-center justify-between
-                            border border-gray-800
+                            border border-gray-300
                             p-4 rounded-lg'>
 
                             <div className='w-full flex flex-row gap-2 items-center justify-between'>
@@ -1647,16 +1647,15 @@ function AgentPage(
                                                     onClick={() => {
                                                         window.open('https://opensea.io/assets/matic/' + nft.contract.address + '/' + nft.tokenId);
                                                     }}
-                                                    className="p-2 bg-blue-500 text-zinc-100 rounded
-                                                    hover:bg-blue-600
-                                                    " 
+                                                    className="hover:bg-gray-300"
+                                                    
                                                 >
                                                     <Image
                                                         src="/logo-opensea.png"
                                                         alt="OpenSea"
                                                         width={30}
                                                         height={30}
-                                                        className="rounded-lg"
+                                                        className="rounded-full"
                                                     />
                                                 </button>
 
@@ -1692,7 +1691,7 @@ function AgentPage(
                                                         alert('추천코드 복사되었습니다.');
                                                     }}
                                                     className="p-2 bg-blue-500 text-zinc-100 rounded
-                                                    hover:bg-blue-600 text-lg font-semibold"
+                                                    hover:bg-blue-600 text-sm font-semibold"
                                                 >
                                                     추천코드 복사하기
                                                 </button>
@@ -1803,7 +1802,7 @@ function AgentPage(
                                                                 className="animate-spin"
                                                             />
                                                         )}
-                                                        <span className='text-lg font-semibold'>
+                                                        <span className='text-sm font-semibold'>
                                                             NFT 전송하기
                                                         </span>
                                                     </div>
