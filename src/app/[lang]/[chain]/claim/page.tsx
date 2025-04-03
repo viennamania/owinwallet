@@ -157,7 +157,7 @@ export default function AIPage({ params }: any) {
 
     const searchParams = useSearchParams();
 
-    const center = searchParams.get('center') || "owin_kingkong_bot";
+    const center = searchParams.get('center') || "";
 
     const agent = searchParams.get('agent') || "0xD146c66F924C8A1F533ddFFFD63abff11921DdcF";
 

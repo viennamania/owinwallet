@@ -1802,7 +1802,7 @@ export default function SettingsPage({ params }: any) {
 
                         
 
-                        {/* KYC 인증 */}
+
 
 
 
@@ -1811,7 +1811,34 @@ export default function SettingsPage({ params }: any) {
                         <div className='flex flex-col gap-2 items-start justify-between border border-gray-300 p-4 rounded-lg'>
                             
 
-
+                            {/* KYC 인증 */}
+                            {/* icon-kyc.png */}
+                            <div className='flex flex-row gap-2 items-center justify-between'>
+                                <Image
+                                    src="/icon-kyc.png"
+                                    alt="KYC"
+                                    width={30}
+                                    height={30}
+                                    className="rounded-lg"
+                                />
+                                <span className='text-sm font-semibold text-blue-500'>
+                                    KYC 인증
+                                </span>
+                                <button
+                                    onClick={() => {
+                                        router.push('/' + params.lang + '/' + params.chain + '/kyc');
+                                    }}
+                                    className="hover:bg-gray-200 p-2 rounded-lg"
+                                >
+                                    <Image
+                                        src="/icon-external.png"
+                                        alt="KYC"
+                                        width={20}
+                                        height={20}
+                                    />
+                                </button>
+                            </div>
+    
                             {/* 1:1 문의하기 */}
                             {/* 카카오톡 : http://pf.kakao.com/_rxaxmGn/chat */}
 
