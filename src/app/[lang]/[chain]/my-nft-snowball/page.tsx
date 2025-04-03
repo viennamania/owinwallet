@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState, Suspense } from "react";
+import React, { useEffect, useState, Suspense, use } from "react";
 
 import { toast } from 'react-toastify';
 
@@ -449,7 +449,7 @@ function AgentPage(
 
     const erc1155ContractAddress = "0x96A7f4173b3ac70489403822dFde5f172e7EF1EB";
 
-    const price = 3000;
+    const [price, setPrice] = useState(0);
 
     // claim NFT
     const [claimingNft, setClaimingNft] = useState(false);
@@ -531,9 +531,9 @@ function AgentPage(
                 contract: erc1155Contract,
 
 
-                //tokenId: BigInt(tokenId),
+                tokenId: BigInt(tokenId),
 
-                tokenId: 0n,
+                
 
 
                 to: address as string,
@@ -955,6 +955,18 @@ function AgentPage(
     */
     
 
+    // snowbot is 300 or 3000
+    const [snowbot, setSnowbot] = useState(300);
+
+    useEffect(() => {
+
+        if (snowbot === 300) {
+            setPrice(300);
+        } else {
+            setPrice(3000);
+        }
+
+    }, [snowbot]);
 
 
     return (
@@ -1059,6 +1071,40 @@ function AgentPage(
 
 
                 
+                    {/* radio box for snowbot 300 or 3000 */}
+
+                    <div className="w-full flex flex-row gap-2 items-center justify-start">
+                        <div className="w-full flex flex-row gap-2 items-center justify-start">
+                            <input
+                                type="radio"
+                                id="snowbot300"
+                                name="snowbot"
+                                value="300"
+                                checked={snowbot === 300}
+                                onChange={() => setSnowbot(300)}
+                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+                            />
+                            <label htmlFor="snowbot300" className="text-sm text-zinc-800 font-semibold">
+                                {snowbot === 300 ? "SNOW BOT 300" : "SNOW BOT 3000"}
+                            </label>
+                        </div>
+
+                        <div className="w-full flex flex-row gap-2 items-center justify-start">
+                            <input
+                                type="radio"
+                                id="snowbot3000"
+                                name="snowbot"
+                                value="3000"
+                                checked={snowbot === 3000}
+                                onChange={() => setSnowbot(3000)}
+                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+                            />
+                            <label htmlFor="snowbot3000" className="text-sm text-zinc-800 font-semibold">
+                                SNOW BOT 3000
+                            </label>
+                        </div>
+
+                    </div>
 
 
 
@@ -1072,7 +1118,7 @@ function AgentPage(
                                 {/* dot */}
                                 <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                                 <div className="text-xl text-zinc-800 font-bold">
-                                    SNOW BOT 3000
+                                    {snowbot === 300 ? "SNOW BOT 300" : "SNOW BOT 3000"}
                                 </div>
                             </div>
 
@@ -1080,7 +1126,8 @@ function AgentPage(
                             {/* logo-snowball-3000.png */}
                             <div className="w-full flex flex-col gap-2 items-center justify-between">
                                 <Image
-                                    src="/logo-snowbot3000.png"
+                                    //src="/logo-snowbot3000.png"
+                                    src={snowbot === 300 ? "/logo-snowbot300.png" : "/logo-snowbot3000.png"}
                                     alt="NFT"
                                     width={300}
                                     height={300}
@@ -1101,7 +1148,9 @@ function AgentPage(
                                     {/* dot */}
                                     <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                                     <span className="text-sm text-zinc-800 font-semibold">
-                                        SNOW BOT 3000은 해당 봇을 구매한 사용자들에게 특별한 혜택을 제공하는 스페셜 멤버십 NFT입니다. 구매와 동시에 ‘Snowball 프로젝트’의 멤버가 되며, 이 Bot을 기반으로 다양한 보상과 혜택을 누릴 수 있습니다.
+                                        {`
+                                            SNOW BOT ${snowbot}은 해당 봇을 구매한 사용자들에게 특별한 혜택을 제공하는 스페셜 멤버십 NFT입니다. 구매와 동시에 ‘Snowball 프로젝트’의 멤버가 되며, 이 Bot을 기반으로 다양한 보상과 혜택을 누릴 수 있습니다.
+                                        `}
                                     </span>
                                 </div>
 
@@ -1112,7 +1161,9 @@ function AgentPage(
                                     {/* dot */}
                                     <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                                     <span className="text-sm text-zinc-800 font-semibold">
-                                        SNOW BOT 3000을 구매하면 해당 Bot의 정책에 따른 멤버십 리워드를 획득할 수 있습니다. 획득한 리워드는 외부 지갑으로 자유롭게 출금하거나 ‘Snowball 프로젝트’와 함께하는 다양한 제휴사에서 사용할 수 있습니다. 지금 바로 Snow Bot으로 Snowball을 굴려보세요!
+                                        {`
+                                            SNOW BOT ${snowbot}을 구매하면 해당 Bot의 정책에 따른 멤버십 리워드를 획득할 수 있습니다. 획득한 리워드는 외부 지갑으로 자유롭게 출금하거나 ‘Snowball 프로젝트’와 함께하는 다양한 제휴사에서 사용할 수 있습니다. 지금 바로 Snow Bot으로 Snowball을 굴려보세요!
+                                        `}
                                     </span>
                                 </div>
 
@@ -1348,10 +1399,14 @@ function AgentPage(
 
                                     <button
                                         disabled={claimingNft}
-                                        onClick={() =>
-                                            confirm("구매하시겠습니까?") &&
-                                            claimNft(erc1155ContractAddress, "0"
-                                        )}
+                                        onClick={() => {
+                                            if (confirm("구매하시겠습니까?")) {
+                                                claimNft(
+                                                    erc1155ContractAddress,
+                                                    snowbot === 300 ? "0" : "1"
+                                                );
+                                            }
+                                        }}
                                         className={`
                                             ${claimingNft ? 'bg-gray-300 text-gray-400' : 'bg-blue-500 text-zinc-100'}
                                             p-2 rounded-lg text-lg font-semibold
