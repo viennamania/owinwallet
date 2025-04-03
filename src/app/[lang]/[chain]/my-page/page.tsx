@@ -1488,8 +1488,12 @@ export default function SettingsPage({ params }: any) {
 
     return (
 
-        <main className="p-4 pb-10 min-h-[100vh] flex items-start justify-center container max-w-screen-lg mx-auto">
-
+        <main className="
+        pb-10
+        p-4 min-h-[100vh] flex-col items-start justify-center container max-w-screen-lg mx-auto
+        bg-[#E7EDF1]
+        ">
+  
             <div className="py-0 w-full">
         
                 {/* goto home button using go back icon
@@ -1551,7 +1555,7 @@ export default function SettingsPage({ params }: any) {
                 <div className="w-full flex flex-col items-start justify-center gap-4 p-4">
 
                     <div className='w-full flex flex-row items-center justify-start
-                        gap-2 border border-gray-800
+                        gap-2 border border-gray-300
                         p-4 rounded-lg'>
 
                     
@@ -1590,7 +1594,7 @@ export default function SettingsPage({ params }: any) {
 
 
                         {address && userCode && (
-                            <div className='flex flex-row gap-2 items-center justify-between border border-gray-800 p-4 rounded-lg'>
+                            <div className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
 
                                 <div className='flex flex-row items-center gap-2'>
                                     {/* dot */}
@@ -1796,6 +1800,85 @@ export default function SettingsPage({ params }: any) {
                         )}
                         */}
 
+                        
+
+                        {/* KYC 인증 */}
+
+
+
+ 
+
+                        <div className='flex flex-col gap-2 items-start justify-between border border-gray-300 p-4 rounded-lg'>
+                            
+
+
+                            {/* 1:1 문의하기 */}
+                            {/* 카카오톡 : http://pf.kakao.com/_rxaxmGn/chat */}
+
+                            <div className='flex flex-row gap-2 items-center justify-between'>
+                                <Image
+                                    src="/icon-chat.png"
+                                    alt="Chat"
+                                    width={30}
+                                    height={30}
+                                    className="rounded-lg"
+                                />
+                                <span className='text-sm font-semibold text-blue-500'>
+                                    1:1 문의하기
+                                </span>
+                                <button
+                                    onClick={() => {
+                                        window.open("http://pf.kakao.com/_rxaxmGn/chat", "_blank");
+                                    }}
+                                    className="hover:bg-gray-200 p-2 rounded-lg"
+                                >
+                                    <Image
+                                        src="/icon-external.png"
+                                        alt="Chat"
+                                        width={20}
+                                        height={20}
+                                    />
+                                </button>
+                            </div>
+
+
+
+
+
+
+                            {/* 자주 묻는 질문 */}
+                            {/* icon-faq.png */}
+                            {/* new window */}
+                            {/* 노션 : https://vagabond-secure-fbb.notion.site/FAQ-1c71b4ba94ae80a8b689cc2f796f4034?pvs=4 */}
+
+
+                            <div className='flex flex-row gap-2 items-center justify-between'>
+                                <Image
+                                    src="/icon-faq.png"
+                                    alt="FAQ"
+                                    width={30}
+                                    height={30}
+                                    className="rounded-lg"
+                                />
+                                <span className='text-sm font-semibold text-blue-500'>
+                                    자주 묻는 질문
+                                </span>
+                                <button
+                                    onClick={() => {
+                                        window.open("https://vagabond-secure-fbb.notion.site/FAQ-1c71b4ba94ae80a8b689cc2f796f4034?pvs=4", "_blank");
+                                    }}
+                                    className="hover:bg-gray-200 p-2 rounded-lg"
+                                >
+                                    <Image
+                                        src="/icon-external.png"
+                                        alt="FAQ"
+                                        width={20}
+                                        height={20}
+                                    />
+                                </button>
+                            </div>
+
+                        </div>
 
 
                         {false && userCode && seller && (
