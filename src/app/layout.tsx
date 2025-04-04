@@ -1,7 +1,9 @@
 'use client';
 
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+
+
+
 import "./globals.css";
 import { ThirdwebProvider } from "thirdweb/react";
 
@@ -13,7 +15,22 @@ import React, { useEffect } from "react";
 import Script from "next/script";
 
 
-const inter = Inter({ subsets: ["latin"] });
+
+
+
+//import { Inter } from "next/font/google";
+
+//const inter = Inter({ subsets: ["latin"] });
+
+
+import localFont from "next/font/local";
+
+const pretendard = localFont({
+  src: "../static/fonts/PretendardVariable.woff2",
+  display: "swap",
+  weight: "45 920",
+  variable: "--font-pretendard",
+});
 
 
 
@@ -46,9 +63,14 @@ export default function RootLayout({
    }, []);
    */
 
+   /*
+       <html lang="kr" className={`${pretendard.variable}`}>
+      <body className={pretendard.className}>
+      */
+
 
   return (
-    <html lang="en">
+    <html lang="kr" className={`${pretendard.variable}`}>
 
 
 
@@ -85,8 +107,12 @@ export default function RootLayout({
       </head>
 
 
-
+      {/*
       <body className={inter.className}>
+      */}
+      
+      <body className={pretendard.className}>
+
 
 
 
