@@ -168,11 +168,18 @@ export default function Index({ params }: any) {
  
   const wallet = searchParams.get('wallet');
 
-  const agent = searchParams.get('agent');
+  //const agent = searchParams.get('agent');
 
-  const agentNumber = searchParams.get('tokenId');
+  //const agentNumber = searchParams.get('tokenId');
 
-  const center = searchParams.get('center');
+  //const center = searchParams.get('center');
+
+  // start=' + nft.contract.address + '_' + nft.tokenId
+
+  const start = searchParams.get('start');
+
+  const agent = start?.split('_')[0];
+  const agentNumber = start?.split('_')[1];
 
 
 
@@ -1921,7 +1928,7 @@ export default function Index({ params }: any) {
                         }
 
                         router.push(
-                          "/" + params.lang + "/" + params.chain + "/my-page" + "?agent=" + agent + "&tokenId=" + agentNumber + "&center=" + center
+                          "/" + params.lang + "/" + params.chain + "/my-page" + "?agent=" + agent + "&tokenId=" + agentNumber
                         );
 
                       }}

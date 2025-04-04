@@ -1686,9 +1686,14 @@ function AgentPage(
 
                                                             //'t.me/' + userCenter + '?start=' + nft.contract.address + '_' + nft.tokenId
                                                             'https://uma.tips/' + '?start=' + nft.contract.address + '_' + nft.tokenId
+
+                                                            // get my domain
+
+                                                            
+
                                                         );
                                                         //toast.success('추천코드 URL 복사 완료');
-                                                        alert('추천코드 복사되었습니다.');
+                                                        alert('추천코드가 복사되었습니다.');
                                                     }}
                                                     className="p-2 bg-blue-500 text-zinc-100 rounded
                                                     hover:bg-blue-600 text-sm font-semibold"
