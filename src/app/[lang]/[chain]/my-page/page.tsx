@@ -170,9 +170,10 @@ export default function SettingsPage({ params }: any) {
  
     const wallet = searchParams.get('wallet');
 
-    const agent = searchParams.get('agent');
+    const start = searchParams.get('start') || "0x0276aE1b0768bBfe47d3Dd34493A225405aDB6AA_0";
 
-    const agentNumber = searchParams.get('tokenId');
+    const agent = start?.split('_')[0];
+    const agentNumber = start?.split('_')[1];
 
 
 
@@ -2256,6 +2257,7 @@ export default function SettingsPage({ params }: any) {
                   onClick={() => {
                     router.push(
                       "/" + params.lang + "/" + params.chain + "/"
+                      + "?start=" + start
                     );
                   }}
                   // selected state
@@ -2284,6 +2286,7 @@ export default function SettingsPage({ params }: any) {
                   onClick={() => {
                     router.push(
                       "/" + params.lang + "/" + params.chain + "/my-nft-snowball"
+                        + "?start=" + start
                     );
                   }}
                   className="flex flex-col justify-center items-center gap-2
@@ -2311,6 +2314,7 @@ export default function SettingsPage({ params }: any) {
                   onClick={() => {
                     router.push(
                       "/" + params.lang + "/" + params.chain + "/affiliation-snowball"
+                        + "?start=" + start
                     );
                   }}
                   className="flex flex-col justify-center items-center gap-2

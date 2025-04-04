@@ -119,9 +119,18 @@ function AgentPage(
 ) {
     const { lang, chain } = params;
 
-    //const searchParams = useSearchParams();
+    const searchParams = useSearchParams();
 
-    //const center = searchParams.get('center');
+    const center = searchParams.get('center');
+
+
+    const start = searchParams.get('start') || "0x0276aE1b0768bBfe47d3Dd34493A225405aDB6AA_0";
+
+    const agent = start?.split('_')[0];
+    const agentNumber = start?.split('_')[1];
+  
+
+
 
     /*
     const [params, setParams] = useState({ center: '' });
@@ -1689,7 +1698,7 @@ function AgentPage(
 
                                                             // get my domain
 
-                                                            
+
 
                                                         );
                                                         //toast.success('추천코드 URL 복사 완료');
@@ -1863,6 +1872,7 @@ function AgentPage(
                   onClick={() => {
                     router.push(
                       "/" + params.lang + "/" + params.chain + "/"
+                      + "?start=" + start
                     );
                   }}
                   // selected state
@@ -1891,6 +1901,7 @@ function AgentPage(
                   onClick={() => {
                     router.push(
                       "/" + params.lang + "/" + params.chain + "/my-nft-snowball"
+                        + "?start=" + start
                     );
                   }}
                   className="flex flex-col justify-center items-center gap-2
@@ -1948,6 +1959,7 @@ function AgentPage(
                   onClick={() => {
                     router.push(
                       "/" + params.lang + "/" + params.chain + "/my-page"
+                        + "?start=" + start
                     );
                   }}
                   className="flex flex-col justify-center items-center gap-2
