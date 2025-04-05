@@ -1719,7 +1719,8 @@ function AgentPage(
                                                 
                                                 <div className="w-28 flex flex-row gap-2 items-center justify-start">
                                                     <Image
-                                                        src={nft?.image?.pngUrl}
+                                                        //src={nft?.image?.pngUrl}
+                                                        src={nft?.image?.originalUrl}
                                                         alt="NFT"
                                                         width={500}
                                                         height={500}
