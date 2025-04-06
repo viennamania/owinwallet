@@ -257,7 +257,6 @@ function AgentPage(
                 },
                 body: JSON.stringify({
                     walletAddress: address,
-                    //center: center,
                 }),
             });
 
@@ -311,10 +310,10 @@ function AgentPage(
 
         };
 
-        address && center &&
+        address &&
         fetchData();
 
-    }, [address, center]);
+    }, [address]);
     
 
 
