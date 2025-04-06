@@ -1885,9 +1885,6 @@ function AgentPage(
 
               <div className="w-full grid grid-cols-4 gap-2 justify-center items-center p-5
                 bg-zinc-100 rounded-lg text-center
-                hover:shadow-lg
-                transition duration-300 ease-in-out
-                transform hover:-translate-y-1
               ">
 
                 {/* logo */}
