@@ -18,6 +18,7 @@ export async function POST(request: NextRequest) {
     mobile,
     telegramId,
     center,
+    start,
   } = body;
 
 
@@ -28,6 +29,7 @@ export async function POST(request: NextRequest) {
     mobile: mobile,
     telegramId: telegramId,
     center: center,
+    start: start,
   });
 
 

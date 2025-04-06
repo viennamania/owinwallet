@@ -764,6 +764,7 @@ export default function SettingsPage({ params }: any) {
                     mobile: userPhoneNumber,
                     telegramId: userTelegramId,
                     center: center,
+                    start: start,
                 }),
             });
 
