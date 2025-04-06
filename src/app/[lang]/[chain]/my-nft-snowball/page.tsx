@@ -250,7 +250,7 @@ function AgentPage(
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await fetch("/api/userGogo/getUser", {
+            const response = await fetch("/api/user/getUser", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -324,7 +324,7 @@ function AgentPage(
 
     const checkNicknameIsDuplicate = async ( nickname: string ) => {
 
-        const response = await fetch("/api/userGogo/checkUserByNickname", {
+        const response = await fetch("/api/user/checkUserByNickname", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -377,7 +377,7 @@ function AgentPage(
         if (nicknameEdit) {
 
 
-            const response = await fetch("/api/userGogo/updateUser", {
+            const response = await fetch("/api/user/updateUser", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -413,7 +413,7 @@ function AgentPage(
 
         } else {
 
-            const response = await fetch("/api/userGogo/setUserVerified", {
+            const response = await fetch("/api/user/setUserVerified", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
