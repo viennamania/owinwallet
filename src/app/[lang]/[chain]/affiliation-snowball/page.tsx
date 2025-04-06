@@ -2080,6 +2080,7 @@ function Header(
             <AgentPage
                 params={params}
             />
+            <div className="w-full h-36 bg-zinc-100"></div>
         </Suspense>
     );
   }
