@@ -257,13 +257,15 @@ function AgentPage(
                 },
                 body: JSON.stringify({
                     walletAddress: address,
-                    center: center,
+                    //center: center,
                 }),
             });
 
             const data = await response.json();
 
-            ///console.log("data", data);
+            //console.log("data", data);
+
+
 
             if (data.result) {
                 setNickname(data.result.nickname);
