@@ -988,8 +988,7 @@ function AgentPage(
         ">
 
 
-
-            <div className="pb-56 w-full">
+            <div className="py-0 w-full">
 
                 {/*
                 <AutoConnect
@@ -1002,7 +1001,7 @@ function AgentPage(
 
 
         
-                <div className="w-full mt-5 flex flex-col items-start justify-center gap-2">
+                <div className="w-full flex flex-col items-start justify-center gap-2">
 
                     {!address && (
 

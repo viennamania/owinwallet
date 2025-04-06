@@ -2080,7 +2080,6 @@ function Header(
             <AgentPage
                 params={params}
             />
-            <div className="h-20"></div>
         </Suspense>
     );
   }
