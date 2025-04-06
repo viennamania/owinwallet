@@ -1221,7 +1221,7 @@ function AgentPage(
 
                                 <div className=" flex flex-col xl:flex-row items-center justify-start gap-5">
                                     <Image
-                                    src="/icon-wallet-live.gif"
+                                    src="/icon-wallet.png"
                                     alt="Wallet"
                                     width={50}
                                     height={25}

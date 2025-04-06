@@ -1048,7 +1048,7 @@ function AgentPage(
                                 bg-white bg-opacity-90
                                 rounded-lg">
                                     <Image
-                                    src="/icon-wallet-live.gif"
+                                    src="/icon-wallet.png"
                                     alt="Wallet"
                                     width={50}
                                     height={25}

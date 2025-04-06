@@ -1050,8 +1050,19 @@ export default function Index({ params }: any) {
 
         {!address && (
           <div className="w-full flex flex-row gap-2 justify-end items-center">
+            {/* icon-language */}
+            <Image
+              src="/icon-language.png"
+              alt="Language"
+              width={20}
+              height={20}
+              className="rounded-lg w-8 h-8"
+            />
+
+            {/* right space */}
             <select
-              className="p-2 text-sm bg-zinc-800 text-white rounded"
+              className="p-2 text-sm bg-zinc-800 text-white rounded
+              "
               onChange={(e) => {
                 const lang = e.target.value;
                 router.push(
@@ -1330,9 +1341,9 @@ export default function Index({ params }: any) {
         {address && (
           <div className="mt-0 w-full flex items-center justify-between gap-5">
             <Image
-              src="/icon-wallet-live.gif"
+              src="/icon-wallet.png"
               alt="Wallet"
-              width={65}
+              width={25}
               height={25}
               className="rounded"
             />
@@ -1869,27 +1880,71 @@ export default function Index({ params }: any) {
                 transform hover:-translate-y-1
               ">
 
-                <div className="flex flex-row justify-start items-center gap-2">
-                  <Image
-                    src={avatar || "/profile-default.png"}
-                    alt="Profile Image"
-                    width={35}
-                    height={35}
-                    priority={true} // Added priority property
-                    className="rounded-full"
-                    style={{
-                        objectFit: 'cover',
-                        width: '45px',
-                        height: '45px',
-                    }}
-                  />
 
-                  <p className="text-sm md:text-xl text-gray-600">{My_Nickname}</p>
+                {/* 회원아이디를 만들어주세요 */}
+                {!userCode ? (
+
+                  <div className="flex flex-col justify-center items-center gap-2">
+                    {/* 회원아이디를 만들어주세요 */}
+
+                    <div className="flex flex-row justify-center items-center gap-2">
+                    {/* dot */}
+                      <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                      <h2 className="text-sm md:text-lg font-semibold text-zinc-100">
+                        회원아이디를 만들어주세요
+                      </h2>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        //console.log("회원정보 설정");
+
+                        if (!address) {
+                          toast.error(Please_connect_your_wallet_first);
+                          return;
+                        }
+
+                        router.push(
+                          "/" + params.lang + "/" + params.chain + "/my-page" + "?start=" + start
+                        );
+
+                      }}
+                      className="text-sm border border-gray-800 rounded-lg p-2
+                      hover:bg-gray-800 hover:text-white"
+                    >
+                      회원정보 설정
+                    </button>
+
+                  </div>
+
+
+                ) : (
+
+                  <>
 
 
 
-                </div>
-    
+                  <div className="flex flex-row justify-start items-center gap-2">
+                    <Image
+                      src={avatar || "/profile-default.png"}
+                      alt="Profile Image"
+                      width={35}
+                      height={35}
+                      priority={true} // Added priority property
+                      className="rounded-full"
+                      style={{
+                          objectFit: 'cover',
+                          width: '45px',
+                          height: '45px',
+                      }}
+                    />
+
+                    <p className="text-sm md:text-xl text-gray-600">{My_Nickname}</p>
+
+
+
+                  </div>
+      
                 
 
 
@@ -1917,6 +1972,7 @@ export default function Index({ params }: any) {
                       />
                     )}
 
+
                     {/* 프로필 설정 */}
                     <button
                       onClick={() => {
@@ -1941,6 +1997,9 @@ export default function Index({ params }: any) {
                   </div>
 
              
+                  </>
+
+                )}
 
 
 

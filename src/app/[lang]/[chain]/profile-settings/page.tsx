@@ -1547,7 +1547,7 @@ export default function SettingsPage({ params }: any) {
                             {address && (
                                 <div className='flex flex-row items-center gap-2'>
                                     <Image
-                                        src="/icon-wallet-live.gif"
+                                        src="/icon-wallet.png"
                                         alt="Live"
                                         width={50}
                                         height={50}

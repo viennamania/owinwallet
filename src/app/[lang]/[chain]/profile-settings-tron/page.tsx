@@ -1569,9 +1569,9 @@ export default function SettingsPage({ params }: any) {
 
                                 <div className='w-full flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
                                     <Image
-                                        src="/icon-wallet-live.gif"
+                                        src="/icon-wallet.png"
                                         alt="Wallet"
-                                        width={65}
+                                        width={25}
                                         height={25}
                                         className="rounded"
                                     />

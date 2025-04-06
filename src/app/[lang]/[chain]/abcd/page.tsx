@@ -1470,9 +1470,9 @@ export default function AIPage({ params }: any) {
                             <div className='w-full flex flex-col xl:flex-row items-start justify-between gap-2'>
                                 <div className="flex items-center justify-start gap-5">
                                     <Image
-                                        src="/icon-wallet-live.gif"
+                                        src="/icon-wallet.png"
                                         alt="Wallet"
-                                        width={65}
+                                        width={25}
                                         height={25}
                                         className="rounded"
                                     />
