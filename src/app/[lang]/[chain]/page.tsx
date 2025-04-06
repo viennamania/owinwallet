@@ -1339,23 +1339,29 @@ export default function Index({ params }: any) {
         )}
 
         {address && (
-          <div className="mt-0 w-full flex items-center justify-between gap-5">
-            <Image
-              src="/icon-wallet.png"
-              alt="Wallet"
-              width={25}
-              height={25}
-              className="rounded"
-            />
-            <div className="flex flex-col gap-2">
-              {/* disconnect button */}
+          <div className="w-full flex items-center justify-end gap-5">
+
+            {/* disconnect button */}
+
+            <div className="flex flex-row gap-2">
+
+
               <button
                 onClick={() => {
                   confirm("지갑 연결을 해제하시겠습니까?") && activeWallet?.disconnect();
                 }}
-                className="bg-zinc-800 text-white p-2 rounded-lg"
+                className="flex flex-row gap-2 items-center bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600"
               >
-                지갑 연결 해제
+                <Image
+                  src="/icon-wallet.png"
+                  alt="Wallet"
+                  width={25}
+                  height={25}
+                  className="rounded"
+                />
+                <span className="text-sm">
+                  지갑 연결 해제
+                </span>
               </button>
             </div>
 
@@ -1887,11 +1893,11 @@ export default function Index({ params }: any) {
                   <div className="flex flex-col justify-center items-center gap-2">
                     {/* 회원아이디를 만들어주세요 */}
 
-                    <div className="flex flex-row justify-center items-center gap-2">
+                    <div className="flex flex-row justify-start items-center gap-2">
                     {/* dot */}
-                      <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                      <div className="w-2 h-2 bg-red-500 rounded-full"></div>
                       <h2 className="text-sm md:text-lg font-semibold text-zinc-100">
-                        회원아이디를 만들어주세요
+                        회원아이디를 만들어주세요. 회원아이디가 없으면 서비스를 이용할 수 없습니다.
                       </h2>
                     </div>
 

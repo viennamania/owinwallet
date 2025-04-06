@@ -989,8 +989,7 @@ function AgentPage(
 
 
 
-            <div className="pb-56
-            w-full">
+            <div className="pb-56 w-full">
 
                 {/*
                 <AutoConnect
@@ -1040,46 +1039,42 @@ function AgentPage(
 
                     )}                    
                     
-                    <div className="hidden w-full justify-center mt-5">
-                        {address ? (
-                            <div className="w-full flex flex-row gap-2 items-center justify-between">
 
-                                <div className="flex flex-col xl:flex-row items-center justify-start gap-5
-                                bg-white bg-opacity-90
-                                rounded-lg">
-                                    <Image
-                                    src="/icon-wallet.png"
-                                    alt="Wallet"
-                                    width={50}
-                                    height={25}
-                                    className="rounded"
-                                    />
-                                </div>
 
-                                
-                                <Button
-                                    onClick={() => (window as any).Telegram.WebApp.openLink(`https://polygonscan.com/address/${address}`)}
-                                    className="inline-flex items-center gap-2 rounded-md bg-gray-700 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white"
-                                >
-                                    내 지갑주소: {shortenAddress(address as string)}
-                                </Button>
-                                <Button
-                                    onClick={() => {
-                                        navigator.clipboard.writeText(address as string);
-                                        alert('지갑주소가 복사되었습니다.');
-                                    }}
-                                    className="inline-flex items-center gap-2 rounded-md bg-gray-700 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white"
-                                >
-                                    복사
-                                </Button>
-                                
+                    {/* 회원아이디를 만들어주세요 */}
+                    {address && !userCode && (
+
+                        <div className="flex flex-col justify-start items-start gap-2 p-2">
+                            {/* 회원아이디를 만들어주세요 */}
+
+                            <div className="flex flex-row justify-center items-center gap-2">
+                            {/* dot */}
+                            <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                            <h2 className="text-sm md:text-lg font-semibold text-zinc-800">
+                                회원아이디를 만들어주세요. 회원아이디가 없으면 서비스를 이용할 수 없습니다.
+                            </h2>
                             </div>
-                        ) : (
-                            <p className="text-sm text-zinc-400">
-                                연결된 지갑이 없습니다. 지갑을 연결해 주세요.
-                            </p>
-                        )}      
-                    </div>
+
+                            <button
+                            onClick={() => {
+
+                                router.push(
+                                "/" + params.lang + "/" + params.chain + "/my-page" + "?start=" + start
+                                );
+
+                            }}
+                            className="text-sm border border-gray-800 rounded-lg p-2
+                            bg-white text-zinc-800 font-semibold hover:bg-gray-200 transition-all duration-300 ease-in-out"
+                            >
+                            회원정보 설정
+                            </button>
+
+                        </div>
+
+
+                    )}
+
+
 
 
                 

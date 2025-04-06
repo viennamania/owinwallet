@@ -1555,35 +1555,36 @@ export default function SettingsPage({ params }: any) {
 
                 <div className="w-full flex flex-col items-start justify-center gap-4 p-4">
 
-                    <div className='w-full flex flex-row items-center justify-start
-                        gap-2 border border-gray-300
-                        p-4 rounded-lg'>
+                    {address && userCode && (
+                        <div className='w-full flex flex-row items-center justify-start
+                            gap-2 border border-gray-300
+                            p-4 rounded-lg'>
 
-                    
-                        <Image
-                            src="/icon-profile.png"
-                            alt="Profile Picture"
-                            width={50}
-                            height={50}
-                            className="rounded-full object-cover bg-gray-300
-                            border border-gray-300 w-12 h-12"
-                        />
-                        <div className='flex flex-col items-start justify-start gap-2'>
-                            <span className="text-2xl font-semibold text-blue-500">
-                                {nickname ? nickname : ""}
-                            </span>
-                            {/* KYC 인증 완료 */}
-                            <div 
-                                className="flex flex-row items-center justify-start gap-2
-                                bg-green-500 text-zinc-100 p-2 rounded-lg">
-                                <span className="text-sm font-semibold text-zinc-100">
-                                    KYC 인증 완료
+                        
+                            <Image
+                                src="/icon-profile.png"
+                                alt="Profile Picture"
+                                width={50}
+                                height={50}
+                                className="rounded-full object-cover bg-gray-300
+                                border border-gray-300 w-12 h-12"
+                            />
+                            <div className='flex flex-col items-start justify-start gap-2'>
+                                <span className="text-2xl font-semibold text-blue-500">
+                                    {nickname ? nickname : ""}
                                 </span>
+                                {/* KYC 인증 완료 */}
+                                <div 
+                                    className="flex flex-row items-center justify-start gap-2
+                                    bg-green-500 text-zinc-100 p-2 rounded-lg">
+                                    <span className="text-sm font-semibold text-zinc-100">
+                                        KYC 인증 완료
+                                    </span>
+                                </div>
                             </div>
+
                         </div>
-
-
-                    </div>
+                    )}
 
 
 
