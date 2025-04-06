@@ -1117,9 +1117,9 @@ export default function Index({ params }: any) {
               </div>
 
               <Image
-                src="/logo-snowball.webp"
+                src="/logo-snowball.png"
                 alt="Snowball"
-                width={200}
+                width={150}
                 height={50}
                 className="rounded-lg"
               />
