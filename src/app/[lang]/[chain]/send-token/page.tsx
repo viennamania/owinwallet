@@ -730,6 +730,7 @@ export default function SendUsdt({ params }: any) {
         {/* goto home button using go back icon
         history back
         */}
+        {/*
         <AppBarComponent />
 
 
@@ -740,6 +741,7 @@ export default function SendUsdt({ params }: any) {
             agent={agent || ""}
             tokenId={agentNumber || ""}
           />
+        */}
 
         {/*
         <div className="mt-4 flex justify-start space-x-4 mb-10">
@@ -761,7 +763,17 @@ export default function SendUsdt({ params }: any) {
             </button>
         </div>
         */}
-        
+
+        {/* go back button */}
+        <div className="mt-4 flex justify-start space-x-4 mb-10">
+            <button
+              
+              onClick={() => router.back()}
+
+              className="text-gray-600 font-semibold underline">
+              {Go_Home}
+            </button>
+        </div>
 
 
         <div className="flex flex-col items-start justify-center space-y-4">
