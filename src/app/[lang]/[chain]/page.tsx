@@ -1979,27 +1979,6 @@ export default function Index({ params }: any) {
                     )}
 
 
-                    {/* 프로필 설정 */}
-                    <button
-                      onClick={() => {
-                        //console.log("회원정보 설정");
-
-                        if (!address) {
-                          toast.error(Please_connect_your_wallet_first);
-                          return;
-                        }
-
-                        router.push(
-                          "/" + params.lang + "/" + params.chain + "/my-page" + "?agent=" + agent + "&tokenId=" + agentNumber
-                        );
-
-                      }}
-                      className="text-sm border border-gray-800 rounded-lg p-2
-                      hover:bg-gray-800 hover:text-white"
-                    >
-                      {Profile_Settings}
-                    </button>
-
                   </div>
 
              
