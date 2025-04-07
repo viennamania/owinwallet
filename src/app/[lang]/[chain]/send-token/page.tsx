@@ -832,29 +832,48 @@ export default function SendUsdt({ params }: any) {
 
                   {!address && (
 
-                    <ConnectButton
-                    client={client}
-                    wallets={wallets}
-                    accountAbstraction={{
-                      chain: polygon,
-                       
-                      sponsorGas: true
-                    }}
-                    theme={"light"}
-                    connectButton={{
-                      label: "Sign in",
-                    }}
-                    connectModal={{
-                      size: "wide", 
-                      titleIcon: "https://uma.tips/icon-snowball.png",                           
-                      showThirdwebBranding: false,
-
-                    }}
-                    locale={"ko_KR"}
-                    //locale={"en_US"}
-                    />
+                    <div className="
+                    mt-16
+                    w-full flex flex-col justify-center items-center gap-2 p-2">
 
 
+                      <ConnectButton
+                        client={client}
+                        wallets={wallets}
+                        accountAbstraction={{
+                          chain: polygon,
+                          sponsorGas: true
+                        }}
+                        
+                        theme={"light"}
+          
+                        // button color is dark skyblue convert (49, 103, 180) to hex
+                        connectButton={{
+                          style: {
+                            backgroundColor: "#3167b4", // dark skyblue
+                            // font color is gray-300
+                            color: "#f3f4f6", // gray-300
+                            padding: "10px 20px",
+                            borderRadius: "10px",
+                            fontSize: "16px",
+                            // w-full
+                            width: "100%",
+                          },
+                          label: "로그인하면 지갑에 연결됩니다.",
+                        }}
+          
+                        connectModal={{
+                          size: "wide", 
+                          //size: "compact",
+                          titleIcon: "https://uma.tips/icon-snowball.png",                           
+                          showThirdwebBranding: false,
+                        }}
+          
+                        locale={"ko_KR"}
+                        //locale={"en_US"}
+                      />
+
+                    </div>
                   )}
 
 
