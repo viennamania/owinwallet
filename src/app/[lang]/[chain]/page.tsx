@@ -1032,12 +1032,62 @@ export default function Index({ params }: any) {
 
     <main className="
       pb-10
-      p-4 min-h-[100vh] flex-col items-start justify-center container max-w-screen-lg mx-auto
+      p-0 min-h-[100vh] flex-col items-start justify-center container max-w-screen-lg mx-auto
       bg-[#E7EDF1]
     ">
 
 
-      <div className="py-0 w-full">
+
+        {/* header */}
+        {/* SNOWBALL */}
+        {address && (
+          <div className="w-full flex flex-col gap-2 justify-start items-center
+            pl-5 pr-5 pt-5 pb-0
+            bg-zinc-200
+            ">
+
+            <div className="w-full flex flex-row gap-2 justify-start items-center">
+              {/*
+              <Image
+                src="/icon-snowball.png"
+                alt="Snowball"
+                width={50}
+                height={50}
+                className="rounded-lg w-10 h-10"
+              />
+              */}
+              <span className="text-lg md:text-xl font-bold text-zinc-500">
+                SNOWBALL
+              </span>
+            </div>
+
+            <div className="w-full flex flex-row gap-2 justify-between items-center">
+              <div className="w-full flex flex-col justify-start items-start">
+                <span className="text-lg md:text-lg font-bold text-zinc-500">
+                  Let Your Money
+                </span>
+                <span className="text-lg md:text-lg font-bold text-zinc-500">
+                  Roll And Grow
+                </span>
+              </div>
+
+              <Image
+                src="/logo-snowball.png"
+                alt="Snowball"
+                width={120}
+                height={120}
+                className="rounded-lg"
+              />
+
+            </div>
+
+          </div>
+
+        )}
+
+
+
+      <div className="p-5 w-full">
         
         {/*
         <Header
@@ -1050,19 +1100,16 @@ export default function Index({ params }: any) {
 
         {!address && (
           <div className="w-full flex flex-row gap-2 justify-end items-center">
-            {/* icon-language */}
-            <Image
-              src="/icon-language.png"
-              alt="Language"
-              width={20}
-              height={20}
-              className="rounded-lg w-8 h-8"
-            />
+
 
             {/* right space */}
+            {/* background transparent */}
             <select
-              className="p-2 text-sm bg-zinc-800 text-white rounded
-              "
+              //className="p-2 text-sm bg-zinc-800 text-white rounded"
+
+
+              className="p-2 text-sm bg-transparent text-zinc-800 rounded"
+
               onChange={(e) => {
                 const lang = e.target.value;
                 router.push(
@@ -1096,50 +1143,21 @@ export default function Index({ params }: any) {
               </option>
             </select>
 
+            {/* icon-language */}
+            {/* color is tone down */}
+            <Image
+              src="/icon-language.png"
+              alt="Language"
+              width={20}
+              height={20}
+              className="rounded-lg w-6 h-6
+                opacity-50
+                "
+            />
+
           </div>
         )}
 
-        {/* header */}
-        {/* SNOWBALL */}
-        {address && (
-          <div className="w-full flex flex-col gap-2 justify-start items-center">
-
-            <div className="w-full flex flex-row gap-2 justify-start items-center">
-              <Image
-                src="/icon-snowball.png"
-                alt="Snowball"
-                width={50}
-                height={50}
-                className="rounded-lg w-10 h-10"
-              />
-              <span className="text-xl md:text-2xl font-semibold text-zinc-800">
-                SNOWBALL
-              </span>
-            </div>
-
-            <div className="w-full flex flex-row gap-2 justify-between items-center">
-              <div className="w-full flex flex-col justify-start items-start">
-                <span className="text-sm md:text-lg font-bold text-zinc-500">
-                  Let Your Money
-                </span>
-                <span className="text-sm md:text-lg font-bold text-zinc-500">
-                  Roll And Grow
-                </span>
-              </div>
-
-              <Image
-                src="/logo-snowball.png"
-                alt="Snowball"
-                width={150}
-                height={50}
-                className="rounded-lg"
-              />
-
-            </div>
-
-          </div>
-
-        )}
 
 
         <div className="w-full flex flex-row gap-2 justify-between items-center">
@@ -1234,12 +1252,13 @@ export default function Index({ params }: any) {
         {/* 눈덩이처럼 불어나는 나의 자산 */}
         {/* SNOWBOLL WALLET */}
         {!address && (
-          <div className="mt-16 w-full flex flex-col justify-center items-center gap-2 mb-5">
-              <div className="w-full flex flex-col justify-center items-center gap-2 mb-5">
-                <span className="text-lg md:text-xl text-zinc-500">
+          <div className="mt-5 w-full flex flex-col justify-center items-center gap-2 mb-5">
+              
+              <div className="w-full flex flex-col justify-start items-start gap-0 mb-5">
+                <span className="text-lg md:text-xl font-bold text-zinc-600">
                   {description}
                 </span>
-                <span className="text-xl md:text-2xl font-semibold text-zinc-800">
+                <span className="text-lg md:text-xl font-bold text-zinc-600">
                   {title}
                 </span>
               </div>
@@ -1254,7 +1273,7 @@ export default function Index({ params }: any) {
                   alt="Snowball"
                   width={200}
                   height={200}
-                  className="rounded-lg w-40 h-40 xl:w-60 xl:h-60"
+                  className="rounded-lg w-20 h-20 xl:w-24 xl:h-24"
                 />
               </div>
           </div>
@@ -1317,20 +1336,73 @@ export default function Index({ params }: any) {
                 chain: polygon,
                 sponsorGas: true
               }}
+              
               theme={"light"}
+              // color blue
+
+
+
+              // button color is dark skyblue convert (49, 103, 180) to hex
               connectButton={{
-                label: "로그인하세요",
+                style: {
+                  backgroundColor: "#3167b4", // dark skyblue
+                  // font color is gray-300
+                  color: "#f3f4f6", // gray-300
+                  padding: "10px 20px",
+                  borderRadius: "10px",
+                  fontSize: "16px",
+                  // w-full
+                  width: "100%",
+                },
+
+                // text color is white
+  
+
+                label: "로그인하면 지갑에 연결됩니다.",
+
+
+
               }}
+
+
+
               connectModal={{
                 size: "wide", 
                 //size: "compact",
                 titleIcon: "https://uma.tips/icon-snowball.png",                           
                 showThirdwebBranding: false,
 
+                // button color is blue
+
+
+
+
               }}
+
+
+
+
               locale={"ko_KR"}
               //locale={"en_US"}
             />
+
+
+
+
+            <div className="mt-20
+              flex flex-row gap-2 justify-center items-center">
+              <span className="text-sm md:text-lg text-zinc-500">
+                이용방법이 궁금하신가요?
+              </span>
+              <Link
+                href="#"
+                className="text-sm md:text-lg text-blue-500 font-semibold hover:underline"
+              >
+                이용가이드
+              </Link>
+            </div>
+
+
             
           
 
@@ -1566,7 +1638,7 @@ export default function Index({ params }: any) {
 
             <div className="mt-4 flex flex-row gap-2 justify-between items-center p-2">
               <Image
-                src="/logo-tether.png"
+                src="/logo-tether.svg"
                 alt="USDT"
                 width={35}
                 height={35}
@@ -2177,18 +2249,7 @@ export default function Index({ params }: any) {
 
               <div className="flex flex-col items-center justify-center gap-2">
 
-                <div className="
-                  flex flex-row gap-2 justify-center items-center">
-                  <span className="text-lg md:text-xl text-zinc-500">
-                    이용방법이 궁금하신가요?
-                  </span>
-                  <Link
-                    href="#"
-                    className="text-lg md:text-xl text-blue-500 font-semibold hover:underline"
-                  >
-                    이용가이드
-                  </Link>
-                </div>
+
 
                 <div className="
                   flex flex-row gap-2 justify-center items-center">
