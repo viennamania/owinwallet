@@ -1873,7 +1873,7 @@ function AgentPage(
             <div className="w-full fixed bottom-0 left-0 right-0 items-center justify-center">
 
 
-              <div className="w-full grid grid-cols-4 gap-2 justify-center items-center p-5
+              <div className="w-full grid grid-cols-4 gap-0 justify-center items-center p-0
                 bg-zinc-100 rounded-lg text-center
               ">
 
@@ -1888,11 +1888,10 @@ function AgentPage(
                     );
                   }}
                   // selected state
-                  className="flex flex-col justify-center items-center gap-2
+                  className="flex flex-col justify-center items-center gap-0
                     hover:bg-blue-200 hover:text-blue-800
                     transition duration-300 ease-in-out
                     transform hover:-translate-y-1
-                    rounded-lg
                     p-2
                   "
                 >
@@ -1901,9 +1900,9 @@ function AgentPage(
                     alt="Home"
                     width={35}
                     height={35}
-                    className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
+                    className="rounded-lg w-5 h-5 xl:w-10 xl:h-10"
                   />
-                  <p className="text-sm md:text-lg text-gray-600">
+                  <p className="text-xs md:text-lg text-gray-600 font-bold">
                     홈
                   </p>
                 </button>
@@ -1916,11 +1915,10 @@ function AgentPage(
                         + "?start=" + start
                     );
                   }}
-                  className="flex flex-col justify-center items-center gap-2
+                  className="flex flex-col justify-center items-center gap-0
                     hover:bg-blue-200 hover:text-blue-800
                     transition duration-300 ease-in-out
                     transform hover:-translate-y-1
-                    rounded-lg
                     p-2
                   "
                 >
@@ -1929,9 +1927,9 @@ function AgentPage(
                     alt="NFT Market"
                     width={35}
                     height={35}
-                    className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
+                    className="rounded-lg w-5 h-5 xl:w-10 xl:h-10"
                   />
-                  <p className="text-sm md:text-lg text-gray-600">
+                  <p className="text-xs md:text-lg text-gray-600 font-bold">
                     NFT 상점
                   </p>
                 </button>
@@ -1946,11 +1944,10 @@ function AgentPage(
                     );
                   }}
                     */
-                  className="flex flex-col justify-center items-center gap-2
+                  className="flex flex-col justify-center items-center gap-0
                     bg-blue-200 text-blue-800
                     transition duration-300 ease-in-out
                     transform hover:-translate-y-1
-                    rounded-lg
                     p-2
                   "
                 >
@@ -1959,9 +1956,9 @@ function AgentPage(
                     alt="Invite Friend"
                     width={35}
                     height={35}
-                    className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
+                    className="rounded-lg w-5 h-5 xl:w-10 xl:h-10"
                   />
-                  <p className="text-sm md:text-lg text-gray-600">
+                  <p className="text-xs md:text-lg text-gray-600 font-bold">
                     친구초대
                   </p>
                 </button>
@@ -1974,11 +1971,10 @@ function AgentPage(
                         + "?start=" + start
                     );
                   }}
-                  className="flex flex-col justify-center items-center gap-2
+                  className="flex flex-col justify-center items-center gap-0
                     hover:bg-blue-200 hover:text-blue-800
                     transition duration-300 ease-in-out
                     transform hover:-translate-y-1
-                    rounded-lg
                     p-2
                   "
                 >
@@ -1987,9 +1983,9 @@ function AgentPage(
                     alt="My Page"
                     width={35}
                     height={35}
-                    className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
+                    className="rounded-lg w-5 h-5 xl:w-10 xl:h-10"
                   />
-                  <p className="text-sm md:text-lg text-gray-600">
+                  <p className="text-xs md:text-lg text-gray-600 font-bold">
                     마이페이지
                   </p>
                 </button>
