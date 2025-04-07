@@ -1992,7 +1992,7 @@ function IndexPage(
                   {/* dot */}
                   <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                   <div className="text-sm text-zinc-800 font-bold">
-                      소유한 SNOW BOT
+                      나의 NFT 자산
                   </div>
               </div>
 
@@ -2006,7 +2006,7 @@ function IndexPage(
                           className="animate-spin"
                       />
                       <span className="text-lg font-semibold text-zinc-400">
-                          SNOW BOT 불러오는 중...
+                          불러오는 중...
                       </span>
                   </div>
               )}
@@ -2015,7 +2015,7 @@ function IndexPage(
               {ownedNfts.length === 0 && !loadingOwnedNfts && (
                   <div className="w-full flex flex-row gap-2 items-center justify-center">
                       <span className="text-lg font-semibold text-zinc-400">
-                          소유한 SNOW BOT 이 없습니다.
+                          소유한 NFT 자산이 없습니다.
                       </span>
                   </div>
               )}
