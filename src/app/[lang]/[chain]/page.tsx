@@ -1023,7 +1023,7 @@ function IndexPage(
 
 
 
-    const erc1155ContractAddress = "0x96A7f4173b3ac70489403822dFde5f172e7EF1EB";
+    const erc1155ContractAddress = "0x796f8867E6D474C1d63e4D7ea5f52B48E4bA83D6";
 
     const [price, setPrice] = useState(0);
 
