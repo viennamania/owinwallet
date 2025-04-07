@@ -727,43 +727,6 @@ export default function SendUsdt({ params }: any) {
 
       <div className="py-0 w-full ">
 
-        {/* goto home button using go back icon
-        history back
-        */}
-        {/*
-        <AppBarComponent />
-
-
-        <Header
-            lang={params.lang}
-            chain={params.chain}
-            center={center ? center : ""}
-            agent={agent || ""}
-            tokenId={agentNumber || ""}
-          />
-        */}
-
-        {/*
-        <div className="mt-4 flex justify-start space-x-4 mb-10">
-            <button
-              
-              onClick={() => router.push(
-                
-                //'/' + params.lang + '/' + params.chain
-
-                wallet === "smart" ?
-                '/' + params.lang + '/' + params.chain + '/?wallet=smart'
-                :
-                '/' + params.lang + '/' + params.chain
-
-              )}
-
-              className="text-gray-600 font-semibold underline">
-              {Go_Home}
-            </button>
-        </div>
-        */}
-
         {/* go back button */}
         <div className="mt-4 flex justify-start space-x-4 mb-10">
             <button

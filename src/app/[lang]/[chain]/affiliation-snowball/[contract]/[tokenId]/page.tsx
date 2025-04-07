@@ -124,6 +124,7 @@ export default function AgentPage({ params }: any) {
   const [loadingAgent, setLoadingAgent] = useState(false);
 
   const [animationUrl, setAnimationUrl] = useState("");
+  
   useEffect(() => {
       
       const getAgent = async () => {
@@ -492,54 +493,18 @@ export default function AgentPage({ params }: any) {
 
   return (
 
-    <main
-    className="p-4 pb-28 min-h-[100vh] flex items-start justify-center container max-w-screen-lg mx-auto"
-    style={{
-        backgroundImage: "url('/mobile-background-nft.jpg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
-        {/*
-        <AutoConnect
-            client={client}
-            wallets={[wallet]}
-            timeout={15000}
-        />
-        */}
-
-  
+    <main className="p-4 pb-10 min-h-[100vh] flex items-start justify-center container max-w-screen-lg mx-auto">
 
       <div className="py-0 w-full ">
 
-        {/* sticky header */}
-        <div className="sticky top-0 z-50
-            bg-zinc-800 bg-opacity-90
-            backdrop-blur-md
-            p-4 rounded-lg
-            w-full flex flex-row items-center justify-between">
-
-            {/* title */}
-            {/* 돌아가기 버튼 */}
+        {/* go back button */}
+        <div className="mt-4 flex justify-start space-x-4 mb-10">
             <button
-                onClick={() => {
-                    router.back();
-                }}
-                className="p-2 bg-gray-500 text-white rounded"
-            >
-                <div className='flex flex-row gap-2 items-center justify-center'>
-                    <Image
-                        src="/icon-back.png"
-                        alt="Back"
-                        width={20}
-                        height={20}
-                        className="rounded-lg"
-                    />
-                    <span className='text-lg font-semibold'>
-                        돌아가기
-                    </span>
-                </div>
+              
+              onClick={() => router.back()}
+
+              className="text-gray-600 font-semibold underline">
+              {Go_Home}
             </button>
         </div>
 

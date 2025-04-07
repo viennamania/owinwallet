@@ -2026,7 +2026,9 @@ function IndexPage(
                       {ownedNfts.map((nft, index) => (
 
                           <div key={index} className="w-full flex flex-col gap-2 items-center justify-between p-4
-                              border border-gray-800
+                              border border-gray-200
+                              bg-white
+                              hover:shadow-lg
                               rounded-lg">
 
 
@@ -2064,6 +2066,19 @@ function IndexPage(
 
 
                               </div>
+
+                              {/* 더보기 버튼 */}
+                              <button
+                                  onClick={() => {
+                                      // redirect to nft detail page
+                                      router.push(
+                                          "/" + params.lang + "/" + params.chain + "/my-nft-snowball/" + erc1155ContractAddress + "/" + nft.id.toString()
+                                      );
+                                  }}
+                                  className="w-full bg-[#3167b4] text-sm text-[#f3f4f6] px-4 py-2 rounded-lg hover:bg-[#3167b4]/80"
+                              >
+                                더보기
+                              </button>
 
 
 

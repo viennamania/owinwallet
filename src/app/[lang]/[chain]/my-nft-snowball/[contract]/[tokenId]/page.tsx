@@ -140,7 +140,7 @@ export default function AgentPage({ params }: any) {
   //console.log("agentContractAddress", agentContractAddress);
 
   
-  const [agent, setAgent] = useState({} as any);
+  const [nftInfo, setNftInfo] = useState(null as any);
   
  
   const [holderWalletAddress, setHolderWalletAddress] = useState("");
@@ -175,7 +175,7 @@ export default function AgentPage({ params }: any) {
   
         const data = await response.json();
 
-        console.log("getAgentNFTByContractAddressAndTokenId data", data);
+        //console.log("getAgentNFTByContractAddressAndTokenId data", data);
 
         if (data.result.raw?.metadata?.animation_url) {
             setAnimationUrl(
@@ -183,7 +183,8 @@ export default function AgentPage({ params }: any) {
             );
         }
   
-        setAgent(data.result);
+
+        setNftInfo(data.result);
 
         setOwnerInfo(data?.ownerInfo);
         setHolderWalletAddress(data?.ownerWalletAddress);
@@ -383,57 +384,6 @@ export default function AgentPage({ params }: any) {
  
 
 
-    const [totalTradingAccountBalance, setTotalTradingAccountBalance] = useState(0);
-  // get all applications
-  const [applications, setApplications] = useState([] as any[]);
-  const [loadingApplications, setLoadingApplications] = useState(false);
-  useEffect(() => {
-      const fetchData = async () => {
-
-          setLoadingApplications(true);
-
-          const response = await fetch("/api/agent/getReferApplications", {
-
-              method: "POST",
-              headers: {
-                  "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                  page: 0,
-                  limit: 10,
-                  agentBot: agentContractAddress,
-                  agentBotNumber: agentTokenId,
-              }),
-          });
-
-          if (!response.ok) {
-              console.error("Error fetching agents");
-              setLoadingApplications(false);
-              return;
-          }
-
-          const data = await response.json();
-
-          ///console.log("getReferApplications data", data);
-
-
-
-          const total = data.result.totalCount;
-
-          setApplications(data.result.applications);
-
-          setTotalTradingAccountBalance( data.result.totalTradingAccountBalance );
-
-          setLoadingApplications(false);
-
-      };
-
-      if (agentContractAddress && agentTokenId) fetchData();
-
-  }, [agentContractAddress, agentTokenId]);
-
-
-
 
 
   // transferFrom
@@ -491,7 +441,7 @@ export default function AgentPage({ params }: any) {
       });
       if (response) {
         const data = await response.json();
-        setAgent(data.result);
+        setNftInfo(data.result);
         setOwnerInfo(data.ownerInfo);
       }
 
@@ -527,431 +477,6 @@ export default function AgentPage({ params }: any) {
     */
 
 
-    useEffect(() => {
-        setCheckingPositionList(
-            applications.map((item) => {
-                return {
-                    applicationId: item.id,
-                    checking: false,
-                }
-            })
-        );
-
-        setPositionList(
-            applications.map((item) => {
-                return {
-                    applicationId: item.id,
-                    positions: item?.positionList?.positions || [],
-                    timestamp: item?.positionList?.timestamp || 0,
-                    status: item?.positionList?.status || false,
-                };
-            })
-        );
-    } , [applications]);
-
-
-
-
-
-
-    // check api access key and secret key for each application
-    const [checkingApiAccessKeyList, setCheckingApiAccessKeyList] = useState([] as any[]);
-    const [apiAccessKeyList, setApiAccessKeyList] = useState([] as any[]);
-
-    useEffect(() => {
-        setCheckingApiAccessKeyList(
-            applications.map((item) => {
-                return {
-                    applicationId: item.id,
-                    checking: false,
-                }
-            })
-        );
-
-        setApiAccessKeyList(
-            applications.map((item) => {
-                return {
-                    applicationId: item.id,
-                    apiAccessKey: item.apiAccessKey,
-                    apiSecretKey: item.apiSecretKey,
-                    apiPassword: item.apiPassword,
-                };
-            })
-        );
-    }
-
-    , [applications]);
-
-
-    const checkApiAccessKey = async (
-        applicationId: number,
-        apiAccessKey: string,
-        apiSecretKey: string,
-        apiPassword: string,
-    ) => {
-
-        if (!apiAccessKey) {
-            toast.error("API Access Key를 입력해 주세요.");
-            return;
-        }
-
-        if (!apiSecretKey) {
-            toast.error("API Secret Key를 입력해 주세요.");
-            return;
-        }
-
-        if (!apiPassword) {
-            toast.error("API Password를 입력해 주세요.");
-            return;
-        }
-
-        if (!applicationId) {
-            toast.error("신청 ID를 입력해 주세요.");
-            return;
-        }
-
-        setCheckingApiAccessKeyList(
-            checkingApiAccessKeyList.map((item) => {
-                if (item.applicationId === applicationId) {
-                    return {
-                        applicationId: applicationId,
-                        checking: true,
-                    }
-                } else {
-                    return item;
-                }
-            }
-        ));
-
-
-       // api updateUID
-       const response = await fetch("/api/okx/updateUID", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                applicationId: applicationId,
-                apiAccessKey: apiAccessKey,
-                apiSecretKey: apiSecretKey,
-                apiPassword: apiPassword,
-
-            }),
-        });
-
-        if (!response.ok) {
-            console.error("Error checking api access key");
-            return;
-        }
-
-        const data = await response.json();
-
-        //console.log("updateHtxUID data", data);
-
-        if (data.result?.status === "ok") {
-
-            if (data.result?.okxUid === "0") {
-                toast.error("API Access Key를 확인할 수 없습니다.");
-            } else {
-
-                toast.success("API Access Key가 확인되었습니다.");
-            }
-
-            //console.log("data.result", data.result);
-
-            // update application
-            setApplications(
-                applications.map((item) => {
-                    if (item.id === applicationId) {
-                        return {
-                            ...item,
-                            okxUid: data.result?.okxUid,
-                            accountConfig: data.result?.accountConfig,
-                        }
-                    } else {
-                        return item;
-                    }
-                })
-            );
-
-        } else {
-            toast.error("API Access Key를 확인할 수 없습니다.");
-        }
-        
-
-        setCheckingApiAccessKeyList(
-            checkingApiAccessKeyList.map((item) => {
-                if (item.applicationId === applicationId) {
-                    return {
-                        applicationId: applicationId,
-                        checking: false,
-                    }
-                } else {
-                    return item;
-                }
-            }
-        ));
-
-
-    }
-
-
-
-
-
-
-    // check tradingAccountBalance for each application
-    const [checkingTradingAccountBalanceList, setCheckingTradingAccountBalanceList] = useState([] as any[]);
-    const [tradingAccountBalanceList, setTradingAccountBalanceList] = useState([] as any[]);
-
-    useEffect(() => {
-        setCheckingTradingAccountBalanceList(
-            applications.map((item) => {
-                return {
-                    applicationId: item.id,
-                    checking: false,
-                }
-            })
-        );
-
-        setTradingAccountBalanceList(
-            applications.map((item) => {
-                return {
-                    applicationId: item.id,
-                    tradingAccountBalance: item.tradingAccountBalance,
-                };
-            })
-        );
-    } , [applications]);
-
-    const checkTradingAccountBalance = async (
-        applicationId: number,
-        apiAccessKey: string,
-        apiSecretKey: string,
-        apiPassword: string,
-    ) => {
-
-        if (!apiAccessKey) {
-            toast.error("API Access Key를 입력해 주세요.");
-            return;
-        }
-
-        if (!apiSecretKey) {
-            toast.error("API Secret Key를 입력해 주세요.");
-            return;
-        }
-
-        if (!apiPassword) {
-            toast.error("API Password를 입력해 주세요.");
-            return;
-        }
-
-        if (!applicationId) {
-            toast.error("신청 ID를 입력해 주세요.");
-            return;
-        }
-
-        setCheckingTradingAccountBalanceList(
-            checkingTradingAccountBalanceList.map((item) => {
-                if (item.applicationId === applicationId) {
-                    return {
-                        applicationId: applicationId,
-                        checking: true,
-                    }
-                } else {
-                    return item;
-                }
-            }
-        ));
-
-        const response = await fetch("/api/okx/getTradingAccountBalance", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                apiAccessKey: apiAccessKey,
-                apiSecretKey: apiSecretKey,
-                apiPassword: apiPassword,
-                applicationId: applicationId,
-            }),
-        });
-
-        const data = await response.json();
-
-        //console.log("data.result", data.result);
-
-        if (data.result?.status === "ok") {
-
-            setTradingAccountBalanceList(
-                tradingAccountBalanceList.map((item) => {
-                    if (item.applicationId === applicationId) {
-                        return {
-                            applicationId: applicationId,
-                            tradingAccountBalance: data.result?.tradingAccountBalance,
-                        }
-                    } else {
-                        return item;
-                    }
-                })
-            );
-
-            toast.success("거래 계정 잔고가 확인되었습니다.");
-        } else {
-            toast.error("거래 계정 잔고를 확인할 수 없습니다.");
-        }
-
-        setCheckingTradingAccountBalanceList(
-            checkingTradingAccountBalanceList.map((item) => {
-                if (item.applicationId === applicationId) {
-                    return {
-                        applicationId: applicationId,
-                        checking: false,
-                    }
-                } else {
-                    return item;
-                }
-            }
-        ));
-
-    };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // check htx asset valuation for each htxUid
-    const [checkingHtxAssetValuationForAgent, setCheckingHtxAssetValuationForAgent] = useState([] as any[]);
-    const [htxAssetValuationForAgent, setHtxAssetValuationForAgent] = useState([] as any[]);
-
-    useEffect(() => {
-        setCheckingHtxAssetValuationForAgent(
-            applications.map((item) => {
-                return {
-                    applicationId: item.id,
-                    checking: false,
-                }
-            })
-        );
-
-        setHtxAssetValuationForAgent(
-            applications.map((item) => {
-                return {
-                    applicationId: item.id,
-                    assetValuation: item.assetValuation,
-                };
-            })
-        );
-    } , [applications]);
-
-    const checkOkxAssetValuation = async (
-        applicationId: number,
-        okxAccessKey: string,
-        okxSecretKey: string,
-        okxPassword: string,
-    ) => {
-
-        if (!okxAccessKey) {
-            toast.error("OKXAccess Key를 입력해 주세요.");
-            return;
-        }
-
-        if (!okxSecretKey) {
-            toast.error("OKXSecret Key를 입력해 주세요.");
-            return;
-        }
-
-        if (!okxPassword) {
-            toast.error("OKXPassword를 입력해 주세요.");
-            return;
-        }
-
-        if (!applicationId) {
-            toast.error("신청 ID를 입력해 주세요.");
-            return;
-        }
-
-        setCheckingHtxAssetValuationForAgent(
-            checkingHtxAssetValuationForAgent.map((item) => {
-                if (item.applicationId === applicationId) {
-                    return {
-                        applicationId: applicationId,
-                        checking: true,
-                    }
-                } else {
-                    return item;
-                }
-            }
-        ));
-
-
-        const response = await fetch("/api/okx/getAssetValuation", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                apiAccessKey: okxAccessKey,
-                apiSecretKey: okxSecretKey,
-                apiPassword: okxPassword,
-                applicationId: applicationId,
-            }),
-        });
-
-        const data = await response.json();
-
-        
-
-        ///console.log("getAssetValuation data.result", data.result);
-
-
-        if (data.result?.status === "ok") {
-
-            setHtxAssetValuationForAgent(
-                htxAssetValuationForAgent.map((item) => {
-                    if (item.applicationId === applicationId) {
-                        return {
-                            applicationId: applicationId,
-                            assetValuation: data.result?.assetValuation,
-                        }
-                    } else {
-                        return item;
-                    }
-                })
-            );
-
-            toast.success("OKX자산 가치가 확인되었습니다.");
-        } else {
-            toast.error("OKX자산 가치를 확인할 수 없습니다.");
-        }
-
-        setCheckingHtxAssetValuationForAgent(
-            checkingHtxAssetValuationForAgent.map((item) => {
-                if (item.applicationId === applicationId) {
-                    return {
-                        applicationId: applicationId,
-                        checking: false,
-                    }
-                } else {
-                    return item;
-                }
-            }
-        ));
-
-    };
 
 
 
@@ -1001,34 +526,37 @@ export default function AgentPage({ params }: any) {
 
 
 
+
+    //console.log("nftInfo", nftInfo);
+
+
+
+
+
   return (
 
-    <main
-    className="p-4 pb-28 min-h-[100vh] flex items-start justify-center container max-w-screen-lg mx-auto"
-    style={{
-        backgroundImage: "url('/mobile-background-nft.jpg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
+    <main className="
+      pb-10
+      p-0 min-h-[100vh] flex-col items-start justify-center container max-w-screen-lg mx-auto
+      bg-[#E7EDF1]
+    ">
+
+      <div className="w-full flex flex-col items-start justify-start gap-5 p-4">
+
+        {/* go back button */}
+        <div className="mt-4 flex justify-start space-x-4 mb-10">
+            <button
+              
+              onClick={() => router.back()}
+
+              className="text-gray-600 font-semibold underline">
+              홈으로
+            </button>
+        </div>
+ 
 
 
-      <div className="py-0 w-full ">
-
-
-        <div className="mt-10 flex flex-col items-start justify-center space-y-4">
-
-
-            {/* 돌아가기 sticky */}
-            <div className="w-full flex flex-row items-center justify-between gap-2">
-                <button
-                    onClick={() => router.back()}
-                    className="p-2 rounded-lg bg-gray-500 text-white"
-                >
-                    돌아가기
-                </button>
-            </div>
+        <div className="w-full flex flex-col items-start justify-start gap-5">
 
 
           {/* agent nft info */}
@@ -1048,9 +576,20 @@ export default function AgentPage({ params }: any) {
             )}
 
 
+            {loadingAgent && (
+              <div className='w-full flex flex-row items-center justify-center'>
+                <Image
+                  src="/loading.png"
+                  alt="Loading"
+                  width={50}
+                  height={50}
+                  className="rounded-lg animate-spin"
+                />
+              </div>
+            )}
 
 
-            {agent && (
+            {!loadingAgent && nftInfo && (
 
               <div className='w-full flex flex-col gap-5'>
 
@@ -1075,26 +614,6 @@ export default function AgentPage({ params }: any) {
                         />
                     </button>
 
-                  <div className='w-full flex flex-col xl:flex-row items-start justify-start gap-2'>
-                      <div className='flex flex-col items-start justify-between gap-2'>
-                        <span className='text-sm text-yellow-500'>
-                          NFT 계약주소
-                        </span>
-                        <span className='text-sm text-gray-800 font-semibold'>
-                            {agentContractAddress.slice(0, 10) + '...' + agentContractAddress.slice(-10)}
-                        </span>
-                      </div>
-                      <div className='flex flex-col items-center justify-between gap-2'>
-                        <span className='text-sm text-yellow-500'>
-                            NFT 계약번호
-                        </span>
-                        <span className='text-lg text-gray-800 font-semibold'>
-                            #{agentTokenId?.length > 10 ? agentTokenId.slice(0, 10) + '...' : agentTokenId}
-                        </span>
-                      </div>
-
-                  </div>
-
                 </div>
 
 
@@ -1106,161 +625,38 @@ export default function AgentPage({ params }: any) {
 
 
 
-                    <div className='w-full flex flex-row items-start justify-between gap-2
+                    <div className='w-full flex flex-col items-start justify-between gap-2
                       border-b border-gray-300 pb-2
                     '>
 
                         <div className='w-full flex flex-col items-start justify-between gap-2'>
 
                             <div className='flex flex-col items-start justify-between gap-2'>
-                                <span className='text-sm text-yellow-500'>
-                                    NFT 이름
-                                </span>
+
                                 <span className='text-xl font-semibold text-gray-800'>
-                                    {agent.name}
+                                    {nftInfo?.name}
                                 </span>
                             </div>
-                    
-                            {agent?.description && (
-                                <div className='flex flex-col items-start justify-between gap-2'>
-                                    <span className='text-sm text-yellow-500'>
-                                        NFT 설명
-                                    </span>
-                                    <span className='text-xs text-gray-800'>
-                                        {agent.description}
-                                    </span>
-                                </div>
-                            )}
+
                         </div>
 
 
                         <div className='flex flex-col items-start justify-start gap-2'>
-                            {!animationUrl && agent.image && (
+
                                 <Image
-                                    //src={agent?.image?.thumbnailUrl}
-                                    src={agent?.image?.pngUrl || '/logo-masterbot.png'}
+                                    src={nftInfo?.tokenId === '0' ? '/logo-snowbot300.png' : '/logo-snowbot3000.png'}
                                     width={200}
                                     height={200}
-                                    alt={agent.name}
-                                    className='rounded-lg object-cover w-full animate-pulse'
+                                    alt="NFT"
+                                    className='rounded-lg object-cover w-full h-auto'
                                 />
-                            )}
-                            {/* animationUrl */}
-                            {/* auto play */}
-                            {animationUrl && (
-                                <video
-                                    src={animationUrl}
-                                    controls
-                                    autoPlay
-                                    loop
-                                    className='rounded-lg object-cover w-full'
-                                />
-                            )}
+
+
                         </div>
 
                     </div>
 
-                    <div className='mt-5 w-full flex flex-col items-start justify-between gap-2
-                      border-b border-gray-300 pb-2
-                    '>
-                      {/* owner info */}
-                      <div className='w-full flex flex-col items-start justify-between gap-2'>
-                        
-                        <span className='text-sm text-yellow-500'>
-                            AI 에이전트 NFT 소유자 정보
-                        </span>
-                        
-                        <div className='w-full flex flex-row items-center justify-start gap-2'>
-                            <span className='text-xs text-gray-800'>
-                                소유자 지갑주소: {holderWalletAddress?.slice(0, 5) + '...' + holderWalletAddress?.slice(-5)}
-                            </span>
-                            {/* copy button */}
-                            <button
-                              onClick={() => {
-                                navigator.clipboard.writeText(holderWalletAddress);
-                                toast.success("Copied");
-                              }}
-                              className='bg-gray-500 text-white p-2 rounded-lg
-                                hover:bg-gray-600
-                              '
-                            >
-                                Copy
-                            </button>
-                        </div>
-                        
 
-                        <div className='w-full flex flex-row items-center justify-start gap-2
-                        '>
-
-                          <Image
-                            src={ownerInfo?.avatar || '/profile-default.png'}
-                            width={60}
-                            height={60}
-                            alt={ownerInfo?.nickname}
-                            className='rounded-lg object-cover w-10 h-10'
-                          />
-                          <div className='flex flex-col items-start justify-between gap-2'>
-                            <span className='text-xs text-gray-800'>
-                                {ownerInfo?.nickname}
-                            </span>
-                            <span className='text-xs text-gray-800'>
-                                {ownerInfo?.mobile && ownerInfo?.mobile?.slice(0, 3) + '****' + ownerInfo?.mobile?.slice(-4)}
-                            </span>
-                          </div>
-                        </div>
-
-                        {/* button for transfer owner */}
-                        {/*
-                        {address && ownerInfo?.walletAddress && address === ownerInfo?.walletAddress && (
-                          <div className='w-full flex flex-col items-center justify-between gap-2'>
-                            
-                            <div className='w-full flex flex-col items-start justify-between gap-2'>
-                              <span className='text-sm text-yellow-500'>
-                                  소유권 이전하기
-                              </span>
-                              <div className='flex flex-row items-center justify-start gap-2'>
-                                <div className='w-3 h-3 bg-red-500 rounded-full'></div>
-                                <span className='text-xs text-gray-800'>
-                                    소유권을 이전하면 소유자 권리를 모두 이전하는 것에 동의하는 것입니다.
-                                </span>
-                              </div>
-                            </div>
-
-                            <input
-                              value={transferToAddress}
-                              onChange={(e) => setTransferToAddress(e.target.value)}
-                              type='text'
-                              placeholder='이전할 지갑주소를 입력하세요.'
-                              className={`w-full p-2 rounded border border-gray-300
-                                ${loadingTransfer ? 'bg-gray-100' : 'bg-white'}
-                              `}
-                              
-                              disabled={loadingTransfer}
-                            />
-                            <button
-                              onClick={() => {
-                                //alert('준비중입니다.');
-                                confirm('소유권을 이전하시겠습니까?') &&
-                                nftTransfer(transferToAddress);
-                              }}
-                              className={`
-                                ${!transferToAddress || loadingTransfer ? 'bg-gray-300' : 'bg-blue-500 hover:bg-blue-600'}
-                                text-white p-2 rounded
-                              `}
-                              disabled={
-                                !transferToAddress ||
-                                loadingTransfer
-                              }
-                            >
-                              {loadingTransfer ? '소유권 이전중...' : '소유권 이전하기'}
-                            </button>
-                          </div>
-                        )}
-                        */}
-
-                      </div>
-
-                    </div>
                     
                   </div>
 
