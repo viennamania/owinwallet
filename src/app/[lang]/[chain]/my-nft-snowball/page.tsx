@@ -1161,7 +1161,7 @@ function AgentPage(
                                     onClick={() => setSnowbot(300)}
                                     className={`w-full flex flex-col gap-2 items-center justify-between
                                     ${snowbot === 300 ? "border border-blue-500" : "border border-gray-200"}
-                                    p-4 rounded-lg
+                                    p-2 rounded-lg
                                     ${snowbot === 300 ? "bg-white" : "bg-gray-200"}
                                     `}
                                 >
@@ -1176,15 +1176,46 @@ function AgentPage(
                                         className="rounded-lg"
                                     />
                                     {/* 가격: 300 USDT */}
-                                    <span className="text-sm text-green-500 font-semibold">
-                                        가격: 300 USDT
-                                    </span>
+                                    {/* 일일 포인트: 0.45 */}
+                                    {/* APR: 54% */}
+
+                                    <div className="w-full flex flex-col gap-2 items-center justify-between">
+
+                                        <div className="w-full flex flex-row gap-2 items-center justify-start">
+                                            <span className="w-24 text-xs text-gray-500 text-left">
+                                                가격
+                                            </span>
+                                            <span className="w-full text-sm text-gray-800 font-semibold text-right">
+                                                300 USDT
+                                            </span>
+                                        </div>
+
+                                        <div className="w-full flex flex-row gap-2 items-center justify-start">
+                                            <span className="w-24  text-xs text-gray-500 text-left">
+                                                일일포인트
+                                            </span>
+                                            <span className="w-full text-sm text-gray-800 font-semibold text-right">
+                                                0.45
+                                            </span>
+                                        </div>
+
+                                        <div className="w-full flex flex-row gap-2 items-center justify-start">
+                                            <span className="w-24 text-xs text-gray-500 text-left">
+                                                APR
+                                            </span>
+                                            <span className="w-full text-sm text-gray-800 font-semibold text-right">
+                                                54%
+                                            </span>
+                                        </div>
+
+                                    </div>
+
                                 </button>
                                 <button
                                     onClick={() => setSnowbot(3000)}
                                     className={`w-full flex flex-col gap-2 items-center justify-between
                                     ${snowbot === 3000 ? "border border-blue-500" : "border border-gray-200"}
-                                    p-4 rounded-lg
+                                    p-2 rounded-lg
                                     ${snowbot === 3000 ? "bg-white" : "bg-gray-200"}
                                     `}
                                 >
@@ -1198,10 +1229,39 @@ function AgentPage(
                                         height={300}
                                         className="rounded-lg"
                                     />
-                                    {/* 가격: 3000 USDT */}
-                                    <span className="text-sm text-green-500 font-semibold">
-                                        가격: 3,000 USDT
-                                    </span>
+                                    {/* 가격: 3,000 USDT */}
+                                    {/* 일일 포인트: 4.5 */}
+                                    {/* APR: 54% */}
+                                    <div className="w-full flex flex-col gap-2 items-center justify-between">
+
+                                        <div className="w-full flex flex-row gap-2 items-center justify-start">
+                                            <span className="w-24 text-xs text-gray-500 text-left">
+                                                가격
+                                            </span>
+                                            <span className="w-full text-sm text-gray-800 font-semibold text-right">
+                                                3,000 USDT
+                                            </span>
+                                        </div>
+
+                                        <div className="w-full flex flex-row gap-2 items-center justify-start">
+                                            <span className="w-24  text-xs text-gray-500 text-left">
+                                                일일포인트
+                                            </span>
+                                            <span className="w-full text-sm text-gray-800 font-semibold text-right">
+                                                4.5
+                                            </span>
+                                        </div>
+
+                                        <div className="w-full flex flex-row gap-2 items-center justify-start">
+                                            <span className="w-24 text-xs text-gray-500 text-left">
+                                                APR
+                                            </span>
+                                            <span className="w-full text-sm text-gray-800 font-semibold text-right">
+                                                54%
+                                            </span>
+                                        </div>
+                                    </div>
+
                                 </button>
 
                             </div>
