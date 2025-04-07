@@ -483,13 +483,13 @@ function AgentPage(
             return;
         }
 
-        /*
+        
         if (balance < price) {
             //toast.error('USDT 잔액이 부족합니다');
             setMessageClaimingNft('USDT 잔액이 부족합니다.');
             return;
         }
-        */
+        
 
 
         setMessageClaimingNft('NFT 발행중입니다.');
@@ -585,28 +585,6 @@ function AgentPage(
             setOwnedNfts(nfts);
             setLoadingOwnedNfts(false);
 
-            /*
-            // fetch transfers again
-            setLoadingTransfers(true);
-            const response = await fetch("/api/wallet/getTransfersByWalletAddress", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    limit: 2,
-                    page: 0,
-                    walletAddress: address,
-                }),
-            });
-            if (response.ok) {
-                const data = await response.json();
-                setTransfers(data.result?.transfers);
-            }
-            setLoadingTransfers(false);
-            */
-            
-
 
         } catch (error) {
 
@@ -629,15 +607,6 @@ function AgentPage(
 
 
     }
-
-
-
-
-    // getOwnedNFTs
-    //const [ownedNfts, setOwnedNfts] = useState([] as any[]);
-
-
-
 
 
 

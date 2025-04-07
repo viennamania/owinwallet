@@ -9,7 +9,9 @@ import thirdwebIcon from "@public/thirdweb.svg";
 import { client } from "../../client";
 
 import {
-  createThirdwebClient,
+    getContract,
+    sendTransaction,
+    sendAndConfirmTransaction,
 } from "thirdweb";
 
 import {
@@ -49,14 +51,14 @@ import {
 } from "thirdweb/chains";
 
 
-import {
-  getContract,
-  //readContract,
-} from "thirdweb";
-
-
 import { balanceOf, getBalance, transfer } from "thirdweb/extensions/erc20";
- 
+
+
+import {
+    safeTransferFrom,
+    claimTo,
+    getOwnedNFTs,
+} from "thirdweb/extensions/erc1155";
 
 
 import {
@@ -75,7 +77,7 @@ import {
 import { add } from "thirdweb/extensions/farcaster/keyGateway";
 
 
-import { getOwnedNFTs } from "thirdweb/extensions/erc721";
+//import { getOwnedNFTs } from "thirdweb/extensions/erc721";
 
 
 import GearSetupIcon from "@/components/gearSetupIcon";
@@ -1014,6 +1016,192 @@ function IndexPage(
 
 
 
+
+
+    const erc1155ContractAddress = "0x96A7f4173b3ac70489403822dFde5f172e7EF1EB";
+
+    const [price, setPrice] = useState(0);
+
+    // claim NFT
+    const [claimingNft, setClaimingNft] = useState(false);
+    const [messageClaimingNft, setMessageClaimingNft] = useState("");
+    const claimNft = async (contractAddress: string, tokenId: string) => {
+
+        if (claimingNft) {
+            //toast.error('이미 실행중입니다');
+            setMessageClaimingNft('이미 실행중입니다.');
+            return;
+        }
+
+        if (!address) {
+            //toast.error('지갑을 먼저 연결해주세요');
+            setMessageClaimingNft('지갑을 먼저 연결해주세요.');
+            return;
+        }
+
+        
+        if (balance < price) {
+            //toast.error('USDT 잔액이 부족합니다');
+            setMessageClaimingNft('USDT 잔액이 부족합니다.');
+            return;
+        }
+        
+
+
+        setMessageClaimingNft('NFT 발행중입니다.');
+
+        setClaimingNft(true);
+
+        let allowanceAmount = 0;
+
+        try {
+
+            const erc1155Contract = getContract({
+                client,
+                chain: polygon,
+                address: contractAddress,
+            });
+
+
+            // // ERC20: transfer amount exceeds allowance
+
+            const result =
+            await allowance({
+                contract: contract,
+                owner: address as string,
+                spender: erc1155ContractAddress,
+            });
+
+            //console.log("result", result);
+            allowanceAmount = Number(result);
+
+            if (allowanceAmount < price * 10 ** 6) {
+                
+                //throw new Error('USDT 토큰을 먼저 채굴 NFT 발행 계약에 승인해주세요');
+
+                // approve
+
+                const transactionApprove = approve({
+                    contract: contract,
+                    spender: erc1155ContractAddress,
+                    amount: price * 10 ** 6,
+                });
+
+                const transactionResultApprove = await sendAndConfirmTransaction({
+                    account: account as any,
+                    transaction: transactionApprove,
+                });
+
+                if (!transactionResultApprove) {
+                    throw new Error('USDT 토큰을 먼저 채굴 NFT 발행 계약에 승인해주세요.');
+                }
+
+            }
+
+
+
+            const transaction = claimTo({
+                contract: erc1155Contract,
+
+
+                tokenId: BigInt(tokenId),
+
+                
+
+
+                to: address as string,
+                ///amount: 1n,
+
+                quantity: 1n,
+
+            });
+
+            const transactionResult = await sendAndConfirmTransaction({
+                account: account as any,
+                transaction: transaction,
+            });
+
+            if (!transactionResult) {
+                throw new Error('NFT 발행 실패. 관리자에게 문의해주세요.');
+            }
+
+            setMessageClaimingNft('NFT 발행을 완료했습니다.');
+
+            alert('NFT 발행을 완료했습니다.');
+
+            
+            // fetch the NFTs again
+            setLoadingOwnedNfts(true);
+            const nfts = await getOwnedNFTs({
+                contract: erc1155Contract,
+                start: 0,
+                count: 10,
+                address: address as string,
+            });
+            setOwnedNfts(nfts);
+            setLoadingOwnedNfts(false);
+
+
+        } catch (error) {
+
+            if (error instanceof Error) {
+                setMessageClaimingNft('NFT 발행 실패:' + error.message
+                    + " allowanceAmount: " + allowanceAmount);
+
+                //alert('NFT 발행 실패:' + error.message);
+
+                // ERC20: transfer amount exceeds allowance
+
+            } else {
+                setMessageClaimingNft('NFT 발행 실패: 알 수 없는 오류');
+
+                //alert('NFT 발행 실패: 알 수 없는 오류');
+            }
+        }
+
+        setClaimingNft(false);
+
+
+    }
+
+
+
+    const [ownedNfts, setOwnedNfts] = useState([] as any[]);
+    const [loadingOwnedNfts, setLoadingOwnedNfts] = useState(false);
+
+    useEffect(() => {
+        const fetchOwnedNFTs = async () => {
+
+            setLoadingOwnedNfts(true);
+            const contractErc1155 = getContract({
+                client,
+                chain: polygon,
+                address: erc1155ContractAddress,
+            });
+
+            const nfts = await getOwnedNFTs({
+                contract: contractErc1155,
+                start: 0,
+                count: 10,
+                address: address as string,
+            });
+            setOwnedNfts(nfts);
+            setLoadingOwnedNfts(false);
+
+        };
+
+        if (address) {
+            fetchOwnedNFTs();
+        }
+    }, [address, erc1155ContractAddress]);
+
+
+
+
+
+
+
+
   // chainBalance
   /*
   const [chainBalance, setChainBalance] = useState(0);
@@ -1930,6 +2118,103 @@ function IndexPage(
 
 
 
+        {/* nft collection */}
+        {/* owned nfts */}
+        {address && (
+
+
+          <div className="mt-5 w-full flex flex-col gap-2 items-center justify-between">
+
+              <div className="w-full flex flex-row gap-2 items-center justify-start">
+                  {/* dot */}
+                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  <div className="text-sm text-zinc-800 font-bold">
+                      소유한 SNOW BOT
+                  </div>
+              </div>
+
+              {loadingOwnedNfts && (
+                  <div className="w-full flex flex-row gap-2 items-center justify-center">
+                      <Image
+                          src="/loading.png"
+                          alt="loding"
+                          width={30}
+                          height={30}
+                          className="animate-spin"
+                      />
+                      <span className="text-lg font-semibold text-zinc-400">
+                          SNOW BOT 불러오는 중...
+                      </span>
+                  </div>
+              )}
+
+
+              {ownedNfts.length === 0 && !loadingOwnedNfts && (
+                  <div className="w-full flex flex-row gap-2 items-center justify-center">
+                      <span className="text-lg font-semibold text-zinc-400">
+                          소유한 SNOW BOT 이 없습니다.
+                      </span>
+                  </div>
+              )}
+
+
+              {!loadingOwnedNfts && ownedNfts.length > 0 && (
+                  <div className="w-full flex flex-col gap-10 items-center justify-between">
+                      {ownedNfts.map((nft, index) => (
+
+                          <div key={index} className="w-full flex flex-col gap-2 items-center justify-between p-4
+                              border border-gray-800
+                              rounded-lg">
+
+
+                              <div className="text-xl text-zinc-800 font-bold">
+                                  {nft.metadata?.name}
+                              </div>
+                              
+                              <div className="text-4xl text-green-500 font-semibold">
+                                  {
+                                      // nft.quantityOwned is bigint
+                                      nft.quantityOwned.toString()
+                                  }개
+                              </div>
+
+                              <div className="w-full flex flex-col gap-2 items-center justify-between">
+
+
+                                      {nft.id.toString() === "0" ? (
+                                          <Image
+                                              src="/logo-snowbot3000.png"
+                                              alt="NFT"
+                                              width={300}
+                                              height={300}
+                                              className="rounded-lg"
+                                          />
+                                      ) : (
+                                          <Image
+                                              src="/logo-snowbot300.png"
+                                              alt="NFT"
+                                              width={300}
+                                              height={300}
+                                              className="rounded-lg"
+                                          />
+                                      )}
+
+
+                              </div>
+
+
+
+                          </div>
+                      ))}
+                  </div>
+              )}
+
+          </div>
+
+
+        )}
+
+
 
         {address && loadingUserData && (                          
           <div className="mt-4 flex flex-row justify-center items-center">
@@ -1945,7 +2230,7 @@ function IndexPage(
         )}
 
         {address && !loadingUserData && (
-              <div className="w-full flex flex-col p-5 rounded-lg text-center
+              <div className="w-full hidden flex-col p-5 rounded-lg text-center
                 bg-green-500
                 hover:shadow-lg
                 transition duration-300 ease-in-out
@@ -1992,7 +2277,7 @@ function IndexPage(
 
                 ) : (
 
-                  <>
+                  <div className="flex-col justify-center items-center gap-2">
 
 
 
@@ -2048,7 +2333,7 @@ function IndexPage(
                   </div>
 
              
-                  </>
+                  </div>
 
                 )}
 
