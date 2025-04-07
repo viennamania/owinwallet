@@ -483,11 +483,13 @@ function AgentPage(
             return;
         }
 
+        /*
         if (balance < price) {
             //toast.error('USDT 잔액이 부족합니다');
             setMessageClaimingNft('USDT 잔액이 부족합니다.');
             return;
         }
+        */
 
 
         setMessageClaimingNft('NFT 발행중입니다.');
@@ -1349,16 +1351,16 @@ function AgentPage(
                                             if (confirm("구매하시겠습니까?")) {
                                                 claimNft(
                                                     erc1155ContractAddress,
-                                                    snowbot === 300 ? "0" : "1"
+                                                    snowbot === 300 ? "1" : "0"
                                                 );
                                             }
                                         }}
                                         className={`
                                             ${claimingNft ? 'bg-gray-300 text-gray-400' : 'bg-[#3167b4] text-[#f3f4f6]'}
-                                            p-2 rounded-lg text-sm
-                                            hover:bg-blue-600 hover:text-zinc-100
-                                            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
-                                            w-full
+                                            w-full p-2 rounded-lg text-sm
+                                            hover:bg-[#2b5b9f] hover:text-[#e2e8f0]
+                                            transition-all duration-300 ease-in-out
+                                        
                                         `}
                                     >
                                         <div className="flex flex-row gap-2 items-center justify-center">
