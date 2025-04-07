@@ -1024,17 +1024,31 @@ function AgentPage(
                                 chain: polygon,
                                 sponsorGas: true
                             }}
+                            
                             theme={"light"}
+
+                            // button color is dark skyblue convert (49, 103, 180) to hex
                             connectButton={{
-                                label: "로그인하세요",
+                                style: {
+                                backgroundColor: "#3167b4", // dark skyblue
+                                // font color is gray-300
+                                color: "#f3f4f6", // gray-300
+                                padding: "10px 20px",
+                                borderRadius: "10px",
+                                fontSize: "16px",
+                                // w-full
+                                width: "100%",
+                                },
+                                label: "로그인하면 지갑에 연결됩니다.",
                             }}
+
                             connectModal={{
                                 size: "wide", 
                                 //size: "compact",
                                 titleIcon: "https://uma.tips/icon-snowball.png",                           
                                 showThirdwebBranding: false,
-
                             }}
+
                             locale={"ko_KR"}
                             //locale={"en_US"}
                             />

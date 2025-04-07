@@ -1,6 +1,5 @@
 'use client';
-
-import { useState, useEffect, use } from "react";
+import React, { useEffect, useState, Suspense, use } from "react";
 
 import Image from "next/image";
 
@@ -157,14 +156,23 @@ const client = createThirdwebClient({
 
 
 
-export default function Index({ params }: any) {
-
-
-  //console.log("params", params);
-
-  // get params from the URL
+function IndexPage(
+    {
+        params,
+    }: {
+        params: {
+            lang: string;
+            chain: string;
+        };
+    }
+) {
+  const { lang, chain } = params;
 
   const searchParams = useSearchParams();
+
+  const center = searchParams.get('center');
+
+
  
   const wallet = searchParams.get('wallet');
 
@@ -1340,9 +1348,6 @@ export default function Index({ params }: any) {
               }}
               
               theme={"light"}
-              // color blue
-
-
 
               // button color is dark skyblue convert (49, 103, 180) to hex
               connectButton={{
@@ -1356,33 +1361,15 @@ export default function Index({ params }: any) {
                   // w-full
                   width: "100%",
                 },
-
-                // text color is white
-  
-
                 label: "로그인하면 지갑에 연결됩니다.",
-
-
-
               }}
-
-
 
               connectModal={{
                 size: "wide", 
                 //size: "compact",
                 titleIcon: "https://uma.tips/icon-snowball.png",                           
                 showThirdwebBranding: false,
-
-                // button color is blue
-
-
-
-
               }}
-
-
-
 
               locale={"ko_KR"}
               //locale={"en_US"}
@@ -2691,3 +2678,26 @@ function ArticleCard(props: {
     </a>
   );
 }
+
+
+
+
+
+
+  export default function Index({ params }: any) {
+    return (
+        <Suspense fallback={
+            <div
+                className="w-full h-screen flex flex-col items-center justify-center
+                bg-zinc-100 text-gray-600 font-semibold text-lg"
+            >Loading...</div>
+        }>
+            <IndexPage
+                params={params}
+            />
+            {/* bg-[#E7EDF1] */}
+            <div className="w-full h-36 bg-[#E7EDF1]"></div>
+
+        </Suspense>
+    );
+  }
