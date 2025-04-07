@@ -1320,7 +1320,7 @@ function AgentPage(
                                             if (confirm("구매하시겠습니까?")) {
                                                 claimNft(
                                                     erc1155ContractAddress,
-                                                    snowbot === 300 ? "1" : "0"
+                                                    snowbot === 300 ? "0" : "1"
                                                 );
                                             }
                                         }}
@@ -1564,7 +1564,7 @@ function AgentPage(
 
                                                 {nft.id.toString() === "0" ? (
                                                     <Image
-                                                        src="/logo-snowbot3000.png"
+                                                        src="/logo-snowbot300.png"
                                                         alt="NFT"
                                                         width={300}
                                                         height={300}
@@ -1572,7 +1572,7 @@ function AgentPage(
                                                     />
                                                 ) : (
                                                     <Image
-                                                        src="/logo-snowbot300.png"
+                                                        src="/logo-snowbot3000.png"
                                                         alt="NFT"
                                                         width={300}
                                                         height={300}
