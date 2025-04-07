@@ -2032,20 +2032,12 @@ function IndexPage(
                               rounded-lg">
 
 
-                              <div className="text-xl text-zinc-800 font-bold">
-                                  {nft.metadata?.name}
-                              </div>
-                              
-                              <div className="text-4xl text-green-500 font-semibold">
-                                  {
-                                      // nft.quantityOwned is bigint
-                                      nft.quantityOwned.toString()
-                                  }개
-                              </div>
-
-                              <div className="w-full flex flex-col gap-2 items-center justify-between">
 
 
+                              <div className="w-full flex flex-row gap-2 items-start justify-between">
+
+
+                                  <div className="w-1/4 flex flex-row gap-2 items-center justify-start">
                                       {nft.id.toString() === "0" ? (
                                           <Image
                                               src="/logo-snowbot300.png"
@@ -2063,6 +2055,56 @@ function IndexPage(
                                               className="rounded-lg"
                                           />
                                       )}
+                                  </div>
+
+                                  <div className="w-3/4 flex flex-col gap-1 items-center justify-center">
+
+                                    <div className="w-full flex flex-row gap-2 items-center justify-start">
+                                      <div className="w-1/2 text-sm text-zinc-800 font-bold">
+                                          이름
+                                      </div>
+                                      <div className="w-full text-sm text-zinc-800 font-bold text-right">
+                                          {nft.metadata?.name}
+                                      </div>
+                                    </div>
+
+                                    <div className="w-full flex flex-row gap-2 items-center justify-start">
+                                      <div className="w-1/2 text-sm text-zinc-800 font-bold">
+                                          계약번호
+                                      </div>
+                                      <div className="w-full text-sm text-zinc-800 font-bold text-right">
+                                          #{nft.id.toString()}
+                                      </div>
+                                    </div>
+
+                                    <div className="w-full flex flex-row gap-2 items-center justify-start">
+                                      <div className="w-1/2 text-sm text-zinc-800 font-bold">
+                                          수량
+                                      </div>
+                                      <div className="w-full text-sm text-zinc-800 font-bold text-right">
+                                          {nft.quantityOwned.toString()} 개
+                                      </div>
+                                    </div>
+
+                                    <div className="w-full flex flex-row gap-2 items-center justify-start">
+                                      <div className="w-1/2 text-sm text-zinc-800 font-bold">
+                                          누적 리워드
+                                      </div>
+                                      <div className="w-full text-sm text-zinc-800 font-bold text-right">
+                                          0.00 USDT
+                                      </div>
+                                    </div>
+
+                                    <div className="w-full flex flex-row gap-2 items-center justify-start">
+                                      <div className="w-1/2 text-sm text-zinc-800 font-bold">
+                                          누적 수익률
+                                      </div>
+                                      <div className="w-full text-sm text-zinc-800 font-bold text-right">
+                                          0.00%
+                                      </div>
+                                    </div>
+
+                                  </div>
 
 
                               </div>
