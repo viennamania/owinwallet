@@ -1199,6 +1199,116 @@ function AgentPage(
                             </div>
 
 
+
+
+                            {/* usdt balance */}
+                            {address && (
+
+                                <div className="w-full flex flex-col gap-2 items-center justify-between">
+
+
+                                    <div className='w-full flex flex-col gap-2 items-start justify-start'>
+                                        <span className="text-sm  text-zinc-800 font-semibold">
+                                            나의 잔고
+                                        </span>
+                        
+
+                                        <div className="w-full flex flex-row items-center justify-end gap-1
+                                            bg-white
+                                            border border-gray-200
+                                            p-2 rounded-lg
+                                            shadow-sm
+                                            ">
+                                            <span className="text-2xl text-gray-500 font-semibold">
+                                                {
+                                                    Number(balance).toFixed(2).split('.')[0]
+                                                }.
+                                            </span>
+                                            <span className="text-lg text-gray-500 font-semibold">
+                                                {
+                                                    Number(balance).toFixed(2).split('.')[1]
+                                                }
+                                            </span>
+                                            <span className="text-lg text-zinc-500 font-semibold">
+                                                USDT
+                                            </span>
+                                        </div>
+
+                                    </div>
+
+
+   
+
+
+
+                                <div className="p-5 w-full flex flex-col gap-2 items-center justify-center">
+
+                                    {price > balance ? (
+                                        <span className="text-sm text-red-500">
+                                            USDT 잔액이 부족합니다.
+                                        </span>
+                                    ) : (
+                                        <span className="text-sm text-green-500">
+                                            구매후 USDT 잔액: {(balance - price).toFixed(2)} USDT
+                                        </span>
+                                    )}
+
+
+
+                                    {/*
+                                                      backgroundColor: "#3167b4", // dark skyblue
+                                        // font color is gray-300
+                                        color: "#f3f4f6", // gray-300
+                                        */}
+
+                                    <button
+                                        disabled={claimingNft}
+                                        onClick={() => {
+                                            if (confirm("구매하시겠습니까?")) {
+                                                claimNft(
+                                                    erc1155ContractAddress,
+                                                    snowbot === 300 ? "0" : "1"
+                                                );
+                                            }
+                                        }}
+                                        className={`
+                                            ${claimingNft ? 'bg-gray-300 text-gray-400' : 'bg-[#3167b4] text-[#f3f4f6]'}
+                                            p-2 rounded-lg text-sm
+                                            hover:bg-blue-600 hover:text-zinc-100
+                                            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+                                            w-full
+                                        `}
+                                    >
+                                        <div className="flex flex-row gap-2 items-center justify-center">
+                                            {claimingNft && (
+                                                <Image
+                                                    src="/loading.png"
+                                                    alt="loding"
+                                                    width={30}
+                                                    height={30}
+                                                    className="animate-spin"
+                                                />
+                                            )}
+                                            {claimingNft && '구매중...'}
+                                            {!claimingNft && '구매하기'}
+                                        </div>
+                                    </button>
+                                </div>
+
+                                {messageClaimingNft && (
+                                <span className="text-lg text-red-500 font-semibold">
+                                    {messageClaimingNft}
+                                </span>
+                                )}
+
+
+                                </div>
+                            )}
+
+
+
+
+
                             <div className="w-full flex flex-col gap-5 items-start justify-between
                                 border border-gray-200
                                 p-4 rounded-lg">
@@ -1267,244 +1377,6 @@ function AgentPage(
                                     </span>
                                 </div>
 
-
-                                {/* usdt balance */}
-                                {address && (
-
-                                    <div className="w-full flex flex-col gap-2 items-center justify-between
-                                        border border-gray-200
-                                        p-4 rounded-lg">
-
-
-                                        
-                                        
-                                        <div className='w-full flex flex-row gap-2 items-center justify-between'>
-                                            <span className="text-lg text-zinc-800 font-semibold">
-                                                잔고:
-                                            </span>
-                                            <Image
-                                                src="/logo-tether.png"
-                                                alt="USDT"
-                                                width={30}
-                                                height={30}
-                                                className="rounded"
-                                            />                                
-
-
-                                            <div className="flex flex-row gap-2 items-end justify-between">
-
-                                                <div className="flex flex-row items-end justify-start">
-                                                    <span className="text-4xl text-green-500 font-semibold">
-                                                        {
-                                                            Number(balance).toFixed(6).split('.')[0]
-                                                        }.
-                                                    </span>
-                                                    <span className="text-2xl text-green-500 font-semibold">
-                                                        {
-                                                            Number(balance).toFixed(6).split('.')[1]
-                                                        }
-                                                    </span>
-                                                </div>
-
-                                            </div>
-
-                                            <span className="text-green-500 text-2xl font-semibold">
-                                                USDT
-                                            </span>
-                                        </div>
-
-
-
-                                        {/* 전송내역 (최신 5개) */}
-                                        {/*
-                                        {loadingTransfers && (
-                                            <div className="flex flex-row gap-2 items-center justify-center">
-                                                <Image
-                                                    src="/loading.png"
-                                                    alt="loading"
-                                                    width={30}
-                                                    height={30}
-                                                    className="animate-spin"
-                                                />
-                                                <span className="text-lg text-zinc-400 font-semibold">
-                                                    전송내역을 불러오는 중입니다...
-                                                </span>
-                                            </div>
-                                        )}
-
-                                        {!loadingTransfers && transfers.length === 0 && (
-                                            <div className="w-full flex flex-col gap-2 items-start justify-between
-                                                border border-gray-200
-                                                p-4 rounded-lg">
-
-                                                {transfers.length === 0 && (
-                                                    <span className="text-lg text-zinc-400 font-semibold">
-                                                        전송내역이 없습니다.
-                                                    </span>
-                                                )}
-
-                                            </div>
-                                        )}
-                                        
-
-                                        {!loadingTransfers && transfers.length > 0 && (
-                                            <div className="w-full flex flex-col gap-2 items-start justify-between">
-
-                                                <div className="w-full flex flex-row gap-2 items-center justify-between">
-                                                    <div className="text-sm text-zinc-100
-                                                    border-b border-gray-200
-                                                    p-2 rounded-lg">
-                                                        전송내역 (최신 2개)
-                                                    </div>
-                                                </div>
-
-                                                {transfers.map((transfer, index) => (
-                                                    <div key={index} className="w-full flex flex-row gap-2 items-center justify-between">
-
-                                                        <div className="flex flex-row gap-2 items-center justify-between">
-                                                            {transfer.sendOrReceive === 'send' && (
-                                                                <div className="w-24   flex flex-row gap-2 items-center justify-between">
-                                                                    <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-
-                                                                    {transfer?.otherUser?.avatar && (
-                                                                        <Image
-                                                                            src={transfer.otherUser.avatar}
-                                                                            alt="Avatar"
-                                                                            width={20}
-                                                                            height={20}
-                                                                            className="rounded"
-                                                                        />
-                                                                    )}
-                                                                    <span className="text-sm text-red-500">
-                                                                        보내기
-                                                                    </span>
-                                                                </div>
-                                                            )}
-                                                            {transfer.sendOrReceive === 'receive' && (
-                                                                <div className=" w-20 flex flex-row gap-2 items-center justify-between">
-                                                                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-
-                                                                    {transfer?.otherUser?.avatar && (
-                                                                        <Image
-                                                                            src={transfer.otherUser.avatar}
-                                                                            alt="Avatar"
-                                                                            width={20}
-                                                                            height={20}
-                                                                            className="rounded"
-                                                                        />
-                                                                    )}
-                                                                    <span className="text-sm text-green-500">
-                                                                        받기
-                                                                    </span>
-                                                                </div>
-                                                            )}
-
-                                                            <span
-                                                                className="w-28 text-sm text-zinc-100 text-right"
-                                                                style={{
-                                                                    fontFamily: 'monospace',
-                                                                }}
-                                                            >
-                                                                {
-                                                                    Number(transfer.transferData.value / 10 ** 6).toFixed(6)
-                                                                } USDT
-                                                            </span>
-                                                        </div>
-
-                                                        <div className="flex flex-row gap-2 items-center justify-between">
-                                                            <span className="text-sm text-zinc-100">
-                                                                {
-                                                                    //transfer.transferData.timestamp
-                                                                    //new Date(transfer.transferData.timestamp).toLocaleString()
-                                                                    // time ago, just now, 1 minute ago, 1 hour ago, 1 day ago
-
-
-
-                                                                    (new Date().getTime() - transfer.transferData.timestamp) / 1000 < 60 && ('방금')
-                                                                    || (new Date().getTime() - transfer.transferData.timestamp) / 1000 / 60 < 60 && (Math.floor((new Date().getTime() - transfer.transferData.timestamp) / 1000 / 60) + '분 전')
-                                                                    || (new Date().getTime() - transfer.transferData.timestamp) / 1000 / 60 / 60 < 24 && (Math.floor((new Date().getTime() - transfer.transferData.timestamp) / 1000 / 60 / 60) + '시간 전')
-                                                                    || (new Date().getTime() - transfer.transferData.timestamp) / 1000 / 60 / 60 / 24 < 1 && (Math.floor((new Date().getTime() - transfer.transferData.timestamp) / 1000 / 60 / 60 / 24) + '일 전')
-                                                                    || new Date(transfer.transferData.timestamp).toLocaleString()
-
-
-                                                                }
-                                                            </span>
-                                                        </div>
-
-                                                    </div>
-                                                ))}
-
-                                            </div>
-                                        )}
-                                        */}
-
-
-                                    </div>
-                                )}
-
-
-
-                                <div className="p-5 w-full flex flex-col gap-2 items-center justify-center">
-
-
-                                    {/* 발행금액 */}
-                                    <span className="text-2xl text-green-500 font-semibold">
-                                        가격: {price} USDT
-                                    </span>
-                                    <span className="text-lg text-zinc-400 font-semibold">
-                                        USDT 잔액: {balance} USDT
-                                    </span>
-                                    {price > balance ? (
-                                        <span className="text-lg text-red-500 font-semibold">
-                                            USDT 잔액이 부족합니다.
-                                        </span>
-                                    ) : (
-                                        <span className="text-lg text-green-500 font-semibold">
-                                            구매후 USDT 잔액: {(balance - price).toFixed(6)} USDT
-                                        </span>
-                                    )}
-
-
-
-                                    <button
-                                        disabled={claimingNft}
-                                        onClick={() => {
-                                            if (confirm("구매하시겠습니까?")) {
-                                                claimNft(
-                                                    erc1155ContractAddress,
-                                                    snowbot === 300 ? "0" : "1"
-                                                );
-                                            }
-                                        }}
-                                        className={`
-                                            ${claimingNft ? 'bg-gray-300 text-gray-400' : 'bg-blue-500 text-zinc-100'}
-                                            p-2 rounded-lg text-lg font-semibold
-                                            hover:bg-blue-600 hover:text-zinc-100
-                                            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
-                                            w-full
-                                        `}
-                                    >
-                                        <div className="flex flex-row gap-2 items-center justify-center">
-                                            {claimingNft && (
-                                                <Image
-                                                    src="/loading.png"
-                                                    alt="loding"
-                                                    width={30}
-                                                    height={30}
-                                                    className="animate-spin"
-                                                />
-                                            )}
-                                            {claimingNft && '구매중...'}
-                                            {!claimingNft && '구매하기'}
-                                        </div>
-                                    </button>
-                                </div>
-                                
-                                {messageClaimingNft && (
-                                    <span className="text-lg text-red-500 font-semibold">
-                                        {messageClaimingNft}
-                                    </span>
-                                )}
 
 
 
@@ -2097,6 +1969,8 @@ function Header(
             <AgentPage
                 params={params}
             />
+            {/* bg-[#E7EDF1] */}
+            <div className="w-full h-36 bg-[#E7EDF1]"></div>
 
         </Suspense>
     );
