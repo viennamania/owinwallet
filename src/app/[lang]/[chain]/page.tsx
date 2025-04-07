@@ -1646,13 +1646,18 @@ export default function Index({ params }: any) {
                 height={35}
                 className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
               />
+              <span className="text-sm md:text-xl font-semibold text-gray-600">
+                Tether
+              </span>
 
 
                 {/* floating point number to fixed 5 and text size small */}
-              <div className="text-4xl font-semibold text-zinc-100">
+              <div className="w-full text-2xl font-semibold text-zinc-100 text-right">
                 {Number(usdtBalance).toFixed(2)}
               </div>
-              <p className="w-12 text-sm text-gray-600">USDT</p>
+              <p className="w-12 text-sm text-gray-600 font-semibold">
+                USDT
+              </p>
 
               <button
                 onClick={() => {
@@ -1668,7 +1673,7 @@ export default function Index({ params }: any) {
                   );
 
                 }}
-                className="text-sm text-blue-500 hover:underline"
+                className="w-10 h-10"
               >
                 <Image
                   src="/goto-icon.webp"
