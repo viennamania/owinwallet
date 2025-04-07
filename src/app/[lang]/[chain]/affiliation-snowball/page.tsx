@@ -1471,11 +1471,11 @@ function AgentPage(
 
                                     }
                                     className={`
-                                        ${mintingAgentNft ? 'bg-gray-300 text-gray-400' : 'bg-blue-500 text-zinc-100'}
-                                        p-2 rounded-lg text-sm font-semibold
+                                        ${mintingAgentNft ? 'bg-gray-300 text-gray-400' : 'bg-[#3167b4] text-[#f3f4f6]'}
+                                        p-2 rounded-lg text-sm
+                                        hover:bg-blue-600 hover:text-zinc-100
+                                        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
                                         w-full
-                                        hover:bg-blue-600
-                                        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50
                                     `}
                                 >
                                     <div className='flex flex-row gap-2 items-center justify-center'>
@@ -2080,7 +2080,7 @@ function Header(
             <AgentPage
                 params={params}
             />
-            <div className="w-full h-36 bg-zinc-100"></div>
+            <div className="w-full h-36 bg-[#E7EDF1]"></div>
         </Suspense>
     );
   }

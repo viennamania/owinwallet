@@ -1,6 +1,6 @@
 // nickname settings
 'use client';
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from "react";
 
 
 
@@ -159,16 +159,22 @@ const wallets = [
 
 
 
-export default function SettingsPage({ params }: any) {
 
+function AgentPage(
+    {
+        params,
+    }: {
+        params: {
+            lang: string;
+            chain: string;
+        };
+    }
+) {
+    const { lang, chain } = params;
 
-    //console.log("params", params);
-    
     const searchParams = useSearchParams();
 
     const center = searchParams.get('center');
- 
-    const wallet = searchParams.get('wallet');
 
     const start = searchParams.get('start') || "0x0276aE1b0768bBfe47d3Dd34493A225405aDB6AA_0";
 
@@ -2456,3 +2462,21 @@ function Header(
       </header>
     );
   }
+
+
+
+export default function Agent({ params }: any) {
+    return (
+        <Suspense fallback={
+            <div
+                className="w-full h-screen flex flex-col items-center justify-center
+                bg-zinc-100 text-gray-600 font-semibold text-lg"
+            >Loading...</div>
+        }>
+            <AgentPage
+                params={params}
+            />
+            <div className="w-full h-36 bg-[#E7EDF1]"></div>
+        </Suspense>
+    );
+}
