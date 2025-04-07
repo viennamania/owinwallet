@@ -1573,12 +1573,13 @@ function AgentPage(
                         {!loadingOwnedNfts && ownedNfts.length > 0 && (
                             <div className="w-full flex flex-col gap-10 items-center justify-between">
                                 {ownedNfts.map((nft, index) => (
+
                                     <div key={index} className="w-full flex flex-col gap-2 items-center justify-between p-4
-                                        border border-gray-200
+                                        border border-gray-800
                                         rounded-lg">
 
 
-                                        <div className="text-xl text-zinc-100 font-semibold">
+                                        <div className="text-xl text-zinc-800 font-bold">
                                             {nft.metadata?.name}
                                         </div>
                                         
@@ -1589,95 +1590,40 @@ function AgentPage(
                                             }개
                                         </div>
 
-                                        
-                                        {/* metadata?.animation_url */}
-                                        {/* ipfs://QmZzvZ to https://ipfs.io/ipfs/QmZzvZ */}
-                                        {/* video */}
-                                        {/*
                                         <div className="w-full flex flex-col gap-2 items-center justify-between">
-                                            <video
-                                                src={nft.metadata?.animation_url.replace('ipfs://', 'https://ipfs.io/ipfs/')}
-                                                //controls
-                                                autoPlay
-                                                loop
-                                                className="rounded-lg"
-                                            />
-                                        </div>
-                                        */}
-
-                                        <div className="w-full flex flex-col gap-2 items-center justify-between
-                                            border border-gray-800
-                                            rounded-lg">
-                                            {/* opensea */}
-                                            <button
-                                                onClick={() => {
-                                                    window.open('https://opensea.io/assets/matic/' + erc1155ContractAddress + '/0');
-                                                }}
-                                                className="p-2 rounded hover:bg-gray-300"
-                                            >
-                                                <Image
-                                                    src="/logo-opensea.png"
-                                                    alt="OpenSea"
-                                                    width={30}
-                                                    height={30}
-                                                    className="rounded-lg"
-                                                />
-                                            </button>
-                                            <div className="w-full flex flex-col gap-2 items-center justify-between">
-                                                {/*
-                                                <Image
-                                                    src={nft.metadata?.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
-                                                    alt="NFT"
-                                                    width={500}
-                                                    height={500}
-                                                    className="rounded-lg"
-                                                />
-                                                */}
-                                                {/*
-                                                <video
-                                                    src={
-                                                        nft.metadata?.animation_url.startsWith('ipfs://') ?
-                                                        'https://ipfs.io/ipfs/' + nft.metadata?.animation_url.slice(7) :
-                                                        nft.metadata?.animation_url
-                                                    }
-                                                    autoPlay
-                                                    loop
-                                                    muted
-                                                    controls
-                                                    className="w-full rounded-lg border border-gray-300"
-                                                />
-                                                */}
 
 
-                                                {nft.id.toString() === "0" && (
-                                                    <video
-                                                        autoPlay
-                                                        loop
-                                                        muted
-                                                        playsInline
-                                                        className="w-full h-full rounded-lg"
-                                                    >
-                                                        <source src="/wegogobot-nft.mp4" type="video/mp4" />
-                                                    </video>
+                                                {nft.id.toString() === "0" ? (
+                                                    <Image
+                                                        src="/logo-snowbot3000.png"
+                                                        alt="NFT"
+                                                        width={300}
+                                                        height={300}
+                                                        className="rounded-lg"
+                                                    />
+                                                ) : (
+                                                    <Image
+                                                        src="/logo-snowbot300.png"
+                                                        alt="NFT"
+                                                        width={300}
+                                                        height={300}
+                                                        className="rounded-lg"
+                                                    />
                                                 )}
 
-         
-
-                                            </div>
+ 
                                         </div>
 
 
                                         {/* transfer NFT */}
-                                        <div className="mt-5 w-full flex flex-col gap-2 items-center justify-between
-                                            border border-gray-800
-                                            rounded-lg">
+                                        <div className="mt-5 w-full flex flex-col gap-2 items-center justify-between">
                                             
                                             <div className="w-full flex flex-row gap-2 items-center justify-start
                                                 border-b border-gray-200
                                                 p-2 rounded-lg">
                                                 <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                                                <span className="text-sm text-zinc-100 font-semibold">
-                                                    채굴 NFT 전송
+                                                <span className="text-sm text-zinc-800 font-bold">
+                                                    NFT 전송
                                                 </span>
                                             </div>
 
@@ -1688,13 +1634,13 @@ function AgentPage(
                                                 {/* dot */}
                                                 <div className="w-3 h-3 bg-red-500 rounded-full"></div>
                                                 <span className="text-sm text-red-500 font-semibold">
-                                                    채굴 NFT를 전송하면 소유자의 모든 권리를 이전하는 것에 동의하는 것입니다.
+                                                    NFT를 전송하면 소유자의 모든 권리를 이전하는 것에 동의하는 것입니다.
                                                 </span>
                                             </div>
 
 
                                             <span className="text-sm text-zinc-400 font-semibold">
-                                               채굴 NFT를 전송받을 주소와 수량을 입력하세요.
+                                               NFT를 전송받을 주소와 수량을 입력하세요.
                                             </span>
 
 
@@ -1770,15 +1716,12 @@ function AgentPage(
                                                         nft.id.toString(),
                                                     )
                                                 }
-                                                /*
+
                                                 className={`
-                                                    ${transferringNft ? 'bg-gray-300 text-gray-400' : 'bg-blue-500 text-zinc-100'}
-                                                    p-2 rounded-lg text-sm font-semibold
-                                                `}
-                                                */
-                                                className={`
-                                                    ${transferringNft[index] ? 'bg-gray-300 text-gray-400' : 'bg-blue-500 text-zinc-100'}
-                                                    p-2 rounded-lg text-sm font-semibold
+                                                    ${transferringNft[index] ? 'bg-gray-300 text-gray-400' : 'bg-[#3167b4] text-[#f3f4f6]'}
+                                                    w-full p-2 rounded-lg text-sm
+                                                    hover:bg-[#2b5b9f] hover:text-[#e2e8f0]
+                                                    transition-all duration-300 ease-in-out
                                                 `}
 
                                             >
@@ -1793,8 +1736,8 @@ function AgentPage(
                                                             className="animate-spin"
                                                         />
                                                     )}
-                                                    {transferringNft[index] && '채굴 NFT 전송중...'}
-                                                    {!transferringNft[index] && '채굴 NFT 전송하기'}
+                                                    {transferringNft[index] && 'NFT 전송중...'}
+                                                    {!transferringNft[index] && 'NFT 전송하기'}
                                                 </div>
 
 
