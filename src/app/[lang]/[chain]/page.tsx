@@ -2054,7 +2054,7 @@ function IndexPage(
                                           />
                                       ) : (
                                           <Image
-                                              src="/logo-snowbot300.png"
+                                              src="/logo-snowbot3000.png"
                                               alt="NFT"
                                               width={300}
                                               height={300}
