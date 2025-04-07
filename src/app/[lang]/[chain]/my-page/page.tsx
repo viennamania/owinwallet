@@ -607,8 +607,11 @@ function AgentPage(
 
     /* block for testing */
 
+    const [loadingUserData, setLoadingUserData] = useState(false);
+
     useEffect(() => {
         const fetchData = async () => {
+            setLoadingUserData(true);
             const response = await fetch("/api/user/getUser", {
                 method: "POST",
                 headers: {
@@ -653,9 +656,12 @@ function AgentPage(
                 setReferralCode('');
             }
 
+            setLoadingUserData(false);
+
         };
 
-        fetchData();
+        address && fetchData();
+
     }, [address]);
     
 

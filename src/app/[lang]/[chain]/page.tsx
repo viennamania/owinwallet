@@ -613,7 +613,7 @@ export default function Index({ params }: any) {
   const [seller, setSeller] = useState(null) as any;
 
 
-  const [loadingUser, setLoadingUser] = useState(true);
+  const [loadingUserData, setLoadingUserData] = useState(false);
 
   useEffect(() => {
 
@@ -623,6 +623,8 @@ export default function Index({ params }: any) {
 
       
       const fetchData = async () => {
+
+          setLoadingUserData(true);
 
           const response = await fetch("/api/user/getUser", {
               method: "POST",
@@ -654,7 +656,7 @@ export default function Index({ params }: any) {
           }
           
 
-          setLoadingUser(false);
+          setLoadingUserData(false);
       };
 
       fetchData();
@@ -1937,7 +1939,7 @@ export default function Index({ params }: any) {
 
 
 
-        {address && loadingUser && (                          
+        {address && loadingUserData && (                          
           <div className="mt-4 flex flex-row justify-center items-center">
 
             <Image
@@ -1950,7 +1952,7 @@ export default function Index({ params }: any) {
           </div>
         )}
 
-        {address && !loadingUser && (
+        {address && !loadingUserData && (
               <div className="w-full flex flex-col p-5 rounded-lg text-center
                 bg-green-500
                 hover:shadow-lg

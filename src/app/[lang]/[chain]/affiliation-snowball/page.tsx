@@ -250,8 +250,11 @@ function AgentPage(
 
     const [isCenterOwner, setIsCenterOwner] = useState(false);
 
+    const [loadingUserData, setLoadingUserData] = useState(false);
+
     useEffect(() => {
         const fetchData = async () => {
+            setLoadingUserData(true);
             const response = await fetch("/api/user/getUser", {
                 method: "POST",
                 headers: {
@@ -309,6 +312,7 @@ function AgentPage(
 
                 setUserCenter('');
             }
+            setLoadingUserData(false);
 
         };
 
@@ -1215,7 +1219,9 @@ function AgentPage(
 
 
                     {/* 회원아이디를 만들어주세요 */}
-                    {address && !userCode && (
+                    {
+                    !loadingUserData
+                    && address && !userCode && (
 
                         <div className="flex flex-col justify-start items-start gap-2 p-2">
                             {/* 회원아이디를 만들어주세요 */}
