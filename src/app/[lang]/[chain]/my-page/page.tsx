@@ -1649,7 +1649,10 @@ function AgentPage(
                         )}
 
 
-                        { (address && (nicknameEdit || !userCode)) && (
+                        { (
+                            !loadingUserData
+                            && address && (nicknameEdit || !userCode)
+                        ) && (
                             <div className=' flex flex-col xl:flex-row gap-2 items-start justify-between border border-gray-300 p-4 rounded-lg'>
 
                                 <div className='flex flex-row items-center gap-2'>
