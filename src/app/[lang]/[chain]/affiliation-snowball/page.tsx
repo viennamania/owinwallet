@@ -1492,10 +1492,9 @@ function AgentPage(
                                     }
                                     className={`
                                         ${mintingAgentNft ? 'bg-gray-300 text-gray-400' : 'bg-[#3167b4] text-[#f3f4f6]'}
-                                        p-2 rounded-lg text-sm
-                                        hover:bg-blue-600 hover:text-zinc-100
-                                        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
-                                        w-full
+                                        w-full p-2 rounded-lg text-sm
+                                        hover:bg-[#3167b4] hover:text-[#f3f4f6]
+                                        transition-all duration-300 ease-in-out
                                     `}
                                 >
                                     <div className='flex flex-row gap-2 items-center justify-center'>
