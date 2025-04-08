@@ -1140,7 +1140,7 @@ function AgentPage(
                             */}
 
                             {/* select image */}
-                            <div className="w-full flex flex-row gap-2 items-center justify-between">
+                            <div className="w-full grid grid-cols-2 gap-2 items-center justify-between">
 
                                 <button
                                     onClick={() => setSnowbot(300)}
@@ -1167,7 +1167,7 @@ function AgentPage(
                                     <div className="w-full flex flex-col gap-2 items-center justify-between">
 
                                         <div className="w-full flex flex-row gap-2 items-center justify-start">
-                                            <span className="w-24 text-xs text-gray-500 text-left">
+                                            <span className="w-12 text-xs text-gray-500 text-left">
                                                 가격
                                             </span>
                                             <span className="w-full text-sm text-gray-800 font-semibold text-right">
@@ -1176,7 +1176,7 @@ function AgentPage(
                                         </div>
 
                                         <div className="w-full flex flex-row gap-2 items-center justify-start">
-                                            <span className="w-24  text-xs text-gray-500 text-left">
+                                            <span className="w-full text-xs text-gray-500 text-left">
                                                 일일포인트
                                             </span>
                                             <span className="w-full text-sm text-gray-800 font-semibold text-right">
@@ -1185,7 +1185,7 @@ function AgentPage(
                                         </div>
 
                                         <div className="w-full flex flex-row gap-2 items-center justify-start">
-                                            <span className="w-24 text-xs text-gray-500 text-left">
+                                            <span className="w-full text-xs text-gray-500 text-left">
                                                 APR
                                             </span>
                                             <span className="w-full text-sm text-gray-800 font-semibold text-right">
@@ -1196,6 +1196,7 @@ function AgentPage(
                                     </div>
 
                                 </button>
+
                                 <button
                                     onClick={() => setSnowbot(3000)}
                                     className={`w-full flex flex-col gap-2 items-center justify-between
@@ -1220,7 +1221,7 @@ function AgentPage(
                                     <div className="w-full flex flex-col gap-2 items-center justify-between">
 
                                         <div className="w-full flex flex-row gap-2 items-center justify-start">
-                                            <span className="w-24 text-xs text-gray-500 text-left">
+                                            <span className="w-12 text-xs text-gray-500 text-left">
                                                 가격
                                             </span>
                                             <span className="w-full text-sm text-gray-800 font-semibold text-right">
@@ -1229,7 +1230,7 @@ function AgentPage(
                                         </div>
 
                                         <div className="w-full flex flex-row gap-2 items-center justify-start">
-                                            <span className="w-24  text-xs text-gray-500 text-left">
+                                            <span className="w-full text-xs text-gray-500 text-left">
                                                 일일포인트
                                             </span>
                                             <span className="w-full text-sm text-gray-800 font-semibold text-right">
@@ -1238,7 +1239,7 @@ function AgentPage(
                                         </div>
 
                                         <div className="w-full flex flex-row gap-2 items-center justify-start">
-                                            <span className="w-24 text-xs text-gray-500 text-left">
+                                            <span className="w-full text-xs text-gray-500 text-left">
                                                 APR
                                             </span>
                                             <span className="w-full text-sm text-gray-800 font-semibold text-right">
@@ -1257,7 +1258,7 @@ function AgentPage(
                             {/* usdt balance */}
                             {address && (
 
-                                <div className="w-full flex flex-col gap-2 items-center justify-between">
+                                <div className="mt-5 w-full flex flex-col gap-2 items-center justify-between">
 
 
                                     <div className='w-full flex flex-col gap-2 items-start justify-start'>
@@ -1294,7 +1295,7 @@ function AgentPage(
 
 
 
-                                <div className="p-5 w-full flex flex-col gap-2 items-center justify-center">
+                                <div className="w-full flex flex-col gap-2 items-center justify-center">
 
                                     {price > balance ? (
                                         <span className="text-sm text-red-500">
@@ -1315,6 +1316,7 @@ function AgentPage(
                                         */}
 
                                     <button
+
                                         disabled={claimingNft}
                                         onClick={() => {
                                             if (confirm("구매하시겠습니까?")) {
@@ -1362,9 +1364,9 @@ function AgentPage(
 
 
 
-                            <div className="w-full flex flex-col gap-5 items-start justify-between
+                            <div className="mt-5 w-full flex flex-col gap-5 items-start justify-between
                                 border border-gray-200
-                                p-4 rounded-lg">
+                                rounded-lg">
 
                                 {/*
                                 ‘Snow Bot 300’은 해당 봇을 구매한 사용자들에게 특별한 혜택을 제공하는 스페셜 멤버십 NFT입니다. 구매와 동시에 ‘Snowball 프로젝트’의 멤버가 되며, 이 Bot을 기반으로 다양한 보상과 혜택을 누릴 수 있습니다.
@@ -1589,8 +1591,7 @@ function AgentPage(
                                             
                                             <div className="w-full flex flex-row gap-2 items-center justify-start
                                                 border-b border-gray-200
-                                                p-2 rounded-lg">
-                                                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                                                rounded-lg">
                                                 <span className="text-sm text-zinc-800 font-bold">
                                                     NFT 전송
                                                 </span>
@@ -1601,8 +1602,8 @@ function AgentPage(
                                             */}
                                             <div className="w-full flex flex-row gap-2 items-center justify-start">
                                                 {/* dot */}
-                                                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                                                <span className="text-sm text-red-500 font-semibold">
+                                                <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                                                <span className="text-sm text-red-500">
                                                     NFT를 전송하면 소유자의 모든 권리를 이전하는 것에 동의하는 것입니다.
                                                 </span>
                                             </div>
