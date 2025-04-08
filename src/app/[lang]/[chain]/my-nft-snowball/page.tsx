@@ -1010,7 +1010,7 @@ function AgentPage(
                                 // w-full
                                 width: "100%",
                                 },
-                                label: "로그인하면 지갑에 연결됩니다.",
+                                label: "로그인 및 회원가입",
                             }}
 
                             connectModal={{

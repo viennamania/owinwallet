@@ -73,6 +73,9 @@ const contractAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT on
 const contractAddressArbitrum = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"; // USDT on Arbitrum
 const contractAddressEthereum = "0xdac17f958d2ee523a2206206994597c13d831ec7"; // USDT on Ethereum
 
+const contractAddressDCTC = "0x76856Fd779AcE7C64297F9F662D3303e09dB269f"; // DCTC on Polygon
+
+
 
 
 /*
@@ -122,26 +125,41 @@ export default function SendUsdt({ params }: any) {
 
   const tokenImage = "/token-" + String(token).toLowerCase() + "-icon.png";
   
+
+  let contract = null;
   
-  const contract = getContract({
-    // the client you have created via `createThirdwebClient()`
-    client,
-    // the chain the contract is deployed on
+  if (String(token).toLowerCase() === "usdt") {
+    contract = getContract({
+      // the client you have created via `createThirdwebClient()`
+      client,
+      // the chain the contract is deployed on
+      
+      
+      chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
     
     
-    chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-  
-  
-  
-    // the contract's address
-    ///address: contractAddress,
+    
+      // the contract's address
+      ///address: contractAddress,
 
-    address: params.chain === "arbitrum" ? contractAddressArbitrum : params.chain === "polygon" ? contractAddress : params.chain === "ethereum" ? contractAddressEthereum : contractAddress,
+      address: params.chain === "arbitrum" ? contractAddressArbitrum : params.chain === "polygon" ? contractAddress : params.chain === "ethereum" ? contractAddressEthereum : contractAddress,
 
 
-    // OPTIONAL: the contract's abi
-    //abi: [...],
-  });
+      // OPTIONAL: the contract's abi
+      //abi: [...],
+    });
+  } else if (String(token).toLowerCase() === "dctc") {
+    contract = getContract({
+      // the client you have created via `createThirdwebClient()`
+      client,
+      // the chain the contract is deployed on
+      chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+      // the contract's address
+      address: contractAddressDCTC,
+      // OPTIONAL: the contract's abi
+      //abi: [...],
+    });
+  }
 
 
 
@@ -277,13 +295,18 @@ export default function SendUsdt({ params }: any) {
 
       
       const result = await balanceOf({
-        contract,
+        contract : contract as any,
         address: address || "",
       });
 
       if (!result) return;
   
-      setBalance( Number(result) / 10 ** 6 );
+      if (String(token).toLowerCase() === "usdt") {
+        setBalance( Number(result) / 10 ** 6 );
+      } else if (String(token).toLowerCase() === "dctc") {
+        setBalance( Number(result) / 10 ** 18 );
+      }
+
 
       /*
       await fetch('/api/user/getBalanceByWalletAddress', {
@@ -581,7 +604,7 @@ export default function SendUsdt({ params }: any) {
         const transaction = transfer({
             //contract,
 
-            contract: contract,
+            contract: contract as any,
 
             to: recipient.walletAddress,
             amount: amount,
@@ -624,13 +647,17 @@ export default function SendUsdt({ params }: any) {
           // get the balance
 
           const result = await balanceOf({
-            contract,
+            contract: contract as any,
             address: address,
           });
 
           //console.log(result);
 
+          if (String(token).toLowerCase() === "usdt") {
           setBalance( Number(result) / 10 ** 6 );
+          } else if (String(token).toLowerCase() === "dctc") {
+            setBalance( Number(result) / 10 ** 18 );
+          }
 
         } else {
 
@@ -683,6 +710,7 @@ export default function SendUsdt({ params }: any) {
 
 
   // usdt balance
+  /*
   const [usdtBalance, setUsdtBalance] = useState(0);
   useEffect(() => {
     
@@ -718,7 +746,7 @@ export default function SendUsdt({ params }: any) {
 
   } , [address, params.chain, contract]);
 
-
+  */
 
 
   return (
@@ -750,6 +778,7 @@ export default function SendUsdt({ params }: any) {
                   alt="token"
                   width={35}
                   height={35}
+                  className='rounded-full'
                 />
                 
               </div>
@@ -784,7 +813,7 @@ export default function SendUsdt({ params }: any) {
                         {Number(balance).toFixed(2)}
                         */}
                        
-                        {Number(usdtBalance).toFixed(2)}
+                        {Number(balance).toFixed(2)}
 
 
                       </span>
@@ -822,7 +851,7 @@ export default function SendUsdt({ params }: any) {
                             // w-full
                             width: "100%",
                           },
-                          label: "로그인하면 지갑에 연결됩니다.",
+                          label: "로그인 및 회원가입",
                         }}
           
                         connectModal={{

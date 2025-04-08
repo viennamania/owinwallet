@@ -1548,7 +1548,7 @@ function IndexPage(
                 ">
                 {/* dctc logo */}
                 <Image
-                  src="/logo-dctc.jpeg"
+                  src="/logo-dctc.png"
                   alt="DCTC"
                   width={35}
                   height={35}
