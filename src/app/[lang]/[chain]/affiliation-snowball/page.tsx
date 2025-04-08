@@ -124,7 +124,7 @@ function AgentPage(
     const center = searchParams.get('center');
 
 
-    const start = searchParams.get('start') || "0x0276aE1b0768bBfe47d3Dd34493A225405aDB6AA_0";
+    const start = searchParams.get('start') || "0x0276aE1b0768bBfe47d3Dd34493A225405aDB6AA_143";
 
     const agent = start?.split('_')[0];
     const agentNumber = start?.split('_')[1];
