@@ -751,7 +751,8 @@ export default function SendUsdt({ params }: any) {
 
   return (
 
-    <main className="p-4 pb-10 min-h-[100vh] flex items-start justify-center container max-w-screen-lg mx-auto">
+    <main className="p-4 pb-10 min-h-[100vh] flex items-start justify-center container max-w-screen-lg mx-auto
+    bg-[#E7EDF1]">
 
       <div className="py-0 w-full ">
 
@@ -778,13 +779,13 @@ export default function SendUsdt({ params }: any) {
                   alt="token"
                   width={35}
                   height={35}
-                  className='rounded-full'
+                  className='rounded-full w-8 h-8 xl:w-10 xl:h-10'
                 />
                 
               </div>
 
-              <div className="text-2xl font-semibold">
-                {token} 보내기
+              <div className="text-lg font-semibold">
+                {token} 출금
               </div>
 
             </div>
@@ -799,12 +800,6 @@ export default function SendUsdt({ params }: any) {
                 <div className="w-full flex flex-col xl:flex-row items-start gap-3">
                   
                   <div className="flex flex-col gap-2 items-start">
-                    
-                    <div className='flex flex-row items-center gap-2'>
-                      {/* dot icon */}
-                      <div className="w-4 h-4 bg-green-500 rounded-full mr-2"></div>
-                      <div className="text-sm">{My_Balance}</div>
-                    </div>
 
                     <div className="flex flex-row items-end justify-center  gap-2">
                       <span className="text-4xl font-semibold text-gray-800">
@@ -934,11 +929,10 @@ export default function SendUsdt({ params }: any) {
               '>
 
 
-              <div className='flex flex-row gap-5 items-center justify-start'>
+              <div className='flex flex-row gap-2 items-center justify-start'>
                 {/* dot icon */}
-                <div className="w-4 h-4 bg-red-500 rounded-full mr-2"></div>
-                <div className="text-lg
-                  font-semibold
+                <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                <div className="text-sm
                   text-white
 
                 ">
@@ -947,14 +941,14 @@ export default function SendUsdt({ params }: any) {
               </div>
 
 
-              <div className='mb-5 flex flex-col xl:flex-row gap-5 items-start justify-between'>
+              <div className='w-full mb-5 flex flex-col xl:flex-row gap-5 items-start justify-between'>
 
                 <div className='w-full flex flex-col gap-5 items-start justify-between'>
                   <input
                     disabled={sending}
                     type="number"
                     //placeholder="Enter amount"
-                    className=" w-64 p-2 border border-gray-300 rounded text-black text-5xl font-semibold "
+                    className=" w-full p-2 border border-gray-300 rounded text-black text-5xl font-semibold "
                     
                     value={amount}
 
@@ -1098,12 +1092,12 @@ export default function SendUsdt({ params }: any) {
 
                 ) : (
 
-                  <div className='flex flex-col gap-5 items-center justify-between'>
+                  <div className='w-full flex flex-col gap-5 items-center justify-between'>
                     <input
                       disabled={sending}
                       type="text"
                       placeholder={User_wallet_address}
-                      className=" w-80 xl:w-96 p-2 border border-gray-300 rounded text-white bg-black text-sm xl:text-sm font-semibold"
+                      className=" w-full p-2 border border-gray-300 rounded text-white bg-black text-sm xl:text-sm font-semibold"
 
                       value={recipient.walletAddress}
 
@@ -1244,7 +1238,7 @@ export default function SendUsdt({ params }: any) {
 
                 onClick={sendUsdt}
 
-                className={`mt-10 w-full p-2 rounded-lg text-xl font-semibold
+                className={`mt-5 w-full p-2 rounded-lg text-xl font-semibold
 
                     ${
                     !address || !recipient?.walletAddress || !amount || sending || !verifiedOtp
@@ -1254,7 +1248,7 @@ export default function SendUsdt({ params }: any) {
                    
                    `}
               >
-                  {token} 보내기
+                  {token} 출금
               </button>
 
               <div className="w-full flex flex-row gap-2 text-xl font-semibold">
