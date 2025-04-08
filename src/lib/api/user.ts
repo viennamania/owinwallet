@@ -1312,3 +1312,22 @@ export async function getAllErc721ContractAddresses(): Promise<string[]> {
 
 
 
+
+
+// getReferredMembers
+// start is referralCode
+// order by createdAt desc
+export async function getReferredMembers(referralCode: string): Promise<UserProps[]> {
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('users');
+
+  const results = await collection.find<UserProps>(
+    {
+      start: referralCode,
+    },
+  )
+    .sort({ createdAt: -1 })
+    .toArray();
+
+  return results;
+}

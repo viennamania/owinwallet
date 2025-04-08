@@ -442,21 +442,34 @@ export default function AgentPage({ params }: any) {
 
   // get referred members
   const [referredMembers, setReferredMembers] = useState([] as any);
+  const [loadingReferredMembers, setLoadingReferredMembers] = useState(false);
+
+
   useEffect(() => {
     const getReferredMembers = async () => {
-      const response = await fetch('/api/referral/getReferredMembers', {
+      setLoadingReferredMembers(true);
+      const response = await fetch('/api/affiliation/getReferredMembers', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          referralCode: agentContractAddress + "_" + agentTokenId,
+          referralCode: agentContractAddress + '_' + agentTokenId,
         }),
       });
 
+      if (!response) {
+        return;
+      }
+
       const data = await response.json();
 
+      console.log("getReferredMembers data", data);
+
+
       setReferredMembers(data.result);
+
+      setLoadingReferredMembers(false);
 
     } 
 
@@ -470,18 +483,21 @@ export default function AgentPage({ params }: any) {
   //console.log("referredMembers", referredMembers);
   /*
   [
-  {
-    "telegramId": "1558409753",
-    "referralCode": "0x0276aE1b0768bBfe47d3Dd34493A225405aDB6AA_0",
-    "user": {
-        "id": 442301,
-        "avatar": "https://thirdweb-assets.s3.ap-northeast-2.amazonaws.com/profile-default.png",
-        "center": "owin_anawin_bot",
-        "nickname": "tel1842",
-        "mobile": "",
-        "email": null
-    }
-  }
+    {
+      "_id": "67f48c71299eea0cdffdd712",
+      "id": 841233,
+      "nickname": "genie",
+      "userType": "",
+      "mobile": "",
+      "telegramId": "",
+      "email": null,
+      "center": null,
+      "start": "0x0276aE1b0768bBfe47d3Dd34493A225405aDB6AA_143",
+      "walletAddress": "0x5FD40E75e88eb09AA2F4cC772E2263a140a34405",
+      "createdAt": "2025-04-08T02:39:45.668Z",
+      "settlementAmountOfFee": "0",
+      "verified": true
+    },
   ]
   */
 
@@ -759,7 +775,7 @@ export default function AgentPage({ params }: any) {
                 </div>
 
 
-                {referredMembers.length === 0 && (
+                {!loadingReferredMembers && referredMembers.length === 0 && (
                   <div className='w-full flex flex-col items-start justify-start gap-2'>
                     <div className='w-full flex flex-row items-center justify-start gap-2'>
                         {/* dot */}
@@ -777,7 +793,17 @@ export default function AgentPage({ params }: any) {
 
 
                 {/* referred members */}
-                {referredMembers.length > 0 && (
+                {
+                  loadingReferredMembers && (
+                    <div className='w-full flex flex-col items-start justify-start gap-2'>
+                      <span className='text-sm text-gray-800'>
+                          추천인 목록을 불러오는 중입니다...
+                      </span>
+                    </div>
+                  )
+                }
+                {!loadingReferredMembers &&
+                referredMembers.length > 0 && (
                   <div className='w-full flex flex-col items-start justify-start gap-2'>
 
                     <div className='w-full flex flex-row items-center justify-start gap-2
@@ -796,38 +822,27 @@ export default function AgentPage({ params }: any) {
 
                             <div
                               key={index}
-                              className='w-full flex flex-row items-start justify-start gap-2
+                              className='w-full flex flex-row items-center justify-start gap-2
                                 border-b border-gray-300 pb-2
                               '
                             >
 
                               <Image
-                                  src={member.user.avatar || '/profile-default.png'}
+                                  src={member?.avatar || '/profile-default.png'}
                                   width={40}
                                   height={40}
-                                  alt={member.user.nickname}
+                                  alt={member?.nickname}
                                   className='rounded-lg object-cover w-6 h-6'
                               />
 
-                              <div className=' w-48 flex flex-col items-start justify-between gap-2'>
+                              <div className='flex flex-row items-center justify-between gap-2'>
                                   <span className='text-lg text-green-500 font-semibold'>
-                                    {member.user.nickname}
+                                    {member?.nickname}
                                   </span>
                                   <span className='text-xs text-gray-800'>
-                                    {member.user.walletAddress && member.user.walletAddress.slice(0, 5) + '...' + member.user.walletAddress.slice(-5)}
+                                    {member?.walletAddress && member?.walletAddress.slice(0, 5) + '...' + member?.walletAddress.slice(-5)}
                                   </span>
                               </div>
-
-                              <div className='flex flex-col items-start justify-between gap-2'>
-                                <span className='text-sm text-gray-800'>
-                                  {member.user.center}
-                                </span>
-                                <span className='text-sm text-gray-800'>
-                                  {member.telegramId}
-                                </span>
-                              </div>
-                    
-                            
 
                             </div>
                         ))}
