@@ -493,7 +493,8 @@ export default function AgentPage({ params }: any) {
 
   return (
 
-    <main className="p-4 pb-10 min-h-[100vh] flex items-start justify-center container max-w-screen-lg mx-auto">
+    <main className="p-4 pb-10 min-h-[100vh] flex items-start justify-center container max-w-screen-lg mx-auto
+    bg-[#E7EDF1]">
 
       <div className="py-0 w-full ">
 
@@ -504,7 +505,7 @@ export default function AgentPage({ params }: any) {
               onClick={() => router.back()}
 
               className="text-gray-600 font-semibold underline">
-              {Go_Home}
+                뒤로가기
             </button>
         </div>
 
@@ -514,13 +515,6 @@ export default function AgentPage({ params }: any) {
 
 
           <div className='flex flex-row items-center gap-2'>
-              <Image
-                src='/icon-nft.png'
-                width={30}
-                height={30}
-                alt='Agent'
-                className='rounded-lg'
-              />
               <span className='text-lg font-semibold text-gray-800'>
                   NFT 정보
               </span>
@@ -572,17 +566,10 @@ export default function AgentPage({ params }: any) {
                     </button>
 
                   <div className='w-full flex flex-col xl:flex-row items-start justify-start gap-2'>
-                      <div className='flex flex-col items-start justify-between gap-2'>
-                        <span className='text-sm text-yellow-500'>
-                            NFT 계약주소
-                        </span>
-                        <span className='text-sm text-gray-800 font-semibold'>
-                            {agentContractAddress.slice(0, 10) + '...' + agentContractAddress.slice(-10)}
-                        </span>
-                      </div>
+
                       <div className='flex flex-col items-center justify-between gap-2'>
-                        <span className='text-sm text-yellow-500'>
-                            NFT 계약번호
+                        <span className='text-sm text-gray-800'>
+                            계약번호
                         </span>
                         <span className='text-lg text-gray-800 font-semibold'>
                             #{agentTokenId?.length > 10 ? agentTokenId.slice(0, 10) + '...' : agentTokenId}
@@ -638,7 +625,7 @@ export default function AgentPage({ params }: any) {
                                     width={200}
                                     height={200}
                                     alt={agent.name}
-                                    className='rounded-lg object-cover w-full animate-pulse'
+                                    className='rounded-lg object-cover w-full'
                                 />
                             )}
                             {/* animationUrl */}

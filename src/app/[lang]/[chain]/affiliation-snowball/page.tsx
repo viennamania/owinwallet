@@ -1378,8 +1378,8 @@ function AgentPage(
                                 <div className="flex flex-row gap-2 items-center justify-start">
                                     {/* dot */}
                                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                                    <span className='text-lg font-semibold'>
-                                        NFT 계약주소
+                                    <span className='text-sm font-semibold'>
+                                        계약주소
                                     </span>
                                 </div>
 
@@ -1626,7 +1626,8 @@ function AgentPage(
 
                                                 getMyNFTs();
                                             }}
-                                            className="p-2 bg-blue-500 text-sm text-zinc-100 rounded"
+                                            className="p-2 bg-[#3167b4] text-zinc-100 rounded
+                                            hover:bg-blue-600 text-sm font-semibold"
                                         >
                                             새로고침
                                         </button>
@@ -1681,17 +1682,18 @@ function AgentPage(
                                                     />
                                                 </button>
 
-                                                {/*
+                                                
                                                 <button
                                                     onClick={() => {
-                                                        router.push('/affiliation-cebien/' + nft.contract.address + '/' + nft.tokenId);
+                                                        router.push('/' + params.lang + '/' + params.chain +
+                                                            '/affiliation-snowball/' + nft.contract.address + '/' + nft.tokenId);
                                                     }}
-                                                    className="p-2 bg-blue-500 text-zinc-100 rounded
-                                                    hover:bg-blue-600 text-lg font-semibold"
+                                                    className="p-2 bg-[#3167b4] text-zinc-100 rounded
+                                                    hover:bg-blue-600 text-sm font-semibold"
                                                 >
                                                         상세보기
                                                 </button>
-                                                */}
+                                                
 
 
                                                 {/* referral link button */}
@@ -1717,7 +1719,7 @@ function AgentPage(
                                                         //toast.success('추천코드 URL 복사 완료');
                                                         alert('추천코드가 복사되었습니다.');
                                                     }}
-                                                    className="p-2 bg-blue-500 text-zinc-100 rounded
+                                                    className="p-2 bg-[#3167b4] text-zinc-100 rounded
                                                     hover:bg-blue-600 text-sm font-semibold"
                                                 >
                                                     추천코드 복사하기
@@ -1742,11 +1744,7 @@ function AgentPage(
                                                 </div>
 
                                                 <div className='flex flex-col gap-2 items-start justify-between'>
-                                                    {/* contract address */}
                                                     <div className='text-sm font-semibold text-yellow-500'>
-                                                        계약주소: {nft?.contract?.address && nft.contract.address.substring(0, 6) + '...' + nft.contract.address.substring(nft.contract.address.length - 4)}
-                                                    </div>
-                                                    <div className='text-xl font-semibold text-yellow-500'>
                                                         계약번호: #{nft?.tokenId?.length > 10 ? nft.tokenId.slice(0, 10) + '...' : nft.tokenId}
                                                     </div>
                                                     {/*
@@ -1813,7 +1811,8 @@ function AgentPage(
                                                     onClick={() => {
                                                         transferNft(nft.contract.address, nft.tokenId);
                                                     }}
-                                                    className={`p-2 bg-blue-500 text-zinc-100 rounded
+                                                    className={`p-2 bg-[#3167b4] text-zinc-100 rounded
+                                                    hover:bg-blue-600 text-sm font-semibold
                                                     ${transferingNftList.find((item) => 
                                                         item?.contractAddress === nft.contract.address && item.tokenId === nft.tokenId
                                                     )?.transferring ? 'opacity-50' : ''}
@@ -1832,9 +1831,7 @@ function AgentPage(
                                                                 className="animate-spin"
                                                             />
                                                         )}
-                                                        <span className='text-sm font-semibold'>
                                                             NFT 전송하기
-                                                        </span>
                                                     </div>
 
                                                 </button>
