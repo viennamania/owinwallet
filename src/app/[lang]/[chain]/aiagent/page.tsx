@@ -913,7 +913,7 @@ export default function SettingsPage({ params }: any) {
 
         if (!userCode) {
             //console.log("userCode=====", userCode);
-            toast.error('닉네임을 먼저 설정해주세요');
+            toast.error('아이디를 먼저 설정해주세요');
             return;
         }
 

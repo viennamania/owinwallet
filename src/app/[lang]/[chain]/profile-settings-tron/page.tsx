@@ -959,7 +959,7 @@ export default function SettingsPage({ params }: any) {
 
         if (!userCode) {
             //console.log("userCode=====", userCode);
-            toast.error('닉네임을 먼저 설정해주세요');
+            toast.error('아이디를 먼저 설정해주세요');
             return;
         }
 
@@ -1699,7 +1699,7 @@ export default function SettingsPage({ params }: any) {
                                     className="bg-green-500 text-sm text-zinc-100 p-2 rounded"
                                 >
                                     {!userCode ? Enter_your_nickname :
-                                        nicknameEdit ? "수정할 내 닉네임" : Enter_your_nickname
+                                        nicknameEdit ? "수정할 내 아이디" : Enter_your_nickname
                                     }
                                 </div>
 
@@ -1738,7 +1738,7 @@ export default function SettingsPage({ params }: any) {
                                     {editedNickname && isNicknameDuplicate && (
                                         <div className='flex flex-row gap-2 items-center justify-between'>
                                             <span className='text-xs font-semibold text-red-500'>
-                                                이미 사용중인 닉네임입니다.
+                                                이미 사용중인 아이디입니다.
                                             </span>
                                         </div>
                                     )}
@@ -1749,7 +1749,7 @@ export default function SettingsPage({ params }: any) {
                                     && (
                                         <div className='flex flex-row gap-2 items-center justify-between'>
                                             <span className='text-xs font-semibold text-green-500'>
-                                                사용가능한 닉네임입니다.
+                                                사용가능한 아이디입니다.
                                             </span>
                                         </div>
                                     )}

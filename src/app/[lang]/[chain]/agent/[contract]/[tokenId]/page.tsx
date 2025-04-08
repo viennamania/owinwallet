@@ -2061,7 +2061,7 @@ export default function AgentPage({ params }: any) {
 
                           <div className='w-full flex flex-row items-center justify-between gap-2'>
                               <span className='text-sm text-gray-800'>
-                                  닉네임: {application.userName}
+                                  아이디: {application.userName}
                               </span>
                           </div>
                           <div className='w-full flex flex-row items-center justify-between gap-2'>

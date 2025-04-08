@@ -2101,7 +2101,7 @@ export default function AIPage({ params }: any) {
                                             '>
 
                                                 <span className='text-lg font-semibold text-blue-500'>
-                                                    NFT 홀더 닉네임을 선택하세요
+                                                    NFT 홀더 아이디를 선택하세요
                                                 </span>
 
                                                 <div className='w-full grid grid-cols-1 xl:grid-cols-2 items-start justify-between gap-5'>
@@ -2110,7 +2110,7 @@ export default function AIPage({ params }: any) {
 
                                                         <div className='flex flex-row items-center gap-2'>
                                                             <span className='text-sm font-semibold text-gray-500'>
-                                                                NFT 홀더 닉네임(알파벳 순서)
+                                                                NFT 홀더 아이디(알파벳 순서)
                                                             </span>
                                                             {/* agents count */}
                                                             <span className='text-sm font-semibold text-gray-500'>

@@ -15,7 +15,7 @@
     "Go_Home": "홈으로",
 
     "My_Balance": "내 잔고",
-    "My_Nickname": "내 닉네임",
+    "My_Nickname": "내 아이디",
 
     "My_Buy_Trades": "내 USDT 구매내역",
     "My_Sell_Trades": "내 USDT 판매내역",
@@ -129,9 +129,9 @@
     "Cancel": "취소",
     "Save": "저장",
     "Copy": "복사",
-    "Enter_your_nickname": "닉네임 입력",
+    "Enter_your_nickname": "아이디 입력",
 
-    "Nickname_should_be_5_10_characters": "닉네임은 5-10자로 영문 소문자와 숫자만 포함해야 합니다.",
+    "Nickname_should_be_5_10_characters": "아이디는 5-10자로 영문 소문자와 숫자만 포함해야 합니다.",
 
 
     "My_Buy_USDT_Trades": "내 USDT 구매내역",
@@ -318,8 +318,8 @@
 
     "Please_verify_your_account_first_for_selling": "판매를 위해 먼저 계정을 인증하세요.",
 
-    "Nickname_should_be_alphanumeric_lowercase": "닉네임은 영문 소문자와 숫자만 포함해야 합니다.",
-    "Nickname_should_be_at_least_5_characters_and_at_most_10_characters": "닉네임은 5자 이상 10자 이하로 입력하세요.",
+    "Nickname_should_be_alphanumeric_lowercase": "아이디는 영문 소문자와 숫자만 포함해야 합니다.",
+    "Nickname_should_be_at_least_5_characters_and_at_most_10_characters": "아이디는 5자 이상 10자 이하로 입력하세요.",
 
     "File_uploaded": "파일이 업로드되었습니다.",
     "Upload_a_file": "파일 업로드",

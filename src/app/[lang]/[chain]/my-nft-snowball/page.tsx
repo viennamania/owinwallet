@@ -368,13 +368,13 @@ function AgentPage(
 
         if (editedNickname.length < 5 || editedNickname.length > 10) {
 
-            //toast.error("닉네임은 5자 이상 10자 이하로 입력해주세요");
+            //toast.error("아이디는 5자 이상 10자 이하로 입력해주세요");
             return;
         }
         
         ///if (!/^[a-z0-9]*$/.test(nickname)) {
         if (!/^[a-z0-9]*$/.test(editedNickname)) {
-            //toast.error("닉네임은 영문 소문자와 숫자만 입력해주세요");
+            //toast.error("아이디는 영문 소문자와 숫자만 입력해주세요");
             return;
         }
 
@@ -1059,7 +1059,7 @@ function AgentPage(
                             className="text-sm border border-gray-800 rounded-lg p-2
                             bg-white text-zinc-800 font-semibold hover:bg-gray-200 transition-all duration-300 ease-in-out"
                             >
-                            회원정보 설정
+                            회원아이디 설정하기
                             </button>
 
                         </div>

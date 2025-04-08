@@ -1500,6 +1500,45 @@ function IndexPage(
           
 
 
+
+            {/* 회원아이디를 만들어주세요 */}
+            {
+            !loadingUserData
+            && address && !userCode && (
+
+                <div className="w-full flex flex-col justify-start items-start gap-2 p-2">
+                    {/* 회원아이디를 만들어주세요 */}
+
+                    <div className="flex flex-row justify-center items-center gap-2">
+                    {/* dot */}
+                    <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                    <h2 className="text-sm md:text-lg font-semibold text-zinc-800">
+                        회원아이디를 만들어주세요. 회원아이디가 없으면 서비스를 이용할 수 없습니다.
+                    </h2>
+                    </div>
+
+                    <button
+                    onClick={() => {
+
+                        router.push(
+                        "/" + params.lang + "/" + params.chain + "/my-page" + "?start=" + start
+                        );
+
+                    }}
+                    className="w-full bg-[#3167b4] text-white px-4 py-2 rounded-lg hover:bg-[#3167b4]"
+                    >
+                    회원아이디 설정하기
+                    </button>
+
+                </div>
+
+
+            )}
+
+
+
+
+
         {/* 총 자산 */}
         {/* 23,355 USDT */}
         {address && (
@@ -1836,7 +1875,7 @@ function IndexPage(
 
                     <button
                       onClick={() => {
-                        //console.log("회원정보 설정");
+                        //console.log("회원아이디 설정하기");
 
                         if (!address) {
                           toast.error(Please_connect_your_wallet_first);
@@ -1851,7 +1890,7 @@ function IndexPage(
                       className="text-sm border border-gray-800 rounded-lg p-2
                       hover:bg-gray-800 hover:text-white"
                     >
-                      회원정보 설정
+                      회원아이디 설정하기
                     </button>
 
                   </div>

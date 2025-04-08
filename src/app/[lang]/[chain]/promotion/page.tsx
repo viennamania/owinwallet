@@ -989,7 +989,7 @@ export default function AIPage({ params }: any) {
     const [myAgentNFT, setMyAgentNFT] = useState({} as any);
 
     // apply to mint NFT
-    // 닉네임, 핸드폰번호, 이메일주소, OKX UID, OKXUSDT(TRON) 지갑주소, API Access Key, API Secret Key
+    // 아이디, 핸드폰번호, 이메일주소, OKX UID, OKXUSDT(TRON) 지갑주소, API Access Key, API Secret Key
 
     const [userName, setUserName] = useState("");
     useEffect(() => {
@@ -1030,7 +1030,7 @@ export default function AIPage({ params }: any) {
         }
 
         if (userName === "") {
-            toast.error("닉네임을 입력해 주세요.");
+            toast.error("아이디를 입력해 주세요.");
             return;
         }
 
@@ -2058,7 +2058,7 @@ export default function AIPage({ params }: any) {
                     {address && !userCode && !nickname && (
                         <div className='w-full flex flex-col gap-2 items-start justify-between'>
                             <span className='text-lg font-semibold text-red-500'>
-                                닉네임이 없습니다. 닉네임을 만들어 주세요.
+                                아이디가 없습니다. 아이디를 만들어 주세요.
                             </span>
 
                             <div className='w-full flex flex-col xl:flex-row gap-2 items-start justify-between border border-gray-300 p-4 rounded-lg'>
@@ -2104,7 +2104,7 @@ export default function AIPage({ params }: any) {
                                     {editedNickname && isNicknameDuplicate && (
                                         <div className='flex flex-row gap-2 items-center justify-between'>
                                             <span className='text-xs font-semibold text-red-500'>
-                                                이미 사용중인 닉네임입니다.
+                                                이미 사용중인 아이디입니다.
                                             </span>
                                         </div>
                                     )}
@@ -2115,7 +2115,7 @@ export default function AIPage({ params }: any) {
                                     && (
                                         <div className='flex flex-row gap-2 items-center justify-between'>
                                             <span className='text-xs font-semibold text-green-500'>
-                                                사용가능한 닉네임입니다.
+                                                사용가능한 아이디입니다.
                                             </span>
                                         </div>
                                     )}
@@ -2530,7 +2530,7 @@ export default function AIPage({ params }: any) {
                                                 </div>
 
                                                 <span className='text-sm font-semibold text-gray-500'>
-                                                    닉네임: {myAgent.userName}
+                                                    아이디: {myAgent.userName}
                                                 </span>
                                                 <span className='text-sm font-semibold text-gray-500'>
                                                     핸드폰번호: {myAgent.userPhoneNumber}
@@ -2938,7 +2938,7 @@ export default function AIPage({ params }: any) {
 
 
                                         {/* input for apply */}
-                                        {/* 닉네임, 핸드폰번호, 이메일주소, OKX UID, OKXUSDT(TRON) 지갑주소 */}
+                                        {/* 아이디, 핸드폰번호, 이메일주소, OKX UID, OKXUSDT(TRON) 지갑주소 */}
                                         {/* API Access Key, API Secret Key */}
 
 
@@ -3054,7 +3054,7 @@ export default function AIPage({ params }: any) {
                                         <div className='mt-5 w-full flex flex-col gap-2 border border-gray-300 p-4 rounded-lg'>
                                             
                                             <span className='text-lg font-semibold text-blue-500'>
-                                                닉네임, 핸드폰번호, 이메일주소를 입력하세요.
+                                                아이디, 핸드폰번호, 이메일주소를 입력하세요.
                                             </span>
 
                                             <input
@@ -3062,7 +3062,7 @@ export default function AIPage({ params }: any) {
                                                 value={userName}
                                                 onChange={(e) => setUserName(e.target.value)}
                                                 type="text"
-                                                placeholder="닉네임"
+                                                placeholder="아이디"
                                                 className="w-full p-2 rounded-lg border border-gray-300"
                                             />
                                             <input

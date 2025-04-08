@@ -1506,7 +1506,7 @@ export default function AIPage({ params }: any) {
 
         if (!userCode) {
             //console.log("userCode=====", userCode);
-            toast.error('닉네임을 먼저 설정해주세요');
+            toast.error('아이디를 먼저 설정해주세요');
             return;
         }
 
@@ -3111,7 +3111,7 @@ export default function AIPage({ params }: any) {
                                             <div className='w-full flex flex-row items-center justify-between gap-2'>
                                                 <div className='flex flex-col gap-2'>
                                                     <span className='text-xs text-yellow-800'>
-                                                        닉네임
+                                                        아이디
                                                     </span>
                                                     <span className='text-sm text-gray-800'>
                                                         {application.userName}

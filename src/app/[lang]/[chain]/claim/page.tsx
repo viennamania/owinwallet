@@ -1049,7 +1049,7 @@ export default function AIPage({ params }: any) {
                     && !userCode && !nickname && (
                         <div className='w-full flex flex-col gap-2 items-start justify-between'>
                             <span className='text-lg font-semibold text-red-500'>
-                                닉네임이 없습니다. 닉네임을 만들어 주세요.
+                                아이디가 없습니다. 아이디를 만들어 주세요.
                             </span>
 
                         </div>

@@ -983,7 +983,7 @@ export default function AIPage({ params }: any) {
             '회원번호': id,
             '가입일시': new Date(rest.createdAt).toLocaleString(),
             '이메일': rest.email,
-            '닉네임': rest.nickname,
+            '아이디': rest.nickname,
             '가입유형': rest.regType === 'email' ? '이메일' : rest.regType === 'kakao' ? '카카오' : rest.regType === 'naver' ? '네이버' : rest.regType === 'google' ? '구글' : '기타',
             '생년월일': rest.birthDate,
             '셩별': rest.gender,
@@ -3203,7 +3203,7 @@ export default function AIPage({ params }: any) {
                                         <div className='w-full flex flex-row items-center justify-between gap-2'>
                                             <div className='flex flex-col gap-2'>
                                                 <span className='text-lg font-semibold text-yellow-500'>
-                                                    닉네임
+                                                    아이디
                                                 </span>
                                                 <span className='text-sm text-gray-800'>
                                                     {application.userName}
