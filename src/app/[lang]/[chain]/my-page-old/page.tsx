@@ -1502,11 +1502,11 @@ export default function SettingsPage({ params }: any) {
                                     {/* disconnect button */}
                                     <button
                                         onClick={() => {
-                                            confirm("지갑 연결을 해제하시겠습니까?") && activeWallet?.disconnect();
+                                            confirm("로그아웃 하시겠습니까?") && activeWallet?.disconnect();
                                         }}
                                         className="bg-zinc-800 text-white p-2 rounded-lg"
                                     >
-                                        지갑 연결 해제
+                                        로그아웃
                                     </button>
                                     </div>
                         

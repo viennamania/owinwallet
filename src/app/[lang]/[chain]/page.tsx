@@ -1452,17 +1452,17 @@ function IndexPage(
 
         )}
 
+        {/*
         {address && (
           <div className="w-full flex items-center justify-end gap-5">
 
-            {/* disconnect button */}
 
             <div className="flex flex-row gap-2">
 
 
               <button
                 onClick={() => {
-                  confirm("지갑 연결을 해제하시겠습니까?") && activeWallet?.disconnect();
+                  confirm("로그아웃 하시겠습니까?") && activeWallet?.disconnect();
                 }}
                 className="flex flex-row gap-2 items-center bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600"
               >
@@ -1474,13 +1474,14 @@ function IndexPage(
                   className="rounded"
                 />
                 <span className="text-sm">
-                  지갑 연결 해제
+                  로그아웃
                 </span>
               </button>
             </div>
 
           </div>
         )}
+        */}
             
 
 

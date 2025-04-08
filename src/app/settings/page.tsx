@@ -427,7 +427,7 @@ export default function SettingsPage() {
                                 <button
                                     disabled={!activeWallet}
                                     onClick={() => {
-                                        confirm("지갑 연결을 해제하시겠습니까?") && activeWallet?.disconnect();
+                                        confirm("로그아웃 하시겠습니까?") && activeWallet?.disconnect();
                                     }}
                                     className="p-2 bg-red-500 text-zinc-100 rounded"
                                 >

@@ -1341,7 +1341,7 @@ export default function Index({ params }: any) {
               
               <button
                 onClick={() => {
-                  confirm("지갑 연결을 해제하시겠습니까?") && activeWallet?.disconnect();
+                  confirm("로그아웃 하시겠습니까?") && activeWallet?.disconnect();
                 }}
                 className="text-lg bg-red-500 text-white px-4 py-2 rounded-md"
               >

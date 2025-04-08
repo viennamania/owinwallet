@@ -45,7 +45,6 @@ import {
     useConnectedWallets,
     useSetActiveWallet,
 
-
 } from "thirdweb/react";
 
 
@@ -1504,81 +1503,11 @@ function AgentPage(
 
         <main className="
         pb-10
-        p-4 min-h-[100vh] flex-col items-start justify-center container max-w-screen-lg mx-auto
+        p-0 min-h-[100vh] flex-col items-start justify-center container max-w-screen-lg mx-auto
         bg-[#E7EDF1]
         ">
   
             <div className="py-0 w-full">
-        
-                {/* goto home button using go back icon
-                history back
-                */}
-
-                {/*
-                <AppBarComponent />
-                */}
-
-                {/*}
-                <Header
-                    center={center ? center : ""}
-                    agent={agent ? agent : ""}
-                    tokenId={agentNumber ? agentNumber : ""}
-                />
-                */}
-
-
-                {!address && (
-
-                    <div className="
-                        mt-16
-                        w-full flex flex-col justify-center items-center gap-2 p-2">
-
-                    
-                        <ConnectButton
-                        client={client}
-                        wallets={wallets}
-                        accountAbstraction={{
-                            chain: polygon,
-                            sponsorGas: true
-                        }}
-                        
-                        theme={"light"}
-
-                        // button color is dark skyblue convert (49, 103, 180) to hex
-                        connectButton={{
-                            style: {
-                            backgroundColor: "#3167b4", // dark skyblue
-                            // font color is gray-300
-                            color: "#f3f4f6", // gray-300
-                            padding: "10px 20px",
-                            borderRadius: "10px",
-                            fontSize: "16px",
-                            // w-full
-                            width: "100%",
-                            },
-                            label: "로그인하면 지갑에 연결됩니다.",
-                        }}
-
-                        connectModal={{
-                            size: "wide", 
-                            //size: "compact",
-                            titleIcon: "https://uma.tips/icon-snowball.png",                           
-                            showThirdwebBranding: false,
-                        }}
-
-                        locale={"ko_KR"}
-                        //locale={"en_US"}
-                        />
-                        
-                    
-
-                    </div>
-
-                )}
-
-
-
-
 
                 <div className="w-full flex flex-col items-start justify-center gap-4 p-4">
 
@@ -2257,6 +2186,31 @@ function AgentPage(
 
                     </div>
 
+
+
+
+                    {address && (
+                        <div className="w-full flex items-center justify-end gap-5">
+
+                            <button
+                                onClick={() => {
+                                    confirm("로그아웃 하시겠습니까?") && activeWallet?.disconnect().then(() => {
+                                        router.push(
+                                            "/" + params.lang + "/" + params.chain + "/"
+                                            + "?start=" + start
+                                        );
+                                    });
+                                } }
+
+                                className="w-full bg-[#3167b4] text-sm text-[#f3f4f6] px-4 py-2 rounded-lg hover:bg-[#3167b4]/80"
+                            >
+                                <span className="text-sm">
+                                로그아웃
+                                </span>
+                            </button>
+
+                        </div>
+                    )}
 
 
 
