@@ -22,6 +22,7 @@ export async function POST(request: NextRequest) {
   const body = await request.json();
 
   const {
+    walletAddress,
     erc721ContractAddress,
     tokenId
   } = body;
@@ -81,19 +82,19 @@ export async function POST(request: NextRequest) {
   }
   */
 
-  const walletAddress = owner?.owners?.[0];
+  const holderWalletAddress = owner?.owners?.[0];
 
   ///console.log("walletAddress: ", walletAddress);
 
-  const user = await getOneByWalletAddress(walletAddress);
+  const ownerInfo = await getOneByWalletAddress(holderWalletAddress);
 
 
 
 
   return NextResponse.json({
     result: response,
-    holderWalletAddress: walletAddress,
-    ownerInfo: user,
+    holderWalletAddress: holderWalletAddress,
+    ownerInfo: ownerInfo,
     
   });
   

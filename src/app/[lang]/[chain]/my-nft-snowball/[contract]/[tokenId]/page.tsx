@@ -88,6 +88,7 @@ import {
 
 
 import { client } from "../../../../../client";
+import { add } from 'thirdweb/extensions/farcaster/keyGateway';
 
 
 
@@ -139,66 +140,7 @@ export default function AgentPage({ params }: any) {
 
   //console.log("agentContractAddress", agentContractAddress);
 
-  
-  const [nftInfo, setNftInfo] = useState(null as any);
-  
- 
-  const [holderWalletAddress, setHolderWalletAddress] = useState("");
 
-
-  const [ownerInfo, setOwnerInfo] = useState({} as any);
-
-  const [loadingAgent, setLoadingAgent] = useState(false);
-
-  const [animationUrl, setAnimationUrl] = useState("");
-  useEffect(() => {
-      
-      const getAgent = async () => {
-
-        setLoadingAgent(true);
-  
-        const response = await fetch('/api/agent/getAgentNFTByContractAddressAndTokenId', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            erc721ContractAddress: agentContractAddress,
-            tokenId: agentTokenId,
-          }),
-        });
-
-        if (!response) {
-          setLoadingAgent(false);
-          return;
-        }
-  
-        const data = await response.json();
-
-        //console.log("getAgentNFTByContractAddressAndTokenId data", data);
-
-        if (data.result.raw?.metadata?.animation_url) {
-            setAnimationUrl(
-                data.result.raw.metadata.animation_url.replace("ipfs://", "https://ipfs.io/ipfs/")
-            );
-        }
-  
-
-        setNftInfo(data.result);
-
-        setOwnerInfo(data?.ownerInfo);
-        setHolderWalletAddress(data?.ownerWalletAddress);
-
-
-        ////console.log("agent======", data.result);
-
-        setLoadingAgent(false);
-  
-      };
-  
-      if (agentContractAddress && agentTokenId) getAgent();
-  
-  }, [agentContractAddress, agentTokenId]);
 
    
   ///console.log("agent", agent);
@@ -384,7 +326,68 @@ export default function AgentPage({ params }: any) {
  
 
 
+  
+  const [nftInfo, setNftInfo] = useState(null as any);
+  
+ 
+  const [holderWalletAddress, setHolderWalletAddress] = useState("");
 
+
+  const [ownerInfo, setOwnerInfo] = useState({} as any);
+
+  const [loadingAgent, setLoadingAgent] = useState(false);
+
+  const [animationUrl, setAnimationUrl] = useState("");
+  useEffect(() => {
+      
+      const getAgent = async () => {
+
+        setLoadingAgent(true);
+  
+        const response = await fetch('/api/agent/getAgentNFTByContractAddressAndTokenId', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            walletAddress: address,
+            erc721ContractAddress: agentContractAddress,
+            tokenId: agentTokenId,
+          }),
+        });
+
+        if (!response) {
+          setLoadingAgent(false);
+          return;
+        }
+  
+        const data = await response.json();
+
+        //console.log("getAgentNFTByContractAddressAndTokenId data", data);
+
+        if (data.result.raw?.metadata?.animation_url) {
+            setAnimationUrl(
+                data.result.raw.metadata.animation_url.replace("ipfs://", "https://ipfs.io/ipfs/")
+            );
+        }
+  
+        console.log("getAgentNFTByContractAddressAndTokenId data", data);
+
+        setNftInfo(data.result);
+
+        setOwnerInfo(data?.ownerInfo);
+        setHolderWalletAddress(data?.ownerWalletAddress);
+
+
+        ////console.log("agent======", data.result);
+
+        setLoadingAgent(false);
+  
+      };
+  
+      if (address && agentContractAddress && agentTokenId) getAgent();
+  
+  }, [address, agentContractAddress, agentTokenId]);
 
   // transferFrom
 
@@ -435,6 +438,7 @@ export default function AgentPage({ params }: any) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          walletAddress: address,
           erc721ContractAddress: agentContractAddress,
           tokenId: agentTokenId,
         }),
@@ -620,44 +624,67 @@ export default function AgentPage({ params }: any) {
                 <div className='w-full grid grid-cols-1 xl:grid-cols-2 items-start justify-start gap-5'>
 
 
-                  <div className='w-full flex flex-col items-start justify-start gap-2'>
+                  <div className='w-full flex flex-row items-start justify-start gap-5'>
 
+                      <Image
+                            src={nftInfo?.tokenId === '0' ? '/logo-snowbot300.png' : '/logo-snowbot3000.png'}
+                            width={200}
+                            height={200}
+                            alt="NFT"
+                            className='w-1/4 rounded-lg object-cover'
+                        />
 
+                        <div className="w-3/4 flex flex-col gap-1 items-center justify-center">
 
-
-                    <div className='w-full flex flex-col items-start justify-between gap-2
-                      border-b border-gray-300 pb-2
-                    '>
-
-                        <div className='w-full flex flex-col items-start justify-between gap-2'>
-
-                            <div className='flex flex-col items-start justify-between gap-2'>
-
-                                <span className='text-xl font-semibold text-gray-800'>
-                                    {nftInfo?.name}
-                                </span>
+                          <div className="w-full flex flex-row gap-2 items-center justify-start">
+                            <div className="w-1/2 text-sm text-zinc-800 font-bold">
+                                이름
                             </div>
+                            <div className="w-full text-sm text-zinc-800 font-bold text-right">
+                                {nftInfo?.name}
+                            </div>
+                          </div>
+
+                          <div className="w-full flex flex-row gap-2 items-center justify-start">
+                            <div className="w-1/2 text-sm text-zinc-800 font-bold">
+                                계약번호
+                            </div>
+                            <div className="w-full text-sm text-zinc-800 font-bold text-right">
+                                #{nftInfo?.tokenId}
+                            </div>
+                          </div>
+
+                          <div className="w-full flex flex-row gap-2 items-center justify-start">
+                            <div className="w-1/2 text-sm text-zinc-800 font-bold">
+                                수량
+                            </div>
+                            <div className="w-full text-sm text-zinc-800 font-bold text-right">
+                                0 개
+                            </div>
+                          </div>
+
+                          <div className="w-full flex flex-row gap-2 items-center justify-start">
+                            <div className="w-1/2 text-sm text-zinc-800 font-bold">
+                                누적 리워드
+                            </div>
+                            <div className="w-full text-sm text-zinc-800 font-bold text-right">
+                                0.00 USDT
+                            </div>
+                          </div>
+
+                          <div className="w-full flex flex-row gap-2 items-center justify-start">
+                            <div className="w-1/2 text-sm text-zinc-800 font-bold">
+                                누적 수익률
+                            </div>
+                            <div className="w-full text-sm text-zinc-800 font-bold text-right">
+                                0.00%
+                            </div>
+                          </div>
 
                         </div>
 
 
-                        <div className='flex flex-col items-start justify-start gap-2'>
 
-                                <Image
-                                    src={nftInfo?.tokenId === '0' ? '/logo-snowbot300.png' : '/logo-snowbot3000.png'}
-                                    width={200}
-                                    height={200}
-                                    alt="NFT"
-                                    className='rounded-lg object-cover w-full h-auto'
-                                />
-
-
-                        </div>
-
-                    </div>
-
-
-                    
                   </div>
 
 
