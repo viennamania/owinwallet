@@ -1747,16 +1747,12 @@ function AgentPage(
                                                     <div className='text-sm font-semibold text-yellow-500'>
                                                         계약번호: #{nft?.tokenId?.length > 10 ? nft.tokenId.slice(0, 10) + '...' : nft.tokenId}
                                                     </div>
-                                                    {/*
-                                                    <div className='text-lg font-semibold text-green-500'>
+                                                    <div className='text-sm font-semibold text-yellow-500'>
                                                         이름: {nft?.name}
                                                     </div>
-                                                    */}
-                                                    {/*
-                                                    <div className='text-xs font-semibold text-green-500'>
+                                                    <div className='text-sm font-semibold text-yellow-500'>
                                                         설명: {nft?.description}
                                                     </div>
-                                                    */}
 
                                                 </div>
 
