@@ -126,7 +126,7 @@ const wallets = [
         "email",
         "x",
         "passkey",
-        "phone",
+        //"phone",
         "facebook",
         "line",
         "apple",
