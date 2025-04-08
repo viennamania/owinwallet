@@ -1691,7 +1691,7 @@ function AgentPage(
                                                     className="p-2 bg-[#3167b4] text-zinc-100 rounded
                                                     hover:bg-blue-600 text-sm font-semibold"
                                                 >
-                                                        상세보기
+                                                    추천인 보기
                                                 </button>
                                                 
 

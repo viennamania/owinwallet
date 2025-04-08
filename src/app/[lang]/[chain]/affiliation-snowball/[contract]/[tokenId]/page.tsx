@@ -532,7 +532,7 @@ export default function AgentPage({ params }: any) {
 
           <div className='flex flex-row items-center gap-2'>
               <span className='text-lg font-semibold text-gray-800'>
-                  NFT 정보
+                  추천인
               </span>
           </div>
 
@@ -605,35 +605,14 @@ export default function AgentPage({ params }: any) {
 
 
 
-                    <div className='w-full flex flex-col xl:flex-row items-start justify-between gap-2
+                    <div className='w-full flex flex-row items-start justify-between gap-2
                       bg-gray-800 bg-opacity-90
                       backdrop-blur-md
                       p-4 rounded-lg
                       border border-gray-300
                     '>
 
-                        <div className='w-full flex flex-col items-start justify-between gap-2'>
-
-                            <div className='flex flex-col items-start justify-between gap-2'>
-                                <span className='text-sm text-yellow-500'>
-                                    NFT 이름
-                                </span>
-                                <span className='text-xl font-semibold text-gray-200'>
-                                    {agent.name}
-                                </span>
-                            </div>
-                    
-                            <div className='flex flex-col items-start justify-between gap-2'>
-                                <span className='text-sm text-yellow-500'>
-                                    NFT 설명
-                                </span>
-                                <span className='text-xs text-gray-200'>
-                                    {agent.description}
-                                </span>
-                            </div>
-                        </div>
-
-                        <div className='mt-5 w-full flex flex-col items-start justify-start gap-2'>
+                        <div className='w-full flex flex-col items-start justify-start gap-2'>
                             {!animationUrl && agent.image && (
                                 <Image
                                     //src={agent?.image?.thumbnailUrl}
@@ -656,6 +635,30 @@ export default function AgentPage({ params }: any) {
                                 />
                             )}
                         </div>
+                        
+                        
+                        <div className='w-full flex flex-col items-start justify-between gap-2'>
+
+                            <div className='flex flex-col items-start justify-between gap-2'>
+                                <span className='text-sm text-yellow-500'>
+                                    NFT 이름
+                                </span>
+                                <span className='text-xl font-semibold text-gray-200'>
+                                    {agent.name}
+                                </span>
+                            </div>
+                    
+                            <div className='flex flex-col items-start justify-between gap-2'>
+                                <span className='text-sm text-yellow-500'>
+                                    NFT 설명
+                                </span>
+                                <span className='text-xs text-gray-200'>
+                                    {agent.description}
+                                </span>
+                            </div>
+                        </div>
+
+
 
                     </div>
 
