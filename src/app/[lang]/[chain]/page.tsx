@@ -205,6 +205,11 @@ function IndexPage(
 
 
 
+  const activeAccount = useActiveAccount();
+  const address = activeAccount?.address || "";
+
+
+
 
   const contract = getContract({
     // the client you have created via `createThirdwebClient()`
@@ -347,54 +352,6 @@ function IndexPage(
   const activeWallet = useActiveWallet();
 
 
-
-  ///console.log('activeWallet', activeWallet);
-
-
-
-  //const setActiveAccount = useSetActiveWallet();
- 
-
-  //const connectWallets = useConnectedWallets();
-
-  //console.log('connectWallets', connectWallets);
-
-  //const smartConnectWallet = connectWallets?.[0];
-  //const inAppConnectWallet = connectWallets?.[1];
-
-  //console.log("connectWallets", connectWallets);
-  
-  /*
-  useEffect(() => {
-
-    if (inAppConnectWallet) {
-      setActiveAccount(inAppConnectWallet);
-    }
-
-  } , [inAppConnectWallet, setActiveAccount]);
-  */
-
-  //inAppConnectWallet && setActiveAccount(inAppConnectWallet);
-
-
-
-  //const activeAccount = useActiveAccount();
-  //const address = activeAccount?.address;
-
-  /*
-  const setActiveAccount = useSetActiveWallet();
-
-  const connectWallets = useConnectedWallets();
-
-  const smartConnectWallet = connectWallets?.[0];
-  const inAppConnectWallet = connectWallets?.[1];
-  */
-
-  const activeAccount = useActiveAccount();
-  const address = activeAccount?.address || "";
-
-
- 
 
 
 
@@ -1379,29 +1336,6 @@ function IndexPage(
           <div className="
             mt-16
             w-full flex flex-col justify-center items-center gap-2 p-2">
-
-            {/*
-              <button
-                onClick={handleConnect}
-                className="w-full bg-zinc-800 text-white px-4 py-2 rounded-lg hover:bg-zinc-900"
-              >
-                <div className="flex flex-row justify-center items-center gap-2">
-                  <Image
-                    src={thirdwebIcon}
-                    alt="Thirdweb"
-                    width={20}
-                    height={20}
-                    className="rounded-lg w-10 h-10"
-                  />
-                  <span>Sign in</span>
-                </div>
-              </button>
-            */}
-
-
-
-
-            
           
             <ConnectButton
               client={client}

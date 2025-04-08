@@ -1,8 +1,6 @@
-// send USDT
 'use client';
 
-
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense, use } from "react";
 
 import { toast } from 'react-hot-toast';
 
@@ -89,6 +87,8 @@ import {
 
 import { client } from "../../../../../client";
 import { add } from 'thirdweb/extensions/farcaster/keyGateway';
+import { token } from "thirdweb/extensions/vote";
+import { parse } from "path";
 
 
 
@@ -124,28 +124,33 @@ const wallets = [
 
 
 
-export default function AgentPage({ params }: any) {
+///export default function AgentPage({ params }: any) {
+
+
+function IndexPage(
+    {
+        params,
+    }: {
+        params: {
+            lang: string;
+            chain: string;
+            contract: string;
+            tokenId: string;
+        };
+    }
+) {
+  const { lang, chain, } = params;
+
+  const searchParams = useSearchParams();
+
 
   const agentContractAddress = params.contract;
   const agentTokenId = params.tokenId;
 
-  //console.log("agentContractAddress", agentContractAddress);
-  //console.log("agentTokenId", agentTokenId);
-
-  //console.log("params", params);
-
-  const searchParams = useSearchParams();
- 
- 
-
-  //console.log("agentContractAddress", agentContractAddress);
+  const activeAccount = useActiveAccount();
+  const address = activeAccount?.address || "";
 
 
-
-   
-  ///console.log("agent", agent);
-
-  ///console.log("loadingAgent", loadingAgent);
   
   
   const contract = getContract({
@@ -276,10 +281,6 @@ export default function AgentPage({ params }: any) {
   const router = useRouter();
 
 
-
-  const activeAccount = useActiveAccount();
-
-  const address = activeAccount?.address;
 
 
 
@@ -489,7 +490,7 @@ export default function AgentPage({ params }: any) {
 
 
 
-
+    /*
     // getSettlementHistoryByAgentWalletAddress
     const [settlementHistory, setSettlementHistory] = useState([] as any[]);
     const [loadingSettlementHistory, setLoadingSettlementHistory] = useState(false);
@@ -530,14 +531,73 @@ export default function AgentPage({ params }: any) {
     }
 
     useEffect(() => {
-        holderWalletAddress && getSettlementHistory();
+        address && getSettlementHistory();
     } , [holderWalletAddress]);
 
-
+    */
 
 
     //console.log("nftInfo", nftInfo);
 
+
+  // reward history
+  const [rewardHistory, setRewardHistory] = useState([] as any[]);
+  const [loadingRewardHistory, setLoadingRewardHistory] = useState(false);
+  const getRewardHistory = async () => {
+      
+      setLoadingRewardHistory(true);
+
+      const response = await fetch("/api/affiliation/getRewardsByWalletAddress", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+              limit: 10,
+              page: 1,
+              walletAddress: address,
+              contractAddress: agentContractAddress,
+              tokenId: parseInt(agentTokenId),
+          }),
+      });
+
+      if (!response.ok) {
+          console.error("Error fetching reward history");
+          setLoadingRewardHistory(false);
+          return;
+      }
+
+      const data = await response.json();
+
+      //console.log("data", data);
+
+      if (data.result) {
+          setRewardHistory(data.result);
+      } else {
+          setRewardHistory([]);
+      }
+
+      setLoadingRewardHistory(false);
+
+  }
+
+  useEffect(() => {
+      address && getRewardHistory();
+  } , [address]);
+
+
+  /*
+  {
+    "_id": "67f4ccd6e32ede5e968242ac",
+    "walletAddress": "0x534ea8bf168AEBf71ea37ba2Ae0fCEC8E09aA83A",
+    "contractAddress": "0x796f8867E6D474C1d63e4D7ea5f52B48E4bA83D6",
+    "tokenId": 0,
+    "balance": 1,
+    "amount": 0.45,
+    "category": "master",
+    "createdAt": "2025-04-08T07:14:30.560Z"
+  }
+    */
 
 
 
@@ -550,9 +610,10 @@ export default function AgentPage({ params }: any) {
       bg-[#E7EDF1]
     ">
 
+
       <div className="w-full flex flex-col items-start justify-start gap-5 p-4">
 
-        {/* go back button */}
+        
         <div className="mt-4 flex justify-start space-x-4 mb-10">
             <button
               
@@ -564,25 +625,64 @@ export default function AgentPage({ params }: any) {
         </div>
  
 
-
+        
         <div className="w-full flex flex-col items-start justify-start gap-5">
 
 
-          {/* agent nft info */}
+        {!address && (
+
+          <div className="
+            mt-16
+            w-full flex flex-col justify-center items-center gap-2 p-2">
+
+            <ConnectButton
+              client={client}
+              wallets={wallets}
+              accountAbstraction={{
+                chain: polygon,
+                sponsorGas: true
+              }}
+              
+              theme={"light"}
+
+              // button color is dark skyblue convert (49, 103, 180) to hex
+              connectButton={{
+                style: {
+                  backgroundColor: "#3167b4", // dark skyblue
+                  // font color is gray-300
+                  color: "#f3f4f6", // gray-300
+                  padding: "10px 20px",
+                  borderRadius: "10px",
+                  fontSize: "16px",
+                  // w-full
+                  width: "100%",
+                },
+                label: "로그인 및 회원가입",
+              }}
+
+              connectModal={{
+                size: "wide", 
+                //size: "compact",
+                titleIcon: "https://uma.tips/icon-snowball.png",                           
+                showThirdwebBranding: false,
+              }}
+
+              locale={"ko_KR"}
+              //locale={"en_US"}
+            />
+
+
+          </div>
+
+          )}
+
+
+
+
           <div className={`w-full flex flex-col gap-5 p-4 rounded-lg border bg-gray-100
             ${address && holderWalletAddress && address === holderWalletAddress ? 'border-green-500' : 'border-gray-300'}
           `}>
 
-
-            {address && holderWalletAddress && address === holderWalletAddress && (
-              <div className='flex flex-row items-center gap-2'>
-                {/* dot */}
-                <div className='w-3 h-3 bg-red-500 rounded-full'></div>
-                <span className='text-lg text-green-500 font-semibold'>
-                    당신은 이 NFT의 소유자입니다.
-                </span>
-              </div>
-            )}
 
 
             {loadingAgent && (
@@ -607,7 +707,7 @@ export default function AgentPage({ params }: any) {
                 <div className='w-full flex flex-row items-center justify-between gap-2
                  border-b border-gray-300 pb-2
                 '>
-                    {/* opensea */}
+
                     <button
                         onClick={() => {
                             window.open('https://opensea.io/assets/matic/' + agentContractAddress + '/' + agentTokenId);
@@ -619,7 +719,7 @@ export default function AgentPage({ params }: any) {
                             alt="OpenSea"
                             width={50}
                             height={50}
-                            className="rounded-lg"
+                            className="rounded-lg w-10 h-10"
                         />
                     </button>
 
@@ -629,7 +729,10 @@ export default function AgentPage({ params }: any) {
                 <div className='w-full grid grid-cols-1 xl:grid-cols-2 items-start justify-start gap-5'>
 
 
-                  <div className='w-full flex flex-row items-start justify-start gap-5'>
+                  <div className='w-full flex flex-row items-start justify-start gap-5
+                    border-b border-gray-300 pb-2
+                    '>
+
 
                       <Image
                             src={nftInfo?.tokenId === '0' ? '/logo-snowbot300.png' : '/logo-snowbot3000.png'}
@@ -642,7 +745,7 @@ export default function AgentPage({ params }: any) {
                         <div className="w-3/4 flex flex-col gap-1 items-center justify-center">
 
                           <div className="w-full flex flex-row gap-2 items-center justify-start">
-                            <div className="w-1/2 text-sm text-zinc-800 font-bold">
+                            <div className="w-1/2 text-xs text-zinc-800">
                                 이름
                             </div>
                             <div className="w-full text-sm text-zinc-800 font-bold text-right">
@@ -651,7 +754,7 @@ export default function AgentPage({ params }: any) {
                           </div>
 
                           <div className="w-full flex flex-row gap-2 items-center justify-start">
-                            <div className="w-1/2 text-sm text-zinc-800 font-bold">
+                            <div className="w-1/2 text-xs text-zinc-800">
                                 계약번호
                             </div>
                             <div className="w-full text-sm text-zinc-800 font-bold text-right">
@@ -660,7 +763,7 @@ export default function AgentPage({ params }: any) {
                           </div>
 
                           <div className="w-full flex flex-row gap-2 items-center justify-start">
-                            <div className="w-1/2 text-sm text-zinc-800 font-bold">
+                            <div className="w-1/2 text-xs text-zinc-800">
                                 수량
                             </div>
                             <div className="w-full text-sm text-zinc-800 font-bold text-right">
@@ -669,7 +772,7 @@ export default function AgentPage({ params }: any) {
                           </div>
 
                           <div className="w-full flex flex-row gap-2 items-center justify-start">
-                            <div className="w-1/2 text-sm text-zinc-800 font-bold">
+                            <div className="w-1/2 text-xs text-zinc-800">
                                 누적 리워드
                             </div>
                             <div className="w-full text-sm text-zinc-800 font-bold text-right">
@@ -678,7 +781,7 @@ export default function AgentPage({ params }: any) {
                           </div>
 
                           <div className="w-full flex flex-row gap-2 items-center justify-start">
-                            <div className="w-1/2 text-sm text-zinc-800 font-bold">
+                            <div className="w-1/2 text-xs text-zinc-800">
                                 누적 수익률
                             </div>
                             <div className="w-full text-sm text-zinc-800 font-bold text-right">
@@ -688,9 +791,89 @@ export default function AgentPage({ params }: any) {
 
                         </div>
 
+                  </div>
 
+                  {/* reward history */}
+                  {/* table */}
+                  <div className='w-full flex flex-col gap-2'>
+                      <div className='w-full flex flex-row items-center justify-between gap-2'>
+                          <div className="text-sm text-zinc-800 font-bold">
+                              보상 내역
+                          </div>
+                          <button
+                            onClick={() => {
+                                getRewardHistory();
+                            }}
+                            className="p-2 rounded hover:bg-gray-300"
+                          >
+                            새로고침
+                          </button>
+                      </div>
+
+                      <div className='w-full flex flex-col gap-2'>
+
+                        {loadingRewardHistory && (
+                          <div className='w-full flex flex-row items-center justify-center'>
+                            <Image
+                              src="/loading.png"
+                              alt="Loading"
+                              width={50}
+                              height={50}
+                              className="rounded-lg animate-spin"
+                            />
+                          </div>
+                        )}
+                        {!loadingRewardHistory && rewardHistory.length === 0 && (
+                          <div className='w-full flex flex-row items-center justify-center'>
+                            <div className="text-sm text-zinc-800 font-bold">
+                              보상 내역이 없습니다.
+                            </div>
+                          </div>
+                        )}
+                        {!loadingRewardHistory && rewardHistory.length > 0 && (
+                          <div className='w-full flex flex-col gap-2'>
+
+                            {rewardHistory.map((item, index) => (
+                              <div key={index} className='w-full flex flex-row items-center justify-between gap-2 p-2 bg-gray-200 rounded-lg'>
+                                {/* 날짜 */}
+                                <div className="text-sm text-zinc-800 font-bold">
+                                  {new Date(item.createdAt).toLocaleDateString("ko-KR", {
+                                    year: "numeric",
+                                    month: "2-digit",
+                                    day: "2-digit",
+                                  })}
+                                </div>
+
+
+                                {/* 수량 balance */}
+                                <div className="text-sm text-zinc-800 font-bold">
+                                  수량: {item.balance}
+                                </div>
+
+                                <div className="text-sm text-zinc-800 font-bold">
+                                  보상: {item.amount} USDT
+                                </div>
+                              </div>
+                            ))}
+
+                          </div>
+                        )}
+
+                      </div>
+
+                      <div className='w-full flex flex-row items-center justify-between gap-2'>
+                          <div className="text-sm text-zinc-800 font-bold">
+                              총 보상
+                          </div>
+                          <div className="text-sm text-zinc-800 font-bold">
+                            {rewardHistory.reduce((acc, item) => acc + item.amount, 0).toFixed(2)} USDT
+                          </div>
+                      </div>
 
                   </div>
+
+
+
 
 
                 </div>
@@ -707,10 +890,32 @@ export default function AgentPage({ params }: any) {
 
         </div>
 
+
        </div>
 
     </main>
 
   );
 
+
 }
+
+
+
+  export default function Index({ params }: any) {
+    return (
+        <Suspense fallback={
+            <div
+                className="w-full h-screen flex flex-col items-center justify-center
+                bg-zinc-100 text-gray-600 font-semibold text-lg"
+            >Loading...</div>
+        }>
+            <IndexPage
+                params={params}
+            />
+            {/* bg-[#E7EDF1] */}
+            <div className="w-full h-36 bg-[#E7EDF1]"></div>
+
+        </Suspense>
+    );
+  }

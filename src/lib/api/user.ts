@@ -1331,3 +1331,21 @@ export async function getReferredMembers(referralCode: string): Promise<UserProp
 
   return results;
 }
+
+
+// getOneByTelegramId
+export async function getOneByTelegramId(
+  telegramId: string,
+): Promise<UserProps | null> {
+
+  const client = await clientPromise;
+
+  const collection = client.db('vienna').collection('users');
+
+  const results = await collection.findOne<UserProps>(
+    { telegramId },
+  );
+
+  return results;
+
+}
