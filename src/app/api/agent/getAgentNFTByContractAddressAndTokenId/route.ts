@@ -52,6 +52,55 @@ export async function POST(request: NextRequest) {
   });
   */
 
+
+  // get quantity of NFTs for a given contract address by owner
+  const responseGetNftsForOwner = await alchemy.nft.getNftsForOwner(
+    walletAddress, {
+    omitMetadata: true, // // Flag to omit metadata
+    contractAddresses: [erc721ContractAddress],
+  });
+
+  //console.log("responseGetNftsForOwner: ", responseGetNftsForOwner);
+
+  /*
+  {
+    ownedNfts: [
+      {
+        contractAddress: '0x796f8867E6D474C1d63e4D7ea5f52B48E4bA83D6',
+        tokenId: '0',
+        balance: '1'
+      },
+      {
+        contractAddress: '0x796f8867E6D474C1d63e4D7ea5f52B48E4bA83D6',
+        tokenId: '1',
+        balance: '1'
+      }
+    ],
+    pageKey: undefined,
+    totalCount: 2,
+    validAt: {
+      blockNumber: 70036623,
+      blockHash: '0xea7baf14b243ccb18bd7fff2f8791db01e19bd5d36173684d0417a53e1c7585c',
+      blockTimestamp: '2025-04-08T05:53:56Z'
+    }
+  }
+  */
+
+
+  // Get the quantity of NFTs for a given contract address and tokenId by owner
+
+  const quantity = responseGetNftsForOwner?.ownedNfts?.find(
+    (nft: any) =>
+      nft.contractAddress.toLowerCase() ===
+      erc721ContractAddress.toLowerCase() &&
+      nft.tokenId === tokenId
+  );
+
+  console.log("quantity: ", quantity);
+
+  const quantityValue = quantity?.balance;
+
+
   
   const response = await alchemy.nft.getNftMetadata(
     erc721ContractAddress,
@@ -95,6 +144,7 @@ export async function POST(request: NextRequest) {
     result: response,
     holderWalletAddress: holderWalletAddress,
     ownerInfo: ownerInfo,
+    quantity: quantityValue,
     
   });
   

@@ -328,6 +328,8 @@ export default function AgentPage({ params }: any) {
 
   
   const [nftInfo, setNftInfo] = useState(null as any);
+
+  const [quantity, setQuantity] = useState(0);
   
  
   const [holderWalletAddress, setHolderWalletAddress] = useState("");
@@ -371,7 +373,10 @@ export default function AgentPage({ params }: any) {
             );
         }
   
-        console.log("getAgentNFTByContractAddressAndTokenId data", data);
+        //console.log("getAgentNFTByContractAddressAndTokenId data", data);
+
+
+        setQuantity(data?.quantity);
 
         setNftInfo(data.result);
 
@@ -659,7 +664,7 @@ export default function AgentPage({ params }: any) {
                                 수량
                             </div>
                             <div className="w-full text-sm text-zinc-800 font-bold text-right">
-                                0 개
+                                {quantity}개
                             </div>
                           </div>
 
