@@ -424,7 +424,7 @@ function IndexPage(
       contract,
       from: address,
       to: to,
-      tokenId: agentTokenId,
+      tokenId: BigInt(agentTokenId),
     });
 
     const { transactionHash } = await sendTransaction({
