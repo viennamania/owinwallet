@@ -1037,7 +1037,7 @@ function AgentPage(
                     !loadingUserData
                     && address && !userCode && (
 
-                        <div className="flex flex-col justify-start items-start gap-2 p-2">
+                        <div className="w-full flex flex-col justify-start items-start gap-2 p-2">
                             {/* 회원아이디를 만들어주세요 */}
 
                             <div className="flex flex-row justify-center items-center gap-2">
@@ -1056,8 +1056,7 @@ function AgentPage(
                                 );
 
                             }}
-                            className="text-sm border border-gray-800 rounded-lg p-2
-                            bg-white text-zinc-800 font-semibold hover:bg-gray-200 transition-all duration-300 ease-in-out"
+                            className="w-full bg-[#3167b4] text-white px-4 py-2 rounded-lg hover:bg-[#3167b4]"
                             >
                             회원아이디 설정하기
                             </button>
