@@ -279,6 +279,7 @@ export async function updateOne(data: any) {
 }
 
 
+
 export async function updateAvatar(data: any) {
   const client = await clientPromise;
   const collection = client.db('vienna').collection('users');
@@ -309,6 +310,105 @@ export async function updateAvatar(data: any) {
 
 
 }
+
+
+
+// updateKycImage1
+// kyc.image1
+// kyc.image2
+// kyc.image3
+export async function updateKycImage1(data: any) {
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('users');
+  // update and return updated user
+  if (!data.walletAddress || !data.avatar) {
+    return null;
+  }
+
+  const result = await collection.updateOne(
+    { walletAddress: data.walletAddress },
+    { $set: {
+      kyc: {
+        image1: data.avatar,
+      }
+    } }
+  );
+
+
+  if (result) {
+    const updated = await collection.findOne<UserProps>(
+      { walletAddress: data.walletAddress },
+      { projection: { _id: 0, emailVerified: 0 } }
+    );
+
+    return updated;
+  } else {
+    return null;
+  }
+}
+
+// updateKycImage2
+export async function updateKycImage2(data: any) {
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('users');
+  // update and return updated user
+  if (!data.walletAddress || !data.avatar) {
+    return null;
+  }
+
+  const result = await collection.updateOne(
+    { walletAddress: data.walletAddress },
+    { $set: {
+      kyc: {
+        image2: data.avatar,
+      }
+    } }
+  );
+
+  if (result) {
+    const updated = await collection.findOne<UserProps>(
+      { walletAddress: data.walletAddress },
+      { projection: { _id: 0, emailVerified: 0 } }
+    );
+
+    return updated;
+  } else {
+    return null;
+  }
+}
+
+
+// updateKycImage3
+
+export async function updateKycImage3(data: any) {
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('users');
+  // update and return updated user
+  if (!data.walletAddress || !data.avatar) {
+    return null;
+  }
+
+  const result = await collection.updateOne(
+    { walletAddress: data.walletAddress },
+    { $set: {
+      kyc: {
+        image3: data.avatar,
+      }
+    } }
+  );
+
+  if (result) {
+    const updated = await collection.findOne<UserProps>(
+      { walletAddress: data.walletAddress },
+      { projection: { _id: 0, emailVerified: 0 } }
+    );
+
+    return updated;
+  } else {
+    return null;
+  }
+}
+
 
 
 

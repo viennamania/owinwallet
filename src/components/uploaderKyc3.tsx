@@ -147,7 +147,7 @@ const {
             const { url } = (await res.json()) as PutBlobResult
 
 
-            const result = await fetch("/api/user/updateAvatar", {
+            const result = await fetch("/api/user/updateKycImage3", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -225,7 +225,7 @@ const {
       }}
     >
       <div>
-        <div className="space-y-1 mb-4">
+        <div className="mb-4 flex flex-row items-center justify-between gap-2">
           <h2 className="text-sm font-semibold">
             {Upload_a_file}
           </h2>

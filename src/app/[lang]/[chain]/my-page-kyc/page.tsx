@@ -1646,7 +1646,7 @@ function AgentPage(
                         */}
                         
                         <div className="w-full flex flex-col gap-2 p-4 rounded-lg border border-gray-300 text-zinc-500">
-                            <span className="text-sm font-semibold">
+                            <span className="text-sm font-semibold text-blue-500">
                                 이름
                             </span>
                             <input
@@ -1660,7 +1660,7 @@ function AgentPage(
                             />
                         </div>
                         <div className="w-full flex flex-col gap-2 p-4 rounded-lg border border-gray-300 text-zinc-500">
-                            <span className="text-sm font-semibold">
+                            <span className="text-sm font-semibold text-blue-500">
                                 신분증 번호
                             </span>
                             <input
