@@ -1502,6 +1502,55 @@ function AgentPage(
       };
 
 
+    // request kyc
+    const [loadingRequestKyc, setLoadingRequestKyc] = useState(false);
+
+    const requestKyc = async () => {
+        if (!address) {
+            toast.error('지갑을 먼저 연결해주세요');
+            return;
+        }
+
+        if (!realName) {
+            toast.error('실명을 입력해주세요');
+            return;
+        }
+        if (!idNumber) {
+            toast.error('신분증 번호를 입력해주세요');
+            return;
+        }
+
+        setLoadingRequestKyc(true);
+
+        try {
+            const response = await fetch("/api/user/requestKyc", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    walletAddress: address,
+                    realName: realName,
+                    idNumber: idNumber,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (data.result) {
+                toast.success('KYC 요청이 완료되었습니다');
+            } else {
+                toast.error('KYC 요청에 실패했습니다');
+            }
+
+        } catch (error) {
+            console.error("requestKyc error", error);
+            toast.error('KYC 요청에 실패했습니다');
+        }
+
+        setLoadingRequestKyc(false);
+
+    }
 
 
 
@@ -1754,14 +1803,17 @@ function AgentPage(
 
 
                         <button
+                            disabled={!realName || !idNumber}
                             onClick={() => {
-                                //setUserData();
+                                confirm("신분증 인증을 요청하시겠습니까?") && requestKyc();
                             }}
-                            className="w-full p-2 bg-[#3167b4] text-zinc-100 rounded-lg
-                            hover:bg-[#3167b4] transition duration-200 ease-in-out
-                            flex flex-row items-center justify-center gap-2"
+                            className={`
+                            w-full p-2 bg-blue-500 text-zinc-100 rounded-lg
+                            ${!realName || !idNumber ? "opacity-50 cursor-not-allowed" : ""}
+                            ${loadingRequestKyc ? "opacity-50 cursor-not-allowed" : ""}
+                            `}
                         >
-                            승인요청
+                            {loadingRequestKyc ? "신분증 인증 요청중..." : "신분증 인증 요청"}
                         </button>
 
                         {/*

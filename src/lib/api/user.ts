@@ -60,6 +60,15 @@ export interface UserProps {
 
   start: string,
 
+  kyc: {
+    image1: string,
+    image2: string,
+    image3: string,
+    realName: string,
+    idNumber: string,
+    status: string,
+  },
+
 
 }
 
@@ -300,7 +309,6 @@ export async function updateAvatar(data: any) {
   if (result) {
     const updated = await collection.findOne<UserProps>(
       { walletAddress: data.walletAddress },
-      { projection: { _id: 0, emailVerified: 0 } }
     );
 
     return updated;
@@ -311,12 +319,25 @@ export async function updateAvatar(data: any) {
 
 }
 
-
+/*
+kyc {
+  image1: string,
+  image2: string,
+  image3: string,
+  realName: string,
+  idNumber: string,
+  status: string,
+}
+  */
 
 // updateKycImage1
 // kyc.image1
 // kyc.image2
 // kyc.image3
+// kyc.realName
+// kyc.idNumber
+// kyc.status
+// kyc.status = 'pending' or 'approved' or 'rejected'
 export async function updateKycImage1(data: any) {
 
   console.log('updateKycImage1 data: ' + JSON.stringify(data));
@@ -328,20 +349,34 @@ export async function updateKycImage1(data: any) {
     return null;
   }
 
+  // select one user by walletAddress and update kyc.image1
+
+  const resultOne = await collection.findOne<UserProps>(
+    { walletAddress: data.walletAddress },
+  );
+
+
+  if (!resultOne) {
+    return null;
+  }
+
   const result = await collection.updateOne(
     { walletAddress: data.walletAddress },
     { $set: {
       kyc: {
         image1: data.avatar,
+        image2: resultOne.kyc?.image2,
+        image3: resultOne.kyc?.image3,
+        realName: resultOne.kyc?.realName,
+        idNumber: resultOne.kyc?.idNumber,
+        status: resultOne.kyc?.status,
       }
     } }
   );
 
-
   if (result) {
     const updated = await collection.findOne<UserProps>(
       { walletAddress: data.walletAddress },
-      { projection: { _id: 0, emailVerified: 0 } }
     );
 
     return updated;
@@ -349,6 +384,8 @@ export async function updateKycImage1(data: any) {
     return null;
   }
 }
+
+
 
 // updateKycImage2
 export async function updateKycImage2(data: any) {
@@ -363,26 +400,37 @@ export async function updateKycImage2(data: any) {
     return null;
   }
 
+  // select one user by walletAddress and update kyc.image2
+  const resultOne = await collection.findOne<UserProps>(
+    { walletAddress: data.walletAddress },
+  );
+  if (!resultOne) {
+    return null;
+  }
   const result = await collection.updateOne(
     { walletAddress: data.walletAddress },
     { $set: {
       kyc: {
+        image1: resultOne.kyc?.image1,
         image2: data.avatar,
+        image3: resultOne.kyc?.image3,
+        realName: resultOne.kyc?.realName,
+        idNumber: resultOne.kyc?.idNumber,
+        status: resultOne.kyc?.status,
       }
     } }
   );
-
   if (result) {
     const updated = await collection.findOne<UserProps>(
       { walletAddress: data.walletAddress },
-      { projection: { _id: 0, emailVerified: 0 } }
     );
-
     return updated;
   } else {
     return null;
   }
 }
+
+
 
 
 // updateKycImage3
@@ -398,19 +446,29 @@ export async function updateKycImage3(data: any) {
     return null;
   }
 
+  // select one user by walletAddress and update kyc.image3
+  const resultOne = await collection.findOne<UserProps>(
+    { walletAddress: data.walletAddress },
+  );
+  if (!resultOne) {
+    return null;
+  }
   const result = await collection.updateOne(
     { walletAddress: data.walletAddress },
     { $set: {
       kyc: {
+        image1: resultOne.kyc?.image1,
+        image2: resultOne.kyc?.image2,
         image3: data.avatar,
+        realName: resultOne.kyc?.realName,
+        idNumber: resultOne.kyc?.idNumber,
+        status: resultOne.kyc?.status,
       }
     } }
   );
-
   if (result) {
     const updated = await collection.findOne<UserProps>(
       { walletAddress: data.walletAddress },
-      { projection: { _id: 0, emailVerified: 0 } }
     );
 
     return updated;
@@ -418,6 +476,54 @@ export async function updateKycImage3(data: any) {
     return null;
   }
 }
+
+
+
+
+// updateKycInfo
+export async function updateKycInfo(data: any) {
+
+  console.log('updateKycInfo data: ' + JSON.stringify(data));
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('users');
+  // update and return updated user
+  if (!data.walletAddress || !data.realName || !data.idNumber) {
+    return null;
+  }
+
+  // select one user by walletAddress and update kyc.image3
+  const resultOne = await collection.findOne<UserProps>(
+    { walletAddress: data.walletAddress },
+  );
+  if (!resultOne) {
+    return null;
+  }
+  const result = await collection.updateOne(
+    { walletAddress: data.walletAddress },
+    { $set: {
+      kyc: {
+        image1: resultOne.kyc?.image1,
+        image2: resultOne.kyc?.image2,
+        image3: resultOne.kyc?.image3,
+        realName: data.realName,
+        idNumber: data.idNumber,
+        status: 'pending',
+      }
+    } }
+  );
+
+  if (result) {
+    const updated = await collection.findOne<UserProps>(
+      { walletAddress: data.walletAddress },
+    );
+
+    return updated;
+  } else {
+    return null;
+  }
+}
+
 
 
 

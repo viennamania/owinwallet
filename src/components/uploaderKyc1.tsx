@@ -8,6 +8,8 @@ import { PutBlobResult } from '@vercel/blob'
 
 import { getDictionary } from "../app/dictionaries";
 
+
+
 export default function UploaderKyc1(
 
   {
@@ -15,7 +17,7 @@ export default function UploaderKyc1(
     walletAddress,
   }: {
     lang: string,
-    walletAddress: string  
+    walletAddress: string,
   }
 
 ) {
