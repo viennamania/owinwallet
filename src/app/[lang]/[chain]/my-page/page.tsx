@@ -602,6 +602,7 @@ function AgentPage(
     const [erc721ContractAddress, setErc721ContractAddress] = useState("");
 
 
+    const [userKyc, setUserKyc] = useState(null) as any;
 
 
     /* block for testing */
@@ -640,6 +641,9 @@ function AgentPage(
                 ///setReferralCode(data.result.erc721ContractAddress);
                 setErc721ContractAddress(data.result.erc721ContractAddress);
 
+                setUserKyc(data.result.kyc);
+
+
             } else {
                 setNickname('');
                 setAvatar('/profile-default.png');
@@ -653,6 +657,8 @@ function AgentPage(
                 setIsAgent(false);
 
                 setReferralCode('');
+
+                
             }
 
             setLoadingUserData(false);
@@ -1589,14 +1595,46 @@ function AgentPage(
                                 <span className="text-2xl font-semibold text-blue-500">
                                     {nickname ? nickname : ""}
                                 </span>
-                                {/* KYC 인증 완료 */}
-                                <div 
-                                    className="flex flex-row items-center justify-start gap-2
-                                    bg-green-500 text-zinc-100 p-2 rounded-lg">
-                                    <span className="text-sm font-semibold text-zinc-100">
-                                        KYC 인증 완료
-                                    </span>
-                                </div>
+
+
+                                {!userKyc && (
+                                    <div 
+                                        className="flex flex-row items-center justify-start gap-2
+                                        bg-yellow-500 text-zinc-100 p-2 rounded-lg">
+                                        <span className="text-sm font-semibold text-zinc-100">
+                                            KYC 인증 필요
+                                        </span>
+                                    </div>
+                                )}
+
+                                {userKyc && userKyc.status === "pending" && (
+                                    <div 
+                                        className="flex flex-row items-center justify-start gap-2
+                                        bg-yellow-500 text-zinc-100 p-2 rounded-lg">
+                                        <span className="text-sm font-semibold text-zinc-100">
+                                            KYC 인증 요청중
+                                        </span>
+                                    </div>
+                                )}
+
+                                {userKyc && userKyc.status === "confirmed" && (
+                                    <div 
+                                        className="flex flex-row items-center justify-start gap-2
+                                        bg-green-500 text-zinc-100 p-2 rounded-lg">
+                                        <span className="text-sm font-semibold text-zinc-100">
+                                            KYC 인증 완료
+                                        </span>
+                                        <Image
+                                            src="/verified.png"
+                                            alt="Verified"
+                                            width={20}
+                                            height={20}
+                                            className="rounded-lg"
+                                        />
+                                    </div>
+                                )}
+
+
                             </div>
 
                         </div>
