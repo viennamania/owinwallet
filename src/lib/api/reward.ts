@@ -184,7 +184,8 @@ export async function getRewards(
       contractAddress: contractAddress,
       tokenId: tokenId,
     }
-  ).toArray();
+  ).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit).toArray();
+  
 
   return rewards;
 }

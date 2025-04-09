@@ -355,7 +355,7 @@ function IndexPage(
           body: JSON.stringify({
             walletAddress: address,
             erc721ContractAddress: agentContractAddress,
-            tokenId: agentTokenId,
+            tokenId: "0",
           }),
         });
 
@@ -391,9 +391,63 @@ function IndexPage(
   
       };
   
-      if (address && agentContractAddress && agentTokenId) getAgent();
+      if (address && agentContractAddress) getAgent();
   
-  }, [address, agentContractAddress, agentTokenId]);
+  }, [address, agentContractAddress]);
+
+
+
+
+  // tokenId "1"
+
+  const [nftInfo1, setNftInfo1] = useState(null as any);
+  const [quantity1, setQuantity1] = useState(0);
+  const [holderWalletAddress1, setHolderWalletAddress1] = useState("");
+  const [ownerInfo1, setOwnerInfo1] = useState({} as any);
+  const [loadingAgent1, setLoadingAgent1] = useState(false);
+  const [animationUrl1, setAnimationUrl1] = useState("");
+  useEffect(() => {
+      const getAgent1 = async () => {
+        setLoadingAgent1(true);
+        const response = await fetch('/api/agent/getAgentNFTByContractAddressAndTokenId', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            walletAddress: address,
+            erc721ContractAddress: agentContractAddress,
+            tokenId: "1",
+          }),
+        });
+        if (!response) {
+          setLoadingAgent1(false);
+          return;
+        }
+        const data = await response.json();
+        //console.log("getAgentNFTByContractAddressAndTokenId data", data);
+        if (data.result.raw?.metadata?.animation_url) {
+            setAnimationUrl1(
+                data.result.raw.metadata.animation_url.replace("ipfs://", "https://ipfs.io/ipfs/")
+            );
+        }
+        //console.log("getAgentNFTByContractAddressAndTokenId data", data);
+        setQuantity1(data?.quantity);
+        setNftInfo1(data.result);
+        setOwnerInfo1(data?.ownerInfo);
+        setHolderWalletAddress1(data?.ownerWalletAddress);
+        //console.log("agent======", data.result);
+        setLoadingAgent1(false);
+      };
+      if (address && agentContractAddress) getAgent1();
+  }, [address, agentContractAddress]);
+ 
+
+
+
+
+
+
 
   // transferFrom
 
@@ -604,29 +658,31 @@ function IndexPage(
 
   return (
 
-    <main className="
-      pb-10
-      p-0 min-h-[100vh] flex-col items-start justify-center container max-w-screen-lg mx-auto
-      bg-[#E7EDF1]
+    <main className="min-h-[100vh] flex flex-col items-center justify-start container max-w-screen-lg mx-auto
     ">
 
 
-      <div className="w-full flex flex-col items-start justify-start gap-5 p-4">
-
-        
-        <div className="mt-4 flex justify-start space-x-4 mb-10">
-            <button
-              
+      {/* go back button */}
+      <div className="p-4 w-full flex justify-start items-center gap-2">
+          <button
               onClick={() => router.back()}
+              className="flex items-center justify-center bg-gray-200 rounded-full p-2">
+              <Image
+                  src="/icon-back.png"
+                  alt="Back"
+                  width={20}
+                  height={20}
+                  className="rounded-full"
+              />
+          </button>
+          {/* title */}
+          <span className="text-sm text-gray-500 font-semibold">
+              나의 NFT 자산
+          </span>
+      </div>
 
-              className="text-gray-600 font-semibold underline">
-              홈으로
-            </button>
-        </div>
- 
 
-        
-        <div className="w-full flex flex-col items-start justify-start gap-5">
+      <div className="p-4 w-full min-h-[100vh] bg-[#E7EDF1]">
 
 
         {!address && (
@@ -703,29 +759,6 @@ function IndexPage(
               <div className='w-full flex flex-col gap-5'>
 
 
-
-                <div className='w-full flex flex-row items-center justify-between gap-2
-                 border-b border-gray-300 pb-2
-                '>
-
-                    <button
-                        onClick={() => {
-                            window.open('https://opensea.io/assets/matic/' + agentContractAddress + '/' + agentTokenId);
-                        }}
-                        className="p-2 rounded hover:bg-gray-300"
-                    >
-                        <Image
-                            src="/logo-opensea.png"
-                            alt="OpenSea"
-                            width={50}
-                            height={50}
-                            className="rounded-lg w-10 h-10"
-                        />
-                    </button>
-
-                </div>
-
-
                 <div className='w-full grid grid-cols-1 xl:grid-cols-2 items-start justify-start gap-5'>
 
 
@@ -793,6 +826,78 @@ function IndexPage(
 
                   </div>
 
+
+
+                  <div className='w-full flex flex-row items-start justify-start gap-5
+                    border-b border-gray-300 pb-2
+                    '>
+
+
+                      <Image
+                            src={nftInfo1?.tokenId === '0' ? '/logo-snowbot300.png' : '/logo-snowbot3000.png'}
+                            width={200}
+                            height={200}
+                            alt="NFT"
+                            className='w-1/4 rounded-lg object-cover'
+                        />
+
+                        <div className="w-3/4 flex flex-col gap-1 items-center justify-center">
+
+                          <div className="w-full flex flex-row gap-2 items-center justify-start">
+                            <div className="w-1/2 text-xs text-zinc-800">
+                                이름
+                            </div>
+                            <div className="w-full text-sm text-zinc-800 font-bold text-right">
+                                {nftInfo1?.name}
+                            </div>
+                          </div>
+
+                          <div className="w-full flex flex-row gap-2 items-center justify-start">
+                            <div className="w-1/2 text-xs text-zinc-800">
+                                계약번호
+                            </div>
+                            <div className="w-full text-sm text-zinc-800 font-bold text-right">
+                                #{nftInfo1?.tokenId}
+                            </div>
+                          </div>
+
+                          <div className="w-full flex flex-row gap-2 items-center justify-start">
+                            <div className="w-1/2 text-xs text-zinc-800">
+                                수량
+                            </div>
+                            <div className="w-full text-sm text-zinc-800 font-bold text-right">
+                                {quantity1}개
+                            </div>
+                          </div>
+
+                          <div className="w-full flex flex-row gap-2 items-center justify-start">
+                            <div className="w-1/2 text-xs text-zinc-800">
+                                누적 리워드
+                            </div>
+                            <div className="w-full text-sm text-zinc-800 font-bold text-right">
+                                0.00 USDT
+                            </div>
+                          </div>
+
+                          <div className="w-full flex flex-row gap-2 items-center justify-start">
+                            <div className="w-1/2 text-xs text-zinc-800">
+                                누적 수익률
+                            </div>
+                            <div className="w-full text-sm text-zinc-800 font-bold text-right">
+                                0.00%
+                            </div>
+                          </div>
+
+                        </div>
+
+                  </div>
+
+
+
+
+
+
+
                   {/* reward history */}
                   {/* table */}
                   <div className='w-full flex flex-col gap-2'>
@@ -804,7 +909,7 @@ function IndexPage(
                             onClick={() => {
                                 getRewardHistory();
                             }}
-                            className="p-2 rounded hover:bg-gray-300"
+                            className="p-2 rounded bg-gray-200 text-sm text-zinc-800 font-bold hover:bg-gray-300 transition duration-200"
                           >
                             새로고침
                           </button>
@@ -891,7 +996,7 @@ function IndexPage(
         </div>
 
 
-       </div>
+
 
     </main>
 
