@@ -503,6 +503,7 @@ export async function updateKycInfo(data: any) {
     { walletAddress: data.walletAddress },
     { $set: {
       kyc: {
+        createdAt: new Date().toISOString(),
         image1: resultOne.kyc?.image1,
         image2: resultOne.kyc?.image2,
         image3: resultOne.kyc?.image3,

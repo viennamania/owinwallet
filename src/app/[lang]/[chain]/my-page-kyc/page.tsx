@@ -611,7 +611,8 @@ function AgentPage(
     // 신분증 번호
     const [idNumber, setIdNumber] = useState("");
 
-    
+
+    const [userKyc, setUserKyc] = useState(null) as any;
 
     const [loadingUserData, setLoadingUserData] = useState(false);
 
@@ -630,7 +631,7 @@ function AgentPage(
 
             const data = await response.json();
 
-            ///console.log("data", data);
+            //console.log("getUser data", data);
 
             if (data.result) {
                 setNickname(data.result.nickname);
@@ -646,6 +647,10 @@ function AgentPage(
 
                 ///setReferralCode(data.result.erc721ContractAddress);
                 setErc721ContractAddress(data.result.erc721ContractAddress);
+
+                setUserKyc(data.result?.kyc);
+                setRealName(data.result?.kyc?.realName);
+                setIdNumber(data.result?.kyc?.idNumber);
 
             } else {
                 setNickname('');
@@ -1539,6 +1544,15 @@ function AgentPage(
 
             if (data.result) {
                 toast.success('KYC 요청이 완료되었습니다');
+
+
+                setUserKyc(data.result.kyc);
+                setRealName(data.result.kyc.realName);
+                setIdNumber(data.result.kyc.idNumber);
+
+
+
+
             } else {
                 toast.error('KYC 요청에 실패했습니다');
             }
@@ -1553,6 +1567,7 @@ function AgentPage(
     }
 
 
+    //console.log("userKyc", userKyc);
 
 
     return (
@@ -1668,215 +1683,240 @@ function AgentPage(
                                 <span className="text-2xl font-semibold text-blue-500">
                                     {nickname ? nickname : ""}
                                 </span>
-                                {/* KYC 인증 완료 */}
-                                <div 
-                                    className="flex flex-row items-center justify-start gap-2
-                                    bg-green-500 text-zinc-100 p-2 rounded-lg">
-                                    <span className="text-sm font-semibold text-zinc-100">
-                                        KYC 인증 완료
-                                    </span>
-                                </div>
+
+
+                                {!userKyc && (
+                                    <div 
+                                        className="flex flex-row items-center justify-start gap-2
+                                        bg-yellow-500 text-zinc-100 p-2 rounded-lg">
+                                        <span className="text-sm font-semibold text-zinc-100">
+                                            KYC 인증 필요
+                                        </span>
+                                    </div>
+                                )}
+
+                                {userKyc && userKyc.status === "pending" && (
+                                    <div 
+                                        className="flex flex-row items-center justify-start gap-2
+                                        bg-yellow-500 text-zinc-100 p-2 rounded-lg">
+                                        <span className="text-sm font-semibold text-zinc-100">
+                                            KYC 인증 요청중
+                                        </span>
+                                    </div>
+                                )}
+
+                                {userKyc && userKyc.status === "confirmed" && (
+                                    <div 
+                                        className="flex flex-row items-center justify-start gap-2
+                                        bg-green-500 text-zinc-100 p-2 rounded-lg">
+                                        <span className="text-sm font-semibold text-zinc-100">
+                                            KYC 인증 완료
+                                        </span>
+                                        <Image
+                                            src="/verified.png"
+                                            alt="Verified"
+                                            width={20}
+                                            height={20}
+                                            className="rounded-lg"
+                                        />
+                                    </div>
+                                )}
                             </div>
 
                         </div>
                     )}
 
 
+                    {
+                    userKyc
+                    && (userKyc?.status === "confirmed" || userKyc?.status === "rejected" || userKyc?.status === "pending") && (
 
-                    <div className='w-full  flex flex-col gap-5 '>
+                        <div className='w-full flex flex-col items-center justify-start
+                            gap-5 border border-gray-300
+                            p-4 rounded-lg'>
 
-                        {/*
-
-                        이름
-                            이름을 입력하세요
-
-                        신분증 번호
-                            신분증 번호를 입력하세요.
-                        */}
-                        
-                        <div className="w-full flex flex-col gap-2 p-4 rounded-lg border border-gray-300 text-zinc-500">
-                            <span className="text-sm font-semibold text-blue-500">
-                                이름
-                            </span>
-                            <input
-                                type="text"
-                                placeholder="이름을 입력하세요"
-                                value={realName}
-                                onChange={(e) => {
-                                    setRealName(e.target.value);
-                                }}
-                                className="w-full p-2 bg-zinc-700 rounded-lg text-zinc-100"
-                            />
-                        </div>
-                        <div className="w-full flex flex-col gap-2 p-4 rounded-lg border border-gray-300 text-zinc-500">
-                            <span className="text-sm font-semibold text-blue-500">
-                                신분증 번호
-                            </span>
-                            <input
-                                type="text"
-                                placeholder="신분증 번호를 입력하세요"
-                                value={idNumber}
-                                onChange={(e) => {
-                                    setIdNumber(e.target.value);
-                                }}
-                                className="w-full p-2 bg-zinc-700 rounded-lg text-zinc-100"
-                            />
-                        </div>
-
-
-
-                        {/*
-                        신분증 촬영본
-                        •	신분증 정면
-                        •	신분증 뒷면
-                        •	신분증과 얼굴이 함께 나오는 사진
-                        */}
                     
-                        <span className='text-sm font-semibold text-blue-500'>
-                            신분증 촬영본
-                        </span>
-
-
-                        {
-                        address &&
-                        !loadingUserData &&
-                        userCode && (
-                            <div className='w-full flex flex-col xl:felx-row gap-5 items-center justify-between border border-gray-300 p-4 rounded-lg'>
-
-
-                                <div className='flex flex-col items-start justify-start gap-2 w-full'>
-                                    <div className='flex flex-row items-center gap-2'>
-                                        {/* dot */}
-                                        <div className='w-2 h-2 bg-green-500 rounded-full' />
-                                        <span className='text-sm font-semibold text-blue-500'>
-                                            신분증 정면
-                                        </span>
-                                    </div>
-
-                                    <div className="w-full p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
-                                        <UploaderKyc1
-                                            lang={params.lang}
-                                            walletAddress={address as string}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className='flex flex-col items-start justify-start gap-2 w-full'>
-                                    <div className='flex flex-row items-center gap-2'>
-                                        {/* dot */}
-                                        <div className='w-2 h-2 bg-green-500 rounded-full' />
-                                        <span className='text-sm font-semibold text-blue-500'>
-                                            신분증 뒷면
-                                        </span>
-                                    </div>
-
-                                    <div className="w-full p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
-                                        <UploaderKyc2
-                                            lang={params.lang}
-                                            walletAddress={address as string}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className='flex flex-col items-start justify-start gap-2 w-full'>
-                                    <div className='flex flex-row items-center gap-2'>
-                                        {/* dot */}
-                                        <div className='w-2 h-2 bg-green-500 rounded-full' />
-                                        <span className='text-sm font-semibold text-blue-500'>
-                                            신분증과 얼굴이 함께 나오는 사진
-                                        </span>
-                                    </div>
-
-                                    <div className="w-full p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
-                                        <UploaderKyc3
-                                            lang={params.lang}
-                                            walletAddress={address as string}
-                                        />
-                                    </div>
-                                </div>
-
-                            </div>
-                        )}
-
-
-                        {/* [승인요청] (파란색 버튼) */}
-
-
-                        <button
-                            disabled={!realName || !idNumber}
-                            onClick={() => {
-                                confirm("신분증 인증을 요청하시겠습니까?") && requestKyc();
-                            }}
-                            className={`
-                            w-full p-2 bg-blue-500 text-zinc-100 rounded-lg
-                            ${!realName || !idNumber ? "opacity-50 cursor-not-allowed" : ""}
-                            ${loadingRequestKyc ? "opacity-50 cursor-not-allowed" : ""}
-                            `}
-                        >
-                            {loadingRequestKyc ? "신분증 인증 요청중..." : "신분증 인증 요청"}
-                        </button>
-
-                        {/*
-                        {userCode && (
-
-                            <div className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
-
-                                <div className="bg-red-800 text-sm text-zinc-100 p-2 rounded">
-                                    My Referral Code
-                                </div>
-
-                                <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
-                                    {userCode}
-                                </div>
-
- 
-
-                                <button
-                                    onClick={() => {
-                                        navigator.clipboard.writeText(userCode);
-                                        toast.success('Referral code copied to clipboard');
-                                    }}
-                                    className="p-2 bg-blue-500 text-zinc-100 rounded"
-                                >
-                                    Copy
-                                </button>
-
-                                <Image
-                                src="/verified.png"
-                                alt="Verified"
-                                width={20}
-                                height={20}
-                                className="rounded-lg"
-                                />
-
-
+                            <div className='w-full flex flex-col items-start justify-start gap-2'>
+                                <span className="text-sm font-semibold text-blue-500">
+                                    실명
+                                </span>
+                                <span className="text-lg font-semibold text-gray-500">
+                                    {userKyc.realName ? userKyc.realName : ""}
+                                </span>
                             </div>
 
-                        )}
-                        */}
+                            <div className='w-full flex flex-col items-start justify-start gap-2'>
+                                <span className="text-sm font-semibold text-blue-500">
+                                    신분증 번호
+                                </span>
+                                <span className="text-lg font-semibold text-gray-500">
+                                    {userKyc.idNumber ? userKyc.idNumber : ""}
+                                </span>
+                            </div>
 
-                        
+  
+                            <div className='w-full flex flex-col items-start justify-start gap-2'>
+                                <span className="text-sm font-semibold text-blue-500">
+                                    인증 요청일
+                                </span>
+                                <span className="text-lg font-semibold text-gray-500">
+                                    {userKyc.createdAt ?
+                                        (new Date(userKyc.createdAt)).toLocaleString("ko-KR", {
+                                            year: "numeric",
+                                            month: "2-digit",
+                                            day: "2-digit",
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                        }) : ""}
+                                </span>
+                            </div>
 
-                        {/*
-                        인증 시 주의사항
-본인 신분증으로 신분 인증을 진행하고 얼굴과 신분증이 잘 보이도록 찍은 사진을 업로드하세요. 모든 과정을 완료하신 후 24시간 이내에 승인이 완료되며, 승인이 거절되면 인증을 처음부터 다시 진행해주세요.
-                        */}
+                            <div className='w-full flex flex-col items-start justify-start gap-2'>
+                                <span className="text-sm font-semibold text-blue-500">
+                                    인증 상태
+                                </span>
+                                <span className="text-lg font-semibold text-gray-500">
+                                    {userKyc.status === "confirmed" ? "인증 완료" : userKyc.status === "rejected" ? "인증 거절" : "인증 요청중"}
+                                </span>
+                            </div>
 
-                        <div className="w-full flex flex-col gap-2 p-4 bg-zinc-800 rounded-lg text-zinc-100">
-
-                            <span className="text-sm font-semibold">
-                                인증 시 주의사항
-                            </span>
-                            <span className="text-xs text-gray-400">
-                                본인 신분증으로 신분 인증을 진행하고 얼굴과 신분증이 잘 보이도록 찍은 사진을 업로드하세요. 모든 과정을 완료하신 후 24시간 이내에 승인이 완료되며, 승인이 거절되면 인증을 처음부터 다시 진행해주세요.
-                            </span>
                         </div>
 
+                    )}
+
+                    {!loadingUserData && (!userKyc || userKyc.status === "rejected") && (
+
+                        <div className='w-full  flex flex-col gap-5 '>
+
+                            
+                            <div className="w-full flex flex-col gap-2 p-4 rounded-lg border border-gray-300 text-zinc-500">
+                                <span className="text-sm font-semibold text-blue-500">
+                                    이름
+                                </span>
+                                <input
+                                    type="text"
+                                    placeholder="이름을 입력하세요"
+                                    value={realName}
+                                    onChange={(e) => {
+                                        setRealName(e.target.value);
+                                    }}
+                                    className="w-full p-2 bg-zinc-700 rounded-lg text-zinc-100"
+                                />
+                            </div>
+                            <div className="w-full flex flex-col gap-2 p-4 rounded-lg border border-gray-300 text-zinc-500">
+                                <span className="text-sm font-semibold text-blue-500">
+                                    신분증 번호
+                                </span>
+                                <input
+                                    type="text"
+                                    placeholder="신분증 번호를 입력하세요"
+                                    value={idNumber}
+                                    onChange={(e) => {
+                                        setIdNumber(e.target.value);
+                                    }}
+                                    className="w-full p-2 bg-zinc-700 rounded-lg text-zinc-100"
+                                />
+                            </div>
+
+                            <span className='text-sm font-semibold text-blue-500'>
+                                신분증 촬영본
+                            </span>
+
+
+                            {
+                            address &&
+                            !loadingUserData &&
+                            userCode && (
+                                <div className='w-full flex flex-col xl:felx-row gap-5 items-center justify-between border border-gray-300 p-4 rounded-lg'>
+
+
+                                    <div className='flex flex-col items-start justify-start gap-2 w-full'>
+                                        <div className='flex flex-row items-center gap-2'>
+
+                                            <div className='w-2 h-2 bg-green-500 rounded-full' />
+                                            <span className='text-sm font-semibold text-blue-500'>
+                                                신분증 정면
+                                            </span>
+                                        </div>
+
+                                        <div className="w-full p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
+                                            <UploaderKyc1
+                                                lang={params.lang}
+                                                walletAddress={address as string}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className='flex flex-col items-start justify-start gap-2 w-full'>
+                                        <div className='flex flex-row items-center gap-2'>
+
+                                            <div className='w-2 h-2 bg-green-500 rounded-full' />
+                                            <span className='text-sm font-semibold text-blue-500'>
+                                                신분증 뒷면
+                                            </span>
+                                        </div>
+
+                                        <div className="w-full p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
+                                            <UploaderKyc2
+                                                lang={params.lang}
+                                                walletAddress={address as string}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className='flex flex-col items-start justify-start gap-2 w-full'>
+                                        <div className='flex flex-row items-center gap-2'>
+
+                                            <div className='w-2 h-2 bg-green-500 rounded-full' />
+                                            <span className='text-sm font-semibold text-blue-500'>
+                                                신분증과 얼굴이 함께 나오는 사진
+                                            </span>
+                                        </div>
+
+                                        <div className="w-full p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
+                                            <UploaderKyc3
+                                                lang={params.lang}
+                                                walletAddress={address as string}
+                                            />
+                                        </div>
+                                    </div>
+
+                                </div>
+                            )}
 
 
 
-                    </div>
+                            <button
+                                disabled={!realName || !idNumber}
+                                onClick={() => {
+                                    confirm("신분증 인증을 요청하시겠습니까?") && requestKyc();
+                                }}
+                                className={`
+                                w-full p-2 bg-blue-500 text-zinc-100 rounded-lg
+                                ${!realName || !idNumber ? "opacity-50 cursor-not-allowed" : ""}
+                                ${loadingRequestKyc ? "opacity-50 cursor-not-allowed" : ""}
+                                `}
+                            >
+                                {loadingRequestKyc ? "신분증 인증 요청중..." : "신분증 인증 요청"}
+                            </button>
 
+                            
+                            <div className="w-full flex flex-col gap-2 p-4 bg-zinc-800 rounded-lg text-zinc-100">
+
+                                <span className="text-sm font-semibold">
+                                    인증 시 주의사항
+                                </span>
+                                <span className="text-xs text-gray-400">
+                                    본인 신분증으로 신분 인증을 진행하고 얼굴과 신분증이 잘 보이도록 찍은 사진을 업로드하세요. 모든 과정을 완료하신 후 24시간 이내에 승인이 완료되며, 승인이 거절되면 인증을 처음부터 다시 진행해주세요.
+                                </span>
+                            </div>
+
+
+
+
+                        </div>
+
+                    )}
 
 
                 </div>
