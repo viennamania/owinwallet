@@ -434,6 +434,8 @@ export default function SendUsdt({ params }: any) {
         }),
       });
 
+      if (!response) return;
+
       const data = await response.json();
 
       console.log("getUsers", data);
@@ -450,7 +452,7 @@ export default function SendUsdt({ params }: any) {
 
     };
 
-    getUsers();
+    ///getUsers();
 
 
   }, [address]);
@@ -707,6 +709,61 @@ export default function SendUsdt({ params }: any) {
 
 
 
+  const [selectDeposit, setSelectDeposit] = useState(true);
+  const [selectWithdraw, setSelectWithdraw] = useState(false);
+  const [selectSwap, setSelectSwap] = useState(false);
+
+
+
+  // swap function
+  const [swapAmount, setSwapAmount] = useState(0);
+
+  const [loadingSwap, setLoadingSwap] = useState(false);
+
+  const swap = async () => {
+    if (loadingSwap) {
+      return;
+    }
+
+    if (!address) {
+      toast.error('Please connect your wallet first');
+      return;
+    }
+
+    if (!swapAmount) {
+      toast.error('Please enter a valid amount');
+      return;
+    }
+
+    setLoadingSwap(true);
+
+    try {
+
+      // swap USDT to DCTC
+      /*
+      const transaction = await contract?.call("swap", [
+        swapAmount,
+        address,
+      ]);
+
+      console.log("transaction", transaction);
+      */
+
+      toast.success(USDT_sent_successfully);
+
+    } catch (error) {
+      
+      console.error("error", error);
+
+      toast.error(Failed_to_send_USDT);
+    }
+
+    setLoadingSwap(false);
+
+  }
+
+  
+
 
 
   // usdt balance
@@ -751,46 +808,85 @@ export default function SendUsdt({ params }: any) {
 
   return (
 
-    <main className="p-4 pb-10 min-h-[100vh] flex items-start justify-center container max-w-screen-lg mx-auto
-    bg-[#E7EDF1]">
+    <main className="min-h-[100vh] flex flex-col items-center justify-start container max-w-screen-lg mx-auto
+    ">
 
-      <div className="py-0 w-full ">
 
-        {/* go back button */}
-        <div className="mt-4 flex justify-start space-x-4 mb-10">
-            <button
-              
+      {/* go back button */}
+      <div className="p-4 w-full flex justify-start items-center gap-2">
+          <button
               onClick={() => router.back()}
+              className="flex items-center justify-center bg-gray-200 rounded-full p-2">
+              <Image
+                  src="/icon-back.png"
+                  alt="Back"
+                  width={20}
+                  height={20}
+                  className="rounded-full"
+              />
+          </button>
+          {/* title */}
+          <div className='flex flex-row items-center gap-2'>
 
-              className="text-gray-600 font-semibold underline">
-              {Go_Home}
-            </button>
-        </div>
+              <span className="text-lg font-semibold">
+                {token}
+              </span>
+          </div>
+      </div>
 
 
-        <div className="flex flex-col items-start justify-center space-y-4">
+      <div className="p-4 w-full min-h-[100vh] bg-[#E7EDF1]">
 
-            <div className='flex flex-row items-center space-x-4'>
 
-              <div className='flex flex-row items-center space-x-2'>
-               
-                <Image
-                  src={tokenImage}
-                  alt="token"
-                  width={35}
-                  height={35}
-                  className='rounded-full w-8 h-8 xl:w-10 xl:h-10'
-                />
-                
-              </div>
+        {!address && (
 
-              <div className="text-lg font-semibold">
-                {token} 출금
-              </div>
+          <div className="
+          mt-16
+          w-full flex flex-col justify-center items-center gap-2 p-2">
 
-            </div>
 
-            {/* my usdt balance */}
+            <ConnectButton
+              client={client}
+              wallets={wallets}
+              accountAbstraction={{
+                chain: polygon,
+                sponsorGas: true
+              }}
+              
+              theme={"light"}
+
+              // button color is dark skyblue convert (49, 103, 180) to hex
+              connectButton={{
+                style: {
+                  backgroundColor: "#3167b4", // dark skyblue
+                  // font color is gray-300
+                  color: "#f3f4f6", // gray-300
+                  padding: "10px 20px",
+                  borderRadius: "10px",
+                  fontSize: "16px",
+                  // w-full
+                  width: "100%",
+                },
+                label: "로그인 및 회원가입",
+              }}
+
+              connectModal={{
+                size: "wide", 
+                //size: "compact",
+                titleIcon: "https://uma.tips/icon-snowball.png",                           
+                showThirdwebBranding: false,
+              }}
+
+              locale={"ko_KR"}
+              //locale={"en_US"}
+            />
+
+          </div>
+        )}
+
+
+
+
             <div className="w-full flex flex-col gap-2 items-start">
 
 
@@ -799,16 +895,28 @@ export default function SendUsdt({ params }: any) {
                 {/* my usdt balance */}
                 <div className="w-full flex flex-col xl:flex-row items-start gap-3">
                   
-                  <div className="flex flex-col gap-2 items-start">
+                  
+                  <div className="w-full flex flex-row gap-2 items-center justify-between bg-white border border-gray-300 rounded-lg p-4">
 
-                    <div className="flex flex-row items-end justify-center  gap-2">
-                      <span className="text-4xl font-semibold text-gray-800">
+                    <div className='flex flex-row gap-2 items-center justify-start'>
+                      <Image
+                        src={tokenImage}
+                        alt="token"
+                        width={35}
+                        height={35}
+                        className='rounded-full w-8 h-8 xl:w-10 xl:h-10'
+                      />
+
+                    </div>
+
+                    <div className="flex flex-row items-center justify-end  gap-2">
+                      <span className="text-2xl font-semibold text-gray-800">
                         
                         {/*
                         {Number(balance).toFixed(2)}
                         */}
                        
-                        {Number(balance).toFixed(2)}
+                        {Number(balance).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
 
 
                       </span>
@@ -817,94 +925,62 @@ export default function SendUsdt({ params }: any) {
                   </div>
 
 
-                  {!address && (
 
-                    <div className="
-                    mt-16
-                    w-full flex flex-col justify-center items-center gap-2 p-2">
+                  {/* 입금 button / 출금 button / 스왑 button*/}
+                  {/* radio buttons */}
+                  <div className="w-full flex flex-row gap-2 items-center justify-between bg-white border border-gray-300 rounded-lg p-4">
+                    <button
+                      onClick={() => {
+                        setSelectDeposit(true);
+                        setSelectWithdraw(false);
+                        setSelectSwap(false);
+                      }}
+                      className={`w-full p-2 rounded-lg text-sm font-semibold
 
-
-                      <ConnectButton
-                        client={client}
-                        wallets={wallets}
-                        accountAbstraction={{
-                          chain: polygon,
-                          sponsorGas: true
-                        }}
+                        ${selectDeposit ? 'bg-[#3167b4] text-white' : 'bg-gray-300 text-gray-400'}
                         
-                        theme={"light"}
-          
-                        // button color is dark skyblue convert (49, 103, 180) to hex
-                        connectButton={{
-                          style: {
-                            backgroundColor: "#3167b4", // dark skyblue
-                            // font color is gray-300
-                            color: "#f3f4f6", // gray-300
-                            padding: "10px 20px",
-                            borderRadius: "10px",
-                            fontSize: "16px",
-                            // w-full
-                            width: "100%",
-                          },
-                          label: "로그인 및 회원가입",
-                        }}
-          
-                        connectModal={{
-                          size: "wide", 
-                          //size: "compact",
-                          titleIcon: "https://uma.tips/icon-snowball.png",                           
-                          showThirdwebBranding: false,
-                        }}
-          
-                        locale={"ko_KR"}
-                        //locale={"en_US"}
-                      />
+                      `}
+                    >
+                      입금
+                    </button>
 
-                    </div>
-                  )}
+                    <button
+                      onClick={() => {
+                        setSelectDeposit(false);
+                        setSelectWithdraw(true);
+                        setSelectSwap(false);
+                      }}
+                      className={`w-full p-2 rounded-lg text-sm font-semibold
 
+                        ${selectWithdraw ? 'bg-[#3167b4] text-white' : 'bg-gray-300 text-gray-400'}
+                        
+                      `}
+                    >
+                      출금
+                    </button>
 
-                  {address && (
+                    <button
+                      onClick={() => {
+                        setSelectDeposit(false);
+                        setSelectWithdraw(false);
+                        setSelectSwap(true);
+                      }}
+                      className={`w-full p-2 rounded-lg text-sm font-semibold
 
-                  <div className="w-full flex flex-col gap-2 items-center
-                    border border-zinc-400 rounded-md p-2">
-
-                    <div className="text-sm text-gray-800">
-                      {My_Wallet_Address}
-                    </div>
-
-                    <div className="flex flex-row items-center gap-2">
-                      <button
-                        className="text-sm text-zinc-400 underline"
-                        onClick={() => {
-                          navigator.clipboard.writeText(address);
-                          toast.success('Copied wallet address');
-                        } }
-                      >
-                        {address.substring(0, 6)}...{address.substring(address.length - 4)}
-                      </button>
-
-                    </div>
-
-                    <Canvas
-                      text={address}
-                        options={{
-                          //level: 'M',
-                          margin: 2,
-                          scale: 4,
-                          width: 200,
-                          color: {
-                              dark: '#000000FF',
-                              light: '#FFFFFFFF',
-                          },
-                        }}
-                    />
-
-
+                        ${selectSwap ? 'bg-[#3167b4] text-white' : 'bg-gray-300 text-gray-400'}
+                        
+                      `}
+                    >
+                      스왑
+                    </button>
 
                   </div>
+   
 
-                  ) }
+
+
+
+
                     
 
 
@@ -922,360 +998,526 @@ export default function SendUsdt({ params }: any) {
             </div>
 
 
-            <div className='w-full  flex flex-col gap-5 border
-              bg-zinc-800 text-white
-              p-4 rounded-lg
-
-              '>
 
 
-              <div className='flex flex-row gap-2 items-center justify-start'>
-                {/* dot icon */}
-                <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                <div className="text-sm
-                  text-white
+            {address
+            && selectDeposit
+            && (
 
-                ">
-                  {Enter_the_amount_and_recipient_address}
-                </div>
+            <div className="mt-5 w-full flex flex-col gap-2 items-center justify-center
+              border border-zinc-400 rounded-md p-2">
+
+              <div className="text-sm text-gray-800">
+                {My_Wallet_Address}
               </div>
 
+              <div className="w-full flex flex-row items-center justify-center gap-2">
+                <button
+                  className="text-sm text-zinc-400 underline"
+                  onClick={() => {
+                    navigator.clipboard.writeText(address);
+                    toast.success('Copied wallet address');
+                  } }
+                >
+                  {address.substring(0, 6)}...{address.substring(address.length - 4)}
+                </button>
 
-              <div className='w-full mb-5 flex flex-col xl:flex-row gap-5 items-start justify-between'>
+              </div>
 
-                <div className='w-full flex flex-col gap-5 items-start justify-between'>
-                  <input
-                    disabled={sending}
-                    type="number"
-                    //placeholder="Enter amount"
-                    className=" w-full p-2 border border-gray-300 rounded text-black text-5xl font-semibold "
-                    
-                    value={amount}
-
-                    onChange={(e) => (
-
-                      // check if the value is a number
-
-
-                      // check if start 0, if so remove it
-
-                      e.target.value = e.target.value.replace(/^0+/, ''),
-
+              <Canvas
+                text={address}
+                  options={{
+                    //level: 'M',
+                    margin: 2,
+                    scale: 4,
+                    ///width: 200,
+                    // width 100%
+                    width: 200,
+                    color: {
+                        dark: '#000000FF',
+                        light: '#FFFFFFFF',
+                    },
+      
+                  }}
+              />
 
 
-                      // check balance
 
-                      setAmount(e.target.value as any)
+            </div>
 
-                    )}
-                  />
-            
-        
+            ) }
 
-                  {/* check box for want to receive wallet address */}
-                  {/*
-                  <div className="flex flex-row items-center gap-2">
-                    <input
-                      type="checkbox"
-                      className="w-6 h-6"
-                      checked={wantToReceiveWalletAddress}
-                      onChange={(e) => setWantToReceiveWalletAddress(e.target.checked)}
-                    />
-                    <div className="text-white">{Enter_Wallet_Address}</div>
+
+
+
+
+
+
+            {address
+            && selectWithdraw
+            && (
+
+              <div className='mt-5
+                w-full  flex flex-col gap-5 border
+                bg-zinc-800 text-white
+                p-4 rounded-lg
+
+                '>
+
+
+                <div className='flex flex-row gap-2 items-center justify-start'>
+                  {/* dot icon */}
+                  <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                  <div className="text-sm
+                    text-white
+
+                  ">
+                    {Enter_the_amount_and_recipient_address}
                   </div>
-                  */}
-
                 </div>
 
 
-            
-            
-                {!wantToReceiveWalletAddress ? (
-                  <>
-                    <div className='w-full flex flex-col gap-5 items-start justify-between'>
+                <div className='w-full mb-5 flex flex-col xl:flex-row gap-5 items-start justify-between'>
 
-
-
-
-                      <select
-                        disabled={sending}
-
-                        className="
-                          
-                          w-56 p-2 border border-gray-300 rounded text-black text-2xl font-semibold "
-                          
-                        value={
-                          recipient?.nickname
-                        }
-
-
-                        onChange={(e) => {
-
-                          const selectedUser = users.find((user) => user.nickname === e.target.value) as any;
-
-                          console.log("selectedUser", selectedUser);
-
-                          setRecipient(selectedUser);
-
-                        } } 
-
-                      >
-                        <option value="">{Select_a_user}</option>
-                        
-
-                        {users.map((user) => (
-                          <option key={user.id} value={user.nickname}>{user.nickname}</option>
-                        ))}
-                      </select>
-
-                      {/* select user profile image */}
-
-                      <div className=" w-full flex flex-row gap-2 items-center justify-center">
-                        <Image
-                          src={recipient?.avatar || '/profile-default.png'}
-                          alt="profile"
-                          width={38}
-                          height={38}
-                          className="rounded-full"
-                          style={{
-                            objectFit: 'cover',
-                            width: '38px',
-                            height: '38px',
-                          }}
-                        />
-
-                        {recipient?.walletAddress && (
-                          <Image
-                            src="/verified.png"
-                            alt="check"
-                            width={28}
-                            height={28}
-                          />
-                        )}
-
-                      </div>
-
-                    </div>
-
-             
-                    {/* input wallet address */}
-                    
-                    <input
-                      disabled={true}
-                      type="text"
-                      placeholder={User_wallet_address}
-                      className=" w-80  xl:w-full p-2 border border-gray-300 rounded text-white text-xs xl:text-lg font-semibold"
-                      value={
-                        params.chain === "tron" ?
-                        recipient?.walletAddress
-                        :
-                        recipient?.walletAddress
-                      }
-                      onChange={(e) => {
-      
-                        setRecipient({
-                          ...recipient,
-                          walletAddress: e.target.value,
-                        });
-
-                      } }
-
-                    />
-
-               
-
-
-          
-
-
-                  </>
-
-                ) : (
-
-                  <div className='w-full flex flex-col gap-5 items-center justify-between'>
+                  <div className='w-full flex flex-col gap-5 items-start justify-between'>
                     <input
                       disabled={sending}
-                      type="text"
-                      placeholder={User_wallet_address}
-                      className=" w-full p-2 border border-gray-300 rounded text-white bg-black text-sm xl:text-sm font-semibold"
+                      type="number"
+                      //placeholder="Enter amount"
+                      className=" w-full p-2 border border-gray-300 rounded text-black text-5xl font-semibold "
+                      
+                      value={amount}
 
-                      value={recipient.walletAddress}
+                      onChange={(e) => (
 
-                      onChange={(e) => setRecipient({
-                        ...recipient,
-                        walletAddress: e.target.value,
-                      })}
-                    />
-
-                    {isWhateListedUser ? (
-                      <div className="flex flex-row gap-2 items-center justify-center">
+                        // check if the value is a number
 
 
-                        <Image
-                          src={recipient.avatar || '/profile-default.png'}
-                          alt="profile"
-                          width={30}
-                          height={30}
-                          className="rounded-full"
-                          style={{
-                            objectFit: 'cover',
-                            width: '38px',
-                            height: '38px',
-                          }}
-                        />
-                        <div className="text-white">{recipient?.nickname}</div>
-                        <Image
-                          src="/verified.png"
-                          alt="check"
-                          width={30}
-                          height={30}
-                        />
-                        
-                      </div>
-                    ) : (
-                      <>
+                        // check if start 0, if so remove it
 
-                      {recipient?.walletAddress && (
-                        <div className='flex flex-row gap-2 items-center justify-center'>
-                          {/* dot icon */}
-                          <div className="w-4 h-4 bg-green-500 rounded-full mr-2"></div>
+                        e.target.value = e.target.value.replace(/^0+/, ''),
 
-                          <div className="text-red-500">
-                            {This_address_is_not_white_listed}<br />
-                            {If_you_are_sure_please_click_the_send_button}
-                          </div>
-                        </div>
+
+
+                        // check balance
+
+                        setAmount(e.target.value as any)
 
                       )}
+                    />
+              
+          
 
-                      </>
-                    )}
-
-
+                    {/* check box for want to receive wallet address */}
+                    {/*
+                    <div className="flex flex-row items-center gap-2">
+                      <input
+                        type="checkbox"
+                        className="w-6 h-6"
+                        checked={wantToReceiveWalletAddress}
+                        onChange={(e) => setWantToReceiveWalletAddress(e.target.checked)}
+                      />
+                      <div className="text-white">{Enter_Wallet_Address}</div>
+                    </div>
+                    */}
 
                   </div>
 
-                )}
+
+              
+              
+                  {!wantToReceiveWalletAddress ? (
+                    <>
+                      <div className='w-full flex flex-col gap-5 items-start justify-between'>
+
+
+
+
+                        <select
+                          disabled={sending}
+
+                          className="
+                            
+                            w-56 p-2 border border-gray-300 rounded text-black text-2xl font-semibold "
+                            
+                          value={
+                            recipient?.nickname
+                          }
+
+
+                          onChange={(e) => {
+
+                            const selectedUser = users.find((user) => user.nickname === e.target.value) as any;
+
+                            console.log("selectedUser", selectedUser);
+
+                            setRecipient(selectedUser);
+
+                          } } 
+
+                        >
+                          <option value="">{Select_a_user}</option>
+                          
+
+                          {users.map((user) => (
+                            <option key={user.id} value={user.nickname}>{user.nickname}</option>
+                          ))}
+                        </select>
+
+                        {/* select user profile image */}
+
+                        <div className=" w-full flex flex-row gap-2 items-center justify-center">
+                          <Image
+                            src={recipient?.avatar || '/profile-default.png'}
+                            alt="profile"
+                            width={38}
+                            height={38}
+                            className="rounded-full"
+                            style={{
+                              objectFit: 'cover',
+                              width: '38px',
+                              height: '38px',
+                            }}
+                          />
+
+                          {recipient?.walletAddress && (
+                            <Image
+                              src="/verified.png"
+                              alt="check"
+                              width={28}
+                              height={28}
+                            />
+                          )}
+
+                        </div>
+
+                      </div>
+
+              
+                      {/* input wallet address */}
+                      
+                      <input
+                        disabled={true}
+                        type="text"
+                        placeholder={User_wallet_address}
+                        className=" w-80  xl:w-full p-2 border border-gray-300 rounded text-white text-xs xl:text-lg font-semibold"
+                        value={
+                          params.chain === "tron" ?
+                          recipient?.walletAddress
+                          :
+                          recipient?.walletAddress
+                        }
+                        onChange={(e) => {
+        
+                          setRecipient({
+                            ...recipient,
+                            walletAddress: e.target.value,
+                          });
+
+                        } }
+
+                      />
 
                 
 
-              </div>
 
-              {/* otp verification */}
-              {/*
-              {verifiedOtp ? (
-                <div className="w-full flex flex-row gap-2 items-center justify-center">
-                  <Image
-                    src="/verified.png"
-                    alt="check"
-                    width={30}
-                    height={30}
-                  />
-                  <div className="text-white">OTP verified</div>
+            
+
+
+                    </>
+
+                  ) : (
+
+                    <div className='w-full flex flex-col gap-5 items-center justify-between'>
+                      <input
+                        disabled={sending}
+                        type="text"
+                        placeholder={User_wallet_address}
+                        className=" w-full p-2 border border-gray-300 rounded text-white bg-black text-sm xl:text-sm font-semibold"
+
+                        value={recipient.walletAddress}
+
+                        onChange={(e) => setRecipient({
+                          ...recipient,
+                          walletAddress: e.target.value,
+                        })}
+                      />
+
+                      {isWhateListedUser ? (
+                        <div className="flex flex-row gap-2 items-center justify-center">
+
+
+                          <Image
+                            src={recipient.avatar || '/profile-default.png'}
+                            alt="profile"
+                            width={30}
+                            height={30}
+                            className="rounded-full"
+                            style={{
+                              objectFit: 'cover',
+                              width: '38px',
+                              height: '38px',
+                            }}
+                          />
+                          <div className="text-white">{recipient?.nickname}</div>
+                          <Image
+                            src="/verified.png"
+                            alt="check"
+                            width={30}
+                            height={30}
+                          />
+                          
+                        </div>
+                      ) : (
+                        <>
+
+                        {recipient?.walletAddress && (
+                          <div className='flex flex-row gap-2 items-center justify-center'>
+                            {/* dot icon */}
+                            <div className="w-4 h-4 bg-green-500 rounded-full mr-2"></div>
+
+                            <div className="text-red-500">
+                              {This_address_is_not_white_listed}<br />
+                              {If_you_are_sure_please_click_the_send_button}
+                            </div>
+                          </div>
+
+                        )}
+
+                        </>
+                      )}
+
+
+
+                    </div>
+
+                  )}
+
+                  
+
                 </div>
-              ) : (
-             
-        
-                <div className="w-full flex flex-row gap-2 items-start">
 
-                  <button
-                    disabled={!address || !recipient?.walletAddress || !amount || isSendingOtp}
-                    onClick={sendOtp}
-                    className={`
-                      
-                      ${isSendedOtp && 'hidden'}
-
-                      w-32 p-2 rounded-lg text-sm font-semibold
-
-                        ${
-                        !address || !recipient?.walletAddress || !amount || isSendingOtp
-                        ?'bg-gray-300 text-gray-400'
-                        : 'bg-green-500 text-white'
-                        }
-                      
-                      `}
-                  >
-                      Send OTP
-                  </button>
-
-                  <div className={`flex flex-row gap-2 items-center justify-center ${!isSendedOtp && 'hidden'}`}>
-                    <input
-                      type="text"
-                      placeholder="Enter OTP"
-                      className=" w-40 p-2 border border-gray-300 rounded text-black text-sm font-semibold"
-                      value={otp}
-                      onChange={(e) => setOtp(e.target.value)}
+                {/* otp verification */}
+                {/*
+                {verifiedOtp ? (
+                  <div className="w-full flex flex-row gap-2 items-center justify-center">
+                    <Image
+                      src="/verified.png"
+                      alt="check"
+                      width={30}
+                      height={30}
                     />
+                    <div className="text-white">OTP verified</div>
+                  </div>
+                ) : (
+              
+          
+                  <div className="w-full flex flex-row gap-2 items-start">
 
                     <button
-                      disabled={!otp || isVerifingOtp}
-                      onClick={verifyOtp}
-                      className={`w-32 p-2 rounded-lg text-sm font-semibold
+                      disabled={!address || !recipient?.walletAddress || !amount || isSendingOtp}
+                      onClick={sendOtp}
+                      className={`
+                        
+                        ${isSendedOtp && 'hidden'}
+
+                        w-32 p-2 rounded-lg text-sm font-semibold
 
                           ${
-                          !otp || isVerifingOtp
+                          !address || !recipient?.walletAddress || !amount || isSendingOtp
                           ?'bg-gray-300 text-gray-400'
                           : 'bg-green-500 text-white'
                           }
                         
                         `}
                     >
-                        Verify OTP
+                        Send OTP
                     </button>
+
+                    <div className={`flex flex-row gap-2 items-center justify-center ${!isSendedOtp && 'hidden'}`}>
+                      <input
+                        type="text"
+                        placeholder="Enter OTP"
+                        className=" w-40 p-2 border border-gray-300 rounded text-black text-sm font-semibold"
+                        value={otp}
+                        onChange={(e) => setOtp(e.target.value)}
+                      />
+
+                      <button
+                        disabled={!otp || isVerifingOtp}
+                        onClick={verifyOtp}
+                        className={`w-32 p-2 rounded-lg text-sm font-semibold
+
+                            ${
+                            !otp || isVerifingOtp
+                            ?'bg-gray-300 text-gray-400'
+                            : 'bg-green-500 text-white'
+                            }
+                          
+                          `}
+                      >
+                          Verify OTP
+                      </button>
+                    </div>
+
                   </div>
 
-                </div>
-
-              )}
-              */}
-              
-
-
-
-              <button
-                
-                disabled={!address || !recipient?.walletAddress || !amount || sending || !verifiedOtp}
-
-                onClick={sendUsdt}
-
-                className={`mt-5 w-full p-2 rounded-lg text-xl font-semibold
-
-                    ${
-                    !address || !recipient?.walletAddress || !amount || sending || !verifiedOtp
-                    ?'bg-gray-300 text-gray-400'
-                    : 'bg-green-500 text-white'
-                    }
-                   
-                   `}
-              >
-                  {token} 출금
-              </button>
-
-              <div className="w-full flex flex-row gap-2 text-xl font-semibold">
-
-                {/* sending rotate animation with white color*/}
-                {sending && (
-                  <div className="
-                    w-6 h-6
-                    border-2 border-zinc-800
-                    rounded-full
-                    animate-spin
-                  ">
-                    <Image
-                      src="/loading.png"
-                      alt="loading"
-                      width={24}
-                      height={24}
-                    />
-                  </div>
                 )}
-                <div className="text-white">
-                  {sending ? Sending : ''}
+                */}
+                
+
+
+
+                <button
+                  
+                  disabled={!address || !recipient?.walletAddress || !amount || sending || !verifiedOtp}
+
+                  onClick={sendUsdt}
+
+                  className={`mt-5 w-full p-2 rounded-lg text-xl font-semibold
+
+                      ${
+                      !address || !recipient?.walletAddress || !amount || sending || !verifiedOtp
+                      ?'bg-gray-300 text-gray-400'
+                      : 'bg-green-500 text-white'
+                      }
+                    
+                    `}
+                >
+                    {token} 출금
+                </button>
+
+                <div className="w-full flex flex-row gap-2 text-xl font-semibold">
+
+                  {/* sending rotate animation with white color*/}
+                  {sending && (
+                    <div className="
+                      w-6 h-6
+                      border-2 border-zinc-800
+                      rounded-full
+                      animate-spin
+                    ">
+                      <Image
+                        src="/loading.png"
+                        alt="loading"
+                        width={24}
+                        height={24}
+                      />
+                    </div>
+                  )}
+                  <div className="text-white">
+                    {sending ? Sending : ''}
+                  </div>
+
                 </div>
 
               </div>
 
-            </div>
+            )}
+
+
+
+            {/* select swap */}
+            {/* dctc -> usdt */}
+            {/* usdt -> dctc */}
+            {/* input 스왑 수량 */}
+            {
+              address
+              && selectSwap
+              && (
+                <div className='mt-5
+                  w-full  flex flex-col gap-5 border
+                  bg-zinc-800 text-white
+                  p-4 rounded-lg
+
+                  '>
+                  <div className='flex flex-row gap-2 items-center justify-start'>
+                    {/* dot icon */}
+                    <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                    <div className="text-sm
+                      text-white
+
+                    ">
+                      {Buy_Description}
+                    </div>
+                  </div>
+
+                  <div className='w-full mb-5 flex flex-col xl:flex-row gap-5 items-start justify-between'>
+
+                    <div className='w-full flex flex-col gap-5 items-start justify-between'>
+                      <input
+                        disabled={loadingSwap}
+                        type="number"
+                        //placeholder="Enter amount"
+                        className=" w-full p-2 border border-gray-300 rounded text-black text-5xl font-semibold "
+                        
+                        value={swapAmount}
+
+                        onChange={(e) => (
+
+                          // check if the value is a number
+                          // check if start 0, if so remove it
+                          e.target.value = e.target.value.replace(/^0+/, ''),
+                          // check balance
+
+                          setSwapAmount(e.target.value as any)
+                        )}
+
+                      />
+              
+          
+
+                      {/* check box for want to receive wallet address */}
+                      {/*
+                      <div className="flex flex-row items-center gap-2">
+                        <input
+                          type="checkbox"
+                          className="w-6 h-6"
+                          checked={wantToReceiveWalletAddress}
+                          onChange={(e) => setWantToReceiveWalletAddress(e.target.checked)}
+                        />
+                        <div className="text-white">{Enter_Wallet_Address}</div>
+                      </div>
+                      */}
+
+                    </div>
+
+                  </div>
+
+                  <button
+                    disabled={!address || !swapAmount || loadingSwap}
+
+                    onClick={swap}
+
+                    className={`mt-5 w-full p-2 rounded-lg text-xl font-semibold
+
+                        ${
+                        !address || !swapAmount || loadingSwap
+                        ?'bg-gray-300 text-gray-400'
+                        : 'bg-green-500 text-white'
+                        }
+                      
+                      `}
+                  >
+                      {token} 스왑
+                  </button>
+
+                </div>
+
+              )
+            }
+
+                
+
+
+
+       
+
+
+
+
+
+
 
 
             {/* transaction history table */}
@@ -1327,8 +1569,6 @@ export default function SendUsdt({ params }: any) {
 
 
         </div>
-
-       </div>
 
     </main>
 
