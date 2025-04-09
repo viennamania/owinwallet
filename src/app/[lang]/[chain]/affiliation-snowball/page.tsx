@@ -83,7 +83,7 @@ const wallets = [
           "email",
           "x",
           "passkey",
-          "phone",
+          //"phone",
           "facebook",
           "line",
           "apple",
@@ -91,6 +91,7 @@ const wallets = [
         ],
       },
     }),
+    /*
     createWallet("com.coinbase.wallet"),
     createWallet("me.rainbow"),
     createWallet("io.rabby"),
@@ -100,6 +101,7 @@ const wallets = [
     createWallet("com.bitget.web3"),
     createWallet("com.trustwallet.app"),
     createWallet("com.okex.wallet"),
+    */
 ];
 
 

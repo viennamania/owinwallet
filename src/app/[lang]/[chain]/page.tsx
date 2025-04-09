@@ -159,6 +159,10 @@ const contractAddressEthereum = "0xdac17f958d2ee523a2206206994597c13d831ec7"; //
 const contractAddressDCTC = "0x76856Fd779AcE7C64297F9F662D3303e09dB269f"; // DCTC on Polygon
 
 
+const erc1155ContractAddress = "0x796f8867E6D474C1d63e4D7ea5f52B48E4bA83D6";
+
+
+
 /*
 const client = createThirdwebClient({
   clientId: "dfb94ef692c2f754a60d35aeb8604f3d",
@@ -987,7 +991,6 @@ function IndexPage(
 
 
 
-    const erc1155ContractAddress = "0x796f8867E6D474C1d63e4D7ea5f52B48E4bA83D6";
 
     const [price, setPrice] = useState(0);
 

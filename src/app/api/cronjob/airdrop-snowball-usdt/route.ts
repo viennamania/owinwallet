@@ -100,7 +100,7 @@ export async function GET(request: NextRequest) {
 
  
 
-    const tokenId = BigInt("1");
+    const tokenId = BigInt("0");
 
 
 
@@ -532,8 +532,11 @@ export async function GET(request: NextRequest) {
  
           //const shareTotalAmount = 1.0 * balance;
 
-    
-          masterAmount = 0.45 * parseFloat(balance.toString());
+          if (tokenId === 0n) {
+            masterAmount = 0.45 * parseFloat(balance.toString());
+          } else if (tokenId === 1n) {
+            masterAmount = 4.5 * parseFloat(balance.toString());
+          }
 
           //agentAmount = 3.4 * parseFloat(balance.toString());
 

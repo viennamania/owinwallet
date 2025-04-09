@@ -11,15 +11,22 @@ export async function POST(request: NextRequest) {
 
   const body = await request.json();
 
-  const { chain } = body;
+  const {
+    limit,
+    page,
+    center,
+    searchNickname,
+  } = body;
 
 
   //console.log("walletAddress", walletAddress);
 
 
   const result = await getAllUsers({
-    limit: 200,
-    page: 1,
+    limit,
+    page,
+    center,
+    searchNickname,
   });
 
  

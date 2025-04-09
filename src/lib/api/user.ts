@@ -1,4 +1,6 @@
+import { create } from 'domain';
 import clientPromise from '../mongodb';
+import { id } from 'ethers';
 
 
 export interface UserProps {
@@ -55,6 +57,8 @@ export interface UserProps {
   telegramId: string,
 
   center: string,
+
+  start: string,
 
 
 }
@@ -456,14 +460,18 @@ export async function getOneByTronWalletAddress(
 
 
 
-
+// find nickname - searchNickname
 export async function getAllUsers(
   {
     limit,
     page,
+    center,
+    searchNickname,
   }: {
     limit: number;
     page: number;
+    center: string;
+    searchNickname: string;
   }
 ): Promise<any> {
 
@@ -482,12 +490,11 @@ export async function getAllUsers(
   const users = await collection
     .find<UserProps>(
       {
-
-
-        walletAddress: { $exists: true, $ne: null},
-        verified: true,
-
         
+
+        // nickname is like searchNickname
+        nickname: { $regex: searchNickname, $options: 'i' },
+
         
 
       },
@@ -497,7 +504,7 @@ export async function getAllUsers(
       },
       
     )
-    .sort({ nickname: 1 })
+    .sort({ createdAt: -1 })
     .toArray();
 
 
@@ -506,18 +513,20 @@ export async function getAllUsers(
 
   const resultUsers = users.map((user) => {
     return {
-      walletAddress: user.walletAddress,
-      nickname: user.nickname,
-      mobile: user.mobile,
-      email: user.email,
-      tronWalletAddress: user.tronWalletAddress,
+      id: user?.id,
+      createdAt: user?.createdAt,
+      avatar: user?.avatar,
+      walletAddress: user?.walletAddress,
+      nickname: user?.nickname,
+      mobile: user?.mobile,
+      email: user?.email,
+      start: user?.start,
     };
   } );
 
   const totalCount = await collection.countDocuments(
     {
-      walletAddress: { $exists: true, $ne: null },
-      verified: true,
+      
     }
   );
 
