@@ -318,6 +318,9 @@ export async function updateAvatar(data: any) {
 // kyc.image2
 // kyc.image3
 export async function updateKycImage1(data: any) {
+
+  console.log('updateKycImage1 data: ' + JSON.stringify(data));
+
   const client = await clientPromise;
   const collection = client.db('vienna').collection('users');
   // update and return updated user
@@ -349,6 +352,10 @@ export async function updateKycImage1(data: any) {
 
 // updateKycImage2
 export async function updateKycImage2(data: any) {
+
+
+  console.log('updateKycImage2 data: ' + JSON.stringify(data));
+
   const client = await clientPromise;
   const collection = client.db('vienna').collection('users');
   // update and return updated user
@@ -381,6 +388,9 @@ export async function updateKycImage2(data: any) {
 // updateKycImage3
 
 export async function updateKycImage3(data: any) {
+
+  console.log('updateKycImage3 data: ' + JSON.stringify(data));
+
   const client = await clientPromise;
   const collection = client.db('vienna').collection('users');
   // update and return updated user

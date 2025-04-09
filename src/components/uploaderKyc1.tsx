@@ -237,7 +237,7 @@ const {
           </p>
         </div>
         <label
-          htmlFor="image-upload"
+          htmlFor="image-upload-kyc1"
           className="group relative mt-2 flex h-36 cursor-pointer flex-col items-center justify-center rounded-md border border-gray-300 bg-white shadow-sm transition-all hover:bg-gray-50"
         >
           <div
@@ -264,8 +264,8 @@ const {
 
               const file = e.dataTransfer.files && e.dataTransfer.files[0]
               if (file) {
-                if (file.size / 1024 / 1024 > 50) {
-                  toast.error('File size too big (max 50MB)')
+                if (file.size / 1024 / 1024 > 200) {
+                  toast.error('File size too big (max 200MB)')
                 } else {
                   setFile(file)
                   const reader = new FileReader()
@@ -328,7 +328,7 @@ const {
         </label>
         <div className="mt-1 flex rounded-md shadow-sm">
           <input
-            id="image-upload"
+            id="image-upload-kyc1"
             name="image"
             type="file"
             accept="image/*"
