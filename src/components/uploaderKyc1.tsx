@@ -8,7 +8,7 @@ import { PutBlobResult } from '@vercel/blob'
 
 import { getDictionary } from "../app/dictionaries";
 
-export default function Uploader(
+export default function UploaderKyc1(
 
   {
     lang,
@@ -118,7 +118,7 @@ const {
             setData(
               (prev) => ({
                 ...prev,
-                image: data.result.avatar,
+                image: data.result?.kyc?.image1,
               })
             );
         }
