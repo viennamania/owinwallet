@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
     page,
     walletAddress,
     contractAddress,
-    tokenId,
+    //tokenId,
   } = body;
 
 
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     page,
     walletAddress,
     contractAddress,
-    tokenId,
+    //tokenId,
   );
 
  

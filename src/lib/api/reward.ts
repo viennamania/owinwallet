@@ -169,10 +169,10 @@ export async function getRewards(
   page: number,
   walletAddress: string,
   contractAddress: string,
-  tokenId: number,
+  //tokenId: number,
 ) {
 
-  console.log("getRewards", limit, page, walletAddress, contractAddress, tokenId);
+  //console.log("getRewards", limit, page, walletAddress, contractAddress, tokenId);
 
   const client = await clientPromise;
   const collection = client.db('vienna').collection('referral_rewards');
@@ -182,7 +182,7 @@ export async function getRewards(
     {
       walletAddress: walletAddress,
       contractAddress: contractAddress,
-      tokenId: tokenId,
+      //tokenId: tokenId,
     }
   ).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit).toArray();
   

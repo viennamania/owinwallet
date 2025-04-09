@@ -611,7 +611,9 @@ function IndexPage(
               page: 1,
               walletAddress: address,
               contractAddress: agentContractAddress,
-              tokenId: parseInt(agentTokenId),
+              
+              //tokenId: parseInt(agentTokenId),
+
           }),
       });
 
@@ -938,9 +940,75 @@ function IndexPage(
                         {!loadingRewardHistory && rewardHistory.length > 0 && (
                           <div className='w-full flex flex-col gap-2'>
 
+                            <table className="w-full
+                              table-auto border-collapse border border-gray-300 rounded-lg">
+                              <thead>
+                                <tr className="bg-gray-200">
+                                  <th className="px-2 py-2 text-sm text-zinc-800">
+                                    날짜
+                                  </th>
+                                  <th className="px-2 py-2 text-sm text-zinc-800">
+                                    계약번호
+                                  </th>
+                                  <th className="px-2 py-2 text-sm text-zinc-800">
+                                    수량
+                                  </th>
+                                  <th className="px-2 py-2 text-sm text-zinc-800">
+                                    보상(USDT)
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {rewardHistory.map((item, index) => (
+                                  <tr key={index} className="bg-gray-100 hover:bg-gray-200">
+                                    <td className="px-2 py-2 text-sm text-zinc-800 font-semibold text-left">
+                                      {new Date(item.createdAt).toLocaleDateString("ko-KR", {
+                                        //year: "numeric",
+                                        month: "2-digit",
+                                        day: "2-digit",
+                                      })}
+                                    </td>
+
+                                    <td className="px-2 py-2 text-sm text-zinc-800 font-semibold text-center">
+                                      #{item.tokenId}
+                                    </td>
+
+                                    <td className="px-2 py-2 text-sm text-zinc-800 font-semibold text-right">
+                                      {item.balance}
+                                    </td>
+
+                                    <td className="px-2 py-2 text-sm text-zinc-800 font-semibold text-right">
+                                      {item.amount}
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+
+
+
+
+
+
+                            {/* header */}
+                            {/*
+                            <div className='w-full flex flex-row items-center justify-between gap-2 p-2 bg-gray-200 rounded-lg'>
+                              <div className="text-sm text-zinc-800 font-bold">
+                                날짜
+                              </div>
+                              <div className="text-sm text-zinc-800 font-bold">
+                                계약번호
+                              </div>
+                              <div className="text-sm text-zinc-800 font-bold">
+                                수량
+                              </div>
+                              <div className="text-sm text-zinc-800 font-bold">
+                                보상(USDT)
+                              </div>
+                            </div>
+
                             {rewardHistory.map((item, index) => (
                               <div key={index} className='w-full flex flex-row items-center justify-between gap-2 p-2 bg-gray-200 rounded-lg'>
-                                {/* 날짜 */}
                                 <div className="text-sm text-zinc-800 font-bold">
                                   {new Date(item.createdAt).toLocaleDateString("ko-KR", {
                                     year: "numeric",
@@ -949,17 +1017,20 @@ function IndexPage(
                                   })}
                                 </div>
 
-
-                                {/* 수량 balance */}
                                 <div className="text-sm text-zinc-800 font-bold">
-                                  수량: {item.balance}
+                                  #{item.tokenId}
                                 </div>
 
                                 <div className="text-sm text-zinc-800 font-bold">
-                                  보상: {item.amount} USDT
+                                  {item.balance}
+                                </div>
+
+                                <div className="text-sm text-zinc-800 font-bold">
+                                  {item.amount}
                                 </div>
                               </div>
                             ))}
+                            */}
 
                           </div>
                         )}
