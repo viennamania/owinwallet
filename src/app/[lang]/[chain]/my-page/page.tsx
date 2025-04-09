@@ -1829,22 +1829,25 @@ function AgentPage(
 
  
 
-                        <div className='flex flex-col gap-2 items-start justify-between border border-gray-300 p-4 rounded-lg'>
+                        <div className='w-full flex flex-col gap-2 items-start justify-between border border-gray-300 p-4 rounded-lg'>
                             
 
                             {/* KYC 인증 */}
                             {/* icon-kyc.png */}
-                            <div className='flex flex-row gap-2 items-center justify-between'>
-                                <Image
-                                    src="/icon-kyc.png"
-                                    alt="KYC"
-                                    width={30}
-                                    height={30}
-                                    className="rounded-lg"
-                                />
-                                <span className='text-sm font-semibold text-blue-500'>
-                                    KYC 인증
-                                </span>
+                            <div className='w-full flex flex-row gap-2 items-center justify-between'>
+                                <div className="flex flex-row items-center gap-2">
+                                    <Image
+                                        src="/icon-kyc.png"
+                                        alt="KYC"
+                                        width={30}
+                                        height={30}
+                                        className="w-5 h-5"
+                                    />
+                                    <span className='text-sm font-semibold text-blue-500'>
+                                        KYC 인증
+                                    </span>
+                                </div>
+
                                 <button
                                     onClick={() => {
                                         router.push('/' + params.lang + '/' + params.chain + '/kyc');
@@ -1856,6 +1859,7 @@ function AgentPage(
                                         alt="KYC"
                                         width={20}
                                         height={20}
+                                        className="w-5 h-5 opacity-50"
                                     />
                                 </button>
                             </div>
@@ -1863,17 +1867,19 @@ function AgentPage(
                             {/* 1:1 문의하기 */}
                             {/* 카카오톡 : http://pf.kakao.com/_rxaxmGn/chat */}
 
-                            <div className='flex flex-row gap-2 items-center justify-between'>
-                                <Image
-                                    src="/icon-chat.png"
-                                    alt="Chat"
-                                    width={30}
-                                    height={30}
-                                    className="rounded-lg"
-                                />
-                                <span className='text-sm font-semibold text-blue-500'>
-                                    1:1 문의하기
-                                </span>
+                            <div className='w-full flex flex-row gap-2 items-center justify-between'>
+                                <div className="flex flex-row items-center gap-2">
+                                    <Image
+                                        src="/icon-chat.png"
+                                        alt="Chat"
+                                        width={30}
+                                        height={30}
+                                        className="w-5 h-5"
+                                    />
+                                    <span className='text-sm font-semibold text-blue-500'>
+                                        1:1 문의하기
+                                    </span>
+                                </div>
                                 <button
                                     onClick={() => {
                                         window.open("http://pf.kakao.com/_rxaxmGn/chat", "_blank");
@@ -1885,6 +1891,7 @@ function AgentPage(
                                         alt="Chat"
                                         width={20}
                                         height={20}
+                                        className="w-5 h-5 opacity-50"
                                     />
                                 </button>
                             </div>
@@ -1900,17 +1907,19 @@ function AgentPage(
                             {/* 노션 : https://vagabond-secure-fbb.notion.site/FAQ-1c71b4ba94ae80a8b689cc2f796f4034?pvs=4 */}
 
 
-                            <div className='flex flex-row gap-2 items-center justify-between'>
-                                <Image
-                                    src="/icon-faq.png"
-                                    alt="FAQ"
-                                    width={30}
-                                    height={30}
-                                    className="rounded-lg"
-                                />
-                                <span className='text-sm font-semibold text-blue-500'>
-                                    자주 묻는 질문
-                                </span>
+                            <div className='w-full flex flex-row gap-2 items-center justify-between'>
+                                <div className="flex flex-row items-center gap-2">
+                                    <Image
+                                        src="/icon-faq.png"
+                                        alt="FAQ"
+                                        width={30}
+                                        height={30}
+                                        className="w-5 h-5"
+                                    />
+                                    <span className='text-sm font-semibold text-blue-500'>
+                                        자주 묻는 질문
+                                    </span>
+                                </div>
                                 <button
                                     onClick={() => {
                                         window.open("https://vagabond-secure-fbb.notion.site/FAQ-1c71b4ba94ae80a8b689cc2f796f4034?pvs=4", "_blank");
@@ -1922,6 +1931,7 @@ function AgentPage(
                                         alt="FAQ"
                                         width={20}
                                         height={20}
+                                        className="w-5 h-5 opacity-50"
                                     />
                                 </button>
                             </div>
