@@ -1,6 +1,6 @@
 // nickname settings
 'use client';
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from "react";
 
 
 
@@ -44,7 +44,6 @@ import {
 
     useConnectedWallets,
     useSetActiveWallet,
-
 
 } from "thirdweb/react";
 
@@ -159,16 +158,22 @@ const wallets = [
 
 
 
-export default function SettingsPage({ params }: any) {
 
+function AgentPage(
+    {
+        params,
+    }: {
+        params: {
+            lang: string;
+            chain: string;
+        };
+    }
+) {
+    const { lang, chain } = params;
 
-    //console.log("params", params);
-    
     const searchParams = useSearchParams();
 
     const center = searchParams.get('center');
- 
-    const wallet = searchParams.get('wallet');
 
     const start = searchParams.get('start') || "0x0276aE1b0768bBfe47d3Dd34493A225405aDB6AA_143";
 
@@ -601,8 +606,11 @@ export default function SettingsPage({ params }: any) {
 
     /* block for testing */
 
+    const [loadingUserData, setLoadingUserData] = useState(false);
+
     useEffect(() => {
         const fetchData = async () => {
+            setLoadingUserData(true);
             const response = await fetch("/api/user/getUser", {
                 method: "POST",
                 headers: {
@@ -647,9 +655,12 @@ export default function SettingsPage({ params }: any) {
                 setReferralCode('');
             }
 
+            setLoadingUserData(false);
+
         };
 
-        fetchData();
+        address && fetchData();
+
     }, [address]);
     
 
@@ -994,7 +1005,7 @@ export default function SettingsPage({ params }: any) {
 
         if (!userCode) {
             //console.log("userCode=====", userCode);
-            toast.error('아이디를 먼저 설정해주세요');
+            toast.error('아이디을 먼저 설정해주세요');
             return;
         }
 
@@ -1490,73 +1501,100 @@ export default function SettingsPage({ params }: any) {
 
     return (
 
-        <main className="
-        pb-10
-        p-4 min-h-[100vh] flex-col items-start justify-center container max-w-screen-lg mx-auto
-        bg-[#E7EDF1]
+        <main className="min-h-[100vh] flex flex-col items-center justify-start container max-w-screen-lg mx-auto
         ">
+
+
+            {/* go back button */}
+            <div className="p-4 w-full flex justify-start items-center gap-2">
+                <button
+                    onClick={() => router.back()}
+                    className="flex items-center justify-center bg-gray-200 rounded-full p-2">
+                    <Image
+                        src="/icon-back.png"
+                        alt="Back"
+                        width={20}
+                        height={20}
+                        className="rounded-full"
+                    />
+                </button>
+                {/* title */}
+                <span className="text-sm text-gray-500 font-semibold">
+                    KYC 인증
+                </span>
+            </div>
+
   
-            <div className="py-0 w-full">
-        
-                {/* goto home button using go back icon
-                history back
-                */}
-
-                {/*
-                <AppBarComponent />
-                */}
-
-                {/*}
-                <Header
-                    center={center ? center : ""}
-                    agent={agent ? agent : ""}
-                    tokenId={agentNumber ? agentNumber : ""}
-                />
-                */}
+            <div className="p-4 w-full min-h-[100vh] bg-[#E7EDF1]">
 
 
-                {!address && (
 
-                    <div className="
-                        mt-16
-                        w-full flex flex-col justify-center items-center gap-2 p-2">
 
-                    
-                        <ConnectButton
-                        client={client}
-                        wallets={wallets}
-                        accountAbstraction={{
-                            chain: polygon,
-                            sponsorGas: true
-                        }}
-                        theme={"light"}
-                        connectButton={{
-                            label: "로그인하세요",
-                        }}
-                        connectModal={{
-                            size: "wide", 
-                            //size: "compact",
-                            titleIcon: "https://uma.tips/icon-snowball.png",                           
-                            showThirdwebBranding: false,
 
-                        }}
-                        locale={"ko_KR"}
-                        //locale={"en_US"}
-                        />
+
+                <div className="w-full flex flex-col items-start justify-center gap-4">
+
+                    {!address && (
+
+                        <div className="w-full flex flex-col justify-center items-center gap-2 p-2">
+
                         
-                    
+                            <ConnectButton
+                            client={client}
+                            wallets={wallets}
+                            accountAbstraction={{
+                                chain: polygon,
+                                sponsorGas: true
+                            }}
+                            
+                            theme={"light"}
+                
+                            // button color is dark skyblue convert (49, 103, 180) to hex
+                            connectButton={{
+                                style: {
+                                backgroundColor: "#3167b4", // dark skyblue
+                                // font color is gray-300
+                                color: "#f3f4f6", // gray-300
+                                padding: "10px 20px",
+                                borderRadius: "10px",
+                                fontSize: "16px",
+                                // w-full
+                                width: "100%",
+                                },
+                                label: "로그인 및 회원가입",
+                            }}
+                
+                            connectModal={{
+                                size: "wide", 
+                                //size: "compact",
+                                titleIcon: "https://uma.tips/icon-snowball.png",                           
+                                showThirdwebBranding: false,
+                            }}
+                
+                            locale={"ko_KR"}
+                            //locale={"en_US"}
+                            />
+                            
+                        
 
-                    </div>
+                        </div>
 
-                )}
-
-
+                    )}
 
 
+                    {loadingUserData && (
+                        <div className="w-full flex flex-col justify-center items-center gap-2 p-2">
+                            <div className="flex flex-row items-center justify-center gap-2">
+                                <span className="text-sm texxt-gray-500 font-semibold">
+                                    Loading...
+                                </span>
+                            </div>
+                        </div>
+                    )}
 
-                <div className="w-full flex flex-col items-start justify-center gap-4 p-4">
-
-                    {address && userCode && (
+                    {address
+                    && !loadingUserData
+                    && userCode && (
                         <div className='w-full flex flex-row items-center justify-start
                             gap-2 border border-gray-300
                             p-4 rounded-lg'>
@@ -1595,164 +1633,21 @@ export default function SettingsPage({ params }: any) {
                     
 
 
-
-                        {address && userCode && (
-                            <div className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
-
-                                <div className='flex flex-row items-center gap-2'>
-                                    {/* dot */}
-                                    <div className='w-2 h-2 bg-green-500 rounded-full' />
-                                    <span className='text-sm font-semibold text-blue-500'>
-                                        {My_Nickname}
-                                    </span>
-                                </div>
-
-                                <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
-                                    {nickname}
-                                </div>
-
-                                
-                                <button
-                                    onClick={() => {
-
-                                        nicknameEdit ? setNicknameEdit(false) : setNicknameEdit(true);
-
-                                    } }
-                                    className="p-2 bg-blue-500 text-zinc-100 rounded"
-                                >
-                                    {nicknameEdit ? Cancel : Edit}
-                                </button>
-
-                                <Image
-                                    src="/verified.png"
-                                    alt="Verified"
-                                    width={20}
-                                    height={20}
-                                    className="rounded-lg"
-                                />
-
-
-                                
-                            </div>
-                        )}
-
-
-                        { (address && (nicknameEdit || !userCode)) && (
-                            <div className=' flex flex-col xl:flex-row gap-2 items-start justify-between border border-gray-300 p-4 rounded-lg'>
+                        {
+                        address &&
+                        !loadingUserData &&
+                        userCode && (
+                            <div className='w-full flex flex-col xl:felx-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
 
                                 <div className='flex flex-row items-center gap-2'>
                                     {/* dot */}
                                     <div className='w-2 h-2 bg-green-500 rounded-full' />
                                     <span className='text-sm font-semibold text-blue-500'>
-                                        {!userCode ? Enter_your_nickname :
-                                            nicknameEdit ? "수정할 내 아이디" : Enter_your_nickname
-                                        }
+                                        신분증 사진
                                     </span>
                                 </div>
 
-                                <div className='flex flex-col gap-2 items-start justify-between'>
-                                    <input
-                                        disabled={!address}
-                                        className="p-2 w-64 text-zinc-100 bg-zinc-800 rounded text-2xl font-semibold"
-                                        placeholder={Enter_your_nickname}
-                                        
-                                        //value={nickname}
-                                        value={editedNickname}
-
-                                        type='text'
-                                        onChange={(e) => {
-                                            // check if the value is a number
-                                            // check if the value is alphanumeric and lowercase
-
-                                            if (!/^[a-z0-9]*$/.test(e.target.value)) {
-                                                toast.error(Nickname_should_be_alphanumeric_lowercase);
-                                                return;
-                                            }
-                                            if ( e.target.value.length > 10) {
-                                                toast.error(Nickname_should_be_at_least_5_characters_and_at_most_10_characters);
-                                                return;
-                                            }
-
-                                            //setNickname(e.target.value);
-
-                                            setEditedNickname(e.target.value);
-
-                                            checkNicknameIsDuplicate(e.target.value);
-
-                                        } }
-                                    />
-
-                                    {editedNickname && isNicknameDuplicate && (
-                                        <div className='flex flex-row gap-2 items-center justify-between'>
-                                            <span className='text-xs font-semibold text-red-500'>
-                                                이미 사용중인 아이디입니다.
-                                            </span>
-                                        </div>
-                                    )}
-
-                                    {editedNickname
-                                    && !isNicknameDuplicate
-                                    && editedNickname.length >= 5
-                                    && (
-                                        <div className='flex flex-row gap-2 items-center justify-between'>
-                                            <span className='text-xs font-semibold text-green-500'>
-                                                사용가능한 아이디입니다.
-                                            </span>
-                                        </div>
-                                    )}
-                                </div>
-
-
-                                <div className='flex flex-row gap-2 items-center justify-between'>
-                                    <span className='text-xs font-semibold'>
-                                        {Nickname_should_be_5_10_characters}
-                                    </span>
-                                </div>
-                                <button
-                                    disabled={
-                                        !address
-                                        || !editedNickname
-                                        || editedNickname.length < 5
-                                        || isNicknameDuplicate
-                                        || loadingSetUserData
-                                    }
-                                    className={`
-                                        ${!address
-                                        || !editedNickname
-                                        || editedNickname.length < 5
-                                        || isNicknameDuplicate
-                                        || loadingSetUserData
-                                        ? 'bg-gray-300 text-gray-400'
-                                        : 'bg-blue-500 text-zinc-100'}
-
-                                        p-2 rounded-lg text-sm font-semibold
-                                    `}
-                                    onClick={() => {
-                                        setUserData();
-                                    }}
-                                >
-                                    {loadingSetUserData ? "저장중..." : Save}
-                                    
-                                </button>
-
-                                
-
-                            </div>
-                        )}
-
-
-                        {false && userCode && (
-                            <div className='flex flex-row xl:flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
-
-                                <div className='flex flex-row items-center gap-2'>
-                                    {/* dot */}
-                                    <div className='w-2 h-2 bg-green-500 rounded-full' />
-                                    <span className='text-sm font-semibold text-blue-500'>
-                                        {My_Profile_Picture}
-                                    </span>
-                                </div>
-
-                                <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
+                                <div className="w-full p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
                                     <Uploader
                                         lang={params.lang}
                                         walletAddress={address as string}
@@ -1810,105 +1705,6 @@ export default function SettingsPage({ params }: any) {
 
 
  
-
-                        <div className='flex flex-col gap-2 items-start justify-between border border-gray-300 p-4 rounded-lg'>
-                            
-
-                            {/* KYC 인증 */}
-                            {/* icon-kyc.png */}
-                            <div className='flex flex-row gap-2 items-center justify-between'>
-                                <Image
-                                    src="/icon-kyc.png"
-                                    alt="KYC"
-                                    width={30}
-                                    height={30}
-                                    className="rounded-lg"
-                                />
-                                <span className='text-sm font-semibold text-blue-500'>
-                                    KYC 인증
-                                </span>
-                                <button
-                                    onClick={() => {
-                                        router.push('/' + params.lang + '/' + params.chain + '/kyc');
-                                    }}
-                                    className="hover:bg-gray-200 p-2 rounded-lg"
-                                >
-                                    <Image
-                                        src="/icon-external.png"
-                                        alt="KYC"
-                                        width={20}
-                                        height={20}
-                                    />
-                                </button>
-                            </div>
-    
-                            {/* 1:1 문의하기 */}
-                            {/* 카카오톡 : http://pf.kakao.com/_rxaxmGn/chat */}
-
-                            <div className='flex flex-row gap-2 items-center justify-between'>
-                                <Image
-                                    src="/icon-chat.png"
-                                    alt="Chat"
-                                    width={30}
-                                    height={30}
-                                    className="rounded-lg"
-                                />
-                                <span className='text-sm font-semibold text-blue-500'>
-                                    1:1 문의하기
-                                </span>
-                                <button
-                                    onClick={() => {
-                                        window.open("http://pf.kakao.com/_rxaxmGn/chat", "_blank");
-                                    }}
-                                    className="hover:bg-gray-200 p-2 rounded-lg"
-                                >
-                                    <Image
-                                        src="/icon-external.png"
-                                        alt="Chat"
-                                        width={20}
-                                        height={20}
-                                    />
-                                </button>
-                            </div>
-
-
-
-
-
-
-                            {/* 자주 묻는 질문 */}
-                            {/* icon-faq.png */}
-                            {/* new window */}
-                            {/* 노션 : https://vagabond-secure-fbb.notion.site/FAQ-1c71b4ba94ae80a8b689cc2f796f4034?pvs=4 */}
-
-
-                            <div className='flex flex-row gap-2 items-center justify-between'>
-                                <Image
-                                    src="/icon-faq.png"
-                                    alt="FAQ"
-                                    width={30}
-                                    height={30}
-                                    className="rounded-lg"
-                                />
-                                <span className='text-sm font-semibold text-blue-500'>
-                                    자주 묻는 질문
-                                </span>
-                                <button
-                                    onClick={() => {
-                                        window.open("https://vagabond-secure-fbb.notion.site/FAQ-1c71b4ba94ae80a8b689cc2f796f4034?pvs=4", "_blank");
-                                    }}
-                                    className="hover:bg-gray-200 p-2 rounded-lg"
-                                >
-                                    <Image
-                                        src="/icon-external.png"
-                                        alt="FAQ"
-                                        width={20}
-                                        height={20}
-                                    />
-                                </button>
-                            </div>
-
-                        </div>
 
 
                         {false && userCode && seller && (
@@ -2143,91 +1939,9 @@ export default function SettingsPage({ params }: any) {
                         )}
 
 
-                        {/* update USDT Price */}
-                        {address && (
-                            address === '0x68B4F181d97AF97d8b111Ad50A79AfeB33CF6be6'
-                            || address === '0x91CA2566C3345026647aBbACB56093144eAA4c16'
-                        )
-                            && (
-                            <div className='flex flex-col gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
-                                <div className='flex flex-row gap-2 items-center justify-between'>
 
-                                    <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
-                                        Update USDT Price
-                                    </div>
-
-                                    <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
-                                        1 USDT = {usdtPrice} KRW
-                                    </div>
-
-                                    <button
-                                        onClick={() => {
-                                            setUsdtPriceEdit(!usdtPriceEdit);
-                                        }}
-                                        className="p-2 bg-blue-500 text-zinc-100 rounded"
-                                    >
-                                        {usdtPriceEdit ? Cancel : Edit}
-                                    </button>
-
-
-                                </div>
-
-                                {usdtPriceEdit && (
-                                    <div className='flex flex-col gap-2 items-center justify-between'>
-
-                                        <input 
-                                            className="p-2 w-64 text-zinc-100 bg-zinc-800 rounded text-lg font-semibold"
-                                            placeholder="Enter USDT Price"
-                                            type='number'
-                                            value={editUsdtPrice}
-                                            onChange={(e) => {
-                                                setEditUsdtPrice(e.target.value as any);
-                                            }}
-                                        />
-                                        <button
-                                            disabled={editingUsdtPrice}
-
-                                            className={`
-                                                ${editingUsdtPrice ? 'bg-gray-300 text-gray-400' : 'bg-green-500 text-zinc-100'}
-                                                p-2 rounded-lg text-sm font-semibold
-                                            `}
-
-                                            onClick={async () => {
-                                                // api call /api/order/updatePrice
-
-                                                const response = await fetch("/api/order/updatePrice", {
-                                                    method: "POST",
-                                                    headers: {
-                                                        "Content-Type": "application/json",
-                                                    },
-                                                    body: JSON.stringify({
-                                                        walletAddress: address,
-                                                        price: editUsdtPrice,
-                                                    }),
-                                                })
-                                                .then((response) => (
-
-                                                    toast.success('USDT price updated successfully'),
-                                                    
-                                                    setUsdtPrice(editUsdtPrice)
-                                                
-                                                ))
-
-                                            } }
-                                                
-                                        >
-                                            Save
-                                        </button>
-                                    </div>
-                                )}
-
-                            </div>
-                        )}
-
-                    
 
                     </div>
-
 
 
 
@@ -2235,142 +1949,6 @@ export default function SettingsPage({ params }: any) {
 
             </div>
 
-
-          {/* footer menu */}
-          {/* 홈 / NFT 상점 / 친구초대 / 마이페이지 */}
-          {/* same width footer menu */}
-
-          {true && (
-
-            <div className="w-full fixed bottom-0 left-0 right-0 items-center justify-center">
-
-
-              <div className="w-full grid grid-cols-4 gap-2 justify-center items-center p-5
-                bg-zinc-100 rounded-lg text-center
-              ">
-
-                {/* logo */}
-
-                {/* home */}
-                <button
-                  onClick={() => {
-                    router.push(
-                      "/" + params.lang + "/" + params.chain + "/"
-                      + "?start=" + start
-                    );
-                  }}
-                  // selected state
-                  className="flex flex-col justify-center items-center gap-2
-                    hover:bg-blue-200 hover:text-blue-800
-                    transition duration-300 ease-in-out
-                    transform hover:-translate-y-1
-                    rounded-lg
-                    p-2
-                  "
-                >
-                  <Image
-                    src="/icon-home.png"
-                    alt="Home"
-                    width={35}
-                    height={35}
-                    className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
-                  />
-                  <p className="text-sm md:text-lg text-gray-600">
-                    홈
-                  </p>
-                </button>
-
-                {/* NFT 상점 */}
-                <button
-                  onClick={() => {
-                    router.push(
-                      "/" + params.lang + "/" + params.chain + "/my-nft-snowball"
-                        + "?start=" + start
-                    );
-                  }}
-                  className="flex flex-col justify-center items-center gap-2
-                    hover:bg-blue-200 hover:text-blue-800
-                    transition duration-300 ease-in-out
-                    transform hover:-translate-y-1
-                    rounded-lg
-                    p-2
-                  "
-                >
-                  <Image
-                    src="/icon-shopping-cart.png"
-                    alt="NFT Market"
-                    width={35}
-                    height={35}
-                    className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
-                  />
-                  <p className="text-sm md:text-lg text-gray-600">
-                    NFT 상점
-                  </p>
-                </button>
-
-                {/* 친구 초대 */}
-                <button
-                  onClick={() => {
-                    router.push(
-                      "/" + params.lang + "/" + params.chain + "/affiliation-snowball"
-                        + "?start=" + start
-                    );
-                  }}
-                  className="flex flex-col justify-center items-center gap-2
-                    hover:bg-blue-200 hover:text-blue-800
-                    transition duration-300 ease-in-out
-                    transform hover:-translate-y-1
-                    rounded-lg
-                    p-2
-                  "
-                >
-                  <Image
-                    src="/icon-invite.png"
-                    alt="Invite Friend"
-                    width={35}
-                    height={35}
-                    className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
-                  />
-                  <p className="text-sm md:text-lg text-gray-600">
-                    친구초대
-                  </p>
-                </button>
-
-                {/* 마이페이지 */}
-                {/* selected state */}
-                <button
-                    /*
-                  onClick={() => {
-                    router.push(
-                      "/" + params.lang + "/" + params.chain + "/my-page"
-                    );
-                  }}
-                    */
-                  className="flex flex-col justify-center items-center gap-2
-                    bg-blue-200 text-blue-800
-                    transition duration-300 ease-in-out
-                    transform hover:-translate-y-1
-                    rounded-lg
-                    p-2
-                  "
-                >
-                  <Image
-                    src="/icon-my-page.png"
-                    alt="My Page"
-                    width={35}
-                    height={35}
-                    className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
-                  />
-                  <p className="text-sm md:text-lg text-gray-600">
-                    마이페이지
-                  </p>
-                </button>
-
-              </div>
-
-            </div>
-
-          )}
 
 
 
@@ -2456,3 +2034,21 @@ function Header(
       </header>
     );
   }
+
+
+
+export default function Agent({ params }: any) {
+    return (
+        <Suspense fallback={
+            <div
+                className="w-full h-screen flex flex-col items-center justify-center
+                bg-zinc-100 text-gray-600 font-semibold text-lg"
+            >Loading...</div>
+        }>
+            <AgentPage
+                params={params}
+            />
+            <div className="w-full h-36 bg-[#E7EDF1]"></div>
+        </Suspense>
+    );
+}

@@ -1850,7 +1850,7 @@ function AgentPage(
 
                                 <button
                                     onClick={() => {
-                                        router.push('/' + params.lang + '/' + params.chain + '/kyc');
+                                        router.push('/' + params.lang + '/' + params.chain + '/my-page-kyc');
                                     }}
                                     className="hover:bg-gray-200 p-2 rounded-lg"
                                 >
@@ -2170,89 +2170,6 @@ function AgentPage(
                             </div>
                         )}
 
-
-                        {/* update USDT Price */}
-                        {address && (
-                            address === '0x68B4F181d97AF97d8b111Ad50A79AfeB33CF6be6'
-                            || address === '0x91CA2566C3345026647aBbACB56093144eAA4c16'
-                        )
-                            && (
-                            <div className='flex flex-col gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
-                                <div className='flex flex-row gap-2 items-center justify-between'>
-
-                                    <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
-                                        Update USDT Price
-                                    </div>
-
-                                    <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
-                                        1 USDT = {usdtPrice} KRW
-                                    </div>
-
-                                    <button
-                                        onClick={() => {
-                                            setUsdtPriceEdit(!usdtPriceEdit);
-                                        }}
-                                        className="p-2 bg-blue-500 text-zinc-100 rounded"
-                                    >
-                                        {usdtPriceEdit ? Cancel : Edit}
-                                    </button>
-
-
-                                </div>
-
-                                {usdtPriceEdit && (
-                                    <div className='flex flex-col gap-2 items-center justify-between'>
-
-                                        <input 
-                                            className="p-2 w-64 text-zinc-100 bg-zinc-800 rounded text-lg font-semibold"
-                                            placeholder="Enter USDT Price"
-                                            type='number'
-                                            value={editUsdtPrice}
-                                            onChange={(e) => {
-                                                setEditUsdtPrice(e.target.value as any);
-                                            }}
-                                        />
-                                        <button
-                                            disabled={editingUsdtPrice}
-
-                                            className={`
-                                                ${editingUsdtPrice ? 'bg-gray-300 text-gray-400' : 'bg-green-500 text-zinc-100'}
-                                                p-2 rounded-lg text-sm font-semibold
-                                            `}
-
-                                            onClick={async () => {
-                                                // api call /api/order/updatePrice
-
-                                                const response = await fetch("/api/order/updatePrice", {
-                                                    method: "POST",
-                                                    headers: {
-                                                        "Content-Type": "application/json",
-                                                    },
-                                                    body: JSON.stringify({
-                                                        walletAddress: address,
-                                                        price: editUsdtPrice,
-                                                    }),
-                                                })
-                                                .then((response) => (
-
-                                                    toast.success('USDT price updated successfully'),
-                                                    
-                                                    setUsdtPrice(editUsdtPrice)
-                                                
-                                                ))
-
-                                            } }
-                                                
-                                        >
-                                            Save
-                                        </button>
-                                    </div>
-                                )}
-
-                            </div>
-                        )}
-
-                    
 
                     </div>
 
