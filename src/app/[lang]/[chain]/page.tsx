@@ -1480,16 +1480,33 @@ function IndexPage(
         {/* 23,355 USDT */}
         {address && (
 
-          <div className="mt-5 w-full flex flex-col gap-2 items-center justify-between">
+          <div className="mt-5 w-full flex flex-col gap-0 items-center justify-between">
 
-            <div className="w-full flex flex-row gap-2 items-center justify-start">
-                <div className="text-sm text-zinc-800 font-bold">
-                    총 자산
-                </div>
+            {/* rounded top and not buttom */}
+            {/* bg color is [#3167b4] */}
+            <div className="w-full flex flex-row gap-2 items-center justify-between
+                rounded-t-lg
+                bg-[#3167b4]
+                p-2
+            ">
+                <span className="text-sm md:text-lg text-white">
+                  총 자산
+                </span>
+                <span className="text-sm md:text-lg text-white">
+                  {address && !loadingUserData && (
+                    <>
+                      {nickname}님, 반갑습니다.
+                    </>
+                  )}
+                </span>
             </div>
 
+
+
+
+
             <div className="w-full flex flex-col gap-2 items-center justify-start
-                bg-white p-5 rounded-lg
+                bg-white p-5 rounded-b-lg
             ">
                 <span className="text-2xl md:text-3xl font-semibold text-zinc-800">
                     {totoalUsdtBalance.toFixed(2)} USDT
@@ -1505,15 +1522,21 @@ function IndexPage(
 
         {/* 나의 코인 자산 */}
         {address && (
-          <div className="mt-5 w-full flex flex-col gap-2 items-center justify-between">
+          <div className="mt-5 w-full flex flex-col gap-0 items-center justify-between">
 
-            <div className="w-full flex flex-row gap-2 items-center justify-start">
-                <div className="text-sm text-zinc-800 font-bold">
-                    나의 코인 자산
-                </div>
+            <div className="w-full flex flex-row gap-2 items-center justify-start
+                rounded-t-lg
+                bg-[#3167b4]
+                p-2
+            ">
+                <span className="text-sm md:text-lg text-white">
+                  나의 코인 자산
+                </span>
             </div>
+            
             <div className="w-full flex flex-col gap-2 items-center justify-start
-                bg-white p-2 rounded-lg
+                bg-white p-2
+                rounded-b-lg
             ">
 
 
@@ -1626,16 +1649,23 @@ function IndexPage(
         {address && (
 
 
-          <div className="mt-5 w-full flex flex-col gap-2 items-center justify-between">
+          <div className="mt-5 w-full flex flex-col gap-0 items-center justify-between">
 
-              <div className="w-full flex flex-row gap-2 items-center justify-start">
-                  <div className="text-sm text-zinc-800 font-bold">
+              <div className="w-full flex flex-row gap-2 items-center justify-start
+                  rounded-t-lg
+                  bg-[#3167b4]
+                  p-2
+              ">
+                  <div className="text-sm md:text-lg text-white">
                       나의 NFT 자산
                   </div>
               </div>
 
               {loadingOwnedNfts && (
-                  <div className="w-full flex flex-row gap-2 items-center justify-center">
+                  <div className="w-full flex flex-row gap-2 items-center justify-center
+                      rounded-b-lg
+                      bg-white p-5
+                  ">
                       <Image
                           src="/loading.png"
                           alt="loding"
@@ -1651,7 +1681,10 @@ function IndexPage(
 
 
               {ownedNfts.length === 0 && !loadingOwnedNfts && (
-                  <div className="w-full flex flex-row gap-2 items-center justify-center">
+                  <div className="w-full flex flex-row gap-2 items-center justify-center
+                      rounded-b-lg
+                      bg-white p-5
+                  ">
                       <span className="text-lg font-semibold text-zinc-400">
                           소유한 NFT 자산이 없습니다.
                       </span>
@@ -1660,17 +1693,20 @@ function IndexPage(
 
 
               {!loadingOwnedNfts && ownedNfts.length > 0 && (
-                  <div className="w-full flex flex-col gap-10 items-center justify-between">
+ 
+                  <div className="w-full flex flex-col gap-5 items-center justify-between
+                      rounded-b-lg
+                      bg-white p-0
+                  ">
+
+                      {/* nft list */}
                       {ownedNfts.map((nft, index) => (
 
-                          <div key={index} className="w-full flex flex-col gap-2 items-center justify-between p-4
-                              border border-gray-200
-                              bg-white
-                              hover:shadow-lg
-                              rounded-lg">
-
-
-
+                          <div key={index} className="w-full flex flex-col gap-2 items-center justify-between
+                          bg-white
+                              p-5
+                              border-b border-gray-200
+                          ">
 
                               <div className="w-full flex flex-row gap-2 items-start justify-between">
 
@@ -1698,7 +1734,7 @@ function IndexPage(
                                   <div className="w-3/4 flex flex-col gap-1 items-center justify-center">
 
                                     <div className="w-full flex flex-row gap-2 items-center justify-start">
-                                      <div className="w-1/2 text-sm text-zinc-800 font-bold">
+                                      <div className="w-1/2 text-sm text-zinc-800">
                                           이름
                                       </div>
                                       <div className="w-full text-sm text-zinc-800 font-bold text-right">
@@ -1707,7 +1743,7 @@ function IndexPage(
                                     </div>
 
                                     <div className="w-full flex flex-row gap-2 items-center justify-start">
-                                      <div className="w-1/2 text-sm text-zinc-800 font-bold">
+                                      <div className="w-1/2 text-sm text-zinc-800">
                                           계약번호
                                       </div>
                                       <div className="w-full text-sm text-zinc-800 font-bold text-right">
@@ -1716,7 +1752,7 @@ function IndexPage(
                                     </div>
 
                                     <div className="w-full flex flex-row gap-2 items-center justify-start">
-                                      <div className="w-1/2 text-sm text-zinc-800 font-bold">
+                                      <div className="w-1/2 text-sm text-zinc-800">
                                           수량
                                       </div>
                                       <div className="w-full text-sm text-zinc-800 font-bold text-right">
@@ -1725,7 +1761,7 @@ function IndexPage(
                                     </div>
 
                                     <div className="w-full flex flex-row gap-2 items-center justify-start">
-                                      <div className="w-1/2 text-sm text-zinc-800 font-bold">
+                                      <div className="w-1/2 text-sm text-zinc-800">
                                           누적 리워드
                                       </div>
                                       <div className="w-full text-sm text-zinc-800 font-bold text-right">
@@ -1734,7 +1770,7 @@ function IndexPage(
                                     </div>
 
                                     <div className="w-full flex flex-row gap-2 items-center justify-start">
-                                      <div className="w-1/2 text-sm text-zinc-800 font-bold">
+                                      <div className="w-1/2 text-sm text-zinc-800">
                                           누적 수익률
                                       </div>
                                       <div className="w-full text-sm text-zinc-800 font-bold text-right">
@@ -1747,24 +1783,37 @@ function IndexPage(
 
                               </div>
 
-                              {/* 더보기 버튼 */}
-                              <button
-                                  onClick={() => {
-                                      // redirect to nft detail page
-                                      router.push(
-                                          "/" + params.lang + "/" + params.chain + "/my-nft-snowball/" + erc1155ContractAddress + "/" + nft.id.toString()
-                                      );
-                                  }}
-                                  className="w-full bg-[#3167b4] text-sm text-[#f3f4f6] px-4 py-2 rounded-lg hover:bg-[#3167b4]/80"
-                              >
-                                더보기
-                              </button>
+
 
 
 
                           </div>
                       ))}
+
+
+                      {/* 더보기 버튼 */}
+                      <button
+                          onClick={() => {
+                              // redirect to nft detail page
+                              router.push(
+                                  "/" + params.lang + "/" + params.chain + "/my-nft-snowball/" + erc1155ContractAddress
+                              );
+                          }}
+                          className="w-full
+                            rounded-b-lg
+                            bg-gray-100
+                            p-2
+                            text-sm md:text-lg font-semibold text-zinc-800
+                            hover:bg-gray-200
+                            "
+                      >
+                        더보기
+                      </button>
+
+
                   </div>
+
+
               )}
 
           </div>
