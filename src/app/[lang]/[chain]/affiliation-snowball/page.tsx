@@ -1185,9 +1185,7 @@ function AgentPage(
                     
                     {!address && (
 
-                        <div className="
-                            mt-16
-                            w-full flex flex-col justify-center items-center gap-2 p-2">
+                        <div className="w-full flex flex-col justify-center items-center gap-2 p-2">
 
                         
                             <ConnectButton

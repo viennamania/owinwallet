@@ -1511,7 +1511,67 @@ function AgentPage(
 
                 <div className="w-full flex flex-col items-start justify-center gap-4 p-4">
 
-                    {address && userCode && (
+                    {!address && (
+
+                        <div className="w-full flex flex-col justify-center items-center gap-2 p-2">
+
+                        
+                            <ConnectButton
+                            client={client}
+                            wallets={wallets}
+                            accountAbstraction={{
+                                chain: polygon,
+                                sponsorGas: true
+                            }}
+                            
+                            theme={"light"}
+                
+                            // button color is dark skyblue convert (49, 103, 180) to hex
+                            connectButton={{
+                                style: {
+                                backgroundColor: "#3167b4", // dark skyblue
+                                // font color is gray-300
+                                color: "#f3f4f6", // gray-300
+                                padding: "10px 20px",
+                                borderRadius: "10px",
+                                fontSize: "16px",
+                                // w-full
+                                width: "100%",
+                                },
+                                label: "로그인 및 회원가입",
+                            }}
+                
+                            connectModal={{
+                                size: "wide", 
+                                //size: "compact",
+                                titleIcon: "https://uma.tips/icon-snowball.png",                           
+                                showThirdwebBranding: false,
+                            }}
+                
+                            locale={"ko_KR"}
+                            //locale={"en_US"}
+                            />
+                            
+                        
+
+                        </div>
+
+                    )}
+
+
+                    {loadingUserData && (
+                        <div className="w-full flex flex-col justify-center items-center gap-2 p-2">
+                            <div className="flex flex-row items-center justify-center gap-2">
+                                <span className="text-sm texxt-gray-500 font-semibold">
+                                    Loading...
+                                </span>
+                            </div>
+                        </div>
+                    )}
+
+                    {address
+                    && !loadingUserData
+                    && userCode && (
                         <div className='w-full flex flex-row items-center justify-start
                             gap-2 border border-gray-300
                             p-4 rounded-lg'>
