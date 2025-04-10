@@ -1497,7 +1497,7 @@ export default function SendUsdt({ params }: any) {
 
                     ">
                       {/*Buy_Description*/}
-                      {token === "usdt" ? "스왑할 USDT 수량을 입력하세요."
+                      {token === "USDT" ? "스왑할 USDT 수량을 입력하세요."
                       : "스왑할 DCTC 수량을 입력하세요."
                       }
                     </div>
@@ -1545,7 +1545,7 @@ export default function SendUsdt({ params }: any) {
 
 
                     {/* swap 풀 balance */}
-                    {token === "usdt" ? (
+                    {token === "USDT" ? (
                       <div className='w-full flex flex-col gap-5 items-start justify-between'>
                         <div className='flex flex-row gap-2 items-center justify-start'>
                           <Image
