@@ -131,7 +131,7 @@ export default function AgentPage({ params }: any) {
 
         setLoadingAgent(true);
   
-        const response = await fetch('/api/agent/getAgentNFTByContractAddressAndTokenId', {
+        const response = await fetch('/api/affiliation/getAgentNFTByContractAddressAndTokenId', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -149,7 +149,7 @@ export default function AgentPage({ params }: any) {
   
         const data = await response.json();
 
-        //console.log("getAgentNFTByContractAddressAndTokenId data", data);
+        console.log("getAgentNFTByContractAddressAndTokenId data", data);
 
 
 
@@ -407,7 +407,7 @@ export default function AgentPage({ params }: any) {
       setTransferToAddress("");
 
       // getAgent
-      const response = await fetch('/api/agent/getAgentNFTByContractAddressAndTokenId', {
+      const response = await fetch('/api/affiliation/getAgentNFTByContractAddressAndTokenId', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -419,6 +419,10 @@ export default function AgentPage({ params }: any) {
       });
       if (response) {
         const data = await response.json();
+
+        //console.log("getAgentNFTByContractAddressAndTokenId data", data);
+
+
         setAgent(data.result);
         setOwnerInfo(data.ownerInfo);
       }
@@ -509,32 +513,33 @@ export default function AgentPage({ params }: any) {
 
   return (
 
-    <main className="p-4 pb-10 min-h-[100vh] flex items-start justify-center container max-w-screen-lg mx-auto
-    bg-[#E7EDF1]">
+    <main className="min-h-[100vh] flex flex-col items-center justify-start container max-w-screen-lg mx-auto
+    ">
 
-      <div className="py-0 w-full ">
 
         {/* go back button */}
-        <div className="mt-4 flex justify-start space-x-4 mb-10">
+        <div className="p-4 w-full flex justify-start items-center gap-2">
             <button
-              
-              onClick={() => router.back()}
-
-              className="text-gray-600 font-semibold underline">
-                뒤로가기
+                onClick={() => router.back()}
+                className="flex items-center justify-center bg-gray-200 rounded-full p-2">
+                <Image
+                    src="/icon-back.png"
+                    alt="Back"
+                    width={20}
+                    height={20}
+                    className="rounded-full"
+                />
             </button>
+            {/* title */}
+            <span className="text-sm text-gray-500 font-semibold">
+                추천인 관리
+            </span>
         </div>
 
 
+        <div className="p-4 w-full min-h-[100vh] bg-[#E7EDF1]">
 
-        <div className="mt-10 flex flex-col items-start justify-center space-y-4">
 
-
-          <div className='flex flex-row items-center gap-2'>
-              <span className='text-lg font-semibold text-gray-800'>
-                  추천인
-              </span>
-          </div>
 
 
           {/* agent nft info */}
@@ -583,7 +588,7 @@ export default function AgentPage({ params }: any) {
 
                   <div className='w-full flex flex-col xl:flex-row items-start justify-start gap-2'>
 
-                      <div className='flex flex-col items-center justify-between gap-2'>
+                      <div className='flex flex-row items-center justify-between gap-2'>
                         <span className='text-sm text-gray-800'>
                             계약번호
                         </span>
@@ -612,7 +617,7 @@ export default function AgentPage({ params }: any) {
                       border border-gray-300
                     '>
 
-                        <div className='w-full flex flex-col items-start justify-start gap-2'>
+                        <div className='w-1/4 flex flex-col items-start justify-start gap-2'>
                             {!animationUrl && agent.image && (
                                 <Image
                                     //src={agent?.image?.thumbnailUrl}
@@ -637,25 +642,52 @@ export default function AgentPage({ params }: any) {
                         </div>
                         
                         
-                        <div className='w-full flex flex-col items-start justify-between gap-2'>
+                        <div className='w-3/4 flex flex-col items-start justify-between gap-2'>
 
-                            <div className='flex flex-col items-start justify-between gap-2'>
-                                <span className='text-sm text-yellow-500'>
-                                    NFT 이름
+                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                <span className='text-xs text-gray-200'>
+                                    이름
                                 </span>
-                                <span className='text-xl font-semibold text-gray-200'>
+                                <span className='text-xs font-semibold text-gray-200'>
                                     {agent.name}
                                 </span>
                             </div>
-                    
-                            <div className='flex flex-col items-start justify-between gap-2'>
-                                <span className='text-sm text-yellow-500'>
-                                    NFT 설명
+                            {/* agent.mint.timestamp */}
+                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                <span className='text-xs text-gray-200'>
+                                    발행일
                                 </span>
                                 <span className='text-xs text-gray-200'>
+                                    {agent.mint?.timestamp && new Date(agent.mint.timestamp).toLocaleDateString('ko-KR', {
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit',
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                    })}
+                                </span>
+                            </div>
+                            {/* agent.mint.blockNumber */}
+                            {/* 블록번호 */}
+                            <div className='w-full flex flex-row items-center justify-between gap-2'>
+                                <span className='text-xs text-gray-200'>
+                                    블록번호
+                                </span>
+                                <span className='text-xs text-gray-200'>
+                                    #{agent.mint?.blockNumber}
+                                </span>
+                            </div>
+                    
+                            {/*
+                            <div className='flex flex-col items-start justify-between gap-2'>
+                                <span className='text-xs text-gray-200'>
+                                    NFT 설명
+                                </span>
+                                <span className='text-sm text-gray-200'>
                                     {agent.description}
                                 </span>
                             </div>
+                            */}
                         </div>
 
 
@@ -782,8 +814,8 @@ export default function AgentPage({ params }: any) {
                   <div className='w-full flex flex-col items-start justify-start gap-2'>
                     <div className='w-full flex flex-row items-center justify-start gap-2'>
                         {/* dot */}
-                        <div className='w-3 h-3 bg-red-500 rounded-full'></div>
-                        <span className='text-lg font-semibold text-gray-800'>
+                        <div className='w-2 h-2 bg-gray-500 rounded-full'></div>
+                        <span className='text-sm font-semibold text-gray-800'>
                             추천인 목록
                         </span>
                     </div>
@@ -867,9 +899,6 @@ export default function AgentPage({ params }: any) {
 
           </div>
 
-
-
-        </div>
 
        </div>
 
