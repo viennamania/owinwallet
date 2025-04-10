@@ -679,6 +679,7 @@ function AgentPage(
 
 
                 if (data.result) {
+                    /*
                     // exclude name is "MasgerBot"
                     const filteredNfts = data.result.ownedNfts.filter((nft : any) => {
 
@@ -687,6 +688,12 @@ function AgentPage(
                         }
 
                         return true;
+                    });
+                    */
+                    // sort by nft.mint.timestamp desc
+                    
+                    const filteredNfts = data.result.ownedNfts.sort((a: any, b: any) => {
+                        return b.mint.timestamp - a.mint.timestamp;
                     });
 
                     //console.log("filteredNfts", filteredNfts);
@@ -1627,7 +1634,7 @@ function AgentPage(
                                                 getMyNFTs();
                                             }}
                                             className="p-2 bg-[#3167b4] text-zinc-100 rounded
-                                            hover:bg-blue-600 text-sm font-semibold"
+                                            hover:bg-blue-600 text-sm"
                                         >
                                             새로고침
                                         </button>
@@ -1637,7 +1644,7 @@ function AgentPage(
 
                                 {loadingMyNfts && (
                                     <div className='w-full flex flex-col gap-2 items-start justify-between'>
-                                        <span className='text-lg font-semibold text-green-500'>
+                                        <span className='text-sm text-gray-500'>
                                             NFT를 불러오는 중입니다.
                                         </span>
                                     </div>
@@ -1647,7 +1654,7 @@ function AgentPage(
 
                                 {address && myNfts.length === 0 && (
                                     <div className='w-full flex flex-col gap-2 items-start justify-between'>
-                                        <span className='text-lg font-semibold text-red-500'>
+                                        <span className='text-sm text-red-500'>
                                             NFT가 없습니다.
                                         </span>
                                     </div>
@@ -1689,7 +1696,7 @@ function AgentPage(
                                                             '/affiliation-snowball/' + nft.contract.address + '/' + nft.tokenId);
                                                     }}
                                                     className="p-2 bg-[#3167b4] text-zinc-100 rounded
-                                                    hover:bg-blue-600 text-sm font-semibold"
+                                                    hover:bg-blue-600 text-sm"
                                                 >
                                                     추천인 보기
                                                 </button>
@@ -1720,7 +1727,7 @@ function AgentPage(
                                                         alert('추천코드가 복사되었습니다.');
                                                     }}
                                                     className="p-2 bg-[#3167b4] text-zinc-100 rounded
-                                                    hover:bg-blue-600 text-sm font-semibold"
+                                                    hover:bg-blue-600 text-sm"
                                                 >
                                                     추천코드 복사하기
                                                 </button>
@@ -1732,7 +1739,7 @@ function AgentPage(
                                             <div className='mt-5 w-full flex flex-row gap-2 items-start justify-between'>
                                                 
                                                 
-                                                <div className="w-28 flex flex-row gap-2 items-center justify-start">
+                                                <div className="w-1/4 flex flex-row gap-2 items-center justify-start">
                                                     <Image
                                                         //src={nft?.image?.pngUrl}
                                                         src={nft?.image?.originalUrl}
@@ -1743,16 +1750,56 @@ function AgentPage(
                                                     />
                                                 </div>
 
-                                                <div className='flex flex-col gap-2 items-start justify-between'>
-                                                    <div className='text-sm font-semibold text-yellow-500'>
-                                                        계약번호: #{nft?.tokenId?.length > 10 ? nft.tokenId.slice(0, 10) + '...' : nft.tokenId}
+                                                <div className='w-3/4 flex flex-col gap-2 items-start justify-between'>
+                                                    <div className='w-full flex flex-row gap-2 items-center justify-between'>
+                                                        <span className='text-xs text-zinc-100'>
+                                                            계약번호
+                                                        </span>
+                                                        <span className='text-sm text-zinc-100'>
+                                                            #{nft?.tokenId}
+                                                        </span>
                                                     </div>
-                                                    <div className='text-sm font-semibold text-yellow-500'>
-                                                        이름: {nft?.name}
+                                                    {/* 이름 */}
+                                                    <div className='w-full flex flex-row gap-2 items-center justify-between'>
+                                                        <span className='text-xs text-zinc-100'>
+                                                            이름
+                                                        </span>
+                                                        <span className='text-sm text-zinc-100'>
+                                                            {nft?.name}
+                                                        </span>
                                                     </div>
-                                                    <div className='text-sm font-semibold text-yellow-500'>
-                                                        설명: {nft?.description}
+                                                    {/* 발행일 */}
+                                                    {/* nft?.mint.timestamp */}
+                                                    {/*
+                                                    <div className='w-full flex flex-row gap-2 items-center justify-between'>
+                                                        <span className='text-xs text-zinc-100'>
+                                                            발행일
+                                                        </span>
+                                                        <span className='text-sm text-zinc-100'>
+                                                            {nft.mint?.timestamp && new Date(nft.mint.timestamp).toLocaleDateString('ko-KR', {
+                                                                year: 'numeric',
+                                                                month: '2-digit',
+                                                                day: '2-digit',
+                                                                hour: '2-digit',
+                                                                minute: '2-digit',
+                                                            })}
+                                                        </span>
                                                     </div>
+                                                    */}
+                                                    {/* 블록번호 */}
+                                                    {/* nft?.mint.blockNumber */}
+                                                    {/*
+                                                    <div className='w-full flex flex-row gap-2 items-center justify-between'>
+                                                        <span className='text-xs text-zinc-100'>
+                                                            블록번호
+                                                        </span>
+                                                        <span className='text-sm text-zinc-100'>
+                                                            #{nft.mint?.blockNumber}
+                                                        </span>
+                                                    </div>
+                                                    */}
+
+             
 
                                                 </div>
 
@@ -1763,12 +1810,12 @@ function AgentPage(
                                             <div className='mt-5 w-full flex flex-col gap-2 items-end justify-between'>
                                                 
                                                 <div className='w-full flex flex-col gap-2 items-start justify-between'>
-                                                    <span className='text-sm text-red-500 font-semibold'>
+                                                    <span className='text-sm text-red-500'>
                                                         소유권 이전하기
                                                     </span>
                                                     <div className='flex flex-row items-center justify-start gap-2'>
-                                                        <div className='w-3 h-3 bg-red-500 rounded-full'></div>
-                                                        <span className='text-sm text-gray-400 font-semibold'>
+                                                        <div className='w-2 h-2 bg-red-500 rounded-full'></div>
+                                                        <span className='text-sm text-gray-400'>
                                                             소유권을 이전하면 소유자 권리를 모두 이전하는 것에 동의하는 것입니다.
                                                         </span>
                                                     </div>
@@ -1776,7 +1823,7 @@ function AgentPage(
                                         
                                                 
                                                 <input
-                                                    className="p-2 w-full text-zinc-100 bg-zinc-800 rounded text-lg font-semibold"
+                                                    className="p-2 w-full text-zinc-100 bg-zinc-800 rounded text-sm"
                                                     placeholder="받는 사람 지갑주소"
                                                     type='text'
 
@@ -1808,7 +1855,7 @@ function AgentPage(
                                                         transferNft(nft.contract.address, nft.tokenId);
                                                     }}
                                                     className={`p-2 bg-[#3167b4] text-zinc-100 rounded
-                                                    hover:bg-blue-600 text-sm font-semibold
+                                                    hover:bg-blue-600 text-sm
                                                     ${transferingNftList.find((item) => 
                                                         item?.contractAddress === nft.contract.address && item.tokenId === nft.tokenId
                                                     )?.transferring ? 'opacity-50' : ''}
@@ -1827,7 +1874,13 @@ function AgentPage(
                                                                 className="animate-spin"
                                                             />
                                                         )}
-                                                            NFT 전송하기
+                                                        {transferingNftList.find((item) =>
+                                                            item?.contractAddress === nft.contract.address && item.tokenId === nft.tokenId
+                                                        )?.transferring && 'NFT 전송중...'}
+                                                        {!transferingNftList.find((item) =>
+                                                            item?.contractAddress === nft.contract.address && item.tokenId === nft.tokenId
+                                                        )?.transferring && 'NFT 전송하기'}
+
                                                     </div>
 
                                                 </button>

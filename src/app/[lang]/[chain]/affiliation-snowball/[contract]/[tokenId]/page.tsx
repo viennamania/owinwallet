@@ -653,6 +653,7 @@ export default function AgentPage({ params }: any) {
                                 </span>
                             </div>
                             {/* agent.mint.timestamp */}
+                            {/*}
                             <div className='w-full flex flex-row items-center justify-between gap-2'>
                                 <span className='text-xs text-gray-200'>
                                     발행일
@@ -667,8 +668,10 @@ export default function AgentPage({ params }: any) {
                                     })}
                                 </span>
                             </div>
+                            */}
                             {/* agent.mint.blockNumber */}
                             {/* 블록번호 */}
+                            {/*
                             <div className='w-full flex flex-row items-center justify-between gap-2'>
                                 <span className='text-xs text-gray-200'>
                                     블록번호
@@ -677,6 +680,7 @@ export default function AgentPage({ params }: any) {
                                     #{agent.mint?.blockNumber}
                                 </span>
                             </div>
+                            */}
                     
                             {/*
                             <div className='flex flex-col items-start justify-between gap-2'>
