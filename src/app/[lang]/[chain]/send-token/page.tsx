@@ -805,6 +805,52 @@ export default function SendUsdt({ params }: any) {
 
   */
 
+  // 0xef236138f40fadCac5Af0E01bB51612ad116C91f
+  // usdt balance
+  // dctc balance
+  const swapPoolAddress = "0xef236138f40fadCac5Af0E01bB51612ad116C91f";
+
+  const [swapPoolUsdtBalance, setSwapPoolUsdtBalance] = useState(0);
+  const [swapPoolDctcBalance, setSwapPoolDctcBalance] = useState(0);
+  useEffect(() => {
+    const getSwapPoolBalance = async () => {
+
+      const contractUsdt = getContract({
+        client,
+        chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+        address: contractAddress,
+      });
+
+      const contractDctc = getContract({
+        client,
+        chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+        address: contractAddressDCTC,
+      });
+
+      const usdtBalance = await balanceOf({
+        contract: contractUsdt as any,
+        address: swapPoolAddress,
+      });
+
+      setSwapPoolUsdtBalance(Number(usdtBalance) / 10 ** 6);
+
+      const dctcBalance = await balanceOf({
+        contract: contractDctc as any,
+        address: swapPoolAddress,
+      });
+
+      setSwapPoolDctcBalance(Number(dctcBalance) / 10 ** 18);
+
+    };
+
+    getSwapPoolBalance();
+
+  }, [address, params.chain]);
+
+  console.log("swapPoolUsdtBalance", swapPoolUsdtBalance);
+  console.log("swapPoolDctcBalance", swapPoolDctcBalance);
+
+
 
   return (
 
@@ -941,7 +987,19 @@ export default function SendUsdt({ params }: any) {
                         
                       `}
                     >
-                      입금
+                      <div className='flex flex-col gap-2 items-center justify-start'>
+                        {/*}
+                        <Image
+                          src="/icon-deposit.png"
+                          alt="deposit"
+                          width={20}
+                          height={20}
+                        />
+                        */}
+                        <span className='text-sm'>
+                          입금
+                        </span>
+                      </div>
                     </button>
 
                     <button
@@ -1438,7 +1496,10 @@ export default function SendUsdt({ params }: any) {
                       text-white
 
                     ">
-                      {Buy_Description}
+                      {/*Buy_Description*/}
+                      {token === "usdt" ? "스왑할 USDT 수량을 입력하세요."
+                      : "스왑할 DCTC 수량을 입력하세요."
+                      }
                     </div>
                   </div>
 
@@ -1481,6 +1542,49 @@ export default function SendUsdt({ params }: any) {
                       */}
 
                     </div>
+
+
+                    {/* swap 풀 balance */}
+                    {token === "usdt" ? (
+                      <div className='w-full flex flex-col gap-5 items-start justify-between'>
+                        <div className='flex flex-row gap-2 items-center justify-start'>
+                          <Image
+                            src="/token-dctc-icon.png"
+                            alt="token"
+                            width={35}
+                            height={35}
+                            className='rounded-full w-8 h-8 xl:w-10 xl:h-10'
+                          />
+
+                          <span className="text-lg font-semibold text-gray-200">
+                            {swapPoolDctcBalance.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} DCTC
+                          </span>
+                        </div>
+                        <div className="text-sm text-gray-400">
+                          스왑 풀 잔액
+                        </div>
+                      </div>
+                    ) : (
+                      <div className='w-full flex flex-col gap-5 items-start justify-between'>
+                        <div className='flex flex-row gap-2 items-center justify-start'>
+                          <Image
+                            src="/token-usdt-icon.png"
+                            alt="token"
+                            width={35}
+                            height={35}
+                            className='rounded-full w-8 h-8 xl:w-10 xl:h-10'
+                          />
+
+                          <span className="text-lg font-semibold text-gray-200">
+                            {swapPoolUsdtBalance.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} USDT
+                          </span>
+                        </div>
+                        <div className="text-sm text-gray-400">
+                          스왑 풀 잔액
+                        </div>
+                      </div>
+                    )}
+      
 
                   </div>
 
