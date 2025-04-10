@@ -1081,7 +1081,7 @@ function IndexPage(
             ">
 
             <div className="w-full flex flex-row gap-2 justify-start items-center">
-              {/*
+              
               <Image
                 src="/icon-snowball.png"
                 alt="Snowball"
@@ -1089,7 +1089,7 @@ function IndexPage(
                 height={50}
                 className="rounded-lg w-10 h-10"
               />
-              */}
+              
               <span className="text-lg md:text-xl font-bold text-zinc-500">
                 SNOWBALL
               </span>
