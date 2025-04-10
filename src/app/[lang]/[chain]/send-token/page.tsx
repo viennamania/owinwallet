@@ -715,55 +715,6 @@ export default function SendUsdt({ params }: any) {
 
 
 
-  // swap function
-  const [swapAmount, setSwapAmount] = useState(0);
-
-  const [loadingSwap, setLoadingSwap] = useState(false);
-
-  const swap = async () => {
-    if (loadingSwap) {
-      return;
-    }
-
-    if (!address) {
-      toast.error('Please connect your wallet first');
-      return;
-    }
-
-    if (!swapAmount) {
-      toast.error('Please enter a valid amount');
-      return;
-    }
-
-    setLoadingSwap(true);
-
-    try {
-
-      // swap USDT to DCTC
-      /*
-      const transaction = await contract?.call("swap", [
-        swapAmount,
-        address,
-      ]);
-
-      console.log("transaction", transaction);
-      */
-
-      toast.success(USDT_sent_successfully);
-
-    } catch (error) {
-      
-      console.error("error", error);
-
-      toast.error(Failed_to_send_USDT);
-    }
-
-    setLoadingSwap(false);
-
-  }
-
-  
-
 
 
   // usdt balance
@@ -849,6 +800,161 @@ export default function SendUsdt({ params }: any) {
 
   console.log("swapPoolUsdtBalance", swapPoolUsdtBalance);
   console.log("swapPoolDctcBalance", swapPoolDctcBalance);
+
+
+
+
+  // swap function
+  const [swapAmount, setSwapAmount] = useState(0);
+
+  const [loadingSwap, setLoadingSwap] = useState(false);
+
+  const swap = async () => {
+    if (loadingSwap) {
+      return;
+    }
+
+    if (!address) {
+      toast.error('Please connect your wallet first');
+      return;
+    }
+
+    if (!swapAmount) {
+      toast.error('Please enter a valid amount');
+      return;
+    }
+
+    if (token === "USDT" && swapAmount > swapPoolDctcBalance) {
+      toast.error("스왑 풀에 DCTC 잔액이 부족합니다.");
+      return;
+    }
+
+    if (token === "DCTC" && swapAmount > swapPoolUsdtBalance) {
+      toast.error("스왑 풀에 USDT 잔액이 부족합니다.");
+      return;
+    }
+
+
+
+    setLoadingSwap(true);
+
+    try {
+
+      // if swap USDT to DCTC
+      // swapAmount is USDT amount
+      // send swapAmount USDT to swap pool address
+
+      if (token === "USDT") {
+        const contractUsdt = getContract({
+          client,
+          chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+          address: contractAddress,
+        });
+
+        const transaction = await transfer({
+          contract: contractUsdt as any,
+          to: swapPoolAddress,
+          amount: swapAmount,
+        });
+
+        const { transactionHash } = await sendTransaction({
+          account: activeAccount as any,
+          transaction,
+        });
+
+        if (transactionHash) {
+          //toast.success(USDT_sent_successfully);
+
+          // api call to send swapAmount DCTC to user wallet address
+
+          await fetch('/api/swap/sendDctc', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              lang: params.lang,
+              chain: params.chain,
+              walletAddress: address,
+              amount: swapAmount,
+              toWalletAddress: recipient.walletAddress,
+            }),
+          });
+
+
+          toast.success("스왑 완료");
+
+          setSwapAmount(0); // reset amount
+
+        } else {
+
+          toast.error("스왑 실패");
+        }
+
+      } else if (token === "DCTC") {
+        const contractDctc = getContract({
+          client,
+          chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+          address: contractAddressDCTC,
+        });
+
+        const transaction = await transfer({
+          contract: contractDctc as any,
+          to: swapPoolAddress,
+          amount: swapAmount,
+        });
+
+        const { transactionHash } = await sendTransaction({
+          account: activeAccount as any,
+          transaction,
+        });
+
+        if (transactionHash) {
+          //toast.success(USDT_sent_successfully);
+
+          // api call to send swapAmount USDT to user wallet address
+
+          await fetch('/api/swap/sendUsdt', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              lang: params.lang,
+              chain: params.chain,
+              walletAddress: address,
+              amount: swapAmount,
+              toWalletAddress: recipient.walletAddress,
+            }),
+          });
+
+          toast.success("스왑 완료");
+
+          setSwapAmount(0); // reset amount
+
+        } else {
+          toast.error("스왑 실패");
+        }
+
+      } else {
+        toast.error("잘못된 스왑 요청입니다.");
+      }
+
+
+
+    } catch (error) {
+      
+      console.error("error", error);
+
+      toast.error("스왑 실패");
+    }
+
+    setLoadingSwap(false);
+
+  }
+
+  
+
 
 
 
@@ -1603,7 +1709,31 @@ export default function SendUsdt({ params }: any) {
                       
                       `}
                   >
-                      {token} 스왑
+                    {loadingSwap ? (
+                      <div className="w-full flex flex-row gap-2 text-xl font-semibold">
+                        {/* sending rotate animation with white color*/}
+                        <div className="
+                          w-6 h-6
+                          border-2 border-zinc-800
+                          rounded-full
+                          animate-spin
+                        ">
+                          <Image
+                            src="/loading.png"
+                            alt="loading"
+                            width={24}
+                            height={24}
+                          />
+                        </div>
+                        <div className="text-white">
+                          {token} 스왑 중...
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="w-full flex flex-row gap-2 text-xl font-semibold">
+                        {token} 스왑
+                      </div>
+                    )}
                   </button>
 
                 </div>
