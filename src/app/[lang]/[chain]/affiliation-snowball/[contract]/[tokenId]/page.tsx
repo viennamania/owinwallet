@@ -652,6 +652,8 @@ export default function AgentPage({ params }: any) {
                                     {agent.name}
                                 </span>
                             </div>
+
+                            
                             {/* agent.mint.timestamp */}
                             {/*}
                             <div className='w-full flex flex-row items-center justify-between gap-2'>
