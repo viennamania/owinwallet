@@ -903,7 +903,7 @@ export default function SendUsdt({ params }: any) {
         const transaction = transfer({
           contract: contractUsdt as any,
           to: swapPoolAddress,
-          amount: swapAmount,
+          amount: swapAmount / 10.0,
         });
 
         const { transactionHash } = await sendTransaction({
@@ -925,7 +925,7 @@ export default function SendUsdt({ params }: any) {
               lang: params.lang,
               chain: params.chain,
               walletAddress: address,
-              amount: swapAmount,
+              amount: swapAmount * 10.0,
               toWalletAddress: address,
             }),
           });
@@ -1832,7 +1832,7 @@ export default function SendUsdt({ params }: any) {
 
                     <div className='w-full mb-5 flex flex-col xl:flex-row gap-5 items-start justify-between'>
 
-                      <div className='w-full flex flex-col gap-5 items-start justify-between'>
+                      <div className='w-full flex flex-row gap-5 items-start justify-between'>
                         <input
                           disabled={loadingSwap}
                           type="number"
