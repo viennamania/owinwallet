@@ -337,7 +337,56 @@ export default function SendUsdt({ params }: any) {
 
     return () => clearInterval(interval);
 
-  } , [address, contract, params.chain]);
+  } , [address, contract, params.chain, token]);
+
+
+  // swap token balance
+  const [swapTokenBalance, setSwapTokenBalance] = useState(0);
+  useEffect(() => {
+
+    // get the balance
+    const getSwapTokenBalance = async () => {
+
+      ///console.log('getBalance address', address);
+
+      if (token === "USDT") {
+        
+        const contract = getContract({
+          client,
+          chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+          address: contractAddressDCTC,
+        });
+        const result = await balanceOf({
+          contract : contract as any,
+          address: address || "",
+        });
+        if (!result) return;
+        setSwapTokenBalance( Number(result) / 10 ** 18 );
+      } else if (token === "DCTC") {
+        const contract = getContract({
+          client,
+          chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+          address: contractAddress,
+        });
+        const result = await balanceOf({
+          contract : contract as any,
+          address: address || "",
+        });
+        if (!result) return;
+        setSwapTokenBalance( Number(result) / 10 ** 6 );
+      }
+
+    };
+
+    if (address) getSwapTokenBalance();
+
+    const interval = setInterval(() => {
+      if (address) getSwapTokenBalance();
+    } , 1000);
+
+    return () => clearInterval(interval);
+
+  } , [address, contract, params.chain, token]);
 
 
 
@@ -1674,7 +1723,6 @@ export default function SendUsdt({ params }: any) {
 
 
                {/* below arrow image */}
-               {/*
                <div className="w-full flex flex-row gap-2 items-center justify-center">
                   <Image
                     src="/icon-swap-updown.png"
@@ -1702,7 +1750,7 @@ export default function SendUsdt({ params }: any) {
                     <div className="flex flex-row items-center justify-end  gap-2">
                       <span className="text-2xl font-semibold text-gray-800">
 
-                        {Number(swapPoolDctcBalance).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        {Number(swapTokenBalance).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
 
                       </span>
                       <span className="text-lg">DCTC</span>
@@ -1728,7 +1776,7 @@ export default function SendUsdt({ params }: any) {
                     <div className="flex flex-row items-center justify-end  gap-2">
                       <span className="text-2xl font-semibold text-gray-800">
 
-                        {Number(swapPoolUsdtBalance).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        {Number(swapTokenBalance).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
 
                       </span>
                       <span className="text-lg">USDT</span>
@@ -1737,7 +1785,7 @@ export default function SendUsdt({ params }: any) {
 
                 )}
                 
-                */}
+
 
 
 

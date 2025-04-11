@@ -98,46 +98,48 @@ export async function POST(request: NextRequest) {
   } = body;
 
 
+  console.log("body", body);
+
+
+  
+  try {
+
+    const client = createThirdwebClient({
+      secretKey: process.env.THIRDWEB_SECRET_KEY || "",
+    });
+
+
+    const contractUSDT = getContract(
+      {
+        client: client,
+        chain: chain,
+        address: tokenContractAddressUSDT,
+      }
+    );
+
+    const snowballWalletPrivateKey = process.env.SNOWBALL_WALLET_PRIVATE_KEY || "";
 
 
 
+    const personalAccount = privateKeyToAccount({
+      client,
+      privateKey: snowballWalletPrivateKey,
+    });
 
-  const client = createThirdwebClient({
-    secretKey: process.env.THIRDWEB_SECRET_KEY || "",
-  });
-
-
-  const contractUSDT = getContract(
-    {
-      client: client,
+    const wallet = smartWallet({
       chain: chain,
-      address: tokenContractAddressUSDT,
-    }
-  );
+      sponsorGas: true,
+    });
 
-  const snowballWalletPrivateKey = process.env.SNOWBALL_WALLET_PRIVATE_KEY || "";
+    const account = await wallet.connect({
+      client: client,
+      personalAccount: personalAccount,
+    });
 
+    const snowballWalletAddress = account.address;
 
-
-  const personalAccount = privateKeyToAccount({
-    client,
-    privateKey: snowballWalletPrivateKey,
-  });
-
-  const wallet = smartWallet({
-    chain: chain,
-    sponsorGas: true,
-  });
-
-  const account = await wallet.connect({
-    client: client,
-    personalAccount: personalAccount,
-  });
-
-  const snowballWalletAddress = account.address;
-
-  console.log("snowballWalletAddress: ", snowballWalletAddress);
-  // 0xef236138f40fadCac5Af0E01bB51612ad116C91f
+    console.log("snowballWalletAddress: ", snowballWalletAddress);
+    // 0xef236138f40fadCac5Af0E01bB51612ad116C91f
 
 
 
@@ -151,7 +153,7 @@ export async function POST(request: NextRequest) {
 
 
       
-    try {
+
 
       const transactions = [] as any;
 
