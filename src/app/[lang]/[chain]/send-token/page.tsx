@@ -926,7 +926,7 @@ export default function SendUsdt({ params }: any) {
               chain: params.chain,
               walletAddress: address,
               amount: swapAmount,
-              toWalletAddress: recipient.walletAddress,
+              toWalletAddress: address,
             }),
           });
 
@@ -934,16 +934,35 @@ export default function SendUsdt({ params }: any) {
           toast.success("스왑 완료");
 
           // refresh swap pool balance
-          const contractDctc = getContract({
-            client,
-            chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-            address: contractAddressDCTC,
-          });
-          const dctcBalance = await balanceOf({
-            contract: contractDctc as any,
-            address: swapPoolAddress,
-          });
-          setSwapPoolDctcBalance(Number(dctcBalance) / 10 ** 18);
+
+          if (token === "USDT") {
+            const contractDctc = getContract({
+              client,
+              chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+              address: contractAddressDCTC,
+            });
+            const dctcBalance = await balanceOf({
+              contract: contractDctc as any,
+              address: swapPoolAddress,
+            });
+            setSwapPoolDctcBalance(Number(dctcBalance) / 10 ** 18);
+          } else if (token === "DCTC") {
+            const contractUsdt = getContract({
+              client,
+              chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+              address: contractAddress,
+            });
+            const usdtBalance = await balanceOf({
+              contract: contractUsdt as any,
+              address: swapPoolAddress,
+            });
+            setSwapPoolUsdtBalance(Number(usdtBalance) / 10 ** 6);
+          }
+
+
+          // 
+
+
 
           setSwapAmount(0); // reset amount
 
@@ -985,7 +1004,7 @@ export default function SendUsdt({ params }: any) {
               chain: params.chain,
               walletAddress: address,
               amount: swapAmount,
-              toWalletAddress: recipient.walletAddress,
+              toWalletAddress: address,
             }),
           });
 

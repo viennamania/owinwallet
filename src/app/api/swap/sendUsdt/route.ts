@@ -33,10 +33,19 @@ import { polygon } from "thirdweb/chains";
 
 import {
     privateKeyToAccount,
-    smartWallet,
+    ///smartWallet,
     getWalletBalance,
     SmartWalletOptions,
 } from "thirdweb/wallets";
+
+import {
+  smartWallet,
+  //////DEFAULT_ACCOUNT_FACTORY_V0_7,
+} from "thirdweb/wallets/smart";
+
+ 
+
+
 
 
 import {
@@ -61,7 +70,7 @@ import { token } from "thirdweb/extensions/vote";
 //import { useSearchParams } from 'next/navigation'
  
 
-const chain = polygon;
+////const chain = polygon;
 
 
 // USDT Token (USDT)
@@ -101,18 +110,30 @@ export async function POST(request: NextRequest) {
   console.log("body", body);
 
 
-  
+
   try {
+
+
 
     const client = createThirdwebClient({
       secretKey: process.env.THIRDWEB_SECRET_KEY || "",
     });
 
+    
+
+
+  
+    if (!client) {
+      return NextResponse.json({
+        result: null,
+      });
+    }
+
 
     const contractUSDT = getContract(
       {
         client: client,
-        chain: chain,
+        chain: polygon,
         address: tokenContractAddressUSDT,
       }
     );
@@ -127,8 +148,10 @@ export async function POST(request: NextRequest) {
     });
 
     const wallet = smartWallet({
-      chain: chain,
+      chain: polygon,
       sponsorGas: true,
+      ///factoryAddress: DEFAULT_ACCOUNT_FACTORY_V0_7, // 0.7 factory address
+
     });
 
     const account = await wallet.connect({

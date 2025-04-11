@@ -142,11 +142,19 @@ export async function GET(request: NextRequest) {
       chain: chain,
       sponsorGas: true,
     });
+
+
+    console.log("wallet: ", wallet);
+
   
     const account = await wallet.connect({
       client: client,
       personalAccount: personalAccount,
     });
+
+
+    console.log("account: ", account);
+
   
     const snowballWalletAddress = account.address;
   
