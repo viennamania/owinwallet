@@ -1667,8 +1667,9 @@ function AgentPage(
                                     {address && myNfts?.map((nft, index) => (
                                         <div
                                             key={index}
-                                            className='w-full flex flex-col gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg
-                                            bg-gray-800 bg-opacity-90'
+                                            className='w-full flex flex-col gap-2 items-center justify-between border border-gray-200 p-4 rounded-lg
+                                            bg-white
+                                            '
                                         >
 
                                             <div className="w-full flex flex-row items-start justify-between gap-2">
@@ -1752,19 +1753,19 @@ function AgentPage(
 
                                                 <div className='w-3/4 flex flex-col gap-2 items-start justify-between'>
                                                     <div className='w-full flex flex-row gap-2 items-center justify-between'>
-                                                        <span className='text-xs text-zinc-100'>
+                                                        <span className='text-xs text-gray-500'>
                                                             계약번호
                                                         </span>
-                                                        <span className='text-sm text-zinc-100'>
+                                                        <span className='text-lg text-gray-500 font-semibold'>
                                                             #{nft?.tokenId}
                                                         </span>
                                                     </div>
                                                     {/* 이름 */}
                                                     <div className='w-full flex flex-row gap-2 items-center justify-between'>
-                                                        <span className='text-xs text-zinc-100'>
+                                                        <span className='text-xs text-gray-500'>
                                                             이름
                                                         </span>
-                                                        <span className='text-sm text-zinc-100'>
+                                                        <span className='text-lg text-gray-500 font-semibold'>
                                                             {nft?.name}
                                                         </span>
                                                     </div>
