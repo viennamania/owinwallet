@@ -73,8 +73,8 @@ import { token } from "thirdweb/extensions/vote";
 ////const chain = polygon;
 
 
-// USDT Token (USDT)
-const tokenContractAddressUSDT = '0xc2132D05D31c914a87C6611C10748AEb04B58e8F';
+// DCTC Token (DCTC)
+const tokenContractAddressDCTC = '0x76856Fd779AcE7C64297F9F662D3303e09dB269f';
 
 
 
@@ -134,7 +134,7 @@ export async function POST(request: NextRequest) {
       {
         client: client,
         chain: polygon,
-        address: tokenContractAddressUSDT,
+        address: tokenContractAddressDCTC,
       }
     );
 
@@ -163,7 +163,6 @@ export async function POST(request: NextRequest) {
 
     console.log("snowballWalletAddress: ", snowballWalletAddress);
     // 0xef236138f40fadCac5Af0E01bB51612ad116C91f
-
 
 
 
@@ -224,8 +223,6 @@ export async function POST(request: NextRequest) {
 
     }
       
-
-
 
 
 }
