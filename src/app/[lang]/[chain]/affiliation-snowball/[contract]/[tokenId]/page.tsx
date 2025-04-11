@@ -611,9 +611,8 @@ export default function AgentPage({ params }: any) {
 
 
                     <div className='w-full flex flex-row items-start justify-between gap-2
-                      bg-gray-800 bg-opacity-90
-                      backdrop-blur-md
-                      p-4 rounded-lg
+                      bg-white
+                      rounded-lg p-4 shadow-md
                       border border-gray-300
                     '>
 
@@ -645,10 +644,10 @@ export default function AgentPage({ params }: any) {
                         <div className='w-3/4 flex flex-col items-start justify-between gap-2'>
 
                             <div className='w-full flex flex-row items-center justify-between gap-2'>
-                                <span className='text-xs text-gray-200'>
+                                <span className='text-xs text-zinc-800'>
                                     이름
                                 </span>
-                                <span className='text-xs font-semibold text-gray-200'>
+                                <span className='text-lg font-semibold text-zinc-800'>
                                     {agent.name}
                                 </span>
                             </div>
