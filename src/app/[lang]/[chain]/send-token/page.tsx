@@ -903,7 +903,7 @@ export default function SendUsdt({ params }: any) {
         const transaction = transfer({
           contract: contractUsdt as any,
           to: swapPoolAddress,
-          amount: swapAmount / 10.0,
+          amount: swapAmount,
         });
 
         const { transactionHash } = await sendTransaction({
@@ -1003,7 +1003,7 @@ export default function SendUsdt({ params }: any) {
               lang: params.lang,
               chain: params.chain,
               walletAddress: address,
-              amount: swapAmount,
+              amount: swapAmount * 0.1,
               toWalletAddress: address,
             }),
           });
