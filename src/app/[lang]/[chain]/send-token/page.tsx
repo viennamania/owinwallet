@@ -854,7 +854,12 @@ export default function SendUsdt({ params }: any) {
 
 
   // swap function
+  // 스왑할 수량
   const [swapAmount, setSwapAmount] = useState(0);
+
+  // 스왑될 수량
+  const [swapAmountTo, setSwapAmountTo] = useState(0);
+
 
   const [loadingSwap, setLoadingSwap] = useState(false);
 
@@ -925,7 +930,7 @@ export default function SendUsdt({ params }: any) {
               lang: params.lang,
               chain: params.chain,
               walletAddress: address,
-              amount: swapAmount * 10.0,
+              amount: swapAmountTo,
               toWalletAddress: address,
             }),
           });
@@ -965,6 +970,7 @@ export default function SendUsdt({ params }: any) {
 
 
           setSwapAmount(0); // reset amount
+          setSwapAmountTo(0); // reset amount to
 
         } else {
 
@@ -1003,7 +1009,7 @@ export default function SendUsdt({ params }: any) {
               lang: params.lang,
               chain: params.chain,
               walletAddress: address,
-              amount: swapAmount * 0.1,
+              amount: swapAmountTo,
               toWalletAddress: address,
             }),
           });
@@ -1023,6 +1029,7 @@ export default function SendUsdt({ params }: any) {
           setSwapPoolUsdtBalance(Number(usdtBalance) / 10 ** 6);
 
           setSwapAmount(0); // reset amount
+          setSwapAmountTo(0); // reset amount to
 
         } else {
           toast.error("스왑 실패");
@@ -1805,11 +1812,6 @@ export default function SendUsdt({ params }: any) {
                 )}
                 
 
-
-
-
-
-
                   <div className='
                     w-full  flex flex-col gap-5 border
                     bg-zinc-800 text-white
@@ -1848,7 +1850,15 @@ export default function SendUsdt({ params }: any) {
                             e.target.value = e.target.value.replace(/^0+/, ''),
                             // check balance
 
-                            setSwapAmount(e.target.value as any)
+                            setSwapAmount(e.target.value as any),
+
+                            // if swapAmount is USDT, set swapAmountTo to swapAmount * 10.0
+                            // if swapAmount is DCTC, set swapAmountTo to swapAmount * 0.1
+
+                            setSwapAmountTo(
+                              token === "USDT" ? Number(e.target.value) * 10.0 : Number(e.target.value) * 0.1
+                            )
+
                           )}
 
                         />
@@ -1873,7 +1883,7 @@ export default function SendUsdt({ params }: any) {
 
                       {/* swap 풀 balance */}
                       {token === "USDT" ? (
-                        <div className='w-full flex flex-col gap-5 items-start justify-between'>
+                        <div className='w-full flex flex-row gap-5 items-center justify-between'>
                           <div className='flex flex-row gap-2 items-center justify-start'>
                             <Image
                               src="/token-dctc-icon.png"
@@ -1892,7 +1902,7 @@ export default function SendUsdt({ params }: any) {
                           </div>
                         </div>
                       ) : (
-                        <div className='w-full flex flex-col gap-5 items-start justify-between'>
+                        <div className='w-full flex flex-row gap-5 items-center justify-between'>
                           <div className='flex flex-row gap-2 items-center justify-start'>
                             <Image
                               src="/token-usdt-icon.png"
@@ -1911,6 +1921,29 @@ export default function SendUsdt({ params }: any) {
                           </div>
                         </div>
                       )}
+
+
+                      {/* swapAmountTo */}
+                      {/* 스왑될 수량 */}
+                      <div className='w-full flex flex-col gap-5 items-start justify-between'>
+                        <div className='flex flex-row gap-2 items-center justify-start'>
+                          {/* dot icon */}
+                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                          <div className="text-sm
+                            text-white
+                          ">
+                            {token === "USDT" ? "스왑될 DCTC 수량"
+                            : "스왑될 USDT 수량"
+                            }
+                          </div>
+                        </div>
+                        <div className="text-2xl font-semibold text-gray-200">
+                          {swapAmountTo.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                          {token === "USDT" ? " DCTC"
+                          : " USDT"
+                          }
+                        </div>
+                      </div>
         
 
                     </div>
