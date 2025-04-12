@@ -1924,7 +1924,7 @@ export default function SendUsdt({ params }: any) {
 
 
                       {/* swapAmountTo */}
-                      {/* 스왑될 수량 */}
+                      {/* 받게될 수량 */}
                       <div className='w-full flex flex-col gap-5 items-start justify-between'>
                         <div className='flex flex-row gap-2 items-center justify-start'>
                           {/* dot icon */}
@@ -1932,8 +1932,8 @@ export default function SendUsdt({ params }: any) {
                           <div className="text-sm
                             text-white
                           ">
-                            {token === "USDT" ? "스왑될 DCTC 수량"
-                            : "스왑될 USDT 수량"
+                            {token === "USDT" ? "받게될 DCTC 수량"
+                            : "받게될 USDT 수량"
                             }
                           </div>
                         </div>
