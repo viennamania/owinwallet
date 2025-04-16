@@ -1058,27 +1058,7 @@ function IndexPage(
   , [tronBalance, params.chain]);
   */
 
-  {/* 개발비 미지급으로 인해 서비스 중단합니다. */}
 
-  return (
-
-    <div className="w-full flex flex-col justify-center items-center gap-2 p-5">
-      <div className="w-full flex flex-col justify-center items-center gap-2 p-5">
-        <Image
-          src="/logo-snowball.png"
-          alt="Snowball"
-          width={200}
-          height={200}
-          className="rounded-lg w-20 h-20 xl:w-24 xl:h-24"
-        />
-      </div>
-      <span className="text-lg md:text-xl font-bold text-zinc-600">
-        개발비 미지급으로 인해 서비스 중단합니다.
-      </span>
-    </div>
-
-  )
-      
 
   {/* bg R:231, G:237, B:241 */}
 
