@@ -12,6 +12,8 @@ import {
     getContract,
     sendTransaction,
     sendAndConfirmTransaction,
+
+    defineChain,
 } from "thirdweb";
 
 import {
@@ -100,6 +102,17 @@ import Link from "next/link";
 
 
 
+
+
+const ckechain = defineChain({
+  id: 55125,
+  rpc: "http://52.78.186.199:8080",
+  nativeCurrency: {
+    name: "Ckechain",
+    symbol: "CKEC",
+    decimals: 18,
+  },
+})
 
 
 /*
@@ -1334,7 +1347,7 @@ function IndexPage(
 
 
 
-
+        {/*
         {!address && (
 
           <div className="
@@ -1400,6 +1413,46 @@ function IndexPage(
           </div>
 
         )}
+        */}
+
+
+        <ConnectButton
+          client={client}
+          wallets={wallets}
+          chain={ckechain}
+          
+          theme={"light"}
+
+          // button color is dark skyblue convert (49, 103, 180) to hex
+          connectButton={{
+            style: {
+              backgroundColor: "#3167b4", // dark skyblue
+              // font color is gray-300
+              color: "#f3f4f6", // gray-300
+              padding: "10px 20px",
+              borderRadius: "10px",
+              fontSize: "16px",
+              // w-full
+              width: "100%",
+            },
+            label: "로그인 및 회원가입",
+          }}
+
+          connectModal={{
+            size: "wide", 
+            //size: "compact",
+            //titleIcon: "https://uma.tips/icon-snowball.png",                           
+            showThirdwebBranding: false,
+          }}
+
+          locale={"ko_KR"}
+          //locale={"en_US"}
+        />
+
+
+
+
+
 
         {/*
         {address && (
