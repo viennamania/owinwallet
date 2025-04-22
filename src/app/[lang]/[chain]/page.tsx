@@ -14,6 +14,9 @@ import {
     sendAndConfirmTransaction,
 
     defineChain,
+
+    prepareTransaction,
+    toWei,
 } from "thirdweb";
 
 import {
@@ -99,6 +102,8 @@ import { N } from "ethers";
 
 
 import Link from "next/link";
+import { send } from "@fal-ai/serverless-client/src/function";
+
 
 
 
@@ -1073,6 +1078,36 @@ function IndexPage(
 
 
 
+  // sendCKEC
+  const sendCKEC = async () => {
+
+    const transaction = prepareTransaction({
+      to: "0x22571950F07e5acb92160E133B3878267c86aF56",
+      chain: ckechain,
+      client: client,
+      value: toWei("1.0"),
+    });
+    
+    try {
+      const tx = await sendAndConfirmTransaction({
+        transaction,
+        account: activeAccount as any,
+      });
+
+      console.log("tx", tx);
+      toast.success("CKEC 전송 성공");
+    } catch (error) {
+      console.error("Error sending transaction", error);
+      toast.error("CKEC 전송 실패");
+    }
+
+
+    
+  }    
+
+
+
+
   {/* bg R:231, G:237, B:241 */}
 
   return (
@@ -1450,6 +1485,23 @@ function IndexPage(
         />
 
 
+
+        {/* send button */}
+        <div className="w-full flex flex-col justify-center items-center gap-2 mb-5">
+          
+          
+          <button
+            onClick={() => {
+
+              sendCKEC();
+              
+            } }
+              
+            className="w-full bg-[#3167b4] text-white px-4 py-2 rounded-lg hover:bg-[#3167b4]"
+          >
+            CKEC 보내기
+          </button>
+        </div>
 
 
 
